@@ -5,11 +5,19 @@
     <ClInclude Include="GameEngineDirectory.h" />
     <ClInclude Include="GameEngineFile.h" />
     <ClInclude Include="GameEnginePath.h" />
+    <ClInclude Include="GameEngineMath.h" />
+    <ClInclude Include="GameEngineNameObject.h" />
+    <ClInclude Include="GameEngineRandom.h" />
+    <ClInclude Include="GameEngineUpdateObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineDebug.cpp" />
     <ClCompile Include="GameEngineDirectory.cpp" />
     <ClCompile Include="GameEngineFile.cpp" />
     <ClCompile Include="GameEnginePath.cpp" />
+    <ClCompile Include="GameEngineMath.cpp" />
+    <ClCompile Include="GameEngineNameObject.cpp" />
+    <ClCompile Include="GameEngineRandom.cpp" />
+    <ClCompile Include="GameEngineUpdateObject.cpp" />
   </ItemGroup>
 </Project>
