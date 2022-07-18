@@ -9,6 +9,10 @@
     <ClInclude Include="GameEngineNameObject.h" />
     <ClInclude Include="GameEngineRandom.h" />
     <ClInclude Include="GameEngineUpdateObject.h" />
+    <ClInclude Include="GameEngineInput.h" />
+    <ClInclude Include="GameEngineString.h" />
+    <ClInclude Include="GameEngineTime.h" />
+    <ClInclude Include="GameEngineWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineDebug.cpp" />
@@ -19,5 +23,9 @@
     <ClCompile Include="GameEngineNameObject.cpp" />
     <ClCompile Include="GameEngineRandom.cpp" />
     <ClCompile Include="GameEngineUpdateObject.cpp" />
+    <ClCompile Include="GameEngineInput.cpp" />
+    <ClCompile Include="GameEngineString.cpp" />
+    <ClCompile Include="GameEngineTime.cpp" />
+    <ClCompile Include="GameEngineWindow.cpp" />
   </ItemGroup>
 </Project>

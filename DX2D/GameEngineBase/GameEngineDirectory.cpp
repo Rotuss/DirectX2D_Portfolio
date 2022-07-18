@@ -1,7 +1,7 @@
 #include "GameEngineDirectory.h"
 #include "GameEngineDebug.h"
 #include "GameEngineFile.h"
-//#include "GameEngineString.h"
+#include "GameEngineString.h"
 
 GameEngineDirectory::GameEngineDirectory() 
 {
@@ -85,7 +85,7 @@ std::vector<GameEngineFile> GameEngineDirectory::GetAllFile(const std::string& _
 
     if (Ext != "")
     {
-        //GameEngineString::ToUpper(Ext);
+        GameEngineString::ToUpper(Ext);
         if (std::string::npos == Ext.find("."))
         {
             Ext = "." + Ext;
@@ -105,7 +105,7 @@ std::vector<GameEngineFile> GameEngineDirectory::GetAllFile(const std::string& _
         {
             GameEnginePath NewPath = Entry.path();
             std::string OtherExt = NewPath.GetExtension();
-            //GameEngineString::ToUpper(OtherExt);
+            GameEngineString::ToUpper(OtherExt);
 
             if (OtherExt != Ext)
             {

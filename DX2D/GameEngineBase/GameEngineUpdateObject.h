@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-//#include "GameEngineTime.h"
+#include "GameEngineTime.h"
 
 // Ό³Έν :
 class GameEngineUpdateObject
@@ -61,7 +61,7 @@ public:
 			return;
 		}
 
-		//DeathTime_ -= GameEngineTime::GetDeltaTime();
+		DeathTime_ -= GameEngineTime::GetDeltaTime();
 
 		if (0.0f >= DeathTime_)
 		{
