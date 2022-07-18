@@ -20,9 +20,9 @@ public:
 
 	bool IsExists();
 
-	std::string GetExtension();
-	std::string GetFileName();
-	std::string GetFullPath();
+	std::string GetExtension() const;
+	std::string GetFileName() const;
+	std::string GetFullPath() const;
 
 protected:
 	std::filesystem::path Path_;

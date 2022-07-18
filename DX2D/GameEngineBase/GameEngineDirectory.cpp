@@ -57,9 +57,45 @@ void GameEngineDirectory::MoveParent(const std::string& _Name)
     }
 }
 
+bool GameEngineDirectory::MoveParentToExitsChildDirectory(const std::string& _Name)
+{
+    std::string FindDirectory = _Name;
+    GameEngineString::ToUpper(FindDirectory);
+
+    std::vector<GameEngineFile> Return;
+
+    while (true)
+    {
+        std::filesystem::directory_iterator DirIter(Path_);
+
+        for (const std::filesystem::directory_entry& Entry : DirIter)
+        {
+            if (true == Entry.is_directory())
+            {
+                std::string CurrentFileName = Entry.path().filename().string();
+                GameEngineString::ToUpper(CurrentFileName);
+
+                if (CurrentFileName == FindDirectory)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (true == IsRoot())
+        {
+            return false;
+        }
+
+        MoveParent();
+    }
+
+    return false;
+}
+
 bool GameEngineDirectory::IsRoot()
 {
-    return Path_ == Path_.root_directory();
+    return Path_ == Path_.root_path();
 }
 
 void GameEngineDirectory::Move(const std::string& _Name)
