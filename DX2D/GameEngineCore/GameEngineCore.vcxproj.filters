@@ -7,6 +7,10 @@
     <ClInclude Include="GEngine.h" />
     <ClInclude Include="GameEngineRenderer.h" />
     <ClInclude Include="GameEngineComponent.h" />
+    <ClInclude Include="GameEngineMesh.h" />
+    <ClInclude Include="GameEngineIndexBuffer.h" />
+    <ClInclude Include="GameEngineRes.h" />
+    <ClInclude Include="GameEngineVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -15,5 +19,10 @@
     <ClCompile Include="GEngine.cpp" />
     <ClCompile Include="GameEngineRenderer.cpp" />
     <ClCompile Include="GameEngineComponent.cpp" />
+    <ClCompile Include="GameEngineMesh.cpp" />
+    <ClCompile Include="GameEngineCore_Resource.cpp" />
+    <ClCompile Include="GameEngineIndexBuffer.cpp" />
+    <ClCompile Include="GameEngineRes.cpp" />
+    <ClCompile Include="GameEngineVertexBuffer.cpp" />
   </ItemGroup>
 </Project>

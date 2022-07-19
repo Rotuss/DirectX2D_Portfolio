@@ -54,6 +54,9 @@ private:
 	static void CoreUpdate(GameEngineCore* _UserCore);
 	static void CoreEnd(GameEngineCore* _UserCore);
 
+	static void EngineResourcesInitialize();
+	static void EngineResourcesDestroy();
+	
 	static std::map<std::string, class GameEngineLevel*> AllLevels;
 	static GameEngineLevel* CurrentLevel;
 	static GameEngineLevel* NextLevel;

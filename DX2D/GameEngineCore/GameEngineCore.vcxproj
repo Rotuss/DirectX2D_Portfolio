@@ -163,11 +163,27 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineIndexBuffer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineMesh.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineRes.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineVertexBuffer.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -189,11 +205,28 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineCore_Resource.cpp" />
+    <ClCompile Include="GameEngineIndexBuffer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineMesh.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineRes.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineVertexBuffer.cpp">
       <SubType>
       </SubType>
     </ClCompile>

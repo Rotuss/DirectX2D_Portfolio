@@ -56,6 +56,8 @@ void GameEngineCore::WindowCreate(const std::string& _Name, GameEngineCore* _Use
 
 void GameEngineCore::CoreStart(GameEngineCore* _UserCore)
 {
+	EngineResourcesInitialize();
+
 	_UserCore->Start();
 }
 
@@ -107,6 +109,8 @@ void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 		Level.second = nullptr;
 	}
 
+	EngineResourcesDestroy();
+	
 	GameEngineWindow::Destroy();
 	GameEngineInput::Destroy();
 	GameEngineTime::Destroy();
