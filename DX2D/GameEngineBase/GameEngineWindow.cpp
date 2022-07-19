@@ -56,11 +56,11 @@ void GameEngineWindow::ShowGameWindow()
     UpdateWindow(hWnd_);
 }
 
-void GameEngineWindow::MessageLoop(void(*_InitFunction)(), void(*_LoopFunction)())
+void GameEngineWindow::MessageLoop(std::function<void()> _Init, std::function<void()> _Loop, std::function<void()> _End)
 {
-    if (nullptr != _InitFunction)
+    if (nullptr != _Init)
     {
-        _InitFunction();
+        _Init();
     }
 
     MSG msg;
@@ -73,12 +73,17 @@ void GameEngineWindow::MessageLoop(void(*_InitFunction)(), void(*_LoopFunction)(
             DispatchMessage(&msg);
         }
 
-        if (nullptr == _LoopFunction)
+        if (nullptr == _Loop)
         {
             continue;
         }
 
-        _LoopFunction();
+        _Loop();
+    }
+
+    if (nullptr != _End)
+    {
+        _End();
     }
 }
 
@@ -127,7 +132,7 @@ LRESULT GameEngineWindow::MessageProcess(HWND hWnd, UINT message, WPARAM wParam,
     {
     case WM_DESTROY:
     {
-        GameEngineWindow::GetInst().Off();
+        GameEngineWindow::GetInst()->Off();
         break;
     }
     case WM_PAINT:
@@ -139,7 +144,7 @@ LRESULT GameEngineWindow::MessageProcess(HWND hWnd, UINT message, WPARAM wParam,
     }
     case WM_CLOSE:
     {
-        GameEngineWindow::GetInst().Off();
+        GameEngineWindow::GetInst()->Off();
         break;
     }
     case WM_MOUSEWHEEL:

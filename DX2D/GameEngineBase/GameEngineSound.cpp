@@ -6,7 +6,6 @@
 #pragma comment(lib, "fmod_vc.lib")
 
 FMOD::System* SoundSystem_ = nullptr;
-SoundSystemCreater CreateInst = SoundSystemCreater();
 
 class SoundSystemCreater
 {
@@ -29,6 +28,8 @@ public:
 
 	}
 };
+
+SoundSystemCreater CreateInst = SoundSystemCreater();
 
 GameEngineSound::GameEngineSound() 
 {

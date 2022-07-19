@@ -5,7 +5,9 @@
 GameEngineInput* GameEngineInput::Inst_ = new GameEngineInput();
 
 
-GameEngineInput::GameEngineInput() 
+GameEngineInput::GameEngineInput()
+	: WheelValue()
+	, CurWheelValue()
 {
 }
 

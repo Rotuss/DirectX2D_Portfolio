@@ -92,6 +92,9 @@ public:
 		Order_ = _Order;
 	}
 
+	virtual void OnEvent() {}
+	virtual void OffEvent() {}
+
 protected:
 
 private:

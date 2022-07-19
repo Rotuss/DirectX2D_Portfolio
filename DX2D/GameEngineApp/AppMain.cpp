@@ -1,6 +1,14 @@
 #include <Windows.h>
 
-int main()
+#pragma comment(lib, "GameEngineBase.lib")
+#pragma comment(lib, "GameEngineCore.lib")
+#pragma comment(lib, "GameEngineContents.lib")
+
+#include <GameEngineContents/Cuphead.h>
+
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
+	GameEngineCore::Start<Cuphead>();
+
 	return 0;
 }

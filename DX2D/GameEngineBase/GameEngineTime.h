@@ -27,8 +27,14 @@ public:
 	void Reset();
 	void Update();
 
-	static inline float GetDeltaTime() {}
-	static inline float GetDeltaTime(int _Key) {}
+	static inline float GetDeltaTime() 
+	{
+		return Inst_->DeltaTime_;
+	}
+	static inline float GetDeltaTime(int _Key) 
+	{
+		return Inst_->DeltaTime_ * Inst_->GetTimeScale(_Key);
+	}
 	
 	void SetTimeScale(int _Key, float _TimeScale)
 	{
@@ -58,6 +64,11 @@ private:
 	GameEngineTime& operator=(const GameEngineTime& _Other) = delete;
 	GameEngineTime& operator=(GameEngineTime&& _Other) noexcept = delete;
 
-	std::map<int, float> TimeScale_;
+	std::map<int, float>	TimeScale_;
+	__int64					SecondCount_;
+	__int64					CurrentCount_;
+	__int64					PrevCount_;
+	float					DeltaTime_;
+	double					RealDeltaTime_;
 };
 
