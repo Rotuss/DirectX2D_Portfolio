@@ -40,6 +40,7 @@
     <ClInclude Include="GameEngineSound.h">
       <Filter>ThirdParty\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineDebug.cpp">
@@ -81,6 +82,7 @@
     <ClCompile Include="GameEngineSound.cpp">
       <Filter>ThirdParty\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">

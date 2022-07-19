@@ -6,6 +6,8 @@
 // Ό³Έν :
 class GameEngineCore
 {
+	friend class GEngine;
+
 public:
 	template<typename CoreType>
 	static void Start()
@@ -23,14 +25,14 @@ protected:
 
 	virtual std::string GetWindowTitle() { return "MainWindow"; }
 
-	virtual void UserStart() = 0;
-	virtual void UserUpdate() = 0;
-	virtual void UserEnd() = 0;
+	virtual void Start() = 0;
+	virtual void Update(float _DeltaTime) = 0;
+	virtual void End() = 0;
 
-	class GameEngineLevel* FindLevel(const std::string& _Name);
+	static class GameEngineLevel* FindLevel(const std::string& _Name);
 	
 	template<typename LevelType>
-	GameEngineLevel* CreateLevel(const std::string& _Name)
+	static GameEngineLevel* CreateLevel(const std::string& _Name)
 	{
 		std::string UpperName = GameEngineString::ToUpperReturn(_Name);
 		GameEngineLevel* NewLevel = new LevelType();
@@ -38,7 +40,7 @@ protected:
 		return NewLevel;
 	}
 
-	bool ChangeLevel(const std::string& _Name);
+	static bool ChangeLevel(const std::string& _Name);
 
 private:
 	// delete Function
@@ -56,6 +58,6 @@ private:
 	static GameEngineLevel* CurrentLevel;
 	static GameEngineLevel* NextLevel;
 
-	void InitializeLevel(GameEngineLevel* _Level, const std::string _Name);
+	static void InitializeLevel(GameEngineLevel* _Level, const std::string _Name);
 };
 

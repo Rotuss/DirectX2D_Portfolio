@@ -12,17 +12,17 @@ Cuphead::~Cuphead()
 {
 }
 
-void Cuphead::UserStart()
+void Cuphead::Start()
 {
 	CreateLevel<TitleLevel>("Title");
 
 	ChangeLevel("Title");
 }
 
-void Cuphead::UserUpdate()
+void Cuphead::Update(float _DeltaTime)
 {
 }
 
-void Cuphead::UserEnd()
+void Cuphead::End()
 {
 }

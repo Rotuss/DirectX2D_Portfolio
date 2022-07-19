@@ -21,9 +21,9 @@ public:
 	}
 
 protected:
-	void UserStart() override;
-	void UserUpdate() override;
-	void UserEnd() override;
+	void Start() override;
+	void Update(float _DeltaTime) override;
+	void End() override;
 
 private:
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <chrono>
 
 // Ό³Έν :
 class GameEngineTime
@@ -29,11 +30,24 @@ public:
 
 	static inline float GetDeltaTime() 
 	{
-		return Inst_->DeltaTime_;
+		return Inst_->DeltaTimef;
 	}
+
+	template<typename EnumType>
+	static inline float GetDeltaTime(EnumType _Key)
+	{
+		return GetDeltaTime(static_cast<int>(_Key));
+	}
+
 	static inline float GetDeltaTime(int _Key) 
 	{
-		return Inst_->DeltaTime_ * Inst_->GetTimeScale(_Key);
+		return Inst_->DeltaTimef * Inst_->GetTimeScale(_Key);
+	}
+
+	template<typename EnumType>
+	static inline float SetTimeScale(EnumType _Key, float _TimeScale)
+	{
+		SetTimeScale(static_cast<int>(_Key), _TimeScale);
 	}
 	
 	void SetTimeScale(int _Key, float _TimeScale)
@@ -64,11 +78,10 @@ private:
 	GameEngineTime& operator=(const GameEngineTime& _Other) = delete;
 	GameEngineTime& operator=(GameEngineTime&& _Other) noexcept = delete;
 
-	std::map<int, float>	TimeScale_;
-	__int64					SecondCount_;
-	__int64					CurrentCount_;
-	__int64					PrevCount_;
-	float					DeltaTime_;
-	double					RealDeltaTime_;
+	std::map<int, float> TimeScale_;
+	std::chrono::steady_clock::time_point Prev;
+
+	double DeltaTimed;
+	float DeltaTimef;
 };
 

@@ -3,9 +3,12 @@
   <ItemGroup>
     <ClInclude Include="Cuphead.h" />
     <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="TitleLogo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="TitleLogo.cpp" />
   </ItemGroup>
 </Project>
