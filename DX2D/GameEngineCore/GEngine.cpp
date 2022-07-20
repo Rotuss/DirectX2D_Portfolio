@@ -1,4 +1,6 @@
 #include "GEngine.h"
+#include "GameEngineActor.h"
+#include "GameEngineLevel.h"
 
 void GEngine::ChangeLevel(std::string _Name)
 {

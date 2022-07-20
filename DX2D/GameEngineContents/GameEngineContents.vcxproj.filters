@@ -5,10 +5,14 @@
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="TitleLogo.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Monster.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="TitleLogo.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Monster.cpp" />
   </ItemGroup>
 </Project>

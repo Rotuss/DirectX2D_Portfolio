@@ -26,6 +26,12 @@ void GameEngineTransform::CalculateWorld()
 	}
 }
 
+void GameEngineTransform::CalculateWorldViewProjection()
+{
+	WorldViewMat = WorldWorldMat * View;
+	WorldViewProjectMat = WorldViewMat * Projection;
+}
+
 void GameEngineTransform::PushChild(GameEngineTransform* _Child)
 {
 	_Child->Parent = this;

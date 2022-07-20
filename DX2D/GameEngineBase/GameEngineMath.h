@@ -51,6 +51,63 @@ private:
 class float4
 {
 public:
+	static float4 Cross(const float4& _Left, const float4& _Right)
+	{
+		float4 vResult = float4(
+			(_Left.Arr1D[1] * _Right.Arr1D[2]) - (_Left.Arr1D[2] * _Right.Arr1D[1]),
+			(_Left.Arr1D[2] * _Right.Arr1D[0]) - (_Left.Arr1D[0] * _Right.Arr1D[2]),
+			(_Left.Arr1D[0] * _Right.Arr1D[1]) - (_Left.Arr1D[1] * _Right.Arr1D[0]),
+			0.0f);
+
+		return vResult;
+	}
+
+	static float4 Select(const float4& _Left, const float4& _Right, const float4& _Control)
+	{
+		float4 Return;
+
+		if (_Control.x != 0.0f)
+		{
+			Return.x = _Right.x;
+		}
+		else {
+			Return.x = _Left.x;
+		}
+
+		if (_Control.y != 0.0f)
+		{
+			Return.y = _Right.y;
+		}
+		else {
+			Return.y = _Left.y;
+		}
+
+		if (_Control.z != 0.0f)
+		{
+			Return.z = _Right.z;
+		}
+		else {
+			Return.z = _Left.z;
+		}
+
+		if (_Control.w != 0.0f)
+		{
+			Return.w = _Right.w;
+		}
+		else {
+			Return.w = _Left.w;
+		}
+
+		return Return;
+	}
+
+	static float4 NormalizeReturn(const float4& _Value)
+	{
+		float4 Return = _Value;
+		Return.Normalize();
+		return Return;
+	}
+	
 	static float VectorXYtoDegree(const float4& _Postion, const float4& _Target)
 	{
 		return VectorXYtoRadian(_Postion, _Target) * GameEngineMath::RadianToDegree;
@@ -59,7 +116,7 @@ public:
 	static float VectorXYtoRadian(const float4& _Postion, const float4& _Target)
 	{
 		float4 Dir = _Target - _Postion;
-		Dir.Normal2D();
+		Dir.Normalize();
 
 		float Angle = acosf(Dir.x);
 
@@ -158,6 +215,8 @@ public:
 	static const float4 RIGHT;
 	static const float4 UP;
 	static const float4 DOWN;
+	static const float4 FORWARD;
+	static const float4 BACK;
 	static const float4 ZERO;
 	static const float4 ONE;
 
@@ -173,6 +232,7 @@ public:
 		};
 
 		float Arr1D[4];
+		int Arr1DInt[4];
 	};
 
 public:
@@ -227,19 +287,14 @@ public:
 		return { x * 0.5f, y * 0.5f , z * 0.5f, 1.0f };
 	}
 
-	float Len2D() const
-	{
-		return sqrtf((x * x) + (y * y));
-	}
-
-	float Len3D() const
+	float Length() const
 	{
 		return sqrtf((x * x) + (y * y) + (z * z));
 	}
 	
-	void Normal2D()
+	void Normalize()
 	{
-		float Len = Len2D();
+		float Len = Length();
 		if (0 == Len)
 		{
 			return;
@@ -247,13 +302,21 @@ public:
 
 		x /= Len;
 		y /= Len;
+		z /= Len;
 
 		return;
 	}
 
+	float4 NormalizeReturn() const
+	{
+		float4 Return = *this;
+		Return.Normalize();
+		return Return;
+	}
+
 	void Range2D(float _Max)
 	{
-		Normal2D();
+		Normalize();
 
 		x *= _Max;
 		y *= _Max;
@@ -458,6 +521,7 @@ public:
 	{
 		float Arr1D[16];
 		float Arr2D[4][4];
+		float4 ArrV[4];
 	};
 
 public:
@@ -551,7 +615,52 @@ public:
 		*this = XRot * YRot * ZRot;
 	}
 
-	void View(const float4& _EyePostion, const float4& _Up) { }
+	void ViewPostion(const float4& _EyePostion, const float4& _EyeFocus, const float4& _Up)
+	{
+		View(_EyePostion, (_EyeFocus - _EyePostion), _Up);
+	}
+
+	void View(const float4& _EyePostion, const float4& _EyeDir, const float4& _Up)
+	{
+		float4 R2 = float4::NormalizeReturn(_EyeDir);
+		float4 R0 = float4::Cross(_Up, R2);
+		R0.Normalize();
+		float4 R1 = float4::Cross(R2, R0);
+
+		float4 NegEyePosition = -_EyePostion;
+
+		float D0Value = float4::DotProduct3D(R0, NegEyePosition);
+		float D1Value = float4::DotProduct3D(R1, NegEyePosition);
+		float D2Value = float4::DotProduct3D(R2, NegEyePosition);
+
+		float4 D0 = { D0Value , D0Value , D0Value , D0Value };
+		float4 D1 = { D1Value , D1Value , D1Value , D1Value };
+		float4 D2 = { D2Value , D2Value , D2Value , D2Value };
+
+		float4 Control = { 0xff, 0xff , 0xff , 0 };
+		float4x4 Mat;
+		Mat.ArrV[0] = float4::Select(D0, R0, Control);
+		Mat.ArrV[1] = float4::Select(D1, R1, Control);
+		Mat.ArrV[2] = float4::Select(D2, R2, Control);
+		Mat.ArrV[3] = float4(0.0f, 0.0f, 0.0f, 1.0f);
+
+		Mat.Transpose();
+		*this = Mat;
+	}
+
+	void Transpose()
+	{
+		float4x4 This = *this;
+		Identity();
+
+		for (size_t y = 0; y < 4; y++)
+		{
+			for (size_t x = 0; x < 4; x++)
+			{
+				Arr2D[x][y] = This.Arr2D[y][x];
+			}
+		}
+	}
 
 public:
 	float4x4 operator*(const float4x4& _Value)

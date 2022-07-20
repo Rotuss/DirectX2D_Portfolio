@@ -40,6 +40,16 @@ public:
 		SetLocalPosition(LocalPosition + _Value);
 	}
 
+	void SetView(const float4x4& _Mat)
+	{
+		View = _Mat;
+	}
+
+	void SetProjection(const float4x4& _Mat)
+	{
+		Projection = _Mat;
+	}
+
 
 	inline float4 GetLocalScale() const
 	{
@@ -66,7 +76,28 @@ public:
 		return WorldWorldMat;
 	}
 
+	inline float4x4 GetWorldViewProjection() const
+	{
+		return WorldViewProjectMat;
+	}
+
+	inline float4 GetForwardVector() const
+	{
+		return WorldWorldMat.ArrV[2].NormalizeReturn();
+	}
+
+	inline float4 GetUpVector() const
+	{
+		return WorldWorldMat.ArrV[1].NormalizeReturn();
+	}
+
+	inline float4 GetRightVector() const
+	{
+		return WorldWorldMat.ArrV[0].NormalizeReturn();
+	}
+
 	void CalculateWorld();
+	void CalculateWorldViewProjection();
 	void PushChild(GameEngineTransform* _Child);
 
 protected:
@@ -85,5 +116,10 @@ private:
 	float4x4 LocalWorldMat;
 
 	float4x4 WorldWorldMat;
+	float4x4 WorldViewMat;
+	float4x4 WorldViewProjectMat;
+
+	float4x4 View;
+	float4x4 Projection;
 };
 

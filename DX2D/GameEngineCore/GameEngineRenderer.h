@@ -4,7 +4,7 @@
 // Ό³Έν :
 class GameEngineRenderer : public GameEngineTransformComponent
 {
-	friend class GameEngineLevel;
+	friend class GameEngineCamera;
 
 public:
 	// constrcuter destructer

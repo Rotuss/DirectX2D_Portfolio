@@ -1,8 +1,11 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
+#include "GameEngineCamera.h"
 #include "GameEngineRenderer.h"
 
 GameEngineLevel::GameEngineLevel() 
+	: MainCamera(nullptr)
+	, UIMainCamera(nullptr)
 {
 }
 
@@ -20,6 +23,11 @@ GameEngineLevel::~GameEngineLevel()
 			delete Actor;
 		}
 	}
+}
+
+GameEngineTransform& GameEngineLevel::GetMainCameraActorTransform()
+{
+	return MainCamera->GetActor()->GetTransform();
 }
 
 void GameEngineLevel::ActorUpdate(float _DelataTime)
@@ -55,20 +63,18 @@ void GameEngineLevel::LevelUpdate(float _DeltaTime)
 	Render(_DeltaTime);
 }
 
+void GameEngineLevel::PushCamera(GameEngineCamera* _Camera)
+{
+	MainCamera = _Camera;
+}
+
 void GameEngineLevel::PushRenderer(GameEngineRenderer* _Renderer)
 {
-	AllRenderer_[_Renderer->GetOrder()].push_back(_Renderer);
+	MainCamera->PushRenderer(_Renderer);
 }
 
 void GameEngineLevel::Render(float _DelataTime)
 {
-	for (const std::pair<int, std::list<GameEngineRenderer*>>& Group : AllRenderer_)
-	{
-		float ScaleTime = GameEngineTime::GetInst()->GetDeltaTime(Group.first);
-		for (GameEngineRenderer* const Actor : Group.second)
-		{
-			Actor->Render(ScaleTime);
-		}
-	}
+	MainCamera->Render(_DelataTime);
 }
 

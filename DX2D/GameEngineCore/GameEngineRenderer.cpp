@@ -38,7 +38,7 @@ void GameEngineRenderer::Render(float _DeltaTime)
 
 		CopyBuffer[i] = Vertex->Vertexs[TriIndex];
 		// 크기
-		CopyBuffer[i] = CopyBuffer[i] * GetTransform().GetWorldWorld();
+		CopyBuffer[i] = CopyBuffer[i] * GetTransform().GetWorldViewProjection();
 		// 자전
 		//CopyBuffer[i] = float4::VectorRotationToDegreeXAxis(CopyBuffer[i], Angle);
 		//CopyBuffer[i] = float4::VectorRotationToDegreeYAxis(CopyBuffer[i], Angle);

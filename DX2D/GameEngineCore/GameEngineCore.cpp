@@ -65,6 +65,8 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 {
 	if (nullptr != NextLevel)
 	{
+		Rectangle(GameEngineWindow::GetInst()->GetHDC(), 0, 0, GameEngineWindow::GetInst()->GetScale().ix(), GameEngineWindow::GetInst()->GetScale().iy());
+		
 		if (nullptr != CurrentLevel)
 		{
 			CurrentLevel->OffEvent();
@@ -87,6 +89,8 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 
 	float DeltaTime = GameEngineTime::GetDeltaTime();
 	
+	GameEngineInput::GetInst()->Update(DeltaTime);
+
 	_UserCore->Update(DeltaTime);
 
 	CurrentLevel->LevelUpdate(DeltaTime);
