@@ -14,6 +14,7 @@
     <ClInclude Include="GameEngineCamera.h" />
     <ClInclude Include="GameEngineTransformComponent.h" />
     <ClInclude Include="GameEngineCameraActor.h" />
+    <ClInclude Include="CoreMinimal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />

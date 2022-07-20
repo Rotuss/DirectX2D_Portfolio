@@ -2,6 +2,12 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include "GameEngineTransformComponent.h"
 
+enum class CAMERAPROJECTIONMODE
+{
+	PersPective,
+	Orthographic,
+};
+
 // Ό³Έν :
 class GameEngineLevel;
 class GameEngineCamera;
@@ -25,7 +31,15 @@ protected:
 
 private:
 	float4x4 View;
+	float4x4 ViewPort;
 	float4x4 Projection;
+	CAMERAPROJECTIONMODE Mode;
+
+	float4 Size;
+	float Near;
+	float Far;
+
+	float Fov;
 
 	std::map<int, std::list<class GameEngineRenderer*>> AllRenderer_;
 

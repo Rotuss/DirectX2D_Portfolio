@@ -20,7 +20,17 @@ public:
 	inline void SetLocalScale(const float4& _Value)
 	{
 		LocalScale = _Value;
-		LocalScaleMat.Scale(LocalScale);
+		
+		if (nullptr != Parent)
+		{
+			WorldScale = _Value * Parent->WorldWorldMat;
+		}
+		else
+		{
+			WorldScale = LocalScale;
+		}
+
+		CalculateWorld();
 	}
 
 	inline void SetLocalRotation(const float4& _Value)
@@ -32,7 +42,7 @@ public:
 	inline void SetLocalPosition(const float4& _Value)
 	{
 		LocalPosition = _Value;
-		LocalPositionMat.Postion(LocalPosition);
+		LocalPositionMat.Position(LocalPosition);
 	}
 
 	inline void SetLocalMove(const float4& _Value)
@@ -109,6 +119,10 @@ private:
 	float4 LocalScale;
 	float4 LocalRotation;
 	float4 LocalPosition;
+
+	float4 WorldScale;
+	float4 WorldRotation;
+	float4 WorldPosition;
 
 	float4x4 LocalScaleMat;
 	float4x4 LocalPositionMat;

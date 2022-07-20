@@ -24,6 +24,11 @@ void GameEngineTransform::CalculateWorld()
 	{
 		WorldWorldMat = LocalWorldMat;
 	}
+
+	for (GameEngineTransform* Child : Childs)
+	{
+		Child->CalculateWorld();
+	}
 }
 
 void GameEngineTransform::CalculateWorldViewProjection()

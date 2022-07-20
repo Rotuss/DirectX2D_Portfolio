@@ -37,14 +37,10 @@ void GameEngineRenderer::Render(float _DeltaTime)
 		int TriIndex = Index->Indexs[i];
 
 		CopyBuffer[i] = Vertex->Vertexs[TriIndex];
-		// 크기
+		auto& tran = GetTransform();
 		CopyBuffer[i] = CopyBuffer[i] * GetTransform().GetWorldViewProjection();
-		// 자전
-		//CopyBuffer[i] = float4::VectorRotationToDegreeXAxis(CopyBuffer[i], Angle);
-		//CopyBuffer[i] = float4::VectorRotationToDegreeYAxis(CopyBuffer[i], Angle);
-		//CopyBuffer[i] = float4::VectorRotationToDegreeZAxis(CopyBuffer[i], Angle);
-		// 이동
-		//CopyBuffer[i] += GetActor()->GetTransform().GetPosition();
+		CopyBuffer[i] = CopyBuffer[i] / CopyBuffer[i].w;
+		CopyBuffer[i] = CopyBuffer[i] * ViewPort;
 
 		DrawVertex[i] = CopyBuffer[i].GetConvertWindowPOINT();
 	}

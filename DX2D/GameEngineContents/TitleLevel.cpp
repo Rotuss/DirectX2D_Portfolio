@@ -32,16 +32,20 @@ void TitleLevel::Start()
 
 	{
 		GameEngineCameraActor* actor = CreateActor<GameEngineCameraActor>();
-		actor->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
+		actor->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -500.0f });
 	}
+
+	GetMainCameraActorTransform().SetLocalPosition({ 0, 0, 100 });
+	GetMainCameraActorTransform().SetLocalRotation({ 0, -90, 0 });
 
 	{
 		Player* actor = CreateActor<Player>();
+		actor->GetTransform().SetLocalPosition({ 0.0, 0.0f, 0.0f });
 	}
 
 	{
 		Monster* actor = CreateActor<Monster>();
-		actor->GetTransform().SetLocalPosition({ 100.0f, 0.0f, 500.0f });
+		actor->GetTransform().SetLocalPosition({ 100.0f, 0.0f, 0.0f });
 	}
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <GameEngineCore/CoreMinimal.h>
 #include <GameEngineCore/GameEngineCore.h>
 
 // 설명 : 프로그램 자체를 시작

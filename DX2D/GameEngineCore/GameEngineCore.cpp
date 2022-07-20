@@ -114,6 +114,7 @@ void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 	
 	GameEngineWindow::Destroy();
 	GameEngineInput::Destroy();
+	GameEngineDebug::Destroy();
 	GameEngineTime::Destroy();
 }
 

@@ -9,6 +9,9 @@ class GameEngineDebug
 {
 public:
 	static void LeakCheckOn();
+	static void ConsoleOpen();
+	static void OutPutString(const std::string& _Text);
+	static void Destroy();
 
 protected:
 
@@ -22,6 +25,8 @@ private:
 	GameEngineDebug(GameEngineDebug&& _Other) noexcept = delete;
 	GameEngineDebug& operator=(const GameEngineDebug& _Other) = delete;
 	GameEngineDebug& operator=(GameEngineDebug&& _Other) noexcept = delete;
+
+	static HANDLE hConsole;
 };
 
 #define MsgBoxAssert(Text) 	MessageBeep(0); \
