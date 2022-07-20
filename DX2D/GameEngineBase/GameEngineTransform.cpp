@@ -3,9 +3,14 @@
 GameEngineTransform::GameEngineTransform() 
 	: Parent(nullptr)
 	, LocalScale(float4::ONE)
-	, LocalPosition(float4::ZERO)
 	, LocalRotation(float4::ZERO)
+	, LocalPosition(float4::ZERO)
+	, WorldScale(float4::ONE)
+	, WorldRotation(float4::ZERO)
+	, WorldPosition(float4::ZERO)
+	, CollisionDataObject()
 {
+	CollisionDataSetting();
 }
 
 GameEngineTransform::~GameEngineTransform() 
@@ -37,9 +42,19 @@ void GameEngineTransform::CalculateWorldViewProjection()
 	WorldViewProjectMat = WorldViewMat * Projection;
 }
 
-void GameEngineTransform::PushChild(GameEngineTransform* _Child)
+void GameEngineTransform::SetParent(GameEngineTransform& _Parent)
 {
-	_Child->Parent = this;
-	Childs.push_back(_Child);
+	if (nullptr != Parent)
+	{
+		Parent->Childs.remove(this);
+		Parent = nullptr;
+	}
+
+	Parent = &_Parent;
+	_Parent.Childs.push_back(this);
+
+	SetLocalScale(LocalScale);
+	SetLocalRotation(LocalRotation);
+	SetLocalPosition(LocalPosition);
 }
 

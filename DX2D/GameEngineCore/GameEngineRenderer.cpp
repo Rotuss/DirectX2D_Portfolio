@@ -23,6 +23,11 @@ void GameEngineRenderer::Start()
 
 void GameEngineRenderer::Render(float _DeltaTime)
 {
+	if (true == IsDebug())
+	{
+		int a = 0;
+	}
+	
 	GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("Box");
 	GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("Box");
 

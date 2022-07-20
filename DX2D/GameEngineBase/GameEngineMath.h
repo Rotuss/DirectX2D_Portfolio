@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <d3d11_4.h>
 #include <d3dcompiler.h>
+#include <DirectXCollision.h>
 #include <DirectXPackedVector.h>
 
 #pragma comment(lib, "d3d11")
@@ -234,6 +235,8 @@ public:
 		float Arr1D[4];
 		int Arr1DInt[4];
 
+		DirectX::XMFLOAT3 DirectFloat3;
+		DirectX::XMFLOAT4 DirectFloat4;
 		DirectX::XMVECTOR DirectVector;
 	};
 
@@ -327,6 +330,16 @@ public:
 	}
 
 
+	operator DirectX::XMFLOAT3() const
+	{
+		return DirectFloat3;
+	}
+
+	operator DirectX::XMFLOAT4() const
+	{
+		return DirectFloat4;
+	}
+
 	float& operator[](int _Index)
 	{
 		return Arr1D[_Index];
@@ -349,12 +362,22 @@ public:
 
 	float4 operator*(const float _Value) const
 	{
-		return { x * _Value, y * _Value, z * _Value, 1.0f };
+		return DirectX::XMVectorMultiply(DirectVector, float4(_Value).DirectVector);
+	}
+
+	float4 operator*(const float4& _Value) const
+	{
+		return DirectX::XMVectorMultiply(DirectVector, _Value.DirectVector);
 	}
 
 	float4 operator/(const float _Value) const
 	{
-		return { x / _Value, y / _Value, z / _Value, 1.0f };
+		return DirectX::XMVectorDivide(DirectVector, float4(_Value).DirectVector);
+	}
+
+	float4 operator/(const float4& _Value) const
+	{
+		return DirectX::XMVectorDivide(DirectVector, _Value.DirectVector);
 	}
 
 	float4& operator+=(const float4& _Other)
@@ -393,6 +416,15 @@ public:
 		return *this;
 	}
 
+	float4 DegreeRotationToQuaternionReturn() const
+	{
+		float4 Rot = *this;
+		Rot *= GameEngineMath::DegreeToRadian;
+		Rot.DirectVector = DirectX::XMQuaternionRotationRollPitchYawFromVector(Rot.DirectVector);
+
+		return Rot;
+	}
+
 	bool CompareInt2D(const float4& _Value) const
 	{
 		return ix() == _Value.ix() && iy() == _Value.iy();
@@ -427,6 +459,10 @@ public:
 		: x(0.0f), y(0.0f), z(0.0f), w(1.0f)
 	{
 	}
+	float4(float _Value)
+		: x(_Value), y(_Value), z(_Value), w(_Value)
+	{
+	}
 	float4(float _x, float _y)
 		: x(_x), y(_y), z(1.0f), w(1.0f)
 	{
@@ -437,6 +473,10 @@ public:
 	}
 	float4(float _x, float _y, float _z, float _w)
 		: x(_x), y(_y), z(_z), w(_w)
+	{
+	}
+	float4(const DirectX::XMVECTOR& _Vector)
+		: DirectVector(_Vector)
 	{
 	}
 };
@@ -779,45 +819,7 @@ public:
 public:
 	float4x4 operator*(const float4x4& _Value)
 	{
-		//float4x4 Result;
-
-		//float x = Arr2D[0][0];
-		//float y = Arr2D[0][1];
-		//float z = Arr2D[0][2];
-		//float w = Arr2D[0][3];
-		//Result.Arr2D[0][0] = (_Value.Arr2D[0][0] * x) + (_Value.Arr2D[1][0] * y) + (_Value.Arr2D[2][0] * z) + (_Value.Arr2D[3][0] * w);
-		//Result.Arr2D[0][1] = (_Value.Arr2D[0][1] * x) + (_Value.Arr2D[1][1] * y) + (_Value.Arr2D[2][1] * z) + (_Value.Arr2D[3][1] * w);
-		//Result.Arr2D[0][2] = (_Value.Arr2D[0][2] * x) + (_Value.Arr2D[1][2] * y) + (_Value.Arr2D[2][2] * z) + (_Value.Arr2D[3][2] * w);
-		//Result.Arr2D[0][3] = (_Value.Arr2D[0][3] * x) + (_Value.Arr2D[1][3] * y) + (_Value.Arr2D[2][3] * z) + (_Value.Arr2D[3][3] * w);
-		
-		//x = Arr2D[1][0];
-		//y = Arr2D[1][1];
-		//z = Arr2D[1][2];
-		//w = Arr2D[1][3];
-		//Result.Arr2D[1][0] = (_Value.Arr2D[0][0] * x) + (_Value.Arr2D[1][0] * y) + (_Value.Arr2D[2][0] * z) + (_Value.Arr2D[3][0] * w);
-		//Result.Arr2D[1][1] = (_Value.Arr2D[0][1] * x) + (_Value.Arr2D[1][1] * y) + (_Value.Arr2D[2][1] * z) + (_Value.Arr2D[3][1] * w);
-		//Result.Arr2D[1][2] = (_Value.Arr2D[0][2] * x) + (_Value.Arr2D[1][2] * y) + (_Value.Arr2D[2][2] * z) + (_Value.Arr2D[3][2] * w);
-		//Result.Arr2D[1][3] = (_Value.Arr2D[0][3] * x) + (_Value.Arr2D[1][3] * y) + (_Value.Arr2D[2][3] * z) + (_Value.Arr2D[3][3] * w);
-
-		//x = Arr2D[2][0];
-		//y = Arr2D[2][1];
-		//z = Arr2D[2][2];
-		//w = Arr2D[2][3];
-		//Result.Arr2D[2][0] = (_Value.Arr2D[0][0] * x) + (_Value.Arr2D[1][0] * y) + (_Value.Arr2D[2][0] * z) + (_Value.Arr2D[3][0] * w);
-		//Result.Arr2D[2][1] = (_Value.Arr2D[0][1] * x) + (_Value.Arr2D[1][1] * y) + (_Value.Arr2D[2][1] * z) + (_Value.Arr2D[3][1] * w);
-		//Result.Arr2D[2][2] = (_Value.Arr2D[0][2] * x) + (_Value.Arr2D[1][2] * y) + (_Value.Arr2D[2][2] * z) + (_Value.Arr2D[3][2] * w);
-		//Result.Arr2D[2][3] = (_Value.Arr2D[0][3] * x) + (_Value.Arr2D[1][3] * y) + (_Value.Arr2D[2][3] * z) + (_Value.Arr2D[3][3] * w);
-
-		//x = Arr2D[3][0];
-		//y = Arr2D[3][1];
-		//z = Arr2D[3][2];
-		//w = Arr2D[3][3];
-		//Result.Arr2D[3][0] = (_Value.Arr2D[0][0] * x) + (_Value.Arr2D[1][0] * y) + (_Value.Arr2D[2][0] * z) + (_Value.Arr2D[3][0] * w);
-		//Result.Arr2D[3][1] = (_Value.Arr2D[0][1] * x) + (_Value.Arr2D[1][1] * y) + (_Value.Arr2D[2][1] * z) + (_Value.Arr2D[3][1] * w);
-		//Result.Arr2D[3][2] = (_Value.Arr2D[0][2] * x) + (_Value.Arr2D[1][2] * y) + (_Value.Arr2D[2][2] * z) + (_Value.Arr2D[3][2] * w);
-		//Result.Arr2D[3][3] = (_Value.Arr2D[0][3] * x) + (_Value.Arr2D[1][3] * y) + (_Value.Arr2D[2][3] * z) + (_Value.Arr2D[3][3] * w);
-		DirectMatrix = DirectX::XMMatrixMultiply(DirectMatrix, _Value.DirectMatrix);
-		return DirectMatrix;
+		return DirectX::XMMatrixMultiply(DirectMatrix, _Value.DirectMatrix);
 	}
 };
 

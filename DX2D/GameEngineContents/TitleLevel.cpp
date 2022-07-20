@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "Enums.h"
+#include "GlobalContents.h"
 #include "GameEngineCore/GEngine.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCameraActor.h>
@@ -19,33 +20,31 @@ void TitleLevel::Start()
 {
 	if (false == GameEngineInput::GetInst()->IsKey("CamLeft"))
 	{
-		GameEngineInput::GetInst()->CreateKey("CamLeft", 'a');
-		GameEngineInput::GetInst()->CreateKey("CamRight", 'd');
-		GameEngineInput::GetInst()->CreateKey("CamUp", 'q');
-		GameEngineInput::GetInst()->CreateKey("CamDown", 'e');
-		GameEngineInput::GetInst()->CreateKey("CamForward", 'w');
-		GameEngineInput::GetInst()->CreateKey("CamBack", 's');
+		GameEngineInput::GetInst()->CreateKey("CamLeft", 'A');
+		GameEngineInput::GetInst()->CreateKey("CamRight", 'D');
+		GameEngineInput::GetInst()->CreateKey("CamUp", 'Q');
+		GameEngineInput::GetInst()->CreateKey("CamDown", 'E');
+		GameEngineInput::GetInst()->CreateKey("CamForward", 'W');
+		GameEngineInput::GetInst()->CreateKey("CamBack", 'S');
 
-		GameEngineInput::GetInst()->CreateKey("CamRotY+", 'r');
-		GameEngineInput::GetInst()->CreateKey("CamRotY-", 't');
+		GameEngineInput::GetInst()->CreateKey("CamRotY+", 'R');
+		GameEngineInput::GetInst()->CreateKey("CamRotY-", 'T');
 	}
 
 	{
 		GameEngineCameraActor* actor = CreateActor<GameEngineCameraActor>();
+		actor->GetCameraComponent()->SetProjectionMode(CAMERAPROJECTIONMODE::Orthographic);
 		actor->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -500.0f });
 	}
 
-	GetMainCameraActorTransform().SetLocalPosition({ 0, 0, 100 });
-	GetMainCameraActorTransform().SetLocalRotation({ 0, -90, 0 });
-
 	{
 		Player* actor = CreateActor<Player>();
-		actor->GetTransform().SetLocalPosition({ 0.0, 0.0f, 0.0f });
 	}
 
 	{
 		Monster* actor = CreateActor<Monster>();
 		actor->GetTransform().SetLocalPosition({ 100.0f, 0.0f, 0.0f });
+		actor->GetTransform().SetWorldScale(float4(50.0f, 50.f, 50.0f));
 	}
 }
 
@@ -53,29 +52,29 @@ void TitleLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst()->IsPress("CamLeft"))
 	{
-		GetMainCameraActorTransform().SetLocalMove(float4::LEFT * 100 * _DeltaTime);
+		GetMainCameraActorTransform().SetLocalMove(-GetMainCameraActorTransform().GetRightVector() * 100 * _DeltaTime);
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("CamRight"))
 	{
-		GetMainCameraActorTransform().SetLocalMove(float4::RIGHT * 100 * _DeltaTime);
+		GetMainCameraActorTransform().SetLocalMove(GetMainCameraActorTransform().GetRightVector() * 100 * _DeltaTime);
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("CamUp"))
 	{
-		GetMainCameraActorTransform().SetLocalMove(float4::UP * 100 * _DeltaTime);
+		GetMainCameraActorTransform().SetLocalMove(GetMainCameraActorTransform().GetUpVector() * 100 * _DeltaTime);
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("CamDown"))
 	{
-		GetMainCameraActorTransform().SetLocalMove(float4::DOWN * 100 * _DeltaTime);
+		GetMainCameraActorTransform().SetLocalMove(-GetMainCameraActorTransform().GetUpVector() * 100 * _DeltaTime);
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("CamForward"))
 	{
-		GetMainCameraActorTransform().SetLocalMove(float4::FORWARD * 100 * _DeltaTime);
+		GetMainCameraActorTransform().SetLocalMove(GetMainCameraActorTransform().GetForwardVector() * 100 * _DeltaTime);
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("CamBack"))
 	{
-		GetMainCameraActorTransform().SetLocalMove(float4::BACK * 100 * _DeltaTime);
+		GetMainCameraActorTransform().SetLocalMove(-GetMainCameraActorTransform().GetForwardVector() * 100 * _DeltaTime);
 	}
 
 	static float4 Rot = { 0.0f, 0.0f, 0.0f };
@@ -87,8 +86,6 @@ void TitleLevel::Update(float _DeltaTime)
 	{
 		Rot.y -= 360.0f * _DeltaTime;
 	}
-
-	GetMainCameraActorTransform().SetLocalRotation(Rot);
 }
 
 void TitleLevel::End()

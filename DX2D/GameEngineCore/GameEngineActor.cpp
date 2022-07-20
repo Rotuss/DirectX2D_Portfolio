@@ -22,7 +22,7 @@ GameEngineActor::~GameEngineActor()
 
 void GameEngineActor::SettingTransformComponent(GameEngineTransformComponent* TransCom)
 {
-	GetTransform().PushChild(&TransCom->GetTransform());
+	TransCom->GetTransform().SetParent(GetTransform());
 }
 
 void GameEngineActor::Start()

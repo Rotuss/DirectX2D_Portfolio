@@ -21,6 +21,6 @@ protected:
 	void End() {}
 
 private:
-
+	float Speed;
 };
 

@@ -41,6 +41,7 @@
       <Filter>ThirdParty\Sound</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineTransform.h" />
+    <ClInclude Include="GameEngineDebugObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineDebug.cpp">
@@ -83,6 +84,8 @@
       <Filter>ThirdParty\Sound</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineTransform.cpp" />
+    <ClCompile Include="GameEngineDebugObject.cpp" />
+    <ClCompile Include="GameEngineTransform_Collision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">

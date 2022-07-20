@@ -37,11 +37,16 @@ public:
 
 	GameEngineTransform& GetMainCameraActorTransform();
 
-protected:
 	template<typename ActorType, typename GroupIndexType>
 	ActorType* CreateActor(GroupIndexType _ObjectGroupIndex)
 	{
 		return CreateActor<ActorType>(static_cast<int>(_ObjectGroupIndex));
+	}
+
+	template<typename ActorType>
+	ActorType* CreateActor(const std::string _Name, int _ObjectGroupIndex = 0)
+	{
+		CreateActor(_ObjectGroupIndex);
 	}
 
 	template<typename ActorType>
@@ -58,6 +63,37 @@ protected:
 
 		return dynamic_cast<ActorType*>(NewActor);
 	}
+
+	template<typename GroupIndexType>
+	std::list<GameEngineActor*> GetGroup(GroupIndexType _ObjectGroupIndex)
+	{
+		return AllActors[static_cast<int>(_ObjectGroupIndex)];
+	}
+
+	std::list<GameEngineActor*> GetGroup(int _ObjectGroupIndex)
+	{
+		return AllActors[_ObjectGroupIndex];
+	}
+
+	template<typename ObjectType, typename GroupIndexType>
+	std::list<ObjectType*> GetConvertToGroup(GroupIndexType _ObjectGroupIndex)
+	{
+		return GetConvertToGroup<ObjectType>(static_cast<int>(_ObjectGroupIndex));
+	}
+
+	template<typename ObjectType>
+	std::list<ObjectType*> GetConvertToGroup(int _ObjectGroupIndex)
+	{
+		std::list<ObjectType*> Result;
+		for (GameEngineActor* Object : AllActors[_ObjectGroupIndex])
+		{
+			Result.push_back(dynamic_cast<ObjectType*>(Object));
+		}
+
+		return Result;
+	}
+
+protected:
 
 private:
 	std::map<int, std::list<GameEngineActor*>> AllActors;

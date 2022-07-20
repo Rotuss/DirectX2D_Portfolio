@@ -14,7 +14,7 @@ Cuphead::~Cuphead()
 
 void Cuphead::Start()
 {
-	GameEngineDebug::ConsoleOpen();
+	//GameEngineDebug::ConsoleOpen();
 	
 	CreateLevel<TitleLevel>("Title");
 
