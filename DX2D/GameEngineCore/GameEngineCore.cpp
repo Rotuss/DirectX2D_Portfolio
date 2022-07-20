@@ -89,10 +89,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 	
 	_UserCore->Update(DeltaTime);
 
-	CurrentLevel->AddAccTime(DeltaTime);
-	CurrentLevel->Update(DeltaTime);
-	CurrentLevel->ActorUpdate(DeltaTime);
-	CurrentLevel->Render(DeltaTime);
+	CurrentLevel->LevelUpdate(DeltaTime);
 }
 
 void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)

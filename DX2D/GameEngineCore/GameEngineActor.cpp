@@ -1,5 +1,6 @@
 #include "GameEngineActor.h"
 #include "GameEngineComponent.h"
+#include "GameEngineTransformComponent.h"
 
 GameEngineActor::GameEngineActor() 
 	:ParentLevel(nullptr)
@@ -12,6 +13,16 @@ GameEngineActor::~GameEngineActor()
 	{
 		delete Com;
 	}
+
+	for (GameEngineTransformComponent* Com : AllTransComList)
+	{
+		delete Com;
+	}
+}
+
+void GameEngineActor::SettingTransformComponent(GameEngineTransformComponent* TransCom)
+{
+	GetTransform().PushChild(&TransCom->GetTransform());
 }
 
 void GameEngineActor::Start()
@@ -32,5 +43,13 @@ void GameEngineActor::ComponentUpdate(float _ScaleDeltaTime, float _DeltaTime)
 	{
 		Com->AddAccTime(_DeltaTime);
 		Com->Update(_ScaleDeltaTime);
+	}
+}
+
+void GameEngineActor::ComponentCalculateTransform()
+{
+	for (GameEngineTransformComponent* Com : AllTransComList)
+	{
+		Com->GetTransform().CalculateWorld();
 	}
 }

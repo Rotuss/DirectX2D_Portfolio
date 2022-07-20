@@ -11,6 +11,8 @@
     <ClInclude Include="GameEngineIndexBuffer.h" />
     <ClInclude Include="GameEngineRes.h" />
     <ClInclude Include="GameEngineVertexBuffer.h" />
+    <ClInclude Include="GameEngineCamera.h" />
+    <ClInclude Include="GameEngineTransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -24,5 +26,7 @@
     <ClCompile Include="GameEngineIndexBuffer.cpp" />
     <ClCompile Include="GameEngineRes.cpp" />
     <ClCompile Include="GameEngineVertexBuffer.cpp" />
+    <ClCompile Include="GameEngineCamera.cpp" />
+    <ClCompile Include="GameEngineTransformComponent.cpp" />
   </ItemGroup>
 </Project>

@@ -21,22 +21,8 @@ void GameEngineRenderer::Start()
 	GetActor()->GetLevel()->PushRenderer(this);
 }
 
-float4 XDir = { 1, 0 };
-float4 YDir = { 0, -1 };
-
-float Angle = 0.0f;
-float Dis = 0.0f;
-float4 Postion;
-
 void GameEngineRenderer::Render(float _DeltaTime)
 {
-	float4 Dir = { 100.0f, 100.0f, 0.0f };
-
-	Angle += _DeltaTime * 360.0f;
-	Dis += _DeltaTime * 10.0f;
-
-	GetActor()->GetTransform().SetPosition(float4{ 300.0f, 300.0f });
-
 	GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("Box");
 	GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("Box");
 
@@ -52,13 +38,13 @@ void GameEngineRenderer::Render(float _DeltaTime)
 
 		CopyBuffer[i] = Vertex->Vertexs[TriIndex];
 		// 크기
-		CopyBuffer[i] *= GetActor()->GetTransform().GetScale();
+		CopyBuffer[i] = CopyBuffer[i] * GetTransform().GetWorldWorld();
 		// 자전
-		CopyBuffer[i] = float4::VectorRotationToDegreeXAxis(CopyBuffer[i], Angle);
-		CopyBuffer[i] = float4::VectorRotationToDegreeYAxis(CopyBuffer[i], Angle);
-		CopyBuffer[i] = float4::VectorRotationToDegreeZAxis(CopyBuffer[i], Angle);
+		//CopyBuffer[i] = float4::VectorRotationToDegreeXAxis(CopyBuffer[i], Angle);
+		//CopyBuffer[i] = float4::VectorRotationToDegreeYAxis(CopyBuffer[i], Angle);
+		//CopyBuffer[i] = float4::VectorRotationToDegreeZAxis(CopyBuffer[i], Angle);
 		// 이동
-		CopyBuffer[i] += GetActor()->GetTransform().GetPosition();
+		//CopyBuffer[i] += GetActor()->GetTransform().GetPosition();
 
 		DrawVertex[i] = CopyBuffer[i].GetConvertWindowPOINT();
 	}

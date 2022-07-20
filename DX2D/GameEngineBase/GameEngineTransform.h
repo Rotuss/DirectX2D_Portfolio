@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include "GameEngineMath.h"
 
 // Ό³Έν :
@@ -15,42 +16,74 @@ public:
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
 
+public:
+	inline void SetLocalScale(const float4& _Value)
+	{
+		LocalScale = _Value;
+		LocalScaleMat.Scale(LocalScale);
+	}
+
+	inline void SetLocalRotation(const float4& _Value)
+	{
+		LocalRotation = _Value;
+		LocalRotateMat.RotationRadian(LocalRotation * GameEngineMath::DegreeToRadian);
+	}
+
+	inline void SetLocalPosition(const float4& _Value)
+	{
+		LocalPosition = _Value;
+		LocalPositionMat.Postion(LocalPosition);
+	}
+
+	inline void SetLocalMove(const float4& _Value)
+	{
+		SetLocalPosition(LocalPosition + _Value);
+	}
+
+
+	inline float4 GetLocalScale() const
+	{
+		return LocalScale;
+	}
+
+	inline float4 GetLocalRotation() const
+	{
+		return LocalRotation;
+	}
+
+	inline float4 GetLocalPosition() const
+	{
+		return LocalPosition;
+	}
+
+	inline float4x4 GetLocalWorld() const
+	{
+		return LocalWorldMat;
+	}
+
+	inline float4x4 GetWorldWorld() const
+	{
+		return WorldWorldMat;
+	}
+
+	void CalculateWorld();
+	void PushChild(GameEngineTransform* _Child);
+
 protected:
 
 private:
-	float4 Scale;
-	float4 Rotation;
-	float4 Position;
+	GameEngineTransform* Parent;
+	std::list<GameEngineTransform*> Childs;
 
-public:
-	inline void SetScale(const float4& _Value)
-	{
-		Scale = _Value;
-	}
-	inline void SetRotation(const float4& _Value)
-	{
-		Rotation = _Value;
-	}
-	inline void SetPosition(const float4& _Value)
-	{
-		Position = _Value;
-	}
-	inline void SetMove(const float4& _Value)
-	{
-		Position += _Value;
-	}
+	float4 LocalScale;
+	float4 LocalRotation;
+	float4 LocalPosition;
 
-	inline float4 GetScale() const
-	{
-		return Scale;
-	}
-	inline float4 GetRotation() const
-	{
-		return Rotation;
-	}
-	inline float4 GetPosition() const
-	{
-		return Position;
-	}
+	float4x4 LocalScaleMat;
+	float4x4 LocalPositionMat;
+	float4x4 LocalRotateMat;
+	float4x4 LocalWorldMat;
+
+	float4x4 WorldWorldMat;
 };
 

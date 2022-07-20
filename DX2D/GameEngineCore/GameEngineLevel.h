@@ -50,6 +50,7 @@ private:
 	std::map<int, std::list<GameEngineActor*>> AllActors;
 
 	void ActorUpdate(float _DelataTime);
+	void LevelUpdate(float _DeltaTime);
 
 private:
 	std::map<int, std::list<class GameEngineRenderer*>> AllRenderer_;
