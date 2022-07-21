@@ -13,8 +13,8 @@ public:
 	friend GameEngineRes<GameEngineIndexBuffer>;
 
 public:
-	static void Create(const std::string& _Name, const std::vector<int>& _Indexs);
-	static void Create(const std::vector<int>& _Indexs);
+	static GameEngineIndexBuffer* Create(const std::string& _Name, const std::vector<int>& _Indexs);
+	static GameEngineIndexBuffer* Create(const std::vector<int>& _Indexs);
 
 	std::vector<int> Indexs;
 
@@ -31,6 +31,5 @@ private:
 	GameEngineIndexBuffer& operator=(const GameEngineIndexBuffer& _Other) = delete;
 	GameEngineIndexBuffer& operator=(GameEngineIndexBuffer&& _Other) noexcept = delete;
 
-	static GameEngineIndexBuffer* CreateRes(const std::vector<int>& _Indexs, const std::string& _Name = "");
 };
 

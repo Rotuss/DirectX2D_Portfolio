@@ -13,8 +13,8 @@ public:
 	friend GameEngineRes<GameEngineVertexBuffer>;
 
 public:
-	static void Create(const std::string& _Name, const std::vector<float4>& _Vertex);
-	static void Create(const std::vector<float4>& _Vertex);
+	static GameEngineVertexBuffer* Create(const std::string& _Name, const std::vector<float4>& _Vertex);
+	static GameEngineVertexBuffer* Create(const std::vector<float4>& _Vertex);
 
 	std::vector<float4> Vertexs;
 
@@ -31,6 +31,5 @@ private:
 	GameEngineVertexBuffer& operator=(const GameEngineVertexBuffer& _Other) = delete;
 	GameEngineVertexBuffer& operator=(GameEngineVertexBuffer&& _Other) noexcept = delete;
 
-	static GameEngineVertexBuffer* CreateRes(const std::vector<float4>& _Vertex, const std::string& _Name = "");
 };
 

@@ -77,7 +77,7 @@ public:
 			return;
 		}
 
-		DeathTime_ -= GameEngineTime::GetDeltaTime();
+		DeathTime_ -= _DeltaTime;
 
 		if (0.0f >= DeathTime_)
 		{
@@ -114,18 +114,24 @@ public:
 		return dynamic_cast<ParentType*>(Parent);
 	}
 
+	GameEngineUpdateObject* GetParent()
+	{
+		return Parent;
+	}
+
 	virtual void SetParent(GameEngineUpdateObject* _Parent);
-	virtual void DeleteChild();
+	virtual void DetachObject();
+	virtual void ReleaseHierarchy();
+	virtual void Update(float _DeltaTime) = 0;
 
 protected:
 	virtual void OnEvent() {}
 	virtual void OffEvent() {}
 	virtual void Start() = 0;
-	virtual void Update(float _DeltaTime) = 0;
 	virtual void End() = 0;
 	virtual void ReleaseObject(std::list<GameEngineUpdateObject*>& _RelaseList);
-	virtual void DetachObject() {};
-	void RemoveToParentChildList();
+
+	std::list<GameEngineUpdateObject*> Childs;
 
 private:
 	int		Order_;
@@ -138,6 +144,5 @@ private:
 	bool	IsReleaseUpdate_;
 
 	GameEngineUpdateObject* Parent;
-	std::list<GameEngineUpdateObject*> Childs;
 };
 

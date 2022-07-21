@@ -18,20 +18,20 @@ GameEngineUpdateObject::~GameEngineUpdateObject()
 
 void GameEngineUpdateObject::SetParent(GameEngineUpdateObject* _Parent)
 {
-	RemoveToParentChildList();
+	DetachObject();
 	
 	Parent = _Parent;
 	Parent->Childs.push_back(this);
 }
 
-void GameEngineUpdateObject::DeleteChild()
+void GameEngineUpdateObject::ReleaseHierarchy()
 {
 	std::list<GameEngineUpdateObject*>::iterator StartIter = Childs.begin();
 	std::list<GameEngineUpdateObject*>::iterator EndIter = Childs.end();
 
 	for (; StartIter != EndIter; ++StartIter)
 	{
-		(*StartIter)->DeleteChild();
+		(*StartIter)->ReleaseHierarchy();
 	}
 
 	delete this;
@@ -41,7 +41,6 @@ void GameEngineUpdateObject::ReleaseObject(std::list<GameEngineUpdateObject*>& _
 {
 	if (true == IsDeath())
 	{
-		RemoveToParentChildList();
 		DetachObject();
 		_RelaseList.push_back(this);
 		return;
@@ -55,8 +54,9 @@ void GameEngineUpdateObject::ReleaseObject(std::list<GameEngineUpdateObject*>& _
 		if (true == (*StartIter)->IsDeath())
 		{
 			_RelaseList.push_back((*StartIter));
-			(*StartIter)->DetachObject();
-			StartIter = Childs.erase(StartIter);
+			GameEngineUpdateObject* DeleteObject = (*StartIter);
+			++StartIter;
+			DeleteObject->DetachObject();
 			continue;
 		}
 
@@ -65,7 +65,7 @@ void GameEngineUpdateObject::ReleaseObject(std::list<GameEngineUpdateObject*>& _
 	}
 }
 
-void GameEngineUpdateObject::RemoveToParentChildList()
+void GameEngineUpdateObject::DetachObject()
 {
 	if (nullptr != Parent)
 	{

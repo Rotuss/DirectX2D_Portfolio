@@ -11,12 +11,13 @@ GameEngineTransformComponent::~GameEngineTransformComponent()
 
 void GameEngineTransformComponent::DetachObject()
 {
+	GameEngineUpdateObject::DetachObject();
 	GetTransform().DetachTransform();
 }
 
 void GameEngineTransformComponent::SetParent(GameEngineUpdateObject* _Object)
 {
-	GameEngineComponent::SetParent(_Object);
+	GameEngineUpdateObject::SetParent(_Object);
 
 	{
 		GameEngineTransformBase* Actor = nullptr;
@@ -26,5 +27,7 @@ void GameEngineTransformComponent::SetParent(GameEngineUpdateObject* _Object)
 			return;
 		}
 	}
+
+	MsgBoxAssert("트랜스폼이 있는 컴포넌트에 트랜스폼이 없는 부모를 붙이려고 했습니다.");
 }
 

@@ -21,3 +21,5 @@
 #pragma comment(lib, "dxguid")
 
 #include <GameEngineBase/GameEngineDebug.h>
+
+#include "GameEngineDevice.h"

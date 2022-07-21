@@ -22,7 +22,7 @@ GameEngineLevel::~GameEngineLevel()
 				continue;
 			}
 
-			Actor->DeleteChild();
+			Actor->ReleaseHierarchy();
 		}
 	}
 }
@@ -32,7 +32,7 @@ GameEngineTransform& GameEngineLevel::GetMainCameraActorTransform()
 	return MainCamera->GetActor()->GetTransform();
 }
 
-void GameEngineLevel::ActorUpdate(float _DelataTime)
+void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
 	for (const std::pair<int, std::list<GameEngineActor*>>& Group : AllActors)
 	{
@@ -40,20 +40,12 @@ void GameEngineLevel::ActorUpdate(float _DelataTime)
 
 		for (GameEngineActor* const Actor : Group.second)
 		{
-			Actor->AddAccTime(_DelataTime);
-			Actor->ReleaseUpdate(_DelataTime);
-			Actor->ComponentUpdate(ScaleTime, _DelataTime);
-			Actor->Update(ScaleTime);
-		}
-	}
+			if (false == Actor->IsUpdate())
+			{
+				continue;
+			}
 
-	for (const std::pair<int, std::list<GameEngineActor*>>& Group : AllActors)
-	{
-		float ScaleTime = GameEngineTime::GetInst()->GetDeltaTime(Group.first);
-		for (GameEngineActor* const Actor : Group.second)
-		{
-			Actor->GetTransform().CalculateWorld();
-			Actor->ComponentCalculateTransform();
+			Actor->AllUpdate(ScaleTime, _DeltaTime);
 		}
 	}
 }
@@ -65,6 +57,16 @@ void GameEngineLevel::LevelUpdate(float _DeltaTime)
 	ActorUpdate(_DeltaTime);
 	Render(_DeltaTime);
 	Release(_DeltaTime);
+}
+
+void GameEngineLevel::RemoveActor(GameEngineActor* _Actor)
+{
+	if (AllActors.end() == AllActors.find(_Actor->GetOrder()))
+	{
+		MsgBoxAssert("이액터를 루트가 아닙니다 삭제할수 없습니다.");
+	}
+
+	AllActors[_Actor->GetOrder()].remove(_Actor);
 }
 
 void GameEngineLevel::PushCamera(GameEngineCamera* _Camera)
@@ -86,7 +88,7 @@ void GameEngineLevel::Release(float _DelataTime)
 {
 	for (GameEngineUpdateObject* Object : DeleteObject)
 	{
-		Object->DeleteChild();
+		Object->ReleaseHierarchy();
 	}
 
 	DeleteObject.clear();

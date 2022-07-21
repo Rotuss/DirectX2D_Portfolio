@@ -18,6 +18,7 @@
     <ClInclude Include="PreCompile.h" />
     <ClInclude Include="GameEngineDevice.h" />
     <ClInclude Include="GameEngineTransformBase.h" />
+    <ClInclude Include="GameEngineTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -37,5 +38,6 @@
     <ClCompile Include="PreCompile.cpp" />
     <ClCompile Include="GameEngineDevice.cpp" />
     <ClCompile Include="GameEngineTransformBase.cpp" />
+    <ClCompile Include="GameEngineTexture.cpp" />
   </ItemGroup>
 </Project>

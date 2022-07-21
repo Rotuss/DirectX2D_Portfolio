@@ -16,6 +16,7 @@ class GameEngineLevel :
 	public GameEngineUpdateObject
 {
 	friend GameEngineCore;
+	friend GameEngineActor;
 	friend GameEngineCamera;
 	friend GameEngineRenderer;
 
@@ -53,9 +54,9 @@ public:
 	ActorType* CreateActor(int _ObjectGroupIndex = 0)
 	{
 		GameEngineActor* NewActor = new ActorType();
-		NewActor->ParentLevel = this;
-		NewActor->Start();
 		NewActor->SetLevel(this);
+		NewActor->SetOrder(_ObjectGroupIndex);
+		NewActor->Start();
 
 		std::list<GameEngineActor*>& Group = AllActors[_ObjectGroupIndex];
 
@@ -99,8 +100,9 @@ private:
 	std::map<int, std::list<GameEngineActor*>> AllActors;
 	std::list<GameEngineUpdateObject*> DeleteObject;
 
-	void ActorUpdate(float _DelataTime);
+	void ActorUpdate(float _DeltaTime);
 	void LevelUpdate(float _DeltaTime);
+	void RemoveActor(GameEngineActor* _Actor);
 
 private:
 	GameEngineCamera* MainCamera;

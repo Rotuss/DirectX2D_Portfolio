@@ -31,28 +31,18 @@ public:
 	}
 
 	template<typename ComponentType>
-	ComponentType* CreateComponent()
+	ComponentType* CreateComponent(const std::string& _Name = "")
 	{
 		GameEngineComponent* NewComponent = new ComponentType();
+		NewComponent->SetName(_Name);
 		NewComponent->SetParent(this);
 		NewComponent->Start();
 		
-		GameEngineTransformComponent* TransCom = dynamic_cast<GameEngineTransformComponent*>(NewComponent);
-		if (nullptr == TransCom)
-		{
-			AllComList.push_back(NewComponent);
-		}
-		else
-		{
-			SettingTransformComponent(TransCom);
-			AllTransComList.push_back(TransCom);
-		}
-
 		return dynamic_cast<ComponentType*>(NewComponent);
 	}
 
-	void SettingTransformComponent(GameEngineTransformComponent* TransCom);
-	void ComponentCalculateTransform();
+	void DetachObject() override;
+	void SetParent(GameEngineUpdateObject* _Object) override;
 
 protected:
 	virtual void Start() override;
@@ -60,11 +50,8 @@ protected:
 	virtual void End() override;
 
 private:
-	void ComponentUpdate(float _ScaleDeltaTime, float _DeltaTime);
-
-	std::list<class GameEngineComponent*> AllComList;
-	std::list<class GameEngineTransformComponent*> AllTransComList;
-
+	void AllUpdate(float _ScaleDeltaTime, float _DeltaTime);
+	
 	class GameEngineLevel* ParentLevel;
 
 	void SetLevel(GameEngineLevel* _ParentLevel)

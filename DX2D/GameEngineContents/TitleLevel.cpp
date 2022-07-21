@@ -38,14 +38,17 @@ void TitleLevel::Start()
 		actor->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -500.0f });
 	}
 
+	Player* NewPlayer;
+
 	{
-		Player* actor = CreateActor<Player>(OBJECTORDER::Player);
+		NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
 	}
 
 	{
 		Monster* actor = CreateActor<Monster>(OBJECTORDER::Monster);
 		actor->GetTransform().SetLocalPosition({ 100.0f, 0.0f, 0.0f });
 		actor->GetTransform().SetWorldScale(float4(50.0f, 50.f, 50.0f));
+		actor->SetParent(NewPlayer);
 	}
 }
 

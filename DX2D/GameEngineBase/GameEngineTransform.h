@@ -49,12 +49,6 @@ public:
 	{
 		CalculateWorldScale(_Value);
 		CalculateWorld();
-
-		for (GameEngineTransform* Child : Childs)
-		{
-			Child->CalculateWorldScale(Child->LocalScale);
-			Child->CalculateWorldPosition(Child->LocalPosition);
-		}
 	}
 
 	inline void SetLocalRotation(const float4& _Value)
@@ -120,7 +114,7 @@ public:
 
 	inline void SetWorldMove(const float4& _Value)
 	{
-		SetLocalPosition(WorldPosition + _Value);
+		SetWorldPosition(WorldPosition + _Value);
 	}
 
 	void SetView(const float4x4& _Mat)

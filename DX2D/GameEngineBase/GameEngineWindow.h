@@ -40,6 +40,11 @@ public:
 		return Inst_->HDC_;
 	}
 
+	static inline HWND GetHWND()
+	{
+		return Inst_->hWnd_;
+	}
+
 	static inline float4 GetScale()
 	{
 		return Inst_->Scale_;

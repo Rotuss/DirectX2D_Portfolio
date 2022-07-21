@@ -247,6 +247,16 @@ public:
 	}
 
 public:
+	int uix() const
+	{
+		return static_cast<unsigned int>(x);
+	}
+
+	int uiy() const
+	{
+		return static_cast<unsigned int>(y);
+	}
+	
 	int ix() const
 	{
 		return static_cast<int>(x);

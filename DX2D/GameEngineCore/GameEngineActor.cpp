@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineActor.h"
+#include "GameEngineLevel.h"
 #include "GameEngineComponent.h"
 #include "GameEngineTransformComponent.h"
 
@@ -12,9 +13,31 @@ GameEngineActor::~GameEngineActor()
 {
 }
 
-void GameEngineActor::SettingTransformComponent(GameEngineTransformComponent* TransCom)
+void GameEngineActor::DetachObject()
 {
-	TransCom->GetTransform().SetParentTransform(GetTransform());
+	GameEngineUpdateObject::DetachObject();
+
+	GetTransform().DetachTransform();
+}
+
+void GameEngineActor::SetParent(GameEngineUpdateObject* _Object)
+{
+	if (nullptr == GetParent())
+	{
+		GetLevel()->RemoveActor(this);
+	}
+	
+	GameEngineUpdateObject::SetParent(_Object);
+	{
+		GameEngineTransformBase* Actor = nullptr;
+		if (Actor = dynamic_cast<GameEngineTransformBase*>(_Object))
+		{
+			GetTransform().SetParentTransform(Actor->GetTransform());
+			return;
+		}
+	}
+
+	MsgBoxAssert("트랜스폼이 없는 컴포넌트에 트랜스폼이 있는 부모를 붙이려고 했습니다.");
 }
 
 void GameEngineActor::Start()
@@ -29,16 +52,21 @@ void GameEngineActor::End()
 {
 }
 
-void GameEngineActor::ComponentUpdate(float _ScaleDeltaTime, float _DeltaTime)
+void GameEngineActor::AllUpdate(float _ScaleDeltaTime, float _DeltaTime)
 {
-	for (GameEngineComponent* Com : AllComList)
+	AddAccTime(_DeltaTime);
+	ReleaseUpdate(_DeltaTime);
+	Update(_ScaleDeltaTime);
+	
+	for (GameEngineUpdateObject* Com : Childs)
 	{
 		Com->AddAccTime(_DeltaTime);
+		Com->ReleaseUpdate(_DeltaTime);
+		if (false == Com->IsUpdate())
+		{
+			continue;
+		}
 		Com->Update(_ScaleDeltaTime);
 	}
 }
 
-void GameEngineActor::ComponentCalculateTransform()
-{
-	GetTransform().CalculateWorld();
-}
