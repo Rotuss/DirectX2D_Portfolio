@@ -1,18 +1,14 @@
 #include "PreCompile.h"
 #include "GameEngineDevice.h"
-#include "GameEngineTexture.h"
+#include "GameEngineRenderTarget.h"
 #include <GameEngineBase/GameEngineWindow.h>
 
-GameEngineDevice* GameEngineDevice::Inst = new GameEngineDevice();
 ID3D11Device* GameEngineDevice::Device_ = nullptr;
 ID3D11DeviceContext* GameEngineDevice::Context_ = nullptr;
 IDXGISwapChain* GameEngineDevice::SwapChain_ = nullptr;
+GameEngineRenderTarget* GameEngineDevice::BackBufferTarget = nullptr;
 
-GameEngineDevice::GameEngineDevice() 
-{
-}
-
-GameEngineDevice::~GameEngineDevice() 
+void GameEngineDevice::Destroy()
 {
 	if (nullptr != SwapChain_)
 	{
@@ -146,6 +142,22 @@ void GameEngineDevice::CreateSwapChain()
 		MsgBoxAssert("백버퍼 텍스처를 얻어오지 못했습니다.");
 	}
 
-	GameEngineTexture::Create("BackBuffer", BackBufferTexture);
+	BackBufferTarget = GameEngineRenderTarget::Create("BackBuffer");
+	BackBufferTarget->CreateRenderTargetTexture(BackBufferTexture, float4::BLUE);
+}
+
+void GameEngineDevice::RenderStart()
+{
+	BackBufferTarget->Clear();
+	BackBufferTarget->Setting();
+}
+
+void GameEngineDevice::RenderEnd()
+{
+	HRESULT Result = SwapChain_->Present(0, 0);
+	if (Result == DXGI_ERROR_DEVICE_REMOVED || Result == DXGI_ERROR_DEVICE_RESET)
+	{
+		MsgBoxAssert("디바이스 프레젠트에 이상이 생겼습니다.");
+	}
 }
 

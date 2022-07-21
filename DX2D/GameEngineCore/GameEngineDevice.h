@@ -5,9 +5,6 @@
 // Ό³Έν :
 class GameEngineDevice
 {
-private:
-	static GameEngineDevice* Inst;
-
 public:
 	// constrcuter destructer
 	~GameEngineDevice();
@@ -22,19 +19,20 @@ public:
 	static void DeviceCreate();
 	static void CreateSwapChain();
 
-	static GameEngineDevice& GetInst()
+	static void RenderStart();
+	static void RenderEnd();
+
+	static ID3D11Device* GetDevice()
 	{
-		return *Inst;
+		return Device_;
 	}
 
-	static void Destroy()
+	static ID3D11DeviceContext* GetContext()
 	{
-		if (nullptr != Inst)
-		{
-			delete Inst;
-			Inst = nullptr;
-		}
+		return Context_;
 	}
+
+	static void Destroy();
 
 protected:
 
@@ -44,5 +42,7 @@ private:
 	static ID3D11Device* Device_;
 	static ID3D11DeviceContext* Context_;
 	static IDXGISwapChain* SwapChain_;
+
+	static class GameEngineRenderTarget* BackBufferTarget;
 };
 

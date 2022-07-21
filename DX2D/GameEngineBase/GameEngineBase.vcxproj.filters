@@ -40,9 +40,15 @@
     <ClInclude Include="GameEngineSound.h">
       <Filter>ThirdParty\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineTransform.h" />
-    <ClInclude Include="GameEngineDebugObject.h" />
-    <ClInclude Include="PreCompile.h" />
+    <ClInclude Include="GameEngineTransform.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDebugObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PreCompile.h">
+      <Filter>PreCompile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineDebug.cpp">
@@ -84,10 +90,18 @@
     <ClCompile Include="GameEngineSound.cpp">
       <Filter>ThirdParty\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineTransform.cpp" />
-    <ClCompile Include="GameEngineDebugObject.cpp" />
-    <ClCompile Include="GameEngineTransform_Collision.cpp" />
-    <ClCompile Include="PreCompile.cpp" />
+    <ClCompile Include="GameEngineTransform.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTransform_Collision.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDebugObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PreCompile.cpp">
+      <Filter>PreCompile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">
@@ -116,6 +130,9 @@
     </Filter>
     <Filter Include="ThirdParty\Sound">
       <UniqueIdentifier>{0d5da582-b822-407f-9758-5abf409a31d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PreCompile">
+      <UniqueIdentifier>{8430d981-2e2b-454f-8a8b-61e649d2f7d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

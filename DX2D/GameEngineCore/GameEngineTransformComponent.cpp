@@ -18,7 +18,6 @@ void GameEngineTransformComponent::DetachObject()
 void GameEngineTransformComponent::SetParent(GameEngineUpdateObject* _Object)
 {
 	GameEngineUpdateObject::SetParent(_Object);
-
 	{
 		GameEngineTransformBase* Actor = nullptr;
 		if (Actor = dynamic_cast<GameEngineTransformBase*>(_Object))

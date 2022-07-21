@@ -212,6 +212,7 @@ public:
 	}
 
 public:
+	// Dir
 	static const float4 LEFT;
 	static const float4 RIGHT;
 	static const float4 UP;
@@ -220,6 +221,10 @@ public:
 	static const float4 BACK;
 	static const float4 ZERO;
 	static const float4 ONE;
+
+	// Color
+	static const float4 BLUE;
+	static const float4 RED;
 
 public:
 	union

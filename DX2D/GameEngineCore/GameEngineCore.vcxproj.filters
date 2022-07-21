@@ -1,43 +1,144 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="GameEngineCore.h" />
-    <ClInclude Include="GameEngineLevel.h" />
-    <ClInclude Include="GameEngineActor.h" />
     <ClInclude Include="GEngine.h" />
-    <ClInclude Include="GameEngineRenderer.h" />
-    <ClInclude Include="GameEngineComponent.h" />
-    <ClInclude Include="GameEngineMesh.h" />
-    <ClInclude Include="GameEngineIndexBuffer.h" />
-    <ClInclude Include="GameEngineRes.h" />
-    <ClInclude Include="GameEngineVertexBuffer.h" />
-    <ClInclude Include="GameEngineCamera.h" />
-    <ClInclude Include="GameEngineTransformComponent.h" />
-    <ClInclude Include="GameEngineCameraActor.h" />
     <ClInclude Include="CoreMinimal.h" />
-    <ClInclude Include="PreCompile.h" />
-    <ClInclude Include="GameEngineDevice.h" />
-    <ClInclude Include="GameEngineTransformBase.h" />
-    <ClInclude Include="GameEngineTexture.h" />
+    <ClInclude Include="GameEngineCore.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDevice.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineActor.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineLevel.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PreCompile.h">
+      <Filter>PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRes.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineComponent.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTransformBase.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTransformComponent.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCamera.h">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCameraActor.h">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderer.h">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineIndexBuffer.h">
+      <Filter>Resources\InputAssembler</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineVertexBuffer.h">
+      <Filter>Resources\InputAssembler</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTexture.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderTarget.h">
+      <Filter>Resources\OutputMerger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameEngineCore.cpp" />
-    <ClCompile Include="GameEngineLevel.cpp" />
-    <ClCompile Include="GameEngineActor.cpp" />
     <ClCompile Include="GEngine.cpp" />
-    <ClCompile Include="GameEngineRenderer.cpp" />
-    <ClCompile Include="GameEngineComponent.cpp" />
-    <ClCompile Include="GameEngineMesh.cpp" />
-    <ClCompile Include="GameEngineCore_Resource.cpp" />
-    <ClCompile Include="GameEngineIndexBuffer.cpp" />
-    <ClCompile Include="GameEngineRes.cpp" />
-    <ClCompile Include="GameEngineVertexBuffer.cpp" />
-    <ClCompile Include="GameEngineCamera.cpp" />
-    <ClCompile Include="GameEngineTransformComponent.cpp" />
-    <ClCompile Include="GameEngineCameraActor.cpp" />
-    <ClCompile Include="PreCompile.cpp" />
-    <ClCompile Include="GameEngineDevice.cpp" />
-    <ClCompile Include="GameEngineTransformBase.cpp" />
-    <ClCompile Include="GameEngineTexture.cpp" />
+    <ClCompile Include="GameEngineCore.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCore_Resource.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDevice.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineActor.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineLevel.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PreCompile.cpp">
+      <Filter>PreCompile</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRes.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineComponent.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTransformBase.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTransformComponent.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCamera.cpp">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCameraActor.cpp">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderer.cpp">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineIndexBuffer.cpp">
+      <Filter>Resources\InputAssembler</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVertexBuffer.cpp">
+      <Filter>Resources\InputAssembler</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTexture.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderTarget.cpp">
+      <Filter>Resources\OutputMerger</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{283f3957-29e7-4e7f-b4b7-bbd697bfb68b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{263b9b03-380f-4d55-8abd-8bf8392bb95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{81660f65-388c-41d7-9780-6cbb2b31d51d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{491a13cf-4cd3-4a9e-9058-7a1f1950183d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PreCompile">
+      <UniqueIdentifier>{0d6ccfcd-71b8-4bfb-9698-b27abbb9fb74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{f18ef139-ad7a-4829-b6cf-519c8ec371cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component">
+      <UniqueIdentifier>{1341629f-06ea-46b4-b857-fd6d478a30ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Rendering">
+      <UniqueIdentifier>{8557bf13-7d68-43f8-b5e6-b6faa88e0ce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\InputAssembler">
+      <UniqueIdentifier>{157c6d47-c602-44ba-9eb2-5ecf8444e586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Texture">
+      <UniqueIdentifier>{66cb4479-3669-459c-ad2f-4e1cffce38b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\OutputMerger">
+      <UniqueIdentifier>{26d2b694-f552-4cec-a794-f924be20828d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
