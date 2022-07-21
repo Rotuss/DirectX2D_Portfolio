@@ -1,3 +1,4 @@
+#include "PreCompile.h"
 #include "GameEngineTime.h"
 
 GameEngineTime* GameEngineTime::Inst_ = new GameEngineTime();

@@ -8,6 +8,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="GlobalContents.h" />
+    <ClInclude Include="PreCompile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -16,5 +17,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="GlobalContents.cpp" />
+    <ClCompile Include="PreCompile.cpp" />
   </ItemGroup>
 </Project>

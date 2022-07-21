@@ -2,14 +2,15 @@
 #include <list>
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineUpdateObject.h>
-#include <GameEngineBase/GameEngineTransform.h>
+#include "GameEngineTransformBase.h"
 
 // 설명 : 화면에 등장하는 모든것을 표현하기 위한 클래스
 class GameEngineComponent;
 class GameEngineTransformComponent;
 class GameEngineActor :
 	public GameEngineNameObject,
-	public GameEngineUpdateObject
+	public GameEngineUpdateObject,
+	public GameEngineTransformBase
 {
 	friend class GameEngineLevel;
 
@@ -33,7 +34,7 @@ public:
 	ComponentType* CreateComponent()
 	{
 		GameEngineComponent* NewComponent = new ComponentType();
-		NewComponent->ParentActor = this;
+		NewComponent->SetParent(this);
 		NewComponent->Start();
 		
 		GameEngineTransformComponent* TransCom = dynamic_cast<GameEngineTransformComponent*>(NewComponent);
@@ -51,6 +52,7 @@ public:
 	}
 
 	void SettingTransformComponent(GameEngineTransformComponent* TransCom);
+	void ComponentCalculateTransform();
 
 protected:
 	virtual void Start() override;
@@ -70,17 +72,5 @@ private:
 		ParentLevel = _ParentLevel;
 	}
 
-//========================= 기하 =========================
-private:
-	GameEngineTransform Transform;
-
-public:
-	GameEngineTransform& GetTransform()
-	{
-		return Transform;
-	}
-
-public:
-	void ComponentCalculateTransform();
 };
 

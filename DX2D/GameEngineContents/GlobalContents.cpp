@@ -1,10 +1,5 @@
+#include "PreCompile.h"
 #include "GlobalContents.h"
 
-GlobalContents::GlobalContents() 
-{
-}
-
-GlobalContents::~GlobalContents() 
-{
-}
+Monster* GlobalContents::Actors::TestMonster = nullptr;
 

@@ -26,7 +26,7 @@ protected:
 
 private:
 	// constrcuter destructer
-	GlobalContents();
-	~GlobalContents();
+	GlobalContents() {}
+	~GlobalContents() {}
 };
 

@@ -1,5 +1,9 @@
+#include "PreCompile.h"
 #include "GameEngineMesh.h"
 #include <GameEngineBase/GameEngineString.h>
+
+std::map<std::string, GameEngineMesh*> GameEngineMesh::NamedRes;
+std::list<GameEngineMesh*> GameEngineMesh::UnNamedRes;
 
 void GameEngineMesh::Create(const std::string& _Name, const std::vector<float4>& _Vertex)
 {

@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include <string>
 #include "GameEngineTime.h"
 #include "GameEngineDebugObject.h"
@@ -9,7 +10,7 @@ class GameEngineUpdateObject : public GameEngineDebugObject
 public:
 	// constrcuter destructer
 	GameEngineUpdateObject();
-	~GameEngineUpdateObject();
+	virtual ~GameEngineUpdateObject();
 
 	// delete Function
 	GameEngineUpdateObject(const GameEngineUpdateObject& _Other) = delete;
@@ -28,14 +29,28 @@ public:
 	}
 
 
-	inline virtual bool IsUpdate()
+	inline bool IsUpdate()
 	{
-		return IsUpdate_ && false == IsDeath_;
+		if (nullptr != Parent)
+		{
+			return IsUpdate_ && false == IsDeath_ && true == Parent->IsUpdate();
+		}
+		else
+		{
+			return IsUpdate_ && false == IsDeath_;
+		}
 	}
 
-	inline virtual bool IsDeath()
+	inline bool IsDeath()
 	{
-		return IsDeath_;
+		if (nullptr != Parent)
+		{
+			return IsDeath_ || true == Parent->IsDeath();
+		}
+		else 
+		{
+			return IsDeath_;
+		}
 	}
 
 
@@ -55,7 +70,7 @@ public:
 	}
 
 
-	void ReleaseUpdate()
+	void ReleaseUpdate(float _DeltaTime)
 	{
 		if (false == IsReleaseUpdate_)
 		{
@@ -93,13 +108,24 @@ public:
 		Order_ = _Order;
 	}
 
+	template<typename ParentType>
+	ParentType* GetParent()
+	{
+		return dynamic_cast<ParentType*>(Parent);
+	}
+
+	virtual void SetParent(GameEngineUpdateObject* _Parent);
+	virtual void DeleteChild();
+
+protected:
 	virtual void OnEvent() {}
 	virtual void OffEvent() {}
 	virtual void Start() = 0;
 	virtual void Update(float _DeltaTime) = 0;
 	virtual void End() = 0;
-
-protected:
+	virtual void ReleaseObject(std::list<GameEngineUpdateObject*>& _RelaseList);
+	virtual void DetachObject() {};
+	void RemoveToParentChildList();
 
 private:
 	int		Order_;
@@ -110,5 +136,8 @@ private:
 	bool	IsUpdate_;
 	bool	IsDeath_;
 	bool	IsReleaseUpdate_;
+
+	GameEngineUpdateObject* Parent;
+	std::list<GameEngineUpdateObject*> Childs;
 };
 

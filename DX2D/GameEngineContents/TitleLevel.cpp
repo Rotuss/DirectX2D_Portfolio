@@ -1,3 +1,4 @@
+#include "PreCompile.h"
 #include "TitleLevel.h"
 //#include "TitleLogo.h"
 #include "Player.h"
@@ -38,11 +39,11 @@ void TitleLevel::Start()
 	}
 
 	{
-		Player* actor = CreateActor<Player>();
+		Player* actor = CreateActor<Player>(OBJECTORDER::Player);
 	}
 
 	{
-		Monster* actor = CreateActor<Monster>();
+		Monster* actor = CreateActor<Monster>(OBJECTORDER::Monster);
 		actor->GetTransform().SetLocalPosition({ 100.0f, 0.0f, 0.0f });
 		actor->GetTransform().SetWorldScale(float4(50.0f, 50.f, 50.0f));
 	}
@@ -54,7 +55,6 @@ void TitleLevel::Update(float _DeltaTime)
 	{
 		GetMainCameraActorTransform().SetLocalMove(-GetMainCameraActorTransform().GetRightVector() * 100 * _DeltaTime);
 	}
-
 	if (true == GameEngineInput::GetInst()->IsPress("CamRight"))
 	{
 		GetMainCameraActorTransform().SetLocalMove(GetMainCameraActorTransform().GetRightVector() * 100 * _DeltaTime);

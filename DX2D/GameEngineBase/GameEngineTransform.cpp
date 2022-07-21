@@ -1,3 +1,4 @@
+#include "PreCompile.h"
 #include "GameEngineTransform.h"
 
 GameEngineTransform::GameEngineTransform() 
@@ -42,7 +43,18 @@ void GameEngineTransform::CalculateWorldViewProjection()
 	WorldViewProjectMat = WorldViewMat * Projection;
 }
 
-void GameEngineTransform::SetParent(GameEngineTransform& _Parent)
+void GameEngineTransform::DetachTransform()
+{
+	if (nullptr == Parent)
+	{
+		return;
+	}
+
+	Parent->Childs.remove(this);
+	Parent = nullptr;
+}
+
+void GameEngineTransform::SetParentTransform(GameEngineTransform& _Parent)
 {
 	if (nullptr != Parent)
 	{

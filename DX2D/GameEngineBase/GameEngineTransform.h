@@ -2,6 +2,7 @@
 #include <list>
 #include <DirectXCollision.h>
 #include <GameEngineBase/GameEngineDebugObject.h>
+#include <GameEngineBase/GameEngineUpdateObject.h>
 #include "GameEngineMath.h"
 
 enum CollisionType
@@ -195,7 +196,8 @@ public:
 
 	void CalculateWorld();
 	void CalculateWorldViewProjection();
-	void SetParent(GameEngineTransform& _Parent);
+	void DetachTransform();
+	void SetParentTransform(GameEngineTransform& _Parent);
 
 protected:
 
@@ -300,6 +302,10 @@ private:
 	void CollisionRotationSetting();
 	void CollisionPositionSetting();
 	void CollisionDataSetting();
+
+	virtual void Start() {}
+	virtual void Update(float _DeltaTime) {}
+	virtual void End() {}
 
 //========================= Ãæµ¹ =========================
 public:

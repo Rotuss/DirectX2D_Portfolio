@@ -1,6 +1,6 @@
 #pragma once
-#include <list>
 #include <map>
+#include <list>
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineUpdateObject.h>
 
@@ -97,6 +97,7 @@ protected:
 
 private:
 	std::map<int, std::list<GameEngineActor*>> AllActors;
+	std::list<GameEngineUpdateObject*> DeleteObject;
 
 	void ActorUpdate(float _DelataTime);
 	void LevelUpdate(float _DeltaTime);
@@ -110,5 +111,7 @@ private:
 	void PushRenderer(GameEngineRenderer* _Renderer);
 
 	void Render(float _DelataTime);
+
+	void Release(float _DelataTime);
 };
 

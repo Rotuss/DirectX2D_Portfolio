@@ -15,6 +15,9 @@
     <ClInclude Include="GameEngineTransformComponent.h" />
     <ClInclude Include="GameEngineCameraActor.h" />
     <ClInclude Include="CoreMinimal.h" />
+    <ClInclude Include="PreCompile.h" />
+    <ClInclude Include="GameEngineDevice.h" />
+    <ClInclude Include="GameEngineTransformBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -31,5 +34,8 @@
     <ClCompile Include="GameEngineCamera.cpp" />
     <ClCompile Include="GameEngineTransformComponent.cpp" />
     <ClCompile Include="GameEngineCameraActor.cpp" />
+    <ClCompile Include="PreCompile.cpp" />
+    <ClCompile Include="GameEngineDevice.cpp" />
+    <ClCompile Include="GameEngineTransformBase.cpp" />
   </ItemGroup>
 </Project>

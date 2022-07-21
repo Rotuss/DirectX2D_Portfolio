@@ -1,3 +1,4 @@
+#include "PreCompile.h"
 #include "Player.h"
 #include "GlobalContents.h"
 #include <iostream>
@@ -15,6 +16,7 @@ Player::~Player()
 
 GameEngineRenderer* CurRenderer;
 GameEngineRenderer* ChildRenderer;
+GameEngineRenderer* ChildRenderer2;
 
 void Player::Start()
 {
@@ -39,23 +41,39 @@ void Player::Start()
 	
 	{
 		ChildRenderer = CreateComponent<GameEngineRenderer>();
-		ChildRenderer->GetTransform().SetParent(CurRenderer->GetTransform());
+		ChildRenderer->SetParent(CurRenderer);
 		ChildRenderer->GetTransform().SetWorldPosition({ 150.0f, 100.0f, 0.0f });
+	}
+
+	{
+		ChildRenderer2 = CreateComponent<GameEngineRenderer>();
+		ChildRenderer2->SetParent(ChildRenderer);
+		ChildRenderer2->GetTransform().SetWorldPosition({ 250.0f, 100.0f, 0.0f });
 	}
 }
 
+Monster* TestMonsterObject = nullptr;
+
 void Player::Update(float _DeltaTime)
 {
-	std::list<Monster*> MonsterList = GetLevel()->GetConvertToGroup<Monster>(OBJECTORDER::Monster);
-
-	for (Monster* MonsterObject : MonsterList)
+	if (nullptr != ChildRenderer && true == ChildRenderer->IsDeath())
 	{
-		if (GameEngineTransform::OBBToOBB(ChildRenderer->GetTransform(), MonsterObject->GetTransform()))
-		{
-			int a = 0;
-		}
+		ChildRenderer = nullptr;
 	}
 	
+	if (nullptr != ChildRenderer)
+	{
+		std::list<Monster*> MonsterList = GetLevel()->GetConvertToGroup<Monster>(OBJECTORDER::Monster);
+
+		for (Monster* MonsterObject : MonsterList)
+		{
+			if (GameEngineTransform::OBBToOBB(ChildRenderer->GetTransform(), MonsterObject->GetTransform()))
+			{
+				MonsterObject->Death();
+			}
+		}
+	}
+
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetLeftVector() * Speed * _DeltaTime);
