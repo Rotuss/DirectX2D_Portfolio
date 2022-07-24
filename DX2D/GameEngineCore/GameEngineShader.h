@@ -2,22 +2,52 @@
 #include <map>
 #include <string>
 
+enum class ShaderType
+{
+	Vertex,
+	Pixel,
+};
+
 class ShaderResSetter
 {
 public:
+	ShaderType ShaderType;
 	int BindPoint;
+	std::string* Name;
 };
 
 class GameEngineConstantBuffer;
-class GameEngineConstantShaderResSetter : public ShaderResSetter
+class GameEngineConstantBufferSetter : public ShaderResSetter
 {
 public:
-	GameEngineConstantBuffer* Buffer;
+	GameEngineConstantBuffer* Res;
+	const void* SetData;
+	UINT Size;
+
+	std::vector<char> OriginalData;
+
+	void Setting() const;
+
+public:
+	GameEngineConstantBufferSetter()
+		: Res(nullptr)
+		, SetData(nullptr)
+		, Size(-1)
+	{
+	}
+};
+
+class GameEngineConstantBuffer;
+class GameEngineTextureSetter : public ShaderResSetter
+{
 };
 
 // Ό³Έν :
+class GameEngineShaderResourcesHelper;
 class GameEngineShader
 {
+	friend GameEngineShaderResourcesHelper;
+
 public:
 	static void AutoCompile(const std::string& _Path);
 
@@ -32,6 +62,8 @@ public:
 	GameEngineShader& operator=(const GameEngineShader& _Other) = delete;
 	GameEngineShader& operator=(GameEngineShader&& _Other) noexcept = delete;
 
+	GameEngineConstantBufferSetter& GetConstantBufferSetter(std::string _Name);
+
 protected:
 	void CreateVersion(const std::string& _ShaderType, UINT _VersionHigh, UINT _VersionLow);
 	void SetEntryPoint(const std::string& _EntryPoint)
@@ -44,8 +76,11 @@ protected:
 
 	void ShaderResCheck();
 
+	ShaderType ShaderSettingType;
+
 private:
-	std::map<std::string, GameEngineConstantShaderResSetter> ResSetterMap;
+	std::map<std::string, GameEngineConstantBufferSetter> ConstantBufferMap;
+	std::map<std::string, GameEngineTextureSetter> TextureSetterMap;
 	std::string EntryPoint;
 };
 

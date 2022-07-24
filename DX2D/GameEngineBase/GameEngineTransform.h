@@ -221,6 +221,11 @@ public:
 		return -(Data.WorldWorldMatrix.ArrV[0].NormalizeReturn());
 	}
 
+	inline const TransformData& GetTransformData()
+	{
+		return Data;
+	}
+
 	void CalculateWorld();
 	void CalculateWorldViewProjection();
 	void DetachTransform();

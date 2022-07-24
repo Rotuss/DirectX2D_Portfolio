@@ -1,5 +1,6 @@
 #pragma once
 #include "GameEngineRenderer.h"
+#include "GameEngineShaderResourcesHelper.h"
 
 // Ό³Έν :
 class GameEngineRenderingPipeLine;
@@ -15,6 +16,13 @@ public:
 	GameEngineDefaultRenderer(GameEngineDefaultRenderer&& _Other) noexcept = delete;
 	GameEngineDefaultRenderer& operator=(const GameEngineDefaultRenderer& _Other) = delete;
 	GameEngineDefaultRenderer& operator=(GameEngineDefaultRenderer&& _Other) noexcept = delete;
+
+	GameEngineRenderingPipeLine* GetPipeLine()
+	{
+		return PipeLine;
+	}
+
+	GameEngineShaderResourcesHelper PipeLineHelper;
 
 	virtual void Render(float _DeltaTime);
 

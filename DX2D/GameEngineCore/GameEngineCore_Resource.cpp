@@ -2,6 +2,7 @@
 #include "GameEngineCore.h"
 #include "GameEngineLevel.h"
 #include "GameEngineVertexs.h"
+#include "GameEngineConstantBuffer.h"
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineBase/GameEngineTime.h>
@@ -143,8 +144,9 @@ void ShaderCompile()
 {
 	GameEngineDirectory Dir;
 
-	Dir.MoveParentToExitsChildDirectory("Shader");
-	Dir.Move("Shader");
+	Dir.MoveParentToExitsChildDirectory("GameEngineResources");
+	Dir.Move("GameEngineResources");
+	Dir.Move("GameEngineShader");
 
 	std::vector<GameEngineFile> Shaders = Dir.GetAllFile("hlsl");
 
@@ -175,6 +177,7 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineRenderTarget::ResourcesDestroy();
 	GameEngineTexture::ResourcesDestroy();
 	GameEngineRasterizer::ResourcesDestroy();
+	GameEngineConstantBuffer::ResourcesDestroy();
 
 	GameEngineDevice::Destroy();
 }

@@ -84,6 +84,12 @@
     <ClInclude Include="GameEngineConstantBuffer.h">
       <Filter>Resources\ShaderResources</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineShaderResourcesHelper.h">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\inc\DirectXTex.h">
+      <Filter>ThirdParty\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEngine.cpp" />
@@ -171,6 +177,9 @@
     <ClCompile Include="GameEngineConstantBuffer.cpp">
       <Filter>Resources\ShaderResources</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineShaderResourcesHelper.cpp">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -215,5 +224,34 @@
     <Filter Include="Resources\ShaderResources">
       <UniqueIdentifier>{3e44868d-8a74-4345-96fa-5c30a0ab0a0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{c64cbf7f-d428-45bb-9aed-91f27d342f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Inc">
+      <UniqueIdentifier>{ac9bbecb-068c-4704-99b6-5ba85581bb3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Lib">
+      <UniqueIdentifier>{d5ed5c9e-418d-4ced-ac35-50235577ac85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Lib\Debug">
+      <UniqueIdentifier>{ea4bdcf0-3e1d-4ea5-a030-09b2f81c1ba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Lib\Release">
+      <UniqueIdentifier>{85fe9cf4-2a1c-497c-ac90-4956c980ae07}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\bin\Debug\DirectXTex.pdb">
+      <Filter>ThirdParty\Lib\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\bin\Debug\DirectXTex.lib">
+      <Filter>ThirdParty\Lib\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\bin\Release\DirectXTex.lib">
+      <Filter>ThirdParty\Lib\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\bin\Release\DirectXTex.pdb">
+      <Filter>ThirdParty\Lib\Release</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

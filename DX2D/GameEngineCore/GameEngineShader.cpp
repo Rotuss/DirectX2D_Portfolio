@@ -52,6 +52,18 @@ GameEngineShader::~GameEngineShader()
 	}
 }
 
+GameEngineConstantBufferSetter& GameEngineShader::GetConstantBufferSetter(std::string _Name)
+{
+	std::string Name = GameEngineString::ToUpperReturn(_Name);
+
+	if (ConstantBufferMap.end() == ConstantBufferMap.find(Name))
+	{
+		MsgBoxAssert("존재하지 않는 상수버퍼를 찾으려고 했습니다.");
+	}
+
+	return ConstantBufferMap[Name];
+}
+
 void GameEngineShader::CreateVersion(const std::string& _ShaderType, UINT _VersionHigh, UINT _VersionLow)
 {
 	Version = "";
@@ -101,11 +113,12 @@ void GameEngineShader::ShaderResCheck()
 			D3D11_SHADER_BUFFER_DESC BufferDesc;
 			CBufferPtr->GetDesc(&BufferDesc);
 
-			GameEngineConstantShaderResSetter NewSetter;
-			NewSetter.Buffer = GameEngineConstantBuffer::Create(Name, BufferDesc, CBufferPtr);
+			GameEngineConstantBufferSetter NewSetter;
+			NewSetter.ShaderType = ShaderSettingType;
+			NewSetter.Res = GameEngineConstantBuffer::CreateAndFind(Name, BufferDesc, CBufferPtr);
 			NewSetter.BindPoint = ResInfo.BindPoint;
 
-			ResSetterMap.insert(std::make_pair(Name, NewSetter));
+			ConstantBufferMap.insert(std::make_pair(Name, NewSetter));
 			break;
 		}
 		default:
@@ -115,5 +128,24 @@ void GameEngineShader::ShaderResCheck()
 
 		int a = 0;
 	}
+
+	ConstantBufferMap;
+	TextureSetterMap;
 }
 
+void GameEngineConstantBufferSetter::Setting() const
+{
+	Res->ChangeData(SetData, Size);
+
+	switch (ShaderType)
+	{
+	case ShaderType::Vertex:
+		Res->VSSetting();
+		break;
+	case ShaderType::Pixel:
+		Res->PSSetting();
+		break;
+	default:
+		break;
+	}
+}

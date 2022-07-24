@@ -33,7 +33,35 @@ public:
 	static GameEngineConstantBuffer* Create(const std::string& _Name, D3D11_SHADER_BUFFER_DESC _Desc, ID3D11ShaderReflectionConstantBuffer* _CBufferPtr)
 	{
 		GameEngineConstantBuffer* NewBuffer = CreateResName(_Name, _Desc.Size);
+		NewBuffer->Create(_Desc, _CBufferPtr);
+		
 		return NewBuffer;
+	}
+
+	static GameEngineConstantBuffer* CreateAndFind(const std::string& _Name, D3D11_SHADER_BUFFER_DESC _Desc, ID3D11ShaderReflectionConstantBuffer* _CBufferPtr)
+	{
+		GameEngineConstantBuffer* FindBuffer = Find(_Name, _Desc.Size);
+
+		if (nullptr != FindBuffer)
+		{
+			return FindBuffer;
+		}
+
+		GameEngineConstantBuffer* NewBuffer = CreateResName(_Name, _Desc.Size);
+		NewBuffer->Create(_Desc, _CBufferPtr);
+
+		return NewBuffer;
+	}
+
+	static void ResourcesDestroy()
+	{
+		for (auto& NameRes : NamedRes)
+		{
+			for (auto& SizeRes : NameRes.second)
+			{
+				delete SizeRes.second;
+			}
+		}
 	}
 
 protected:
@@ -55,6 +83,7 @@ protected:
 			return FindBuffer;
 		}
 		GameEngineConstantBuffer* Res = CreateRes(Name);
+		NamedRes[Name][_ByteSize] = Res;
 
 		return Res;
 	}
@@ -73,11 +102,18 @@ public:
 	GameEngineConstantBuffer& operator=(const GameEngineConstantBuffer& _Other) = delete;
 	GameEngineConstantBuffer& operator=(GameEngineConstantBuffer&& _Other) noexcept = delete;
 
-	D3D11_SHADER_BUFFER_DESC Desc;
+	void ChangeData(const void* _Data, size_t _Size) const;
+
+	void VSSetting();
+	void PSSetting();
 
 protected:
 
 private:
-
+	ID3D11Buffer* Buffer;
+	D3D11_BUFFER_DESC BufferDesc;
+	D3D11_SHADER_BUFFER_DESC ShaderDesc;
+	
+	void Create(const D3D11_SHADER_BUFFER_DESC& _Desc, ID3D11ShaderReflectionConstantBuffer* _CBufferPtr);
 };
 

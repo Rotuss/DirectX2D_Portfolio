@@ -32,7 +32,7 @@ void GameEngineVertexShader::ShaderCompile(std::string _Path, std::string _Entry
 	if (S_OK != D3DCompileFromFile(
 		UnicodePath.c_str(),
 		nullptr,
-		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		_EntryPoint.c_str(),
 		Version.c_str(),
 		Flag,
@@ -58,7 +58,9 @@ void GameEngineVertexShader::ShaderCompile(std::string _Path, std::string _Entry
 }
 
 GameEngineVertexShader::GameEngineVertexShader() 
+	: ShaderPtr(nullptr)
 {
+	ShaderSettingType = ShaderType::Vertex;
 }
 
 GameEngineVertexShader::~GameEngineVertexShader() 

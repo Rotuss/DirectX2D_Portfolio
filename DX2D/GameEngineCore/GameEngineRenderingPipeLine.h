@@ -35,6 +35,16 @@ public:
 	void SetOutputMergerBlend(const std::string& _Name);
 	void Rendering();
 
+	inline GameEngineVertexShader* GetVertexShader()
+	{
+		return VertexShader;
+	}
+
+	inline GameEnginePixelShader* GetPixelShader()
+	{
+		return PixelShader;
+	}
+
 protected:
 
 private:

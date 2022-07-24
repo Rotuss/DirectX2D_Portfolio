@@ -21,7 +21,7 @@ void GameEnginePixelShader::ShaderCompile(std::string _Path, std::string _EntryP
 	if (S_OK != D3DCompileFromFile(
 		UnicodePath.c_str(),
 		nullptr,
-		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		_EntryPoint.c_str(),
 		Version.c_str(),
 		Flag,
@@ -49,6 +49,7 @@ void GameEnginePixelShader::ShaderCompile(std::string _Path, std::string _EntryP
 GameEnginePixelShader::GameEnginePixelShader()
 	: ShaderPtr(nullptr)
 {
+	ShaderSettingType = ShaderType::Pixel;
 }
 
 GameEnginePixelShader::~GameEnginePixelShader() 

@@ -20,7 +20,7 @@ public:
 		Name_ = _Name;
 	}
 
-	std::string GetNameCopy()
+	std::string GetNameCopy() const
 	{
 		return Name_;
 	}

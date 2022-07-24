@@ -23,6 +23,8 @@ protected:
 
 	GameEngineDefaultRenderer* Renderer;
 
+	float4 Color;
+
 private:
 	float Speed;
 };
