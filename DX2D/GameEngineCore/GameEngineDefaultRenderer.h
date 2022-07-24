@@ -22,7 +22,7 @@ public:
 		return PipeLine;
 	}
 
-	GameEngineShaderResourcesHelper PipeLineHelper;
+	GameEngineShaderResourcesHelper ShaderResources;
 
 	virtual void Render(float _DeltaTime);
 

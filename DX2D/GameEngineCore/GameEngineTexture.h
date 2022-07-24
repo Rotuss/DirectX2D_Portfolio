@@ -29,10 +29,29 @@ public:
 	static GameEngineTexture* Create(const std::string& _Name, ID3D11Texture2D* _Texture);
 	static GameEngineTexture* Create(ID3D11Texture2D* _Texture);
 
+	static void Cut(const std::string& _Name, UINT _X, UINT _Y);
+
 	ID3D11RenderTargetView* CreateRenderTargetView();
 
 	void VSSetting(int _BindPoint);
 	void PSSetting(int _BindPoint);
+
+	float4 GetFrameData(UINT _Index)
+	{
+		if (true == CutData.empty())
+		{
+			MsgBoxAssertString(GetNameCopy() + " 자르지 않은 텍스처를 사용하려고 했습니다.");
+		}
+
+		if (CutData.size() <= _Index)
+		{
+			MsgBoxAssertString(GetNameCopy() + " 프레임 범위를 초과했습니다.");
+		}
+
+		return CutData[_Index];
+	}
+
+	void TextureLoad(const std::string& _Path);
 
 protected:
 
@@ -44,6 +63,8 @@ private:
 	DirectX::TexMetadata Metadata;
 	DirectX::ScratchImage Image;
 
-	void TextureLoad(const std::string& _Path);
+	std::vector<float4> CutData;
+
+	void Cut(UINT _X, UINT _Y);
 };
 

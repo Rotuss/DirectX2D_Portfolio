@@ -18,7 +18,7 @@ void GameEngineDefaultRenderer::Render(float _DeltaTime)
 		MsgBoxAssert("랜더링 파이프라인이 세팅되지 않으면 랜더링을 할수 없습니다.");
 	}
 
-	PipeLineHelper.AllResourcesSetting();
+	ShaderResources.AllResourcesSetting();
 	PipeLine->Rendering();
 }
 
@@ -32,11 +32,11 @@ void GameEngineDefaultRenderer::SetPipeLine(const std::string& _Name)
 		return;
 	}
 
-	PipeLineHelper.ResourcesCheck(PipeLine);
+	ShaderResources.ResourcesCheck(PipeLine);
 
-	if (true == PipeLineHelper.IsConstantBufferSetter("TRANSFORMDATA"))
+	if (true == ShaderResources.IsConstantBuffer("TRANSFORMDATA"))
 	{
-		PipeLineHelper.SetConstantBufferLink("TRANSFORMDATA", &GetTransformData(), sizeof(GetTransformData()));
+		ShaderResources.SetConstantBufferLink("TRANSFORMDATA", &GetTransformData(), sizeof(GetTransformData()));
 	}
 }
 

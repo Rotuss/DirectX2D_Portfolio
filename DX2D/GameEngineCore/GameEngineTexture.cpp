@@ -50,6 +50,19 @@ GameEngineTexture* GameEngineTexture::Create(ID3D11Texture2D* _Texture)
 	return NewRes;
 }
 
+void GameEngineTexture::Cut(const std::string& _Name, UINT _X, UINT _Y)
+{
+	GameEngineTexture* Texture = Find(_Name);
+
+	if (nullptr == Texture)
+	{
+		MsgBoxAssert("존재하지 않는 텍스처를 자르려고 했습니다.");
+		return;
+	}
+
+	Texture->Cut(_X, _Y);
+}
+
 ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetView()
 {
 	if (nullptr != RenderTargetView)
@@ -114,6 +127,32 @@ void GameEngineTexture::TextureLoad(const std::string& _Path)
 		&ShaderResourceView))
 	{
 		MsgBoxAssertString(_Path + "쉐이더 리소스 생성에 실패했습니다.");
+	}
+}
+
+void GameEngineTexture::Cut(UINT _X, UINT _Y)
+{
+	float SizeX = 1.0f / _X;
+	float SizeY = 1.0f / _Y;
+
+	float4 Start = float4::ZERO;
+
+	for (size_t y = 0; y < _Y; y++)
+	{
+		for (size_t x = 0; x < _X; x++)
+		{
+			float4 FrameData;
+
+			FrameData.PosX = Start.x;
+			FrameData.PosY = Start.y;
+			FrameData.SizeX = SizeX;
+			FrameData.SizeY = SizeY;
+			CutData.push_back(FrameData);
+			Start.x += SizeX;
+		}
+
+		Start.x = 0.0f;
+		Start.y += SizeY;
 	}
 }
 

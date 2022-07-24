@@ -253,6 +253,14 @@ public:
 
 		struct
 		{
+			float PosX;
+			float PosY;
+			float SizeX;
+			float SizeY;
+		};
+
+		struct
+		{
 			int IntValueX;
 			int IntValueY;
 			int IntValueZ;

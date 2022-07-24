@@ -5,6 +5,7 @@
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineDefaultRenderer.h>
+#include <GameEngineCore/GameEngineTextureRenderer.h>
 
 Player::Player() 
 	: Speed(50.0f)
@@ -23,22 +24,13 @@ void Player::Start()
 		GameEngineInput::GetInst()->CreateKey("PlayerRight", VK_NUMPAD6);
 		GameEngineInput::GetInst()->CreateKey("PlayerUp", VK_NUMPAD9);
 		GameEngineInput::GetInst()->CreateKey("PlayerDown", VK_NUMPAD7);
-		GameEngineInput::GetInst()->CreateKey("PlayerForward", VK_NUMPAD8);
-		GameEngineInput::GetInst()->CreateKey("PlayerBack", VK_NUMPAD5);
-		GameEngineInput::GetInst()->CreateKey("Rot+", VK_NUMPAD1);
-		GameEngineInput::GetInst()->CreateKey("Rot-", VK_NUMPAD2);
 	}
 
 	GetTransform().SetLocalScale({ 1, 1, 1 });
 
 	{
-		Renderer = CreateComponent<GameEngineDefaultRenderer>();
+		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->GetTransform().SetLocalScale({ 100, 100, 100 });
-		Renderer->SetPipeLine("Texture");
-
-		//Color = { 0.5f, 0.5f, 0.1f, 1.0f };
-
-		//Renderer->PipeLineHelper.SetConstantBufferNew("ResultColor", Color);
 	}
 }
 
@@ -46,8 +38,6 @@ void Player::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft"))
 	{
-		Color.r += 1.0f * _DeltaTime;
-		
 		GetTransform().SetWorldMove(GetTransform().GetLeftVector() * Speed * _DeltaTime);
 	}
 
@@ -63,25 +53,5 @@ void Player::Update(float _DeltaTime)
 	{
 		GetTransform().SetWorldMove(GetTransform().GetDownVector() * Speed * _DeltaTime);
 	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("PlayerForward"))
-	{
-		GetTransform().SetWorldMove(GetTransform().GetForwardVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::GetInst()->IsPress("PlayerBack"))
-	{
-		GetTransform().SetWorldMove(GetTransform().GetBackVector() * Speed * _DeltaTime);
-	}
-	
-	/*
-	if (true == GameEngineInput::GetInst()->IsPress("Rot+"))
-	{
-		CurRenderer->GetTransform().SetLocalRotate({ 0.0f, 0.0f, 360.0f * _DeltaTime });
-	}
-	if (true == GameEngineInput::GetInst()->IsPress("Rot-"))
-	{
-		CurRenderer->GetTransform().SetLocalRotate({ 0.0f, 0.0f, -360.0f * _DeltaTime });
-	}
-	*/
 }
 

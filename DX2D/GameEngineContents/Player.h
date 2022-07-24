@@ -2,7 +2,7 @@
 #include <GameEngineCore/CoreMinimal.h>
 
 // Ό³Έν :
-class GameEngineDefaultRenderer;
+class GameEngineTextureRenderer;
 class Player : public GameEngineActor
 {
 public:
@@ -21,7 +21,7 @@ protected:
 	void Update(float _DeltaTime);
 	void End() {}
 
-	GameEngineDefaultRenderer* Renderer;
+	GameEngineTextureRenderer* Renderer;
 
 	float4 Color;
 

@@ -27,7 +27,7 @@ public:
 
 public:
 	// constrcuter destructer
-	GameEngineRandom();
+	GameEngineRandom(long long _Seed = -1);
 	~GameEngineRandom();
 
 	// delete Function

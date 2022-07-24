@@ -23,7 +23,7 @@ public:
 
 	void ResourcesCheck(GameEngineRenderingPipeLine* _Line);
 
-	bool IsConstantBufferSetter(const std::string& _Name);
+	bool IsConstantBuffer(const std::string& _Name);
 
 	template<typename Res>
 	void SetConstantBufferLink(const std::string& _Name, const Res& _Data)
@@ -41,12 +41,21 @@ public:
 
 	void SetConstantBufferNew(const std::string& _Name, const void* _Data, UINT _Size);
 
+	bool IsTexture(const std::string& _Name);
+
+	GameEngineTexture* SetTexture(const std::string& _Name, const std::string& _TextureName);
+	GameEngineTexture* SetTexture(const std::string& _Name, GameEngineTexture* _TextureName);
+
 protected:
 	void ShaderCheck(GameEngineShader* _Shader);
 
 private:
-	std::multimap<std::string, GameEngineConstantBufferSetter> ConstantBufferMap;
-	std::multimap<std::string, GameEngineTextureSetter> TextureSetterMap;
-	std::multimap<std::string, GameEngineSamplerSetter> SamplerSetterMap;
+	std::multimap<std::string, GameEngineConstantBufferSetter> ConstantBufferSettingMap;
+	std::multimap<std::string, GameEngineTextureSetter> TextureSettingMap;
+	std::multimap<std::string, GameEngineSamplerSetter> SamplerSettingMap;
+
+	void BindConstantBuffer(GameEngineConstantBufferSetter& _Setter, GameEngineConstantBuffer* _Res);
+	void BindTexture(GameEngineTextureSetter& _Setter, GameEngineTexture* _Res);
+	void BindSampler(GameEngineSamplerSetter& _Setter, GameEngineSampler* _Res);
 };
 

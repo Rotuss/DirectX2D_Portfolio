@@ -93,6 +93,12 @@
     <ClInclude Include="GameEngineSampler.h">
       <Filter>Resources\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineTextureRenderer.h">
+      <Filter>Object\Component\Rendering\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFolderTexture.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEngine.cpp" />
@@ -186,6 +192,12 @@
     <ClCompile Include="GameEngineSampler.cpp">
       <Filter>Resources\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineTextureRenderer.cpp">
+      <Filter>Object\Component\Rendering\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFolderTexture.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -244,6 +256,9 @@
     </Filter>
     <Filter Include="ThirdParty\Lib\Release">
       <UniqueIdentifier>{85fe9cf4-2a1c-497c-ac90-4956c980ae07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Rendering\Content">
+      <UniqueIdentifier>{6f8879b7-ac3d-4506-8f3c-be5f1b463cb0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

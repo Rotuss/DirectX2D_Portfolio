@@ -15,7 +15,21 @@ Cuphead::~Cuphead()
 
 void Cuphead::Start()
 {
-	//GameEngineDebug::ConsoleOpen();
+	GameEngineDirectory Dir;
+
+	Dir.MoveParentToExitsChildDirectory("ContentResources");
+	Dir.Move("ContentResources");
+	Dir.Move("Texture");
+
+	std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
+
+	for (size_t i = 0; i < Shaders.size(); i++)
+	{
+		GameEngineTexture::Load(Shaders[i].GetFullPath());
+	}
+
+	//Dir.Move("Cuphead");
+	//GameEngineFolderTexture::Load(Dir.GetFullPath());
 	
 	CreateLevel<TitleLevel>("Title");
 

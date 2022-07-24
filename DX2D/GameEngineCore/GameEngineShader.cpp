@@ -13,9 +13,6 @@ void GameEngineShader::AutoCompile(const std::string& _Path)
 	File.Open(OpenMode::Read, FileMode::Text);
 
 	std::string AllHlslCode = File.GetString();
-	AllHlslCode.resize(File.GetFileSize());
-
-	File.Read(&AllHlslCode[0], AllHlslCode.size(), AllHlslCode.size());
 
 	size_t VSEntryIndex = AllHlslCode.find("_VS(");
 	
@@ -132,7 +129,8 @@ void GameEngineShader::ShaderResCheck()
 			NewSetter.SetName(Name);
 			NewSetter.ShaderType = ShaderSettingType;
 			NewSetter.Res = GameEngineTexture::Find("NSet.png");
-			TextureSetterMap.insert(std::make_pair(Name, NewSetter));
+			NewSetter.BindPoint = ResInfo.BindPoint;
+			TextureMap.insert(std::make_pair(Name, NewSetter));
 			break;
 		}
 		case D3D_SIT_SAMPLER:
@@ -142,7 +140,8 @@ void GameEngineShader::ShaderResCheck()
 			NewSetter.SetName(Name);
 			NewSetter.ShaderType = ShaderSettingType;
 			NewSetter.Res = GameEngineSampler::Find("EngineSampler");
-			SamplerSetterMap.insert(std::make_pair(Name, NewSetter));
+			NewSetter.BindPoint = ResInfo.BindPoint;
+			SamplerMap.insert(std::make_pair(Name, NewSetter));
 			break;
 		}
 		default:
@@ -154,7 +153,7 @@ void GameEngineShader::ShaderResCheck()
 	}
 
 	ConstantBufferMap;
-	TextureSetterMap;
+	TextureMap;
 }
 
 void GameEngineConstantBufferSetter::Setting() const

@@ -13,14 +13,22 @@ struct Output
     float4 Tex : TEXCOORD;
 };
 
-Output Texture_VS(Input _Input)
+cbuffer AtlasData : register(b1)
+{
+    float2 TextureFramePos;
+    float2 TextureFrameSize;
+};
+
+Output TextureAtlas_VS(Input _Input)
 {
     Output NewOutPut = (Output) 0;
     NewOutPut.Pos = _Input.Pos;
     NewOutPut.Pos.w = 1.0f;
     NewOutPut.Pos = mul(_Input.Pos, WorldViewProjection);
     NewOutPut.PosLocal = _Input.Pos;
-    NewOutPut.Tex = _Input.Tex;
+    
+    NewOutPut.Tex.x = (_Input.Tex.x * TextureFrameSize.x) + TextureFramePos.x;
+    NewOutPut.Tex.y = (_Input.Tex.y * TextureFrameSize.y) + TextureFramePos.y;
     
     return NewOutPut;
 }
@@ -28,7 +36,7 @@ Output Texture_VS(Input _Input)
 Texture2D Tex : register(t0);
 SamplerState Sam : register(s0);
 
-float4 Texture_PS(Output _Input) : SV_Target0
+float4 TextureAtlas_PS(Output _Input) : SV_Target0
 {
     return Tex.Sample(Sam, _Input.Tex.xy);
 }

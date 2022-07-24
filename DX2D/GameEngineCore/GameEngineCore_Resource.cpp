@@ -11,6 +11,7 @@
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineIndexBuffer.h"
 #include "GameEngineTexture.h"
+#include "GameEngineFolderTexture.h"
 #include "GameEngineSampler.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineVertexShader.h"
@@ -44,7 +45,7 @@ void EngineTextureLoad()
 		Desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		Desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 		Desc.MipLODBias = 0.0f;
-		Desc.MaxAnisotropy = 1.0f;
+		Desc.MaxAnisotropy = 1;
 		Desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 		Desc.MinLOD = -FLT_MAX;
 		Desc.MaxLOD = FLT_MAX;
@@ -78,6 +79,12 @@ void EngineRenderingPipeLine()
 		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("Texture");
 		NewPipe->SetVertexShader("Texture.hlsl");
 		NewPipe->SetPixelShader("Texture.hlsl");
+	}
+
+	{
+		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("TextureAtlas");
+		NewPipe->SetVertexShader("TextureAtlas.hlsl");
+		NewPipe->SetPixelShader("TextureAtlas.hlsl");
 	}
 }
 
@@ -213,6 +220,7 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineIndexBuffer::ResourcesDestroy();
 	GameEngineRenderTarget::ResourcesDestroy();
 	GameEngineTexture::ResourcesDestroy();
+	GameEngineFolderTexture::ResourcesDestroy();
 	GameEngineSampler::ResourcesDestroy();
 	GameEngineRasterizer::ResourcesDestroy();
 	GameEngineConstantBuffer::ResourcesDestroy();
