@@ -13,12 +13,18 @@ public:
 	friend GameEngineRes<GameEngineVertexBuffer>;
 
 public:
-	static GameEngineVertexBuffer* Create(const std::string& _Name, const std::vector<float4>& _Vertex);
-	static GameEngineVertexBuffer* Create(const std::vector<float4>& _Vertex);
-
-	std::vector<float4> Vertexs;
+	template<typename VertexType>
+	static GameEngineVertexBuffer* Create(const std::string& _Name, const std::vector<VertexType>& _Vertex)
+	{
+		return Create(_Name, &_Vertex[0], _Vertex.size() * sizeof(VertexType));
+	}
+	
+	static GameEngineVertexBuffer* Create(const std::string& _Name, const void* _Data, size_t _Size);
 
 protected:
+	D3D11_BUFFER_DESC BufferDesc;
+	D3D11_SUBRESOURCE_DATA Data;
+	ID3D11Buffer* Buffer;
 
 private:
 	// constrcuter destructer

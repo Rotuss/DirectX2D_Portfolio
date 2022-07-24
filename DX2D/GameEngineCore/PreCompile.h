@@ -20,6 +20,8 @@
 #pragma comment(lib, "d3dcompiler")
 #pragma comment(lib, "dxguid")
 
+#include <GameEngineBase/GameEngineFile.h>
 #include <GameEngineBase/GameEngineDebug.h>
+#include <GameEngineBase/GameEngineDirectory.h>
 
 #include "GameEngineDevice.h"

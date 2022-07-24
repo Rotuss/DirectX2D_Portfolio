@@ -17,14 +17,12 @@ public:
 	GameEngineRenderer& operator=(const GameEngineRenderer& _Other) = delete;
 	GameEngineRenderer& operator=(GameEngineRenderer&& _Other) noexcept = delete;
 
-	float4x4 ViewPort;
-
 protected:
 	virtual void Start();
 	virtual void Update(float _DeltaTime) {}
 	virtual void End() {}
 
 private:
-	void Render(float _DeltaTime);
+	virtual void Render(float _DeltaTime) = 0;
 };
 

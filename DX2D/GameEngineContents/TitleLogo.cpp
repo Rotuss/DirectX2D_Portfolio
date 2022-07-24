@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "TitleLogo.h"
 #include <GameEngineCore/GEngine.h>
-#include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineDefaultRenderer.h>
 
 GameEngineRenderer* RendererTest = nullptr;
 
@@ -19,7 +19,7 @@ void TitleLogo::Start()
 	GetTransform().SetLocalPosition({ 0, 200, 0 });
 	
 	{
-		GameEngineRenderer* RendererTest = CreateComponent<GameEngineRenderer>();
+		GameEngineRenderer* RendererTest = CreateComponent<GameEngineDefaultRenderer>();
 		RendererTest->GetTransform().SetLocalScale({ 800, 400, 0 });
 	}
 

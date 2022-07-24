@@ -24,6 +24,7 @@ void GameEngineRenderer::Start()
 
 void GameEngineRenderer::Render(float _DeltaTime)
 {
+	/*
 	GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("Box");
 	GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("Box");
 
@@ -50,5 +51,6 @@ void GameEngineRenderer::Render(float _DeltaTime)
 	{
 		Polygon(GameEngineWindow::GetHDC(), &DrawVertex[i], 3);
 	}
+	*/
 }
 
