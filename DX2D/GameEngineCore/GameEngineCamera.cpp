@@ -15,8 +15,8 @@ GameEngineCamera::GameEngineCamera()
 
 	ViewPortDesc.TopLeftX = 0;
 	ViewPortDesc.TopLeftY = 0;
-	ViewPortDesc.Width = Size.uix();
-	ViewPortDesc.Height = Size.uiy();
+	ViewPortDesc.Width = Size.x;
+	ViewPortDesc.Height = Size.y;
 	ViewPortDesc.MinDepth = 0.0f;
 	ViewPortDesc.MaxDepth = 1.0f;
 }
@@ -32,7 +32,7 @@ void GameEngineCamera::Start()
 
 void GameEngineCamera::Render(float _DeltaTime)
 {
-	GameEngineDevice::GetContext()->RSSetViewports(0, &ViewPortDesc);
+	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortDesc);
 	
 	View.LookAtLH(GetActor()->GetTransform().GetLocalPosition(), GetActor()->GetTransform().GetForwardVector(), GetActor()->GetTransform().GetUpVector());
 

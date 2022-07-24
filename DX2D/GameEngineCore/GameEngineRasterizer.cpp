@@ -8,6 +8,10 @@ GameEngineRasterizer::GameEngineRasterizer()
 
 GameEngineRasterizer::~GameEngineRasterizer() 
 {
+	if (nullptr != State)
+	{
+		State->Release();
+	}
 }
 
 GameEngineRasterizer* GameEngineRasterizer::Create(const std::string& _Name, const D3D11_RASTERIZER_DESC& _Desc)

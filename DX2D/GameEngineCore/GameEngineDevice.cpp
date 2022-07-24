@@ -82,7 +82,7 @@ void GameEngineDevice::CreateSwapChain()
 
 	ScInfo.BufferCount = 2;
 	ScInfo.BufferDesc.Width = ScreenSize.uix();
-	ScInfo.BufferDesc.Height = ScreenSize.uix();
+	ScInfo.BufferDesc.Height = ScreenSize.uiy();
 	ScInfo.OutputWindow = GameEngineWindow::GetHWND();
 
 	ScInfo.BufferDesc.RefreshRate.Denominator = 1;

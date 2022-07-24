@@ -3,12 +3,6 @@
 
 GameEngineTransform::GameEngineTransform() 
 	: Parent(nullptr)
-	, LocalScale(float4::ONE)
-	, LocalRotation(float4::ZERO)
-	, LocalPosition(float4::ZERO)
-	, WorldScale(float4::ONE)
-	, WorldRotation(float4::ZERO)
-	, WorldPosition(float4::ZERO)
 	, CollisionDataObject()
 {
 	CollisionDataSetting();
@@ -20,15 +14,15 @@ GameEngineTransform::~GameEngineTransform()
 
 void GameEngineTransform::CalculateWorld()
 {
-	LocalWorldMat = LocalScaleMat * LocalRotateMat * LocalPositionMat;
+	Data.LocalWorldMatrix = Data.LocalScalingMatrix * Data.LocalRotationMatrix * Data.LocalPositionMatrix;
 
 	if (nullptr != Parent)
 	{
-		WorldWorldMat = LocalWorldMat * Parent->GetWorldWorld();
+		Data.WorldWorldMatrix = Data.LocalWorldMatrix * Parent->GetWorldWorld();
 	}
 	else
 	{
-		WorldWorldMat = LocalWorldMat;
+		Data.WorldWorldMatrix = Data.LocalWorldMatrix;
 	}
 
 	for (GameEngineTransform* Child : Childs)
@@ -39,8 +33,8 @@ void GameEngineTransform::CalculateWorld()
 
 void GameEngineTransform::CalculateWorldViewProjection()
 {
-	WorldViewMat = WorldWorldMat * View;
-	WorldViewProjectMat = WorldViewMat * Projection;
+	Data.WorldViewMatrix = Data.WorldWorldMatrix * Data.ViewMatrix;
+	Data.WorldViewProjectionMatrix = Data.WorldViewMatrix * Data.ProjectionMatrix;
 }
 
 void GameEngineTransform::DetachTransform()
@@ -65,8 +59,8 @@ void GameEngineTransform::SetParentTransform(GameEngineTransform& _Parent)
 	Parent = &_Parent;
 	_Parent.Childs.push_back(this);
 
-	SetLocalScale(LocalScale);
-	SetLocalRotation(LocalRotation);
-	SetLocalPosition(LocalPosition);
+	SetLocalScale(Data.LocalScaling);
+	SetLocalRotation(Data.LocalRotation);
+	SetLocalPosition(Data.LocalPosition);
 }
 

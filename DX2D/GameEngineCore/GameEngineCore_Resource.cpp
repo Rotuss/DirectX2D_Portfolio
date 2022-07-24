@@ -174,6 +174,7 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineIndexBuffer::ResourcesDestroy();
 	GameEngineRenderTarget::ResourcesDestroy();
 	GameEngineTexture::ResourcesDestroy();
+	GameEngineRasterizer::ResourcesDestroy();
 
 	GameEngineDevice::Destroy();
 }

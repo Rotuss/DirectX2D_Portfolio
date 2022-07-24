@@ -29,7 +29,7 @@ void GameEngineVertexShader::ShaderCompile(std::string _Path, std::string _Entry
 
 	std::wstring UnicodePath = GameEngineString::AnsiToUnicodeReturn(_Path);
 
-	if (D3DCompileFromFile(
+	if (S_OK != D3DCompileFromFile(
 		UnicodePath.c_str(),
 		nullptr,
 		nullptr,
@@ -53,6 +53,8 @@ void GameEngineVertexShader::ShaderCompile(std::string _Path, std::string _Entry
 	{
 		MsgBoxAssert("버텍스쉐이더 핸들 생성에 실패했습니다.");
 	}
+
+	ShaderResCheck();
 }
 
 GameEngineVertexShader::GameEngineVertexShader() 

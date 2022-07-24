@@ -49,6 +49,7 @@ private:
 	GameEngineMath& operator=(GameEngineMath&& _Other) noexcept = delete;
 };
 
+class float4x4;
 class float4
 {
 public:
@@ -468,6 +469,11 @@ public:
 		NewPoint.y = iy();
 		return NewPoint;
 	}
+
+	void TransformCoord(const float4x4& _Value);
+	float4 TransformCoordReturn(const float4x4& _Value);
+	void TransformNormal(const float4x4& _Value);
+	float4 TransformNormalReturn(const float4x4& _Value);
 
 public:
 	float4()

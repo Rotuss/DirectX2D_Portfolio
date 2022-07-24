@@ -81,6 +81,9 @@
     <ClInclude Include="GameEngineVertexShader.h">
       <Filter>Resources\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineConstantBuffer.h">
+      <Filter>Resources\ShaderResources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEngine.cpp" />
@@ -165,6 +168,9 @@
     <ClCompile Include="GameEngineVertexShader.cpp">
       <Filter>Resources\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineConstantBuffer.cpp">
+      <Filter>Resources\ShaderResources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -205,6 +211,9 @@
     </Filter>
     <Filter Include="Resources\Rasterizer">
       <UniqueIdentifier>{ee114342-251e-4e11-bd89-b604c7789229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\ShaderResources">
+      <UniqueIdentifier>{3e44868d-8a74-4345-96fa-5c30a0ab0a0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
