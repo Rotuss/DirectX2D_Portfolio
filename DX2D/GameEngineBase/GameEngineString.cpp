@@ -24,6 +24,14 @@ void GameEngineString::AnsiToUnicode(const std::string& _Text, std::wstring& _Ou
 	}
 }
 
+std::wstring GameEngineString::AnsiToUnicodeReturn(const std::string& Text)
+{
+	std::wstring Unicode = L"";
+	AnsiToUnicode(Text, Unicode);
+
+	return Unicode;
+}
+
 void GameEngineString::UniCodeToUTF8(const std::wstring& _Text, std::string& _Out)
 {
 	int Size = WideCharToMultiByte(CP_UTF8, 0, _Text.c_str(), static_cast<int>(_Text.size()), nullptr, 0, nullptr, nullptr);

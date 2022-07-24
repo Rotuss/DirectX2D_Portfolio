@@ -10,11 +10,16 @@ struct Output
     float4 Color : COLOR;
 };
 
-Output VS_Color(Input _Input)
+Output Color_VS(Input _Input)
 {
     Output NewOutPut = (Output) 0;
     NewOutPut.Pos = _Input.Pos;
     NewOutPut.Color = _Input.Color;
     
     return NewOutPut;
+}
+
+float4 Color_PS(Output _Input) : SV_Target0
+{
+    return _Input.Color;
 }

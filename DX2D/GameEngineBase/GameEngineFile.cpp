@@ -30,16 +30,33 @@ GameEngineFile::~GameEngineFile()
 	GameEngineFile::Close();
 }
 
-void GameEngineFile::Open(OpenMode _Mode)
+uintmax_t GameEngineFile::GetFileSize(const std::filesystem::path& _Path)
+{
+	return std::filesystem::file_size(_Path);
+}
+
+void GameEngineFile::Open(OpenMode _OpenMode, FileMode _FileMode)
 {
 	std::string OpenMode = "";
-	switch (_Mode)
+	switch (_OpenMode)
 	{
 	case OpenMode::Read:
-		OpenMode = "rb";
+		OpenMode += "r";
 		break;
 	case OpenMode::Write:
-		OpenMode = "wb";
+		OpenMode += "w";
+		break;
+	default:
+		break;
+	}
+
+	switch (_FileMode)
+	{
+	case FileMode::Text:
+		OpenMode += "t";
+		break;
+	case FileMode::Binary:
+		OpenMode += "b";
 		break;
 	default:
 		break;
@@ -60,5 +77,32 @@ void GameEngineFile::Close()
 		fclose(FilePtr);
 		FilePtr = nullptr;
 	}
+}
+
+void GameEngineFile::Write(void* _WriteData, size_t _DataSize)
+{
+	fwrite(_WriteData, _DataSize, 1, FilePtr);
+}
+
+void GameEngineFile::Read(void* _Buffer, size_t _BufferSize, size_t _ReadSize)
+{
+	fread_s(_Buffer, _BufferSize, _ReadSize, 1, FilePtr);
+}
+
+std::string GameEngineFile::GetString()
+{
+	std::string AllString;
+	uintmax_t Size = GetFileSize();
+
+	AllString.resize(Size);
+
+	Read(&AllString[0], Size, Size);
+
+	return AllString;
+}
+
+uintmax_t GameEngineFile::GetFileSize() const
+{
+	return GetFileSize(Path_);
 }
 

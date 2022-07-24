@@ -40,6 +40,8 @@ private:
 	float4x4 Projection;
 	CAMERAPROJECTIONMODE Mode;
 
+	D3D11_VIEWPORT ViewPortDesc;
+
 	float4 Size;
 	float Near;
 	float Far;

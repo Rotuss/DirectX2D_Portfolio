@@ -13,12 +13,23 @@ public:
 	friend GameEngineRes<GameEngineIndexBuffer>;
 
 public:
-	static GameEngineIndexBuffer* Create(const std::string& _Name, const std::vector<int>& _Indexs);
-	static GameEngineIndexBuffer* Create(const std::vector<int>& _Indexs);
+	template<typename IndexType>
+	static GameEngineIndexBuffer* Create(const std::string& _Name, const std::vector<IndexType>& _Indexs)
+	{
+		return Create(_Name, &_Indexs[0], _Indexs.size(), sizeof(IndexType));
+	}
+	
+	static GameEngineIndexBuffer* Create(const std::string& _Name, const void* _Data, UINT _IndexSize, UINT _IndexCount);
 
-	std::vector<int> Indexs;
+	void Setting();
+
+	inline UINT GetIndexCount()
+	{
+		return IndexCount;
+	}
 
 protected:
+	void BufferCreate(const void* _Data, UINT _IndexSize, UINT _IndexCount);
 
 private:
 	// constrcuter destructer
@@ -30,6 +41,13 @@ private:
 	GameEngineIndexBuffer(GameEngineIndexBuffer&& _Other) noexcept = delete;
 	GameEngineIndexBuffer& operator=(const GameEngineIndexBuffer& _Other) = delete;
 	GameEngineIndexBuffer& operator=(GameEngineIndexBuffer&& _Other) noexcept = delete;
+
+	D3D11_BUFFER_DESC BufferDesc;
+	D3D11_SUBRESOURCE_DATA Data;
+	ID3D11Buffer* Buffer;
+	UINT IndexSize;
+	UINT IndexCount;
+	UINT Offset;
 
 };
 

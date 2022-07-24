@@ -4,6 +4,8 @@
 // Ό³Έν :
 class GameEngineLayOutDesc
 {
+	friend class GameEngineInputLayOut;
+
 public:
 	unsigned int LayOutOffset;
 	std::map<const char*, int> SemanticIndexData;
@@ -18,8 +20,6 @@ public:
 		unsigned int _InstanceDataStepRate = 0
 	);
 
-	class GameEngineInputLayout* CreateInputLayOut(class GameEngineVertexShader* _Shader);
-
 public:
 	GameEngineLayOutDesc()
 		: LayOutOffset(0)
@@ -29,6 +29,7 @@ public:
 
 struct GameEngineVertex
 {
+public:
 	static GameEngineLayOutDesc LayOut;
 
 public:
