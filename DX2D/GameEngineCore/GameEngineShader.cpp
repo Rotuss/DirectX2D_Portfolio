@@ -4,6 +4,8 @@
 #include "GameEngineVertexShader.h"
 #include "GameEnginePixelShader.h"
 #include "GameEngineConstantBuffer.h"
+#include "GameEngineTexture.h"
+#include "GameEngineSampler.h"
 
 void GameEngineShader::AutoCompile(const std::string& _Path)
 {
@@ -114,11 +116,33 @@ void GameEngineShader::ShaderResCheck()
 			CBufferPtr->GetDesc(&BufferDesc);
 
 			GameEngineConstantBufferSetter NewSetter;
+			NewSetter.ParentShader = this;
+			NewSetter.SetName(Name);
 			NewSetter.ShaderType = ShaderSettingType;
 			NewSetter.Res = GameEngineConstantBuffer::CreateAndFind(Name, BufferDesc, CBufferPtr);
 			NewSetter.BindPoint = ResInfo.BindPoint;
 
 			ConstantBufferMap.insert(std::make_pair(Name, NewSetter));
+			break;
+		}
+		case D3D_SIT_TEXTURE:
+		{
+			GameEngineTextureSetter NewSetter;
+			NewSetter.ParentShader = this;
+			NewSetter.SetName(Name);
+			NewSetter.ShaderType = ShaderSettingType;
+			NewSetter.Res = GameEngineTexture::Find("NSet.png");
+			TextureSetterMap.insert(std::make_pair(Name, NewSetter));
+			break;
+		}
+		case D3D_SIT_SAMPLER:
+		{
+			GameEngineSamplerSetter NewSetter;
+			NewSetter.ParentShader = this;
+			NewSetter.SetName(Name);
+			NewSetter.ShaderType = ShaderSettingType;
+			NewSetter.Res = GameEngineSampler::Find("EngineSampler");
+			SamplerSetterMap.insert(std::make_pair(Name, NewSetter));
 			break;
 		}
 		default:
@@ -137,15 +161,15 @@ void GameEngineConstantBufferSetter::Setting() const
 {
 	Res->ChangeData(SetData, Size);
 
-	switch (ShaderType)
-	{
-	case ShaderType::Vertex:
-		Res->VSSetting();
-		break;
-	case ShaderType::Pixel:
-		Res->PSSetting();
-		break;
-	default:
-		break;
-	}
+	SettingFunction();
+}
+
+void GameEngineTextureSetter::Setting() const
+{
+	SettingFunction();
+}
+
+void GameEngineSamplerSetter::Setting() const
+{
+	SettingFunction();
 }

@@ -17,6 +17,7 @@ public:
 	GameEnginePath& operator=(GameEnginePath&& _Other) noexcept = delete;
 
 	static std::string GetFileName(const std::string& _Path);
+	static std::string GetExtension(const std::string& _Path);
 
 	void SetCurrentPath();
 

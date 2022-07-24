@@ -34,8 +34,11 @@ void Player::Start()
 	{
 		Renderer = CreateComponent<GameEngineDefaultRenderer>();
 		Renderer->GetTransform().SetLocalScale({ 100, 100, 100 });
+		Renderer->SetPipeLine("Texture");
 
-		Renderer->SetPipeLine("Color");
+		//Color = { 0.5f, 0.5f, 0.1f, 1.0f };
+
+		//Renderer->PipeLineHelper.SetConstantBufferNew("ResultColor", Color);
 	}
 }
 

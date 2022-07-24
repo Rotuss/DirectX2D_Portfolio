@@ -11,6 +11,7 @@
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineIndexBuffer.h"
 #include "GameEngineTexture.h"
+#include "GameEngineSampler.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineVertexShader.h"
 #include "GameEnginePixelShader.h"
@@ -20,6 +21,7 @@
 void EngineInputLayOut()
 {
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
 }
 
@@ -33,15 +35,49 @@ void EngineRasterizer()
 	GameEngineRasterizer::Create("EngineRasterizer", Desc);
 }
 
+void EngineTextureLoad()
+{
+	{
+		D3D11_SAMPLER_DESC Desc = { D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, };
+		
+		Desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		Desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		Desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		Desc.MipLODBias = 0.0f;
+		Desc.MaxAnisotropy = 1.0f;
+		Desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		Desc.MinLOD = -FLT_MAX;
+		Desc.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("EngineSampler", Desc);
+	}
+	
+	GameEngineDirectory Dir;
+
+	Dir.MoveParentToExitsChildDirectory("GameEngineResources");
+	Dir.Move("GameEngineResources");
+	Dir.Move("Texture");
+
+	std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
+
+	for (size_t i = 0; i < Shaders.size(); i++)
+	{
+		GameEngineTexture::Load(Shaders[i].GetFullPath());
+	}
+}
+
 void EngineRenderingPipeLine()
 {
 	{
 		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("Color");
-		NewPipe->SetInputAssembler1VertexBuffer("Rect");
-		NewPipe->SetInputAssembler2IndexBuffer("Rect");
 		NewPipe->SetVertexShader("Color.hlsl");
 		NewPipe->SetPixelShader("Color.hlsl");
-		NewPipe->SetRasterizer("EngineRasterizer");
+	}
+
+	{
+		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("Texture");
+		NewPipe->SetVertexShader("Texture.hlsl");
+		NewPipe->SetPixelShader("Texture.hlsl");
 	}
 }
 
@@ -49,10 +85,10 @@ void EngineMesh()
 {
 	{
 		std::vector<GameEngineVertex> Vertex;
-		Vertex.push_back({ float4(-0.5f, 0.5f), float4() });
-		Vertex.push_back({ float4(0.5f, 0.5f), float4() });
-		Vertex.push_back({ float4(0.5f, -0.5f), float4() });
-		Vertex.push_back({ float4(-0.5f, -0.5f), float4() });
+		Vertex.push_back({ float4(-0.5f, 0.5f), float4(0.0f, 0.0f) });
+		Vertex.push_back({ float4(0.5f, 0.5f), float4(1.0f, 0.0f) });
+		Vertex.push_back({ float4(0.5f, -0.5f), float4(1.0f, 1.0f) });
+		Vertex.push_back({ float4(-0.5f, -0.5f), float4(0.0f, 1.0f) });
 
 		GameEngineVertexBuffer::Create("Rect", Vertex);
 	}
@@ -159,11 +195,12 @@ void ShaderCompile()
 
 void GameEngineCore::EngineResourcesInitialize()
 {
+	EngineTextureLoad();
 	EngineInputLayOut();
 	EngineMesh();
 	EngineRasterizer();
 	ShaderCompile();
-
+	
 	EngineRenderingPipeLine();
 }
 
@@ -176,6 +213,7 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineIndexBuffer::ResourcesDestroy();
 	GameEngineRenderTarget::ResourcesDestroy();
 	GameEngineTexture::ResourcesDestroy();
+	GameEngineSampler::ResourcesDestroy();
 	GameEngineRasterizer::ResourcesDestroy();
 	GameEngineConstantBuffer::ResourcesDestroy();
 

@@ -26,6 +26,9 @@ GameEngineRenderingPipeLine::GameEngineRenderingPipeLine()
 	, DepthStencil(nullptr)
 	, Blend(nullptr)
 {
+	VertexBuffer = GameEngineVertexBuffer::Find("rect");
+	IndexBuffer = GameEngineIndexBuffer::Find("rect");
+	Rasterizer = GameEngineRasterizer::Find("EngineRasterizer");
 }
 
 GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine() 
@@ -47,6 +50,12 @@ void GameEngineRenderingPipeLine::SetInputAssembler1VertexBuffer(const std::stri
 		return;
 	}
 
+	if (nullptr != InputLayOut)
+	{
+		delete InputLayOut;
+		InputLayOut = nullptr;
+	}
+
 	if (nullptr == InputLayOut && nullptr != VertexShader)
 	{
 		InputLayOut = new GameEngineInputLayOut();
@@ -62,6 +71,12 @@ void GameEngineRenderingPipeLine::SetVertexShader(const std::string& _Name)
 	{
 		MsgBoxAssert("존재하지 않는 버텍스쉐이더를 세팅하려고 했습니다.");
 		return;
+	}
+
+	if (nullptr != InputLayOut)
+	{
+		delete InputLayOut;
+		InputLayOut = nullptr;
 	}
 
 	if (nullptr == InputLayOut && nullptr != VertexBuffer)

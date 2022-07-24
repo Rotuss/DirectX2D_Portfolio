@@ -197,6 +197,11 @@ public:
 
 	static float4 LerpLimit(const float4& _P1, const float4& _P2, float _Time)
 	{
+		if (0.0f >= _Time)
+		{
+			_Time = 0.0f;
+		}
+		
 		if (1.0f <= _Time)
 		{
 			_Time = 1.0f;

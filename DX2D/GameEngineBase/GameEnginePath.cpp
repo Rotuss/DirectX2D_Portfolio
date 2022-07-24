@@ -20,6 +20,12 @@ std::string GameEnginePath::GetFileName(const std::string& _Path)
 	return Path_.filename().string();
 }
 
+std::string GameEnginePath::GetExtension(const std::string& _Path)
+{
+	std::filesystem::path Path_ = _Path;
+	return Path_.extension().string();
+}
+
 void GameEnginePath::SetCurrentPath()
 {
 	// 현재 폴더.

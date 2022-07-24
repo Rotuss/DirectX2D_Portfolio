@@ -1,6 +1,8 @@
 #pragma once
 #include <map>
 #include <string>
+#include <functional>
+#include <GameEngineBase/GameEngineNameObject.h>
 
 enum class ShaderType
 {
@@ -8,17 +10,21 @@ enum class ShaderType
 	Pixel,
 };
 
-class ShaderResSetter
+class GameEngineShader;
+class ShaderResSetter : public GameEngineNameObject
 {
 public:
+	GameEngineShader* ParentShader;
 	ShaderType ShaderType;
 	int BindPoint;
-	std::string* Name;
+	std::function<void()> SettingFunction;
 };
 
 class GameEngineConstantBuffer;
 class GameEngineConstantBufferSetter : public ShaderResSetter
 {
+	friend GameEngineShader;
+
 public:
 	GameEngineConstantBuffer* Res;
 	const void* SetData;
@@ -37,9 +43,22 @@ public:
 	}
 };
 
-class GameEngineConstantBuffer;
+class GameEngineTexture;
 class GameEngineTextureSetter : public ShaderResSetter
 {
+	friend GameEngineShader;
+
+public:
+	GameEngineTexture* Res;
+	void Setting() const;
+};
+
+class GameEngineSampler;
+class GameEngineSamplerSetter : public ShaderResSetter
+{
+public:
+	GameEngineSampler* Res;
+	void Setting() const;
 };
 
 // Ό³Έν :
@@ -81,6 +100,7 @@ protected:
 private:
 	std::map<std::string, GameEngineConstantBufferSetter> ConstantBufferMap;
 	std::map<std::string, GameEngineTextureSetter> TextureSetterMap;
+	std::map<std::string, GameEngineSamplerSetter> SamplerSetterMap;
 	std::string EntryPoint;
 };
 

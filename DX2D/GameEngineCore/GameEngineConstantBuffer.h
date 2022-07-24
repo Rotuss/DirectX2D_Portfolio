@@ -104,8 +104,8 @@ public:
 
 	void ChangeData(const void* _Data, size_t _Size) const;
 
-	void VSSetting();
-	void PSSetting();
+	void VSSetting(int _BindPoint);
+	void PSSetting(int _BindPoint);
 
 protected:
 

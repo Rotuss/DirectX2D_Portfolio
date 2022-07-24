@@ -4,11 +4,17 @@
 GameEngineTexture::GameEngineTexture() 
 	: Texture2D(nullptr)
 	, RenderTargetView(nullptr)
+	, ShaderResourceView(nullptr)
 {
 }
 
 GameEngineTexture::~GameEngineTexture() 
 {
+	if (nullptr != ShaderResourceView)
+	{
+		ShaderResourceView->Release();
+	}
+	
 	if (nullptr != RenderTargetView)
 	{
 		RenderTargetView->Release();
@@ -18,6 +24,14 @@ GameEngineTexture::~GameEngineTexture()
 	{
 		Texture2D->Release();
 	}
+}
+
+GameEngineTexture* GameEngineTexture::Load(const std::string& _Path, const std::string& _Name)
+{
+	GameEngineTexture* NewRes = CreateResName(_Name);
+	NewRes->TextureLoad(_Path);
+
+	return NewRes;
 }
 
 GameEngineTexture* GameEngineTexture::Create(const std::string& _Name, ID3D11Texture2D* _Texture)
@@ -49,5 +63,57 @@ ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetView()
 	}
 
 	return RenderTargetView;
+}
+
+void GameEngineTexture::VSSetting(int _BindPoint)
+{
+	if (nullptr == ShaderResourceView)
+	{
+		MsgBoxAssert("존재하지 않는 텍스처를 사용할 수 없습니다.");
+	}
+	
+	GameEngineDevice::GetContext()->VSSetShaderResources(_BindPoint, 1, &ShaderResourceView);
+}
+
+void GameEngineTexture::PSSetting(int _BindPoint)
+{
+	if (nullptr == ShaderResourceView)
+	{
+		MsgBoxAssert("존재하지 않는 텍스처를 사용할 수 없습니다.");
+	}
+	
+	GameEngineDevice::GetContext()->PSSetShaderResources(_BindPoint, 1, &ShaderResourceView);
+}
+
+void GameEngineTexture::TextureLoad(const std::string& _Path)
+{
+	std::string Ex = GameEngineString::ToUpperReturn(GameEnginePath::GetExtension(_Path));
+
+	std::wstring LoadPath = GameEngineString::AnsiToUnicodeReturn(_Path);
+
+	if (Ex == "TGA")
+		// && S_OK != DirectX::LoadFromTGAFile(LoadPath.c_str(), DirectX::WIC_FLAGS_NONE, &Metadata, Image))
+	{
+		MsgBoxAssertString(_Path + "아직 처리하지 않은 이미지 포맷입니다.");
+	}
+	else if (Ex == "DDS")
+		// && S_OK != DirectX::LoadFromDDSFile(LoadPath.c_str(), DirectX::WIC_FLAGS_NONE, &Metadata, Image))
+	{
+		MsgBoxAssertString(_Path + "아직 처리하지 않은 이미지 포맷입니다.");
+	}
+	else if (S_OK != DirectX::LoadFromWICFile(LoadPath.c_str(), DirectX::WIC_FLAGS_NONE, &Metadata, Image))
+	{
+		MsgBoxAssertString(_Path + "로드에 실패했습니다.");
+	}
+
+	if (S_OK != DirectX::CreateShaderResourceView(
+		GameEngineDevice::GetDevice(),
+		Image.GetImages(),
+		Image.GetImageCount(),
+		Image.GetMetadata(),
+		&ShaderResourceView))
+	{
+		MsgBoxAssertString(_Path + "쉐이더 리소스 생성에 실패했습니다.");
+	}
 }
 
