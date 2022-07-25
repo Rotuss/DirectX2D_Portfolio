@@ -17,31 +17,34 @@ public:
 
 public:
 	FrameAnimation_DESC()
-		: Loop(false)
-		, Inter(0.1f)
-		, CurFrame(-1)
+		: CurFrame(-1)
 		, Start(-1)
 		, End(-1)
+		, FrameTime(0.0f)
+		, Inter(0.1f)
+		, Loop(false)
 	{
 	}
 
 	FrameAnimation_DESC(const std::string _TextureName, unsigned int _Start, unsigned int _End, float _Inter, bool _Loop = true)
 		: TextureName(_TextureName)
-		, Loop(_Loop)
-		, Inter(_Inter)
 		, CurFrame(_Start)
 		, Start(_Start)
 		, End(_End)
+		, FrameTime(0.0f)
+		, Inter(_Inter)
+		, Loop(_Loop)
 	{
 	}
 
 	FrameAnimation_DESC(const std::string _TextureName, float _Inter, bool _Loop = true)
 		: TextureName(_TextureName)
-		, Loop(_Loop)
-		, Inter(_Inter)
 		, CurFrame(0)
 		, Start(-1)
 		, End(-1)
+		, FrameTime(0.0f)
+		, Inter(_Inter)
+		, Loop(_Loop)
 	{
 	}
 };
@@ -86,6 +89,9 @@ public:
 	GameEngineTextureRenderer& operator=(const GameEngineTextureRenderer& _Other) = delete;
 	GameEngineTextureRenderer& operator=(GameEngineTextureRenderer&& _Other) noexcept = delete;
 
+	void SetSamplingModePoint();
+	void SetSamplingModeLiner();
+
 	void SetTexture(GameEngineTexture* _Texture);
 	void SetTexture(GameEngineTexture* _Texture, UINT _Index);
 	void SetTexture(const std::string& _Name);
@@ -105,6 +111,8 @@ public:
 	void AnimationBindFrame(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> Function);
 	// Update
 	void AnimationBindTime(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&, float)> Function);
+
+	void ScaleToTexture();
 
 protected:
 	void Start() override;

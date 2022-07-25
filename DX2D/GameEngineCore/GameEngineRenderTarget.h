@@ -3,6 +3,7 @@
 #include "GameEngineTexture.h"
 
 // Ό³Έν :
+class GameEngineDepthStencilTexture;
 class GameEngineRenderTarget : public GameEngineRes <GameEngineRenderTarget>
 {
 public:
@@ -24,12 +25,15 @@ public:
 
 	void Setting();
 
+	void CreateDepthTexture(int _Index = 0);
+
 protected:
 	std::vector<GameEngineTexture*> RenderTargets;
 	std::vector<ID3D11RenderTargetView*> RenderTargetViews;
 	std::vector<float4> ClearColors;
 
 	ID3D11DepthStencilView* DepthStencilView;
+	GameEngineDepthStencilTexture* DepthTexture;
 
 private:
 

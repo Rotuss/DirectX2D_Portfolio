@@ -7,7 +7,7 @@ class GameEngineDevice
 {
 public:
 	// constrcuter destructer
-	~GameEngineDevice();
+	~GameEngineDevice() {}
 
 	// delete Function
 	GameEngineDevice(const GameEngineDevice& _Other) = delete;

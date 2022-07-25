@@ -230,6 +230,8 @@ public:
 	void CalculateWorldViewProjection();
 	void DetachTransform();
 	void SetParentTransform(GameEngineTransform& _Parent);
+	void PixLocalNegativeX();
+	void PixLocalPositiveX();
 
 protected:
 

@@ -15,22 +15,40 @@ Cuphead::~Cuphead()
 
 void Cuphead::Start()
 {
-	GameEngineDirectory Dir;
-
-	Dir.MoveParentToExitsChildDirectory("ContentResources");
-	Dir.Move("ContentResources");
-	Dir.Move("Texture");
-
-	std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
-
-	for (size_t i = 0; i < Shaders.size(); i++)
 	{
-		GameEngineTexture::Load(Shaders[i].GetFullPath());
+		GameEngineDirectory Dir;
+
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Texture");
+
+		std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
+
+		for (size_t i = 0; i < Shaders.size(); i++)
+		{
+			GameEngineTexture::Load(Shaders[i].GetFullPath());
+		}
+
+		//Dir.Move("Cuphead");
+		//GameEngineFolderTexture::Load(Dir.GetFullPath());
 	}
 
-	//Dir.Move("Cuphead");
-	//GameEngineFolderTexture::Load(Dir.GetFullPath());
-	
+	{
+		GameEngineDirectory Dir;
+
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Texture");
+		Dir.Move("TitleScreen");
+
+		std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
+
+		for (size_t i = 0; i < Shaders.size(); i++)
+		{
+			GameEngineTexture::Load(Shaders[i].GetFullPath());
+		}
+	}
+
 	CreateLevel<TitleLevel>("Title");
 
 	ChangeLevel("Title");

@@ -18,7 +18,7 @@ GameEngineDirectory::GameEngineDirectory(const char* _Path)
     }
 }
 
-GameEngineDirectory::GameEngineDirectory(std::filesystem::path _Path)
+GameEngineDirectory::GameEngineDirectory(const std::filesystem::path& _Path)
 {
     Path_ = _Path;
     if (false == IsExists())
@@ -174,3 +174,19 @@ std::vector<GameEngineDirectory> GameEngineDirectory::GetAllDirectory()
     return Return;
 }
 
+std::vector<GameEngineDirectory> GameEngineDirectory::GetRecursiveAllDirectory()
+{
+    std::vector<GameEngineDirectory> Return;
+
+    std::filesystem::recursive_directory_iterator DirIter = std::filesystem::recursive_directory_iterator(Path_);
+
+    for (const std::filesystem::directory_entry& Entry : DirIter)
+    {
+        if (true == Entry.is_directory())
+        {
+            Return.push_back(GameEngineDirectory(Entry.path()));
+        }
+    }
+
+    return Return;
+}

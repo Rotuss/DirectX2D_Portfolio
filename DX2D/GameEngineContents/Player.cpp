@@ -8,7 +8,8 @@
 #include <GameEngineCore/GameEngineTextureRenderer.h>
 
 Player::Player() 
-	: Speed(50.0f)
+	: Renderer(nullptr)
+	, Speed(50.0f)
 {
 }
 
@@ -24,6 +25,8 @@ void Player::Start()
 		GameEngineInput::GetInst()->CreateKey("PlayerRight", VK_NUMPAD6);
 		GameEngineInput::GetInst()->CreateKey("PlayerUp", VK_NUMPAD9);
 		GameEngineInput::GetInst()->CreateKey("PlayerDown", VK_NUMPAD7);
+		GameEngineInput::GetInst()->CreateKey("PlayerForward", VK_NUMPAD1);
+		GameEngineInput::GetInst()->CreateKey("PlayerBack", VK_NUMPAD2);
 	}
 
 	GetTransform().SetLocalScale({ 1, 1, 1 });
@@ -31,19 +34,25 @@ void Player::Start()
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->GetTransform().SetLocalScale({ 100, 100, 100 });
+		Renderer->SetTexture("Cuphead_test.png");
+		Renderer->ScaleToTexture();
 	}
 }
 
 void Player::Update(float _DeltaTime)
 {
+	float4 Test1 = GetLevel()->GetMainCamera()->GetScreenPosition();
+	float4 Test2 = GetLevel()->GetMainCamera()->GetMouseWorldPosition();
+	
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetLeftVector() * Speed * _DeltaTime);
+		Renderer->GetTransform().PixLocalNegativeX();
 	}
-
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerRight"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetRightVector() * Speed * _DeltaTime);
+		Renderer->GetTransform().PixLocalPositiveX();
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerUp"))
 	{
@@ -53,5 +62,16 @@ void Player::Update(float _DeltaTime)
 	{
 		GetTransform().SetWorldMove(GetTransform().GetDownVector() * Speed * _DeltaTime);
 	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("PlayerForward"))
+	{
+		GetTransform().SetWorldMove(GetTransform().GetForwardVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("PlayerBack"))
+	{
+		GetTransform().SetWorldMove(GetTransform().GetBackVector() * Speed * _DeltaTime);
+	}
+
+	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 }
 

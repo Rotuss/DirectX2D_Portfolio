@@ -27,11 +27,13 @@ public:
 
 	static GameEngineTexture* Load(const std::string& _Path, const std::string& _Name);
 	static GameEngineTexture* Create(const std::string& _Name, ID3D11Texture2D* _Texture);
+	static GameEngineTexture* Create(const D3D11_TEXTURE2D_DESC& _Desc);
 	static GameEngineTexture* Create(ID3D11Texture2D* _Texture);
 
 	static void Cut(const std::string& _Name, UINT _X, UINT _Y);
 
 	ID3D11RenderTargetView* CreateRenderTargetView();
+	ID3D11DepthStencilView* CreateDepthStencilView();
 
 	void VSSetting(int _BindPoint);
 	void PSSetting(int _BindPoint);
@@ -53,13 +55,23 @@ public:
 
 	void TextureLoad(const std::string& _Path);
 
+	float4 GetScale()
+	{
+		return { static_cast<float>(Desc.Width), static_cast<float>(Desc.Height) };
+	}
+
+	void TextureCreate(const D3D11_TEXTURE2D_DESC& _Desc);
+
 protected:
 
 private:
 	ID3D11Texture2D* Texture2D;
 	ID3D11RenderTargetView* RenderTargetView;
 	ID3D11ShaderResourceView* ShaderResourceView;
+	ID3D11DepthStencilView* DepthStencilView;
 
+	D3D11_TEXTURE2D_DESC Desc;
+	
 	DirectX::TexMetadata Metadata;
 	DirectX::ScratchImage Image;
 

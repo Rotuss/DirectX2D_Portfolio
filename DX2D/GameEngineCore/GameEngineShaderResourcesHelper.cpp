@@ -137,26 +137,7 @@ GameEngineTexture* GameEngineShaderResourcesHelper::SetTexture(const std::string
 
 	std::string Name = GameEngineString::ToUpperReturn(_Name);
 
-	GameEngineTexture* FindTexture = GameEngineTexture::Find(_TextureName);
-
-	if (nullptr == FindTexture)
-	{
-		MsgBox("존재하지 않는 텍스처를 세팅하려고 했습니다.");
-		return nullptr;
-	}
-
-	std::multimap<std::string, GameEngineTextureSetter>::iterator NameStartIter
-		= TextureSettingMap.lower_bound(Name);
-
-	std::multimap<std::string, GameEngineTextureSetter>::iterator NameEndIter
-		= TextureSettingMap.upper_bound(Name);
-
-	for (; NameStartIter != NameEndIter; ++NameStartIter)
-	{
-		BindTexture(NameStartIter->second, FindTexture);
-	}
-
-	return FindTexture;
+	return SetTexture(Name, GameEngineTexture::Find(_TextureName));
 }
 
 GameEngineTexture* GameEngineShaderResourcesHelper::SetTexture(const std::string& _Name, GameEngineTexture* _TextureName)
@@ -181,6 +162,55 @@ GameEngineTexture* GameEngineShaderResourcesHelper::SetTexture(const std::string
 	}
 
 	return _TextureName;
+}
+
+bool GameEngineShaderResourcesHelper::IsSampler(const std::string& _Name)
+{
+	std::string Key = GameEngineString::ToUpperReturn(_Name);
+
+	if (SamplerSettingMap.end() != SamplerSettingMap.find(Key))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+GameEngineSampler* GameEngineShaderResourcesHelper::SetSampler(const std::string& _Name, const std::string& _TextureName)
+{
+	if (false == IsTexture(_Name))
+	{
+		MsgBox("쉐이더에서 이러한 이름의 샘플러 세팅를 사용한 적이 없습니다.");
+		return nullptr;
+	}
+
+	std::string Name = GameEngineString::ToUpperReturn(_Name);
+
+	return SetSampler(_Name, GameEngineSampler::Find(_TextureName));
+}
+
+GameEngineSampler* GameEngineShaderResourcesHelper::SetSampler(const std::string& _Name, GameEngineSampler* _SamplerName)
+{
+	std::string Name = GameEngineString::ToUpperReturn(_Name);
+
+	if (false == IsTexture(_Name))
+	{
+		MsgBox("쉐이더에서 이러한 이름의 샘플러 세팅를 사용한 적이 없습니다.");
+		return nullptr;
+	}
+
+	std::multimap<std::string, GameEngineSamplerSetter>::iterator NameStartIter
+		= SamplerSettingMap.lower_bound(Name);
+
+	std::multimap<std::string, GameEngineSamplerSetter>::iterator NameEndIter
+		= SamplerSettingMap.upper_bound(Name);
+
+	for (; NameStartIter != NameEndIter; ++NameStartIter)
+	{
+		BindSampler(NameStartIter->second, _SamplerName);
+	}
+
+	return _SamplerName;
 }
 
 void GameEngineShaderResourcesHelper::ShaderCheck(GameEngineShader* _Shader)
@@ -208,6 +238,11 @@ void GameEngineShaderResourcesHelper::BindConstantBuffer(GameEngineConstantBuffe
 {
 	_Setter.Res = _Res;
 
+	if (nullptr == _Res)
+	{
+		MsgBoxAssert("존재하지 않는 상수버퍼를 사용하려고 했습니다.");
+	}
+
 	switch (_Setter.ShaderType)
 	{
 	case ShaderType::Vertex:
@@ -225,6 +260,11 @@ void GameEngineShaderResourcesHelper::BindTexture(GameEngineTextureSetter& _Sett
 {
 	_Setter.Res = _Res;
 
+	if (nullptr == _Res)
+	{
+		MsgBoxAssert("존재하지 않는 텍스처를 사용하려고 했습니다.");
+	}
+
 	switch (_Setter.ShaderType)
 	{
 	case ShaderType::Vertex:
@@ -241,6 +281,11 @@ void GameEngineShaderResourcesHelper::BindTexture(GameEngineTextureSetter& _Sett
 void GameEngineShaderResourcesHelper::BindSampler(GameEngineSamplerSetter& _Setter, GameEngineSampler* _Res)
 {
 	_Setter.Res = _Res;
+
+	if (nullptr == _Res)
+	{
+		MsgBoxAssert("존재하지 않는 샘플러를 사용하려고 했습니다.");
+	}
 
 	switch (_Setter.ShaderType)
 	{

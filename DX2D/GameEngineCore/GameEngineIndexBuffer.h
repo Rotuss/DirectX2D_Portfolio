@@ -16,7 +16,7 @@ public:
 	template<typename IndexType>
 	static GameEngineIndexBuffer* Create(const std::string& _Name, const std::vector<IndexType>& _Indexs)
 	{
-		return Create(_Name, &_Indexs[0], sizeof(IndexType), _Indexs.size());
+		return Create(_Name, &_Indexs[0], sizeof(IndexType), static_cast<unsigned int>(_Indexs.size()));
 	}
 	
 	static GameEngineIndexBuffer* Create(const std::string& _Name, const void* _Data, UINT _IndexSize, UINT _IndexCount);

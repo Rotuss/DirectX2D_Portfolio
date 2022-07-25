@@ -9,7 +9,7 @@ public:
 	// constrcuter destructer
 	GameEngineDirectory();
 	GameEngineDirectory(const char* _Path);
-	GameEngineDirectory(std::filesystem::path _Path);
+	GameEngineDirectory(const std::filesystem::path& _Path);
 	GameEngineDirectory(const GameEngineDirectory& _Other);
 	~GameEngineDirectory();
 
@@ -23,6 +23,7 @@ public:
 
 	std::vector<GameEngineFile> GetAllFile(const std::string& _Ext = "");
 	std::vector<GameEngineDirectory> GetAllDirectory();
+	std::vector<GameEngineDirectory> GetRecursiveAllDirectory();
 
 protected:
 

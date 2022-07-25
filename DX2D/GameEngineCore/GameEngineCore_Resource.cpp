@@ -14,9 +14,12 @@
 #include "GameEngineFolderTexture.h"
 #include "GameEngineSampler.h"
 #include "GameEngineRenderTarget.h"
+#include "GameEngineDepthStencilTexture.h"
+#include "GameEngineDepthStencil.h"
 #include "GameEngineVertexShader.h"
 #include "GameEnginePixelShader.h"
 #include "GameEngineRasterizer.h"
+#include "GameEngineBlend.h"
 #include "GameEngineRenderingPipeLine.h"
 
 void EngineInputLayOut()
@@ -26,20 +29,66 @@ void EngineInputLayOut()
 	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
 }
 
-void EngineRasterizer()
+void EngineSubSetting()
 {
-	D3D11_RASTERIZER_DESC Desc = {};
+	{
+		D3D11_BLEND_DESC Desc = { 0 };
 
-	Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
-	Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+		Desc.AlphaToCoverageEnable = FALSE;
+		Desc.IndependentBlendEnable = FALSE;
+		Desc.RenderTarget[0].BlendEnable = true;
+		Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 
-	GameEngineRasterizer::Create("EngineRasterizer", Desc);
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+
+		GameEngineBlend::Create("AlphaBlend", Desc);
+	}
+
+	{
+		D3D11_RASTERIZER_DESC Desc = {};
+
+		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+
+		GameEngineRasterizer::Create("EngineRasterizer", Desc);
+	}
+
+	{
+		D3D11_DEPTH_STENCIL_DESC Desc = {};
+
+		Desc.DepthEnable = true;
+		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+		Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		Desc.StencilEnable = false;
+
+		GameEngineDepthStencil::Create("EngineBaseDepth", Desc);
+	}
 }
 
 void EngineTextureLoad()
 {
 	{
-		D3D11_SAMPLER_DESC Desc = { D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, };
+		D3D11_SAMPLER_DESC Desc = { D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_POINT };
+
+		Desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		Desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		Desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		Desc.MipLODBias = 0.0f;
+		Desc.MaxAnisotropy = 1;
+		Desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		Desc.MinLOD = -FLT_MAX;
+		Desc.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("EngineSamplerPoint", Desc);
+	}
+	
+	{
+		D3D11_SAMPLER_DESC Desc = { D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR };
 		
 		Desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		Desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
@@ -50,7 +99,7 @@ void EngineTextureLoad()
 		Desc.MinLOD = -FLT_MAX;
 		Desc.MaxLOD = FLT_MAX;
 
-		GameEngineSampler::Create("EngineSampler", Desc);
+		GameEngineSampler::Create("EngineSamplerLinear", Desc);
 	}
 	
 	GameEngineDirectory Dir;
@@ -205,7 +254,7 @@ void GameEngineCore::EngineResourcesInitialize()
 	EngineTextureLoad();
 	EngineInputLayOut();
 	EngineMesh();
-	EngineRasterizer();
+	EngineSubSetting();
 	ShaderCompile();
 	
 	EngineRenderingPipeLine();
@@ -220,9 +269,12 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineIndexBuffer::ResourcesDestroy();
 	GameEngineRenderTarget::ResourcesDestroy();
 	GameEngineTexture::ResourcesDestroy();
+	GameEngineDepthStencil::ResourcesDestroy();
+	GameEngineDepthStencilTexture::ResourcesDestroy();
 	GameEngineFolderTexture::ResourcesDestroy();
 	GameEngineSampler::ResourcesDestroy();
 	GameEngineRasterizer::ResourcesDestroy();
+	GameEngineBlend::ResourcesDestroy();
 	GameEngineConstantBuffer::ResourcesDestroy();
 
 	GameEngineDevice::Destroy();

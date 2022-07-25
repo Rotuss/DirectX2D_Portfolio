@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineBase/GameEngineMath.h>
+#include <GameEngineBase/GameEngineWindow.h>
 #include "GameEngineTransformComponent.h"
 
 enum class CAMERAPROJECTIONMODE
@@ -30,6 +31,9 @@ public:
 	{
 		Mode = _Mode;
 	}
+
+	float4 GetScreenPosition();
+	float4 GetMouseWorldPosition();
 
 protected:
 	void Start();

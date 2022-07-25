@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "GameEnginePixelShader.h"
 
-void GameEnginePixelShader::ShaderCompile(std::string _Path, std::string _EntryPoint, UINT _VersionHigh, UINT _VersionLow)
+void GameEnginePixelShader::ShaderCompile(const std::string& _Path, const std::string& _EntryPoint, UINT _VersionHigh, UINT _VersionLow)
 {
 	CreateVersion("ps", _VersionHigh, _VersionLow);
 	SetEntryPoint(_EntryPoint);
@@ -61,17 +61,17 @@ GameEnginePixelShader::~GameEnginePixelShader()
 	}
 }
 
-GameEnginePixelShader* GameEnginePixelShader::Load(std::string _Path, std::string _EntryPoint, UINT _VersionHigh, UINT _VersionLow)
+GameEnginePixelShader* GameEnginePixelShader::Load(const std::string& _Path, const std::string& _EntryPoint, UINT _VersionHigh, UINT _VersionLow)
 {
 	return Load(_Path, GameEnginePath::GetFileName(_Path), _EntryPoint, _VersionHigh, _VersionLow);
 }
 
-GameEnginePixelShader* GameEnginePixelShader::Load(std::string _Path, std::string _Name, std::string _EntryPoint, UINT _VersionHigh, UINT _VersionLow)
+GameEnginePixelShader* GameEnginePixelShader::Load(const std::string& _Path, const std::string& _Name, const std::string& _EntryPoint, UINT _VersionHigh, UINT _VersionLow)
 {
 	GameEnginePixelShader* NewRes = CreateResName(_Name);
 	NewRes->ShaderCompile(_Path, _EntryPoint, _VersionHigh, _VersionLow);
 
-	return nullptr;
+	return NewRes;
 }
 
 void GameEnginePixelShader::Setting()

@@ -64,3 +64,27 @@ void GameEngineTransform::SetParentTransform(GameEngineTransform& _Parent)
 	SetLocalPosition(Data.LocalPosition);
 }
 
+void GameEngineTransform::PixLocalNegativeX()
+{
+	if (0.0f > Data.LocalScaling.x)
+	{
+		return;
+	}
+
+	Data.LocalScaling.x = -Data.LocalScaling.x;
+
+	SetLocalScale(Data.LocalScaling);
+}
+
+void GameEngineTransform::PixLocalPositiveX()
+{
+	if (0.0f < Data.LocalScaling.x)
+	{
+		return;
+	}
+
+	Data.LocalScaling.x = abs(Data.LocalScaling.x);
+
+	SetLocalScale(Data.LocalScaling);
+}
+

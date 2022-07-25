@@ -25,6 +25,31 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
+float4 GameEngineCamera::GetScreenPosition()
+{
+	POINT P;
+	GetCursorPos(&P);
+	ScreenToClient(GameEngineWindow::GetHWND(), &P);
+
+	return { static_cast<float>(P.x), static_cast<float>(P.y) };
+}
+
+float4 GameEngineCamera::GetMouseWorldPosition()
+{
+	float4 Pos = GetScreenPosition();
+
+	float4x4 ViewPort;
+	ViewPort.ViewPort(Size.x, Size.y, 0, 0, 0, 1);
+	ViewPort.Inverse();
+
+	float4x4 ProjectionInvers = Projection.InverseReturn();
+
+	Pos = Pos * ViewPort;
+	Pos = Pos * ProjectionInvers;
+
+	return Pos;
+}
+
 void GameEngineCamera::Start()
 {
 	GetActor()->GetLevel()->PushCamera(this);
