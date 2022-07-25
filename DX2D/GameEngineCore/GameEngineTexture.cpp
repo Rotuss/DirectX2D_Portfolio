@@ -50,7 +50,9 @@ GameEngineTexture* GameEngineTexture::Create(const std::string& _Name, ID3D11Tex
 
 GameEngineTexture* GameEngineTexture::Create(const D3D11_TEXTURE2D_DESC& _Desc)
 {
-	GameEngineTexture* NewRes = CreateResUnName();	NewRes->TextureCreate(_Desc);
+	GameEngineTexture* NewRes = CreateResUnName();
+	NewRes->TextureCreate(_Desc);
+
 	return NewRes;
 }
 

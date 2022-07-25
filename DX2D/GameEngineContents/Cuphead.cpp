@@ -40,6 +40,23 @@ void Cuphead::Start()
 		Dir.Move("ContentResources");
 		Dir.Move("Texture");
 		Dir.Move("TitleScreen");
+		Dir.Move("Chalice");
+
+		std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
+
+		for (size_t i = 0; i < Shaders.size(); i++)
+		{
+			GameEngineFolderTexture::Load(Shaders[i].GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory Dir;
+
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Texture");
+		Dir.Move("TitleScreen");
 
 		std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
 

@@ -34,6 +34,12 @@ public:
 
 	float4 GetScreenPosition();
 	float4 GetMouseWorldPosition();
+	float4 GetMouseWorldPositionToActor();
+
+	inline float4 GetMouseWorldDir()
+	{
+		return MouseDir;
+	}
 
 protected:
 	void Start();
@@ -43,6 +49,9 @@ private:
 	float4x4 ViewPort;
 	float4x4 Projection;
 	CAMERAPROJECTIONMODE Mode;
+
+	float4 PrevMouse;
+	float4 MouseDir;
 
 	D3D11_VIEWPORT ViewPortDesc;
 
@@ -57,5 +66,6 @@ private:
 	void Render(float _DeltaTime);
 	void PushRenderer(GameEngineRenderer* _Renderer);
 	void Release(float _DelataTime);
+	void Update(float _DeltaTime) override;
 };
 

@@ -1,9 +1,9 @@
 #include "PreCompile.h"
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
-#include "PreCompile.h"
 #include "GameEngineCamera.h"
 #include "GameEngineRenderer.h"
+#include "GameEngineCameraActor.h"
 
 GameEngineLevel::GameEngineLevel() 
 	: MainCamera(nullptr)
@@ -25,6 +25,11 @@ GameEngineLevel::~GameEngineLevel()
 			Actor->ReleaseHierarchy();
 		}
 	}
+}
+
+GameEngineCameraActor* GameEngineLevel::GetMainCameraActor()
+{
+	return MainCamera->GetActor<GameEngineCameraActor>();
 }
 
 GameEngineTransform& GameEngineLevel::GetMainCameraActorTransform()

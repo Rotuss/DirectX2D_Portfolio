@@ -36,6 +36,7 @@ public:
 		return MainCamera;
 	}
 
+	GameEngineCameraActor* GetMainCameraActor();
 	GameEngineTransform& GetMainCameraActorTransform();
 
 	template<typename ActorType, typename GroupIndexType>

@@ -119,6 +119,11 @@ public:
 		CalculateWorld();
 	}
 
+	inline void SetAddWorldRotation(const float4& _World)
+	{
+		SetWorldRotation(Data.WorldRotation + _World);
+	}
+
 	inline void SetWorldRotation(const float4& _World)
 	{
 		float4 Local = _World;
@@ -143,6 +148,36 @@ public:
 
 		CalculateWorldPosition(Local);
 		CalculateWorld();
+	}
+
+	inline void SetWorldForwardMove(const float Speed, const float DeltaTime)
+	{
+		SetWorldPosition(Data.WorldPosition + (GetForwardVector() * Speed * DeltaTime));
+	}
+
+	inline void SetWorldBackMove(const float Speed, const float DeltaTime)
+	{
+		SetWorldPosition(Data.WorldPosition + (GetBackVector() * Speed * DeltaTime));
+	}
+
+	inline void SetWorldUpMove(const float Speed, const float DeltaTime)
+	{
+		SetWorldPosition(Data.WorldPosition + (GetUpVector() * Speed * DeltaTime));
+	}
+
+	inline void SetWorldDownMove(const float Speed, const float DeltaTime)
+	{
+		SetWorldPosition(Data.WorldPosition + (GetDownVector() * Speed * DeltaTime));
+	}
+
+	inline void SetWorldLeftMove(const float Speed, const float DeltaTime)
+	{
+		SetWorldPosition(Data.WorldPosition + (GetLeftVector() * Speed * DeltaTime));
+	}
+
+	inline void SetWorldRightMove(const float Speed, const float DeltaTime)
+	{
+		SetWorldPosition(Data.WorldPosition + (GetRightVector() * Speed * DeltaTime));
 	}
 
 	inline void SetWorldMove(const float4& _Value)
@@ -184,6 +219,11 @@ public:
 	inline float4x4 GetWorldWorld() const
 	{
 		return Data.WorldWorldMatrix;
+	}
+
+	inline float4 GetWorldPosition() const
+	{
+		return Data.WorldPosition;
 	}
 
 	inline float4x4 GetWorldViewProjection() const

@@ -113,6 +113,8 @@ public:
 	void AnimationBindTime(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&, float)> Function);
 
 	void ScaleToTexture();
+	void CurAnimationReset();
+	void CurAnimationSetStartPivotFrame(int SetFrame);
 
 protected:
 	void Start() override;

@@ -43,11 +43,18 @@ float4 GameEngineCamera::GetMouseWorldPosition()
 	ViewPort.Inverse();
 
 	float4x4 ProjectionInvers = Projection.InverseReturn();
+	float4x4 ViewInvers = View.InverseReturn();
 
 	Pos = Pos * ViewPort;
 	Pos = Pos * ProjectionInvers;
+	Pos = Pos * ViewInvers;
 
 	return Pos;
+}
+
+float4 GameEngineCamera::GetMouseWorldPositionToActor()
+{
+	return GetTransform().GetWorldPosition() + GetMouseWorldPosition();
 }
 
 void GameEngineCamera::Start()
@@ -117,5 +124,13 @@ void GameEngineCamera::Release(float _DelataTime)
 			}
 		}
 	}
+}
+
+void GameEngineCamera::Update(float _DeltaTime)
+{
+	float4 MousePos = GetMouseWorldPosition();
+	MousePos.w = 0.0f;
+	MouseDir = MousePos - PrevMouse;
+	PrevMouse = MousePos;
 }
 

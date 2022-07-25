@@ -35,7 +35,19 @@ void Player::Start()
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->GetTransform().SetLocalScale({ 100, 100, 100 });
 		Renderer->SetTexture("Cuphead_test.png");
-		Renderer->ScaleToTexture();
+		
+		GameEngineDirectory Dir;
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Texture");
+		Dir.Move("TitleScreen");
+		Dir.Move("Chalice");
+
+		GameEngineFolderTexture::Load(Dir.GetFullPath());
+
+		Renderer->CreateFrameAnimationFolder("Chalice", FrameAnimation_DESC("Chalice", 0.5f, true));
+		Renderer->ChangeFrameAnimation("Chalice");
+		//Renderer->ScaleToTexture();
 	}
 }
 
@@ -72,6 +84,6 @@ void Player::Update(float _DeltaTime)
 		GetTransform().SetWorldMove(GetTransform().GetBackVector() * Speed * _DeltaTime);
 	}
 
-	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+	//GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 }
 

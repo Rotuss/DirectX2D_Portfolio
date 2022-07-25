@@ -759,28 +759,7 @@ public:
 
 	void PerspectiveFovLH(float _FovDegree, float _Width, float _Height, float _Near, float _Far)
 	{
-		float Tan = tanf(_FovDegree * GameEngineMath::DegreeToRadian * 0.5f);
-		float fRange = _Far / (_Far - _Near);
-
-		Arr2D[0][0] = 1.0f / (Tan * (_Width / _Height));
-		Arr2D[0][1] = 0.0f;
-		Arr2D[0][2] = 0.0f;
-		Arr2D[0][3] = 0.0f;
-
-		Arr2D[1][0] = 0.0f;
-		Arr2D[1][1] = 1.0f / Tan;
-		Arr2D[1][2] = 0.0f;
-		Arr2D[1][3] = 0.0f;
-
-		Arr2D[2][0] = 0.0f;
-		Arr2D[2][1] = 0.0f;
-		Arr2D[2][2] = fRange;
-		Arr2D[2][3] = 1.0f;
-
-		Arr2D[3][0] = 0.0f;
-		Arr2D[3][1] = 0.0f;
-		Arr2D[3][2] = -fRange * _Near;
-		Arr2D[3][3] = 0.0f;
+		DirectMatrix = DirectX::XMMatrixPerspectiveFovLH(_FovDegree * GameEngineMath::DegreeToRadian * 0.5f, _Width / _Height, _Near, _Far);
 	}
 
 	void OrthographicLH(float _Width, float _Height, float _Near, float _Far)

@@ -24,9 +24,15 @@ public:
 
 	void FreeCameraModeOnOff();
 
+	inline bool IsFreeCameraMode()
+	{
+		return FreeCameraMode;
+	}
+
+	void Update(float _DeltaTime) override;
+
 protected:
 	void Start() override;
-	void Update(float _DeltaTime) override;
 	void End() override;
 
 private:
@@ -34,5 +40,6 @@ private:
 
 	bool FreeCameraMode;
 	float Speed;
+	float RotSpeed;
 };
 

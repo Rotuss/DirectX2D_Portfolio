@@ -19,6 +19,11 @@ TitleLevel::~TitleLevel()
 
 void TitleLevel::Start()
 {
+	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
+	{
+		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');
+	}
+
 	{
 		GameEngineCameraActor* actor = CreateActor<GameEngineCameraActor>();
 		actor->GetCameraComponent()->SetProjectionMode(CAMERAPROJECTIONMODE::Orthographic);
@@ -40,6 +45,11 @@ void TitleLevel::Start()
 
 void TitleLevel::Update(float _DeltaTime)
 {
+	if (GameEngineInput::GetInst()->IsDown("FreeCameaOnOff"))
+	{
+		GetMainCamera()->SetProjectionMode(CAMERAPROJECTIONMODE::PersPective);
+		GetMainCameraActor()->FreeCameraModeOnOff();
+	}
 }
 
 void TitleLevel::End()
