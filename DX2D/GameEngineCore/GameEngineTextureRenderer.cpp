@@ -209,10 +209,15 @@ void GameEngineTextureRenderer::Start()
 
 void GameEngineTextureRenderer::Update(float _Delta)
 {
+	if (nullptr != CurAni)
+	{
+		CurAni->Update(_Delta);
+	}
 }
 
 void GameEngineTextureRenderer::FrameDataReset()
 {
+	FrameData = { 0.0f, 0.0f, 1.0f, 1.0f };
 }
 
 void FrameAnimation::Reset()

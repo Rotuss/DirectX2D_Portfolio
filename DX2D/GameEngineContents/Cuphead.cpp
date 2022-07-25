@@ -46,7 +46,7 @@ void Cuphead::Start()
 
 		for (size_t i = 0; i < Shaders.size(); i++)
 		{
-			GameEngineFolderTexture::Load(Shaders[i].GetFullPath());
+			GameEngineTexture::Load(Shaders[i].GetFullPath());
 		}
 	}
 
