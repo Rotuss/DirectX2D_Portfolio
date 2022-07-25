@@ -45,7 +45,7 @@ void Player::Start()
 
 		GameEngineFolderTexture::Load(Dir.GetFullPath());
 
-		Renderer->CreateFrameAnimationFolder("test", FrameAnimation_DESC("Chalice", 0.5f, true));
+		Renderer->CreateFrameAnimationFolder("test", FrameAnimation_DESC("Chalice", 0.1f, true));
 		Renderer->ChangeFrameAnimation("test");
 		//Renderer->ScaleToTexture();
 	}
