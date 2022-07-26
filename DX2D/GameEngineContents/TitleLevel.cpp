@@ -47,7 +47,7 @@ void TitleLevel::Update(float _DeltaTime)
 {
 	if (GameEngineInput::GetInst()->IsDown("FreeCameaOnOff"))
 	{
-		GetMainCamera()->SetProjectionMode(CAMERAPROJECTIONMODE::PersPective);
+		//GetMainCamera()->SetProjectionMode(CAMERAPROJECTIONMODE::PersPective);
 		GetMainCameraActor()->FreeCameraModeOnOff();
 	}
 }

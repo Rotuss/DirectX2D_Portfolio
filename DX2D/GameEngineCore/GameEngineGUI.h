@@ -1,0 +1,75 @@
+#pragma once
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+
+#include <GameEngineBase/GameEngineString.h>
+#include <GameEngineBase/GameEngineNameObject.h>
+
+class GameEngineGUIWindow : public GameEngineNameObject
+{
+	friend class GameEngineGUI;
+
+public:
+	virtual void Initialize(class GameEngineLevel* _Level) = 0;
+	virtual void OnGUI(GameEngineLevel* _Level, float _DeltaTime) = 0;
+
+protected:
+
+private:
+	bool IsOpen;
+
+	void Begin()
+	{
+		std::string Name = GameEngineString::AnsiToUTF8Return(GetNameConstPtr());
+		ImGui::Begin(Name.c_str());
+	}
+
+	void End()
+	{
+		ImGui::End();
+	}
+};
+
+// Ό³Έν :
+class GameEngineCore;
+class GameEngineLevel;
+class GameEngineGUI
+{
+	friend GameEngineCore;
+
+public:
+	// constrcuter destructer
+	GameEngineGUI();
+	~GameEngineGUI();
+
+	// delete Function
+	GameEngineGUI(const GameEngineGUI& _Other) = delete;
+	GameEngineGUI(GameEngineGUI&& _Other) noexcept = delete;
+	GameEngineGUI& operator=(const GameEngineGUI& _Other) = delete;
+	GameEngineGUI& operator=(GameEngineGUI&& _Other) noexcept = delete;
+
+	static void Initialize();
+	static void GUIRender(GameEngineLevel* _Level, float _DeltaTime);
+
+	template<typename GUIWindowType>
+	static GUIWindowType* CreateGUIWindow(const std::string& _Name, GameEngineLevel* _Level)
+	{
+		GUIWindowType* Window = new GUIWindowType();
+
+		GameEngineGUIWindow* InitWindow = Window;
+		InitWindow->SetName(_Name);
+		InitWindow->Initialize(_Level);
+
+		Windows.push_back(Window);
+
+		return Window;
+	}
+
+protected:
+
+private:
+	static std::list<GameEngineGUIWindow*> Windows;
+	static void GUIDestroy();
+};
+

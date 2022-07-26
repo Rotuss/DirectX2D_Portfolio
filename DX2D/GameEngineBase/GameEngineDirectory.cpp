@@ -114,6 +114,11 @@ void GameEngineDirectory::Move(const std::string& _Name)
     Path_ = CheckPath;
 }
 
+std::string GameEngineDirectory::PlusFilePath(const std::string& _Name)
+{
+    return GetFullPath() + "\\" + _Name;
+}
+
 std::vector<GameEngineFile> GameEngineDirectory::GetAllFile(const std::string& _Ext)
 {
     std::filesystem::directory_iterator DirIter(Path_);

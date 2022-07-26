@@ -50,6 +50,11 @@ public:
 		return Inst_->Scale_;
 	}
 
+	void SetMessageCallBack(const std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)>& _MessageCallBack)
+	{
+		MessageCallBack = _MessageCallBack;
+	}
+
 protected:
 
 private:
@@ -70,6 +75,7 @@ private:
 	HDC			HDC_;
 	float4		Scale_;
 
+	static std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> MessageCallBack;
 	static LRESULT CALLBACK MessageProcess(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 

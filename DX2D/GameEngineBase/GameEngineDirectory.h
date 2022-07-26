@@ -21,6 +21,8 @@ public:
 
 	void Move(const std::string& _Name);
 
+	std::string PlusFilePath(const std::string& _Name);
+
 	std::vector<GameEngineFile> GetAllFile(const std::string& _Ext = "");
 	std::vector<GameEngineDirectory> GetAllDirectory();
 	std::vector<GameEngineDirectory> GetRecursiveAllDirectory();

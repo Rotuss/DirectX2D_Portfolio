@@ -3,6 +3,7 @@
 #include "GameEngineInput.h"
 
 GameEngineWindow* GameEngineWindow::Inst_ = new GameEngineWindow();
+std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> GameEngineWindow::MessageCallBack = nullptr;
 
 void GameEngineWindow::RegClass(HINSTANCE _hInst)
 {
@@ -129,6 +130,14 @@ GameEngineWindow::~GameEngineWindow()
 
 LRESULT GameEngineWindow::MessageProcess(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    if (nullptr != MessageCallBack)
+    {
+        if (0 != MessageCallBack(hWnd, message, wParam, lParam))
+        {
+            return true;
+        }
+    }
+    
     switch (message)
     {
     case WM_DESTROY:

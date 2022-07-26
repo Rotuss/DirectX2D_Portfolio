@@ -273,6 +273,8 @@ public:
 	void PixLocalNegativeX();
 	void PixLocalPositiveX();
 
+	void Copy(GameEngineTransform& _Trans);
+
 protected:
 
 private:

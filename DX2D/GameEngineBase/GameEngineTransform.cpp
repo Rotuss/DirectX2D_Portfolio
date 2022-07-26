@@ -88,3 +88,16 @@ void GameEngineTransform::PixLocalPositiveX()
 	SetLocalScale(Data.LocalScaling);
 }
 
+void GameEngineTransform::Copy(GameEngineTransform& _Trans)
+{
+	Data = _Trans.Data;
+	CollisionDataObject = _Trans.CollisionDataObject;
+	Parent = _Trans.Parent;
+	Childs = _Trans.Childs;
+
+	CalculateWorldRotation(Data.LocalRotation);
+	CalculateWorldScale(Data.LocalScaling);
+	CalculateWorldPosition(Data.LocalPosition);
+	CalculateWorld();
+}
+

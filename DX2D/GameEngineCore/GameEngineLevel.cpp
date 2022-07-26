@@ -1,4 +1,5 @@
 #include "PreCompile.h"
+#include "GameEngineGUI.h"
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
@@ -88,6 +89,7 @@ void GameEngineLevel::Render(float _DelataTime)
 {
 	GameEngineDevice::RenderStart();
 	MainCamera->Render(_DelataTime);
+	GameEngineGUI::GUIRender(this, _DelataTime);
 	GameEngineDevice::RenderEnd();
 }
 

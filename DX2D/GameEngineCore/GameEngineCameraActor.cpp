@@ -16,6 +16,18 @@ GameEngineCameraActor::~GameEngineCameraActor()
 void GameEngineCameraActor::FreeCameraModeOnOff()
 {
 	FreeCameraMode = !FreeCameraMode;
+
+	if (true == FreeCameraMode)
+	{
+		PrevMode = CameraComponent->GetProjectionMode();
+		CameraComponent->SetProjectionMode(CAMERAPROJECTIONMODE::PersPective);
+		OriginTrans.Copy(GetTransform());
+	}
+	else
+	{
+		CameraComponent->SetProjectionMode(PrevMode);
+		GetTransform().Copy(OriginTrans);
+	}
 }
 
 void GameEngineCameraActor::Start()

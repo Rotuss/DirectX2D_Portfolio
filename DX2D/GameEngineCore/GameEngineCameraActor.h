@@ -37,6 +37,8 @@ protected:
 
 private:
 	GameEngineCamera* CameraComponent;
+	GameEngineTransform OriginTrans;
+	CAMERAPROJECTIONMODE PrevMode;
 
 	bool FreeCameraMode;
 	float Speed;

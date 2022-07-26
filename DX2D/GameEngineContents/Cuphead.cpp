@@ -69,6 +69,8 @@ void Cuphead::Start()
 	CreateLevel<TitleLevel>("Title");
 
 	ChangeLevel("Title");
+
+	GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
 }
 
 void Cuphead::Update(float _DeltaTime)

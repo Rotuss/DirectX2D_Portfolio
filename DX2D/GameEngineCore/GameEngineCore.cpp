@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineCore.h"
+#include "GameEngineGUI.h"
 #include "GameEngineLevel.h"
 #include "GameEngineDevice.h"
 #include <GameEngineBase/GameEngineWindow.h>
@@ -61,6 +62,8 @@ void GameEngineCore::WindowCreate(const std::string& _Name, GameEngineCore* _Use
 
 void GameEngineCore::CoreStart(GameEngineCore* _UserCore)
 {
+	GameEngineGUI::Initialize();
+	
 	EngineResourcesInitialize();
 
 	_UserCore->Start();
@@ -114,6 +117,8 @@ void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 		delete Level.second;
 		Level.second = nullptr;
 	}
+
+	GameEngineGUI::GUIDestroy();
 
 	EngineResourcesDestroy();
 	

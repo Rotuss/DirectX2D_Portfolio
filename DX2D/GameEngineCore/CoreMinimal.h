@@ -20,3 +20,7 @@
 #include <GameEngineCore/GameEngineCameraActor.h>
 #include <GameEngineCore/GameEngineDefaultRenderer.h>
 #include <GameEngineCore/GameEngineTextureRenderer.h>
+
+// GUI
+#include <GameEngineCore/GameEngineGUI.h>
+#include <GameEngineCore/GameEngineStatusWindow.h>
