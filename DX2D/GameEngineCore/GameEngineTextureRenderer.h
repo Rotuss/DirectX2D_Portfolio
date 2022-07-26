@@ -103,14 +103,117 @@ public:
 	void CreateFrameAnimation(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc);
 	void ChangeFrameAnimation(const std::string& _AnimationName);
 
+	// 멤버
 	// 시작 프레임
-	void AnimationBindStart(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> Function);
+	template<typename ObjectType>
+	void AnimationBindStart(const std::string& _AnimationName, void(ObjectType::* _Ptr)(const FrameAnimation_DESC&), ObjectType* _This)
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].Start = std::bind(_Ptr, _This, FrameAni[Name].Info);
+	}
 	// 끝 프레임
-	void AnimationBindEnd(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> Function);
+	template<typename ObjectType>
+	void AnimationBindEnd(const std::string& _AnimationName, void(ObjectType::* _Ptr)(const FrameAnimation_DESC&), ObjectType* _This)
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].End = std::bind(_Ptr, _This, FrameAni[Name].Info);
+	}
 	// 체인지 프레임
-	void AnimationBindFrame(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> Function);
+	template<typename ObjectType>
+	void AnimationBindFrame(const std::string& _AnimationName, void(ObjectType::* _Ptr)(const FrameAnimation_DESC&), ObjectType* _This)
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].Frame = std::bind(_Ptr, _This, FrameAni[Name].Info);
+	}
 	// Update
-	void AnimationBindTime(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&, float)> Function);
+	template<typename ObjectType>
+	void AnimationBindTime(const std::string& _AnimationName, void(ObjectType::* _Ptr)(const FrameAnimation_DESC&), ObjectType* _This)
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].Time = std::bind(_Ptr, _This, FrameAni[Name].Info);
+	}
+
+	// 전역
+	// 시작 프레임
+	void AnimationBindStart(const std::string& _AnimationName, void(*_Ptr)(const FrameAnimation_DESC&))
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].Start = std::bind(_Ptr, FrameAni[Name].Info);
+	}
+	// 끝 프레임
+	void AnimationBindEnd(const std::string& _AnimationName, void(*_Ptr)(const FrameAnimation_DESC&))
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].End = std::bind(_Ptr, FrameAni[Name].Info);
+	}
+	// 체인지 프레임
+	void AnimationBindFrame(const std::string& _AnimationName, void(*_Ptr)(const FrameAnimation_DESC&))
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].Frame = std::bind(_Ptr, FrameAni[Name].Info);
+	}
+	// Update
+	void AnimationBindTime(const std::string& _AnimationName, void(*_Ptr)(const FrameAnimation_DESC&))
+	{
+		std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
+
+		if (FrameAni.end() == FrameAni.find(Name))
+		{
+			MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
+			return;
+		}
+
+		FrameAni[Name].Time = std::bind(_Ptr, FrameAni[Name].Info);
+	}
 
 	void ScaleToTexture();
 	void CurAnimationReset();

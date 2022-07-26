@@ -127,58 +127,6 @@ void GameEngineTextureRenderer::ChangeFrameAnimation(const std::string& _Animati
 	}
 }
 
-void GameEngineTextureRenderer::AnimationBindStart(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> Function)
-{
-	std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
-
-	if (FrameAni.end() == FrameAni.find(Name))
-	{
-		MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
-		return;
-	}
-
-	FrameAni[Name].Start = Function;
-}
-
-void GameEngineTextureRenderer::AnimationBindEnd(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> Function)
-{
-	std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
-
-	if (FrameAni.end() == FrameAni.find(Name))
-	{
-		MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
-		return;
-	}
-
-	FrameAni[Name].End = Function;
-}
-
-void GameEngineTextureRenderer::AnimationBindFrame(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> Function)
-{
-	std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
-
-	if (FrameAni.end() == FrameAni.find(Name))
-	{
-		MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
-		return;
-	}
-
-	FrameAni[Name].Frame = Function;
-}
-
-void GameEngineTextureRenderer::AnimationBindTime(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&, float)> Function)
-{
-	std::string Name = GameEngineString::ToUpperReturn(_AnimationName);
-
-	if (FrameAni.end() == FrameAni.find(Name))
-	{
-		MsgBoxAssert("존재하지 않는 애니메이션으로 체인지하려고 했습니다.");
-		return;
-	}
-
-	FrameAni[Name].Time = Function;
-}
-
 void GameEngineTextureRenderer::ScaleToTexture()
 {
 	GetTransform().SetLocalScale(CurTex->GetScale());

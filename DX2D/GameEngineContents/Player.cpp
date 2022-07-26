@@ -10,6 +10,7 @@
 Player::Player() 
 	: Renderer(nullptr)
 	, Speed(50.0f)
+	, LRCheck(true)
 {
 }
 
@@ -47,7 +48,8 @@ void Player::Start()
 
 		Renderer->CreateFrameAnimationFolder("test", FrameAnimation_DESC("Chalice", 0.1f, true));
 		Renderer->ChangeFrameAnimation("test");
-		//Renderer->ScaleToTexture();
+		Renderer->AnimationBindEnd("Test", &Player::TestFunction, this);
+		Renderer->ScaleToTexture();
 	}
 }
 
@@ -83,7 +85,23 @@ void Player::Update(float _DeltaTime)
 	{
 		GetTransform().SetWorldMove(GetTransform().GetBackVector() * Speed * _DeltaTime);
 	}
-
+	//Renderer->AnimationBindEnd("Test", &Player::TestFunction, this);
 	//GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+}
+
+void Player::TestFunction(const FrameAnimation_DESC& _Info)
+{
+	if (true == LRCheck)
+	{
+		Renderer->GetTransform().PixLocalNegativeX();
+		//Renderer->GetTransform().PixLocalPositiveX();
+		LRCheck = false;
+	}
+	else if (false == LRCheck)
+	{
+		//Renderer->GetTransform().PixLocalNegativeX();
+		Renderer->GetTransform().PixLocalPositiveX();
+		LRCheck = true;
+	}
 }
 

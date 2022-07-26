@@ -110,6 +110,11 @@ public:
 		return Return;
 	}
 	
+	static float4 ABS3DReturn(const float4& _Postion)
+	{
+		return _Postion.ABS3DReturn();
+	}
+
 	static float VectorXYtoDegree(const float4& _Postion, const float4& _Target)
 	{
 		return VectorXYtoRadian(_Postion, _Target) * GameEngineMath::RadianToDegree;
@@ -372,6 +377,11 @@ public:
 		y *= _Max;
 
 		return;
+	}
+
+	float4 ABS3DReturn() const
+	{
+		return float4(fabsf(x), fabsf(y), fabsf(z));
 	}
 
 

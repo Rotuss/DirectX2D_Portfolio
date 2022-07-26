@@ -25,7 +25,10 @@ protected:
 
 	float4 Color;
 
+	void TestFunction(const FrameAnimation_DESC& _Info);
+
 private:
 	float Speed;
+	bool LRCheck;
 };
 
