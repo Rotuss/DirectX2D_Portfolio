@@ -9,6 +9,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="GlobalContents.h" />
     <ClInclude Include="PreCompile.h" />
+    <ClInclude Include="UIMaster.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -18,5 +19,6 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="GlobalContents.cpp" />
     <ClCompile Include="PreCompile.cpp" />
+    <ClCompile Include="UIMaster.cpp" />
   </ItemGroup>
 </Project>

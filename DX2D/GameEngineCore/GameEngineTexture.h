@@ -53,12 +53,14 @@ public:
 		return CutData[_Index];
 	}
 
-	void TextureLoad(const std::string& _Path);
-
 	float4 GetScale()
 	{
 		return { static_cast<float>(Desc.Width), static_cast<float>(Desc.Height) };
 	}
+
+	float4 GetPixel(int _x, int _y);
+
+	void TextureLoad(const std::string& _Path);
 
 	void TextureCreate(const D3D11_TEXTURE2D_DESC& _Desc);
 

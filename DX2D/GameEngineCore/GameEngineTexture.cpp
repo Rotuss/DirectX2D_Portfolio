@@ -128,6 +128,44 @@ void GameEngineTexture::PSSetting(int _BindPoint)
 	GameEngineDevice::GetContext()->PSSetShaderResources(_BindPoint, 1, &ShaderResourceView);
 }
 
+float4 GameEngineTexture::GetPixel(int _x, int _y)
+{
+	if (0 > _x)
+	{
+		return float4::ZERO;
+	}
+
+	if (0 > _y)
+	{
+		return float4::ZERO;
+	}
+
+	if (Image.GetMetadata().width <= _x)
+	{
+		return float4::ZERO;
+	}
+
+	if (Image.GetMetadata().height <= _y)
+	{
+		return float4::ZERO;
+	}
+
+	DXGI_FORMAT Fmt = Image.GetMetadata().format;
+
+
+	uint8_t* Color = Image.GetImages()->pixels;
+
+	int Index = _y * static_cast<int>(Image.GetMetadata().width) + _x;
+	Color = Color + (Index * 4);
+
+	unsigned char R = Color[0];
+	unsigned char G = Color[1];
+	unsigned char B = Color[2];
+	unsigned char A = Color[3];
+
+	return float4(R / 255.0f, G / 255.0f, B / 255.0f, A / 255.0f);
+}
+
 void GameEngineTexture::TextureLoad(const std::string& _Path)
 {
 	std::string Ex = GameEngineString::ToUpperReturn(GameEnginePath::GetExtension(_Path));
@@ -159,8 +197,8 @@ void GameEngineTexture::TextureLoad(const std::string& _Path)
 		MsgBoxAssertString(_Path + "쉐이더 리소스 생성에 실패했습니다.");
 	}
 
-	Desc.Width = Metadata.width;
-	Desc.Height = Metadata.height;
+	Desc.Width = static_cast<UINT>(Metadata.width);
+	Desc.Height = static_cast<UINT>(Metadata.height);
 }
 
 void GameEngineTexture::TextureCreate(const D3D11_TEXTURE2D_DESC& _Desc)

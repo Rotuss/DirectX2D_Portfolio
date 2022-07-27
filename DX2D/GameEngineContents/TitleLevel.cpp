@@ -3,6 +3,7 @@
 //#include "TitleLogo.h"
 #include "Player.h"
 #include "Monster.h"
+#include "UIMaster.h"
 #include "Enums.h"
 #include "GlobalContents.h"
 #include "GameEngineCore/GEngine.h"
@@ -25,15 +26,11 @@ void TitleLevel::Start()
 	}
 
 	{
-		GameEngineCameraActor* actor = CreateActor<GameEngineCameraActor>();
-		actor->GetCameraComponent()->SetProjectionMode(CAMERAPROJECTIONMODE::Orthographic);
-		actor->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -500.0f });
+		UIMaster* NewUI = CreateActor<UIMaster>(OBJECTORDER::UI);
 	}
 
-	Player* NewPlayer;
-
 	{
-		NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
+		Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
 	}
 
 	{

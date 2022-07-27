@@ -6,11 +6,17 @@
 GameEngineTextureRenderer::GameEngineTextureRenderer() 
 	: CurTex(nullptr)
 	, CurAni(nullptr)
+	, PivotMode(PIVOTMODE::CUSTOM)
 {
 }
 
 GameEngineTextureRenderer::~GameEngineTextureRenderer() 
 {
+}
+
+GameEngineTexture* GameEngineTextureRenderer::GetCurTexture()
+{
+	return CurTex;
 }
 
 void GameEngineTextureRenderer::SetSamplingModePoint()
@@ -55,6 +61,36 @@ void GameEngineTextureRenderer::SetTexture(const std::string& _Name, UINT _Index
 void GameEngineTextureRenderer::SetFrame(UINT _Index)
 {
 	FrameData = CurTex->GetFrameData(_Index);
+}
+
+void GameEngineTextureRenderer::SetPivot()
+{
+	SetPivot(PivotMode);
+}
+
+void GameEngineTextureRenderer::SetPivot(PIVOTMODE _Mode)
+{
+	switch (_Mode)
+	{
+	case PIVOTMODE::CENTER:
+		SetPivotToVector(float4::ZERO);
+		break;
+	case PIVOTMODE::LEFTTOP:
+		SetPivotToVector(float4(GetTransform().GetWorldScale().hx(), -GetTransform().GetWorldScale().hy()));
+		break;
+	case PIVOTMODE::BOT:
+		SetPivotToVector(float4(0.0f, GetTransform().GetWorldScale().hy()));
+		break;
+	default:
+		break;
+	}
+
+	PivotMode = _Mode;
+}
+
+void GameEngineTextureRenderer::SetPivotToVector(const float4& _Value)
+{
+	GetTransform().SetLocalPosition(_Value);
 }
 
 void GameEngineTextureRenderer::CreateFrameAnimationFolder(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc)
@@ -145,14 +181,9 @@ void GameEngineTextureRenderer::CurAnimationSetStartPivotFrame(int SetFrame)
 void GameEngineTextureRenderer::Start()
 {
 	GameEngineDefaultRenderer::Start();
-	SetPipeLine("TextureAtlas");
-
-	FrameData.PosX = 0.0f;
-	FrameData.PosY = 0.0f;
-	FrameData.SizeX = 1.0f;
-	FrameData.SizeY = 1.0f;
-
-	ShaderResources.SetConstantBufferLink("AtlasData", FrameData);
+	
+	PushRendererToMainCamera();
+	SetTextureRendererSetting();
 }
 
 void GameEngineTextureRenderer::Update(float _Delta)
@@ -161,6 +192,18 @@ void GameEngineTextureRenderer::Update(float _Delta)
 	{
 		CurAni->Update(_Delta);
 	}
+}
+
+void GameEngineTextureRenderer::SetTextureRendererSetting()
+{
+	SetPipeLine("TextureAtlas");
+
+	FrameData.PosX = 0.0f;
+	FrameData.PosY = 0.0f;
+	FrameData.SizeX = 1.0f;
+	FrameData.SizeY = 1.0f;
+
+	ShaderResources.SetConstantBufferLink("AtlasData", FrameData);
 }
 
 void GameEngineTextureRenderer::FrameDataReset()
@@ -183,9 +226,12 @@ void FrameAnimation::Update(float _DeltaTime)
 		Time(Info, _DeltaTime);
 	}
 
-	if (false == bOnceStart && Info.CurFrame == Info.Start && nullptr != Start)
+	if (false == bOnceStart && Info.CurFrame == Info.Start)
 	{
-		Start(Info);
+		if (nullptr != Start)
+		{
+			Start(Info);
+		}
 		bOnceStart = true;
 		bOnceEnd = false;
 	}
@@ -219,12 +265,16 @@ void FrameAnimation::Update(float _DeltaTime)
 
 		if (nullptr != Texture)
 		{
+			ParentRenderer->CurTex = Texture;
 			ParentRenderer->SetTexture(Texture, Info.CurFrame);
+			ParentRenderer->SetPivot();
 		}
 		else if (nullptr != FolderTexture)
 		{
 			ParentRenderer->FrameDataReset();
+			ParentRenderer->CurTex = FolderTexture->GetTexture(Info.CurFrame);
 			ParentRenderer->SetTexture(FolderTexture->GetTexture(Info.CurFrame));
+			ParentRenderer->SetPivot();
 		}
 		else
 		{

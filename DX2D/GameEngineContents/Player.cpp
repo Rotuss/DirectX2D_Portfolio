@@ -50,13 +50,16 @@ void Player::Start()
 		Renderer->ChangeFrameAnimation("test");
 		Renderer->AnimationBindEnd("Test", &Player::TestFunction, this);
 		Renderer->ScaleToTexture();
+		Renderer->SetPivot(PIVOTMODE::CENTER);
 	}
 }
 
 void Player::Update(float _DeltaTime)
 {
-	float4 Test1 = GetLevel()->GetMainCamera()->GetScreenPosition();
-	float4 Test2 = GetLevel()->GetMainCamera()->GetMouseWorldPosition();
+	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+	{
+		return;
+	}
 	
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft"))
 	{
@@ -85,8 +88,8 @@ void Player::Update(float _DeltaTime)
 	{
 		GetTransform().SetWorldMove(GetTransform().GetBackVector() * Speed * _DeltaTime);
 	}
-	//Renderer->AnimationBindEnd("Test", &Player::TestFunction, this);
-	//GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+	
+	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
 }
 
 void Player::TestFunction(const FrameAnimation_DESC& _Info)

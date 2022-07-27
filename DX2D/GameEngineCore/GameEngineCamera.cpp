@@ -30,6 +30,11 @@ bool ZSort(GameEngineRenderer* _Left, GameEngineRenderer* _Right)
 	return _Left->GetTransform().GetWorldPosition().z > _Right->GetTransform().GetWorldPosition().z;
 }
 
+void GameEngineCamera::SetCameraOrder(CAMERAORDER _Order)
+{
+	GetActor()->GetLevel()->PushCamera(this, _Order);
+}
+
 float4 GameEngineCamera::GetScreenPosition()
 {
 	POINT P;
@@ -64,7 +69,7 @@ float4 GameEngineCamera::GetMouseWorldPositionToActor()
 
 void GameEngineCamera::Start()
 {
-	GetActor()->GetLevel()->PushCamera(this);
+	//GetActor()->GetLevel()->PushCamera(this);
 }
 
 void GameEngineCamera::Render(float _DeltaTime)

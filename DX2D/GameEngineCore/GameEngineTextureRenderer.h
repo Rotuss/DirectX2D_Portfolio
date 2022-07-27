@@ -1,6 +1,14 @@
 #pragma once
 #include "GameEngineDefaultRenderer.h"
 
+enum class PIVOTMODE
+{
+	CENTER,
+	LEFTTOP,
+	BOT,
+	CUSTOM,
+};
+
 class FrameAnimation_DESC
 {
 public:
@@ -89,6 +97,8 @@ public:
 	GameEngineTextureRenderer& operator=(const GameEngineTextureRenderer& _Other) = delete;
 	GameEngineTextureRenderer& operator=(GameEngineTextureRenderer&& _Other) noexcept = delete;
 
+	GameEngineTexture* GetCurTexture();
+
 	void SetSamplingModePoint();
 	void SetSamplingModeLiner();
 
@@ -97,6 +107,10 @@ public:
 	void SetTexture(const std::string& _Name);
 	void SetTexture(const std::string& _Name, UINT _Index);
 	void SetFrame(UINT _Index);
+
+	void SetPivot();
+	void SetPivot(PIVOTMODE _Mode);
+	void SetPivotToVector(const float4& _Value);
 
 	void CreateFrameAnimationFolder(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc);
 
@@ -223,7 +237,11 @@ protected:
 	void Start() override;
 	void Update(float _Delta) override;
 
+	void SetTextureRendererSetting();
+
 private:
+	PIVOTMODE PivotMode;
+	
 	GameEngineTexture* CurTex;
 	float4 FrameData;
 

@@ -221,6 +221,11 @@ public:
 		return Data.WorldWorldMatrix;
 	}
 
+	inline float4 GetWorldScale() const
+	{
+		return Data.WorldScaling;
+	}
+
 	inline float4 GetWorldPosition() const
 	{
 		return Data.WorldPosition;
