@@ -1,18 +1,22 @@
 #include "PreCompile.h"
-#include "TitleLogo.h"
-#include <GameEngineCore/GEngine.h>
+#include "TitleScreenBackGround.h"
+#include "GlobalContents.h"
+#include <iostream>
+//#include <GameEngineCore/GEngine.h>
+#include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineDefaultRenderer.h>
+#include <GameEngineCore/GameEngineTextureRenderer.h>
 
-TitleLogo::TitleLogo() 
+TitleScreenBackGround::TitleScreenBackGround()
 	: Renderer(nullptr)
 {
 }
 
-TitleLogo::~TitleLogo() 
+TitleScreenBackGround::~TitleScreenBackGround()
 {
 }
 
-void TitleLogo::Start()
+void TitleScreenBackGround::Start()
 {
 	GetTransform().SetLocalScale({ 1, 1, 1 });
 
@@ -23,19 +27,18 @@ void TitleLogo::Start()
 		Dir.MoveParentToExitsChildDirectory("ContentResources");
 		Dir.Move("ContentResources");
 		Dir.Move("Texture");
-		Dir.Move("MDHR_Logo");
+		Dir.Move("TitleScreen");
+		Dir.Move("BackGround");
 
 		GameEngineFolderTexture::Load(Dir.GetFullPath());
 
-		Renderer->CreateFrameAnimationFolder("Logo", FrameAnimation_DESC("MDHR_Logo", 0.05f, false));
-		Renderer->ChangeFrameAnimation("Logo");
-		Renderer->AnimationBindEnd("Logo", &TitleLogo::EndFunction, this);
-		Renderer->GetTransform().SetLocalScale({ 1280, 720, 100 });
+		Renderer->SetTexture("title_screen_background.png");
+		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 	}
 }
 
-void TitleLogo::Update(float _DeltaTime)
+void TitleScreenBackGround::Update(float _DeltaTime)
 {
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{
@@ -45,11 +48,3 @@ void TitleLogo::Update(float _DeltaTime)
 	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
 }
 
-void TitleLogo::End()
-{
-}
-
-void TitleLogo::EndFunction(const FrameAnimation_DESC& _Info)
-{
-	GEngine::ChangeLevel("Title");
-}

@@ -1,7 +1,8 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/CoreMinimal.h>
 
 // Ό³Έν :
+class GameEngineTextureRenderer;
 class TitleLogo : public GameEngineActor
 {
 public:
@@ -21,6 +22,8 @@ protected:
 	void End() override;
 
 private:
-	float TimeAngle;
+	GameEngineTextureRenderer* Renderer;
+
+	void EndFunction(const FrameAnimation_DESC& _Info);
 };
 

@@ -10,6 +10,12 @@
     <ClInclude Include="GlobalContents.h" />
     <ClInclude Include="PreCompile.h" />
     <ClInclude Include="UIMaster.h" />
+    <ClInclude Include="MDHRLogoLevel.h" />
+    <ClInclude Include="TitleScreenBackGround.h" />
+    <ClInclude Include="TitleScreenCuphead.h" />
+    <ClInclude Include="TitleScreenChalice.h" />
+    <ClInclude Include="TitleScreenMugman.h" />
+    <ClInclude Include="TitleScreenChips.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -20,5 +26,11 @@
     <ClCompile Include="GlobalContents.cpp" />
     <ClCompile Include="PreCompile.cpp" />
     <ClCompile Include="UIMaster.cpp" />
+    <ClCompile Include="MDHRLogoLevel.cpp" />
+    <ClCompile Include="TitleScreenBackGround.cpp" />
+    <ClCompile Include="TitleScreenCuphead.cpp" />
+    <ClCompile Include="TitleScreenChalice.cpp" />
+    <ClCompile Include="TitleScreenMugman.cpp" />
+    <ClCompile Include="TitleScreenChips.cpp" />
   </ItemGroup>
 </Project>

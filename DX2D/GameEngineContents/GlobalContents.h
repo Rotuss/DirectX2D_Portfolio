@@ -4,6 +4,7 @@
 
 enum class OBJECTORDER
 {
+	Title,
 	Player,
 	Monster,
 	UI = 1000,
