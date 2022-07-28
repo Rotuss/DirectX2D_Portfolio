@@ -1,11 +1,5 @@
 #include "PreCompile.h"
 #include "TitleScreenBackGround.h"
-#include "GlobalContents.h"
-#include <iostream>
-//#include <GameEngineCore/GEngine.h>
-#include <GameEngineCore/GameEngineLevel.h>
-#include <GameEngineCore/GameEngineDefaultRenderer.h>
-#include <GameEngineCore/GameEngineTextureRenderer.h>
 
 TitleScreenBackGround::TitleScreenBackGround()
 	: Renderer(nullptr)

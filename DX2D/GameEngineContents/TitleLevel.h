@@ -21,6 +21,6 @@ protected:
 	void End() override;
 
 private:
-
+	void EndFunction(const FrameAnimation_DESC& _Info);
 };
 

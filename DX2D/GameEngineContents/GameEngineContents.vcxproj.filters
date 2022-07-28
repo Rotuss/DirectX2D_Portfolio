@@ -2,35 +2,118 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="Cuphead.h" />
-    <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="TitleLogo.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Monster.h" />
     <ClInclude Include="GlobalContents.h" />
-    <ClInclude Include="PreCompile.h" />
-    <ClInclude Include="UIMaster.h" />
-    <ClInclude Include="MDHRLogoLevel.h" />
-    <ClInclude Include="TitleScreenBackGround.h" />
-    <ClInclude Include="TitleScreenCuphead.h" />
-    <ClInclude Include="TitleScreenChalice.h" />
-    <ClInclude Include="TitleScreenMugman.h" />
-    <ClInclude Include="TitleScreenChips.h" />
+    <ClInclude Include="TitleLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="MDHRLogoLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLogo.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScreenBackGround.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScreenChalice.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScreenChips.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScreenCuphead.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScreenMugman.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="HourGlass.h">
+      <Filter>Actor\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Iris.h">
+      <Filter>Actor\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenFX.h">
+      <Filter>Actor\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UIMaster.h">
+      <Filter>Actor\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PreCompile.h">
+      <Filter>PreCompile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
-    <ClCompile Include="TitleLevel.cpp" />
-    <ClCompile Include="TitleLogo.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="GlobalContents.cpp" />
-    <ClCompile Include="PreCompile.cpp" />
-    <ClCompile Include="UIMaster.cpp" />
-    <ClCompile Include="MDHRLogoLevel.cpp" />
-    <ClCompile Include="TitleScreenBackGround.cpp" />
-    <ClCompile Include="TitleScreenCuphead.cpp" />
-    <ClCompile Include="TitleScreenChalice.cpp" />
-    <ClCompile Include="TitleScreenMugman.cpp" />
-    <ClCompile Include="TitleScreenChips.cpp" />
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="MDHRLogoLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLogo.cpp">
+      <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScreenBackGround.cpp">
+      <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScreenChalice.cpp">
+      <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScreenChips.cpp">
+      <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScreenCuphead.cpp">
+      <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScreenMugman.cpp">
+      <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="HourGlass.cpp">
+      <Filter>Actor\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Iris.cpp">
+      <Filter>Actor\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenFX.cpp">
+      <Filter>Actor\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="UIMaster.cpp">
+      <Filter>Actor\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="PreCompile.cpp">
+      <Filter>PreCompile</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Actor">
+      <UniqueIdentifier>{15f31b85-6008-4b69-82d9-33c08a050046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{c40f43e3-0fcc-433b-87b7-98cb2b414a64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Title">
+      <UniqueIdentifier>{f15e81b2-7632-4174-8d6c-c81c19b52751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Common">
+      <UniqueIdentifier>{9029a40d-a4b5-43a7-80b0-671fb235fe8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PreCompile">
+      <UniqueIdentifier>{cfa916e7-4440-4d6c-b89c-b0d4bbe93dfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

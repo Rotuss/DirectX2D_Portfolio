@@ -81,19 +81,16 @@ public:
 	inline void SetLocalScale(const float4& _Value)
 	{
 		CalculateWorldScale(_Value);
-		CalculateWorld();
 	}
 
 	inline void SetLocalRotation(const float4& _Value)
 	{
 		CalculateWorldRotation(_Value);
-		CalculateWorld();
 	}
 
 	inline void SetLocalPosition(const float4& _Value)
 	{
 		CalculateWorldPosition(_Value);
-		CalculateWorld();
 	}
 
 	inline void SetLocalRotate(const float4& _Value)
@@ -116,7 +113,6 @@ public:
 		}
 
 		CalculateWorldScale(Local);
-		CalculateWorld();
 	}
 
 	inline void SetAddWorldRotation(const float4& _World)
@@ -134,7 +130,6 @@ public:
 		}
 
 		CalculateWorldRotation(Local);
-		CalculateWorld();
 	}
 
 	inline void SetWorldPosition(const float4& _World)
@@ -147,7 +142,6 @@ public:
 		}
 
 		CalculateWorldPosition(Local);
-		CalculateWorld();
 	}
 
 	inline void SetWorldForwardMove(const float Speed, const float DeltaTime)
@@ -304,6 +298,7 @@ private:
 
 		CollisionScaleSetting();
 		Data.LocalScalingMatrix.Scale(Data.LocalScaling);
+		CalculateWorld();
 
 		for (GameEngineTransform* Child : Childs)
 		{
@@ -328,6 +323,7 @@ private:
 
 		CollisionRotationSetting();
 		Data.LocalRotationMatrix.RotationDegree(Data.LocalRotation);
+		CalculateWorld();
 
 		for (GameEngineTransform* Child : Childs)
 		{
@@ -352,6 +348,7 @@ private:
 
 		CollisionPositionSetting();
 		Data.LocalPositionMatrix.Position(Data.LocalPosition);
+		CalculateWorld();
 
 		for (GameEngineTransform* Child : Childs)
 		{

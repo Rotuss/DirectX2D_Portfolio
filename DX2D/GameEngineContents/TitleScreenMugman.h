@@ -23,8 +23,5 @@ protected:
 
 private:
 	GameEngineTextureRenderer*	Renderer;
-	bool						ReverseEvent;
-
-	void EndFunction(const FrameAnimation_DESC& _Info);
 };
 
