@@ -236,6 +236,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="WorldMapBackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="WorldMapLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp">
@@ -317,6 +325,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="UIMaster.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="WorldMapBackGround.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="WorldMapLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

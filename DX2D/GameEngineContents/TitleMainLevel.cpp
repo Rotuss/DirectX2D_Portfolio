@@ -29,6 +29,11 @@ void TitleMainLevel::Start()
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');
 	}
 
+	if (false == GameEngineInput::GetInst()->IsKey("ChangeNextWorld"))
+	{
+		GameEngineInput::GetInst()->CreateKey("ChangeNextWorld", 'P');
+	}
+
 	if (false == GameEngineInput::GetInst()->IsKey("Select"))
 	{
 		GameEngineInput::GetInst()->CreateKey("Select", 'Z');
@@ -77,6 +82,11 @@ void TitleMainLevel::Update(float _DeltaTime)
 	if (GameEngineInput::GetInst()->IsDown("FreeCameaOnOff"))
 	{
 		GetMainCameraActor()->FreeCameraModeOnOff();
+	}
+
+	if (GameEngineInput::GetInst()->IsDown("ChangeNextWorld"))
+	{
+		GEngine::ChangeLevel("World");
 	}
 
 	if (GameEngineInput::GetInst()->IsDown("Select"))

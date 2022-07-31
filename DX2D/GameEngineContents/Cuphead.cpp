@@ -3,6 +3,7 @@
 #include "MDHRLogoLevel.h"
 #include "TitleLevel.h"
 #include "TitleMainLevel.h"
+#include "WorldMapLevel.h"
 
 #pragma comment(lib, "GameEngineBase.lib")
 
@@ -63,11 +64,28 @@ void Cuphead::Start()
 		}
 	}
 
+	{
+		GameEngineDirectory Dir;
+
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Texture");
+		Dir.Move("World");
+
+		std::vector<GameEngineFile> TS = Dir.GetAllFile();
+
+		for (size_t i = 0; i < TS.size(); i++)
+		{
+			GameEngineTexture::Load(TS[i].GetFullPath());
+		}
+	}
+
 	CreateLevel<MDHRLogoLevel>("MDHRLogo");
 	CreateLevel<TitleLevel>("Title");
 	CreateLevel<TitleMainLevel>("TitleMain");
+	CreateLevel<WorldMapLevel>("World");
 
-	ChangeLevel("TitleMain");
+	ChangeLevel("World");
 
 	//GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
 }

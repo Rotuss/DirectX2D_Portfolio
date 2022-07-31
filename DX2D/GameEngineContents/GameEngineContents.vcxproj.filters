@@ -58,6 +58,12 @@
     <ClInclude Include="TitleStartUI.h">
       <Filter>Actor\Title</Filter>
     </ClInclude>
+    <ClInclude Include="WorldMapLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMapBackGround.h">
+      <Filter>Actor\World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -116,6 +122,12 @@
     <ClCompile Include="TitleStartUI.cpp">
       <Filter>Actor\Title</Filter>
     </ClCompile>
+    <ClCompile Include="WorldMapLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMapBackGround.cpp">
+      <Filter>Actor\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Actor">
@@ -132,6 +144,9 @@
     </Filter>
     <Filter Include="PreCompile">
       <UniqueIdentifier>{cfa916e7-4440-4d6c-b89c-b0d4bbe93dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\World">
+      <UniqueIdentifier>{81a922c8-8dbd-4f8e-8af2-a17e3c8becd0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

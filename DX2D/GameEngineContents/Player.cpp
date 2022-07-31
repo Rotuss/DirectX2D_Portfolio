@@ -9,7 +9,7 @@
 
 Player::Player() 
 	: Renderer(nullptr)
-	, Speed(50.0f)
+	, Speed(1000.0f)
 	, LRCheck(true)
 {
 }
@@ -24,17 +24,15 @@ void Player::Start()
 	{
 		GameEngineInput::GetInst()->CreateKey("PlayerLeft", VK_NUMPAD4);
 		GameEngineInput::GetInst()->CreateKey("PlayerRight", VK_NUMPAD6);
-		GameEngineInput::GetInst()->CreateKey("PlayerUp", VK_NUMPAD9);
-		GameEngineInput::GetInst()->CreateKey("PlayerDown", VK_NUMPAD7);
+		GameEngineInput::GetInst()->CreateKey("PlayerUp", VK_NUMPAD8);
+		GameEngineInput::GetInst()->CreateKey("PlayerDown", VK_NUMPAD5);
 		GameEngineInput::GetInst()->CreateKey("PlayerForward", VK_NUMPAD1);
 		GameEngineInput::GetInst()->CreateKey("PlayerBack", VK_NUMPAD2);
 	}
 
-	GetTransform().SetLocalScale({ 1, 1, 1 });
-
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->GetTransform().SetLocalScale({ 100, 100, 100 });
+		Renderer->GetTransform().SetLocalScale({ 100, 100, 0 });
 		Renderer->SetTexture("Cuphead_test.png");
 		
 		/*GameEngineDirectory Dir;
@@ -46,10 +44,10 @@ void Player::Start()
 
 		GameEngineFolderTexture::Load(Dir.GetFullPath());*/
 
-		Renderer->CreateFrameAnimationFolder("test", FrameAnimation_DESC("Chalice", 0.1f, true));
-		Renderer->ChangeFrameAnimation("test");
-		Renderer->AnimationBindEnd("Test", &Player::TestFunction, this);
-		Renderer->ScaleToTexture();
+		//Renderer->CreateFrameAnimationFolder("test", FrameAnimation_DESC("Chalice", 0.1f, true));
+		//Renderer->ChangeFrameAnimation("test");
+		//Renderer->AnimationBindEnd("Test", &Player::TestFunction, this);
+		//Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 	}
 }
