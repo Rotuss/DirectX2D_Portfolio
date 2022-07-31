@@ -16,19 +16,8 @@ void TitleScreenBackGround::Start()
 
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-
-		GameEngineDirectory Dir;
-		Dir.MoveParentToExitsChildDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Texture");
-		Dir.Move("TitleScreen");
-		Dir.Move("BackGround");
-
-		GameEngineFolderTexture::Load(Dir.GetFullPath());
-
 		Renderer->SetTexture("title_screen_background.png");
 		Renderer->ScaleToTexture();
-		Renderer->SetPivot(PIVOTMODE::CENTER);
 	}
 }
 

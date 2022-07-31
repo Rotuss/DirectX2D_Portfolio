@@ -14,18 +14,8 @@ TitleLogo::~TitleLogo()
 
 void TitleLogo::Start()
 {
-	GetTransform().SetLocalScale({ 1, 1, 1 });
-
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-
-		GameEngineDirectory Dir;
-		Dir.MoveParentToExitsChildDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Texture");
-		Dir.Move("MDHR_Logo");
-
-		GameEngineFolderTexture::Load(Dir.GetFullPath());
 
 		Renderer->CreateFrameAnimationFolder("Logo", FrameAnimation_DESC("MDHR_Logo", 0.05f, false));
 		Renderer->ChangeFrameAnimation("Logo");
@@ -41,8 +31,6 @@ void TitleLogo::Update(float _DeltaTime)
 	{
 		return;
 	}
-
-	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
 }
 
 void TitleLogo::End()

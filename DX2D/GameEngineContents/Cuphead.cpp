@@ -2,6 +2,7 @@
 #include "Cuphead.h"
 #include "MDHRLogoLevel.h"
 #include "TitleLevel.h"
+#include "TitleMainLevel.h"
 
 #pragma comment(lib, "GameEngineBase.lib")
 
@@ -16,6 +17,21 @@ Cuphead::~Cuphead()
 
 void Cuphead::Start()
 {
+	
+	GameEngineDirectory Dir;
+
+	Dir.MoveParentToExitsChildDirectory("ContentResources");
+	Dir.Move("ContentResources");
+	Dir.Move("Texture");
+
+	std::vector<GameEngineDirectory> Tmp = Dir.GetRecursiveAllDirectory();
+
+	for (GameEngineDirectory Test : Tmp)
+	{
+		GameEngineFolderTexture::Load(Test.GetFullPath());
+	}
+	
+
 	{
 		GameEngineDirectory Dir;
 
@@ -23,11 +39,11 @@ void Cuphead::Start()
 		Dir.Move("ContentResources");
 		Dir.Move("Texture");
 
-		std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
+		std::vector<GameEngineFile> Common_ = Dir.GetAllFile();
 
-		for (size_t i = 0; i < Shaders.size(); i++)
+		for (size_t i = 0; i < Common_.size(); i++)
 		{
-			GameEngineTexture::Load(Shaders[i].GetFullPath());
+			GameEngineTexture::Load(Common_[i].GetFullPath());
 		}
 	}
 
@@ -39,37 +55,21 @@ void Cuphead::Start()
 		Dir.Move("Texture");
 		Dir.Move("TitleScreen");
 
-		std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
+		std::vector<GameEngineFile> TS = Dir.GetAllFile();
 
-		for (size_t i = 0; i < Shaders.size(); i++)
+		for (size_t i = 0; i < TS.size(); i++)
 		{
-			GameEngineTexture::Load(Shaders[i].GetFullPath());
-		}
-	}
-
-	{
-		GameEngineDirectory Dir;
-
-		Dir.MoveParentToExitsChildDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Texture");
-		Dir.Move("TitleScreen");
-		Dir.Move("BackGround");
-
-		std::vector<GameEngineFile> Shaders = Dir.GetAllFile();
-
-		for (size_t i = 0; i < Shaders.size(); i++)
-		{
-			GameEngineTexture::Load(Shaders[i].GetFullPath());
+			GameEngineTexture::Load(TS[i].GetFullPath());
 		}
 	}
 
 	CreateLevel<MDHRLogoLevel>("MDHRLogo");
 	CreateLevel<TitleLevel>("Title");
+	CreateLevel<TitleMainLevel>("TitleMain");
 
-	ChangeLevel("MDHRLogo");
+	ChangeLevel("TitleMain");
 
-	GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
+	//GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
 }
 
 void Cuphead::Update(float _DeltaTime)

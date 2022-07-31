@@ -200,6 +200,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="TItleMainBackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleMainLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="TitleScreenBackGround.h">
       <SubType>
       </SubType>
@@ -217,6 +225,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TitleScreenMugman.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleStartUI.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -272,6 +284,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="TItleMainBackGround.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleMainLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TitleScreenBackGround.cpp">
       <SubType>
       </SubType>
@@ -289,6 +309,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TitleScreenMugman.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleStartUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>

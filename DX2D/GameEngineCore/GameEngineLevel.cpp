@@ -92,7 +92,7 @@ void GameEngineLevel::RemoveActor(GameEngineActor* _Actor)
 {
 	if (AllActors.end() == AllActors.find(_Actor->GetOrder()))
 	{
-		MsgBoxAssert("이액터를 루트가 아닙니다 삭제할수 없습니다.");
+		MsgBoxAssert("이 액터는 루트가 아닙니다. 삭제할 수 없습니다.");
 	}
 
 	AllActors[_Actor->GetOrder()].remove(_Actor);

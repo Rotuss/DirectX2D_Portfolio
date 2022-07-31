@@ -37,14 +37,14 @@ void Player::Start()
 		Renderer->GetTransform().SetLocalScale({ 100, 100, 100 });
 		Renderer->SetTexture("Cuphead_test.png");
 		
-		GameEngineDirectory Dir;
+		/*GameEngineDirectory Dir;
 		Dir.MoveParentToExitsChildDirectory("ContentResources");
 		Dir.Move("ContentResources");
 		Dir.Move("Texture");
 		Dir.Move("TitleScreen");
 		Dir.Move("Chalice");
 
-		GameEngineFolderTexture::Load(Dir.GetFullPath());
+		GameEngineFolderTexture::Load(Dir.GetFullPath());*/
 
 		Renderer->CreateFrameAnimationFolder("test", FrameAnimation_DESC("Chalice", 0.1f, true));
 		Renderer->ChangeFrameAnimation("test");

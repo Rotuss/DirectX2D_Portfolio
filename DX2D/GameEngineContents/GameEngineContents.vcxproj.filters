@@ -49,6 +49,15 @@
     <ClInclude Include="PreCompile.h">
       <Filter>PreCompile</Filter>
     </ClInclude>
+    <ClInclude Include="TitleMainLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TItleMainBackGround.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleStartUI.h">
+      <Filter>Actor\Title</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -97,6 +106,15 @@
     </ClCompile>
     <ClCompile Include="PreCompile.cpp">
       <Filter>PreCompile</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleMainLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TItleMainBackGround.cpp">
+      <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleStartUI.cpp">
+      <Filter>Actor\Title</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

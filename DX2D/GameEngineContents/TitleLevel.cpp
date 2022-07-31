@@ -6,7 +6,8 @@
 #include "TitleScreenMugman.h"
 #include "TitleScreenChips.h"
 #include "Iris.h"
-#include "HourGlass.h"
+//#include "HourGlass.h"
+#include "TitleMainLevel.h"
 #include "GlobalContents.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineCore/GEngine.h>
@@ -61,5 +62,6 @@ void TitleLevel::End()
 void TitleLevel::EndFunction(const FrameAnimation_DESC& _Info)
 {
 	//레벨 체인지(메인타이틀)
-	HourGlass* Hourglass = CreateActor<HourGlass>(OBJECTORDER::Title);
+	//HourGlass* Hourglass = CreateActor<HourGlass>(OBJECTORDER::Title);
+	GEngine::ChangeLevel("TitleMain");
 }
