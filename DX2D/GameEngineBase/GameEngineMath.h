@@ -235,7 +235,11 @@ public:
 
 	// Color
 	static const float4 BLUE;
+	static const float4 GREEN;
 	static const float4 RED;
+	static const float4 YELLOW;
+	static const float4 MAGENTA;
+	static const float4 CYAN;
 
 public:
 	union

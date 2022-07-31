@@ -32,24 +32,22 @@ void Player::Start()
 
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->GetTransform().SetLocalScale({ 100, 100, 0 });
+		//Renderer->GetTransform().SetLocalScale({ 100, 100, 1 });
 		Renderer->SetTexture("Cuphead_test.png");
 		
-		/*GameEngineDirectory Dir;
-		Dir.MoveParentToExitsChildDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Texture");
-		Dir.Move("TitleScreen");
-		Dir.Move("Chalice");
-
-		GameEngineFolderTexture::Load(Dir.GetFullPath());*/
-
-		//Renderer->CreateFrameAnimationFolder("test", FrameAnimation_DESC("Chalice", 0.1f, true));
-		//Renderer->ChangeFrameAnimation("test");
-		//Renderer->AnimationBindEnd("Test", &Player::TestFunction, this);
+		Renderer->CreateFrameAnimationFolder("Idle", FrameAnimation_DESC("Chalice", 0, 0, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("Move", FrameAnimation_DESC("Chalice", 0.1f, true));
+		Renderer->ChangeFrameAnimation("Idle");
+		//Renderer->AnimationBindEnd("Move", &Player::TestFunction, this);
 		//Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
+		Renderer->GetTransform().SetLocalScale({ 100, 100, 0 });
+		//Renderer->GetTransform().SetLocalPosition({ 300, -1430 });
 	}
+
+	StateManager.CreateStateMember("Idle", this, &Player::IdleUpdate, &Player::IdleStart);
+	StateManager.CreateStateMember("Move", this, &Player::MoveUpdate, &Player::MoveStart);
+	StateManager.ChangeState("Idle");
 }
 
 void Player::Update(float _DeltaTime)
@@ -59,6 +57,57 @@ void Player::Update(float _DeltaTime)
 		return;
 	}
 	
+	StateManager.Update(_DeltaTime);
+}
+
+void Player::TestFunction(const FrameAnimation_DESC& _Info)
+{
+	if (true == LRCheck)
+	{
+		Renderer->GetTransform().PixLocalNegativeX();
+		//Renderer->GetTransform().PixLocalPositiveX();
+		LRCheck = false;
+	}
+	else if (false == LRCheck)
+	{
+		//Renderer->GetTransform().PixLocalNegativeX();
+		Renderer->GetTransform().PixLocalPositiveX();
+		LRCheck = true;
+	}
+}
+
+void Player::IdleStart(const StateInfo& _Info)
+{
+	Renderer->ChangeFrameAnimation("Idle");
+}
+
+void Player::IdleUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft")
+		|| true == GameEngineInput::GetInst()->IsPress("PlayerRight")
+		|| true == GameEngineInput::GetInst()->IsPress("PlayerUp")
+		|| true == GameEngineInput::GetInst()->IsPress("PlayerDown"))
+	{
+		StateManager.ChangeState("Move");
+	}
+}
+
+void Player::MoveStart(const StateInfo& _Info)
+{
+	Renderer->ChangeFrameAnimation("Move");
+}
+
+void Player::MoveUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+	if (false == GameEngineInput::GetInst()->IsPress("PlayerLeft")
+		&& false == GameEngineInput::GetInst()->IsPress("PlayerRight")
+		&& false == GameEngineInput::GetInst()->IsPress("PlayerUp")
+		&& false == GameEngineInput::GetInst()->IsPress("PlayerDown"))
+	{
+		StateManager.ChangeState("Idle");
+		return;
+	}
+
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetLeftVector() * Speed * _DeltaTime);
@@ -78,31 +127,6 @@ void Player::Update(float _DeltaTime)
 		GetTransform().SetWorldMove(GetTransform().GetDownVector() * Speed * _DeltaTime);
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("PlayerForward"))
-	{
-		GetTransform().SetWorldMove(GetTransform().GetForwardVector() * Speed * _DeltaTime);
-	}
-	if (true == GameEngineInput::GetInst()->IsPress("PlayerBack"))
-	{
-		GetTransform().SetWorldMove(GetTransform().GetBackVector() * Speed * _DeltaTime);
-	}
-	
 	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
-}
-
-void Player::TestFunction(const FrameAnimation_DESC& _Info)
-{
-	if (true == LRCheck)
-	{
-		Renderer->GetTransform().PixLocalNegativeX();
-		//Renderer->GetTransform().PixLocalPositiveX();
-		LRCheck = false;
-	}
-	else if (false == LRCheck)
-	{
-		//Renderer->GetTransform().PixLocalNegativeX();
-		Renderer->GetTransform().PixLocalPositiveX();
-		LRCheck = true;
-	}
 }
 

@@ -27,7 +27,15 @@ protected:
 
 	void TestFunction(const FrameAnimation_DESC& _Info);
 
+	void IdleStart(const StateInfo& _Info);
+	void IdleUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void MoveStart(const StateInfo& _Info);
+	void MoveUpdate(float _DeltaTime, const StateInfo& _Info);
+
 private:
+	GameEngineStateManager StateManager;
+	
 	float Speed;
 	bool LRCheck;
 };

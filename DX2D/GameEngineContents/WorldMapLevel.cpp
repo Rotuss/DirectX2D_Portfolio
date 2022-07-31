@@ -257,6 +257,10 @@ void WorldMapLevel::Start()
 
 void WorldMapLevel::Update(float _DeltaTime)
 {
+	if (GameEngineInput::GetInst()->IsDown("FreeCameaOnOff"))
+	{
+		GetMainCameraActor()->FreeCameraModeOnOff();
+	}
 }
 
 void WorldMapLevel::End()
