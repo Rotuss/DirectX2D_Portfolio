@@ -110,6 +110,16 @@ public:
 		}
 	}
 
+	std::string GetCurStateStateName()
+	{
+		if (nullptr == CurState)
+		{
+			return "";
+		}
+
+		return CurState->GetNameCopy();
+	}
+
 protected:
 
 private:

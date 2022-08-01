@@ -98,6 +98,49 @@ void GameEngineLevel::RemoveActor(GameEngineActor* _Actor)
 	AllActors[_Actor->GetOrder()].remove(_Actor);
 }
 
+void GameEngineLevel::OverChildMove(GameEngineLevel* _NextLevel)
+{
+	std::map<int, std::list<GameEngineActor*>>::iterator StartGroupIter = AllActors.begin();
+	std::map<int, std::list<GameEngineActor*>>::iterator EndGroupIter = AllActors.end();
+
+	std::list<GameEngineActor*> OverList;
+
+	for (; StartGroupIter != EndGroupIter; ++StartGroupIter)
+	{
+		std::list<GameEngineActor*>& Group = StartGroupIter->second;
+
+		std::list<GameEngineActor*>::iterator GroupStart = Group.begin();
+		std::list<GameEngineActor*>::iterator GroupEnd = Group.end();
+		for (; GroupStart != GroupEnd; )
+		{
+			if (true == (*GroupStart)->IsLevelOver)
+			{
+				OverList.push_back((*GroupStart));
+				GroupStart = Group.erase(GroupStart);
+			}
+			else
+			{
+				++GroupStart;
+			}
+		}
+	}
+
+	for (GameEngineActor* OverActor : OverList)
+	{
+		_NextLevel->AllActors[OverActor->GetOrder()].push_back(OverActor);
+	}
+
+	for (size_t i = 0; i < Cameras.size(); i++)
+	{
+		if (nullptr == Cameras[i])
+		{
+			continue;
+		}
+
+		Cameras[i]->OverRenderer(_NextLevel->Cameras[i]);
+	}
+}
+
 void GameEngineLevel::PushCamera(GameEngineCamera* _Camera, int _CameraOrder)
 {
 	Cameras.resize(_CameraOrder + 1);

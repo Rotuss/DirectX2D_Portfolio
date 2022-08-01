@@ -24,4 +24,7 @@
 #include <GameEngineBase/GameEngineDebug.h>
 
 // core
+#include <GameEngineCore/GEngine.h>
 #include <GameEngineCore/CoreMinimal.h>
+
+#include "GlobalContents.h"

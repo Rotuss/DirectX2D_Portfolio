@@ -9,6 +9,12 @@ enum class PIVOTMODE
 	CUSTOM,
 };
 
+enum class SCALEMODE
+{
+	IMAGE,
+	CUSTOM,
+};
+
 class FrameAnimation_DESC
 {
 public:
@@ -98,6 +104,21 @@ public:
 	GameEngineTextureRenderer& operator=(GameEngineTextureRenderer&& _Other) noexcept = delete;
 
 	GameEngineTexture* GetCurTexture();
+
+	void SetScaleModeImage()
+	{
+		ScaleMode = SCALEMODE::IMAGE;
+	}
+
+	void SetScaleRatio(float _Scale)
+	{
+		ScaleRatio = _Scale;
+	}
+
+	float GetScaleRatio()
+	{
+		return ScaleRatio;
+	}
 
 	void SetSamplingModePoint();
 	void SetSamplingModeLiner();
@@ -230,6 +251,7 @@ public:
 	}
 
 	void ScaleToTexture();
+	void ScaleToCutTexture(int _Index);
 	void CurAnimationReset();
 	void CurAnimationSetStartPivotFrame(int SetFrame);
 
@@ -240,10 +262,12 @@ protected:
 	void SetTextureRendererSetting();
 
 private:
-	PIVOTMODE PivotMode;
-	
-	GameEngineTexture* CurTex;
-	float4 FrameData;
+	PIVOTMODE	PivotMode;
+	SCALEMODE	ScaleMode;
+	float		ScaleRatio;
+
+	GameEngineTexture*	CurTex;
+	float4				FrameData;
 
 	std::map<std::string, FrameAnimation> FrameAni;
 	FrameAnimation* CurAni;

@@ -4,9 +4,11 @@
 #include "GameEngineFolderTexture.h"
 
 GameEngineTextureRenderer::GameEngineTextureRenderer() 
-	: CurTex(nullptr)
+	: PivotMode(PIVOTMODE::CUSTOM)
+	, ScaleMode(SCALEMODE::CUSTOM)
+	, ScaleRatio(1.0f)
+	, CurTex(nullptr)
 	, CurAni(nullptr)
-	, PivotMode(PIVOTMODE::CUSTOM)
 {
 }
 
@@ -165,7 +167,12 @@ void GameEngineTextureRenderer::ChangeFrameAnimation(const std::string& _Animati
 
 void GameEngineTextureRenderer::ScaleToTexture()
 {
-	GetTransform().SetLocalScale(CurTex->GetScale());
+	GetTransform().SetLocalScale(CurTex->GetScale() * ScaleRatio);
+}
+
+void GameEngineTextureRenderer::ScaleToCutTexture(int _Index)
+{
+	GetTransform().SetLocalScale(CurTex->GetCutScale(_Index) * ScaleRatio);
 }
 
 void GameEngineTextureRenderer::CurAnimationReset()
@@ -268,6 +275,15 @@ void FrameAnimation::Update(float _DeltaTime)
 			ParentRenderer->CurTex = Texture;
 			ParentRenderer->SetTexture(Texture, Info.CurFrame);
 			ParentRenderer->SetPivot();
+
+			if (Texture->GetCutCount() != 0)
+			{
+				ParentRenderer->ScaleToCutTexture(Info.CurFrame);
+			}
+			else
+			{
+				ParentRenderer->ScaleToTexture();
+			}
 		}
 		else if (nullptr != FolderTexture)
 		{
@@ -275,6 +291,11 @@ void FrameAnimation::Update(float _DeltaTime)
 			ParentRenderer->CurTex = FolderTexture->GetTexture(Info.CurFrame);
 			ParentRenderer->SetTexture(FolderTexture->GetTexture(Info.CurFrame));
 			ParentRenderer->SetPivot();
+
+			if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
+			{
+				ParentRenderer->ScaleToTexture();
+			}
 		}
 		else
 		{

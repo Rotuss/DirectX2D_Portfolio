@@ -126,6 +126,7 @@ private:
 	void ActorUpdate(float _DeltaTime);
 	void LevelUpdate(float _DeltaTime);
 	void RemoveActor(GameEngineActor* _Actor);
+	void OverChildMove(GameEngineLevel* _NextLevel);
 
 private:
 	std::vector<GameEngineCamera*> Cameras;

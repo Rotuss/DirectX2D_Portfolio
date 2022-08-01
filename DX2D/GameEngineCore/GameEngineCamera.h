@@ -71,6 +71,7 @@ private:
 	std::map<int, std::list<class GameEngineRenderer*>> AllRenderer_;
 
 	void Render(float _DeltaTime);
+	void OverRenderer(GameEngineCamera* _NextOver);
 	void PushRenderer(GameEngineRenderer* _Renderer);
 	void Release(float _DelataTime);
 	void Update(float _DeltaTime) override;

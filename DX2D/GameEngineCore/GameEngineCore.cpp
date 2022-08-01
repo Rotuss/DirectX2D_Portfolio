@@ -78,6 +78,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 		if (nullptr != CurrentLevel)
 		{
 			CurrentLevel->OffEvent();
+			CurrentLevel->OverChildMove(NextLevel);
 		}
 
 		CurrentLevel = NextLevel;

@@ -58,6 +58,16 @@ public:
 		return { static_cast<float>(Desc.Width), static_cast<float>(Desc.Height) };
 	}
 
+	float4 GetCutScale(int _Index)
+	{
+		return { CutData[_Index].SizeX * static_cast<float>(Desc.Width), CutData[_Index].SizeY * static_cast<float>(Desc.Height) };
+	}
+
+	size_t GetCutCount()
+	{
+		return CutData.size();
+	}
+
 	float4 GetPixel(int _x, int _y);
 
 	void TextureLoad(const std::string& _Path);

@@ -114,6 +114,40 @@ void GameEngineCamera::Render(float _DeltaTime)
 	}
 }
 
+void GameEngineCamera::OverRenderer(GameEngineCamera* _NextOver)
+{
+	if (nullptr == _NextOver)
+	{
+		MsgBoxAssert("Next Camera is nullptr.");
+		return;
+	}
+
+	std::map<int, std::list<GameEngineRenderer*>>::iterator StartGroupIter = AllRenderer_.begin();
+	std::map<int, std::list<GameEngineRenderer*>>::iterator EndGroupIter = AllRenderer_.end();
+
+	for (; StartGroupIter != EndGroupIter; ++StartGroupIter)
+	{
+		std::list<GameEngineRenderer*>& Group = StartGroupIter->second;
+		std::list<GameEngineRenderer*>::iterator GroupStart = Group.begin();
+		std::list<GameEngineRenderer*>::iterator GroupEnd = Group.end();
+
+		for (; GroupStart != GroupEnd; )
+		{
+			GameEngineActor* Root = (*GroupStart)->GetRoot<GameEngineActor>();
+
+			if (true == Root->IsLevelOver)
+			{
+				_NextOver->AllRenderer_[StartGroupIter->first].push_back(*GroupStart);
+				GroupStart = Group.erase(GroupStart);
+			}
+			else
+			{
+				++GroupStart;
+			}
+		}
+	}
+}
+
 void GameEngineCamera::PushRenderer(GameEngineRenderer* _Renderer)
 {
 	AllRenderer_[_Renderer->GetOrder()].push_back(_Renderer);
