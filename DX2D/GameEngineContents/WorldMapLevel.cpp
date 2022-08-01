@@ -3,6 +3,7 @@
 #include "WorldMapBackGround.h"
 #include "Player.h"
 #include "GlobalContents.h"
+#include <GameEngineCore/GEngine.h>
 
 WorldMapLevel::WorldMapLevel() 
 	: Renderer(nullptr)
@@ -19,6 +20,11 @@ void WorldMapLevel::Start()
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');
+	}
+
+	if (false == GameEngineInput::GetInst()->IsKey("ChangeTutorial"))
+	{
+		GameEngineInput::GetInst()->CreateKey("ChangeTutorial", 'T');
 	}
 
 	if (false == GameEngineInput::GetInst()->IsKey("Select"))
@@ -106,7 +112,7 @@ void WorldMapLevel::Start()
 		Renderer->GetTransform().SetLocalPosition({ 3280, -650 });
 	}
 
-	// 일부 구조물
+	// 기타 구조물
 	{
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("bakery_neighbor.png");
@@ -260,6 +266,11 @@ void WorldMapLevel::Update(float _DeltaTime)
 	if (GameEngineInput::GetInst()->IsDown("FreeCameaOnOff"))
 	{
 		GetMainCameraActor()->FreeCameraModeOnOff();
+	}
+
+	if (GameEngineInput::GetInst()->IsDown("ChangeTutorial"))
+	{
+		GEngine::ChangeLevel("Tutorial");
 	}
 }
 

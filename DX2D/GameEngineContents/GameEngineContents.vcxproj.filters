@@ -64,6 +64,12 @@
     <ClInclude Include="WorldMapBackGround.h">
       <Filter>Actor\World</Filter>
     </ClInclude>
+    <ClInclude Include="TutorialLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialBackGround.h">
+      <Filter>Actor\Tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -128,6 +134,12 @@
     <ClCompile Include="WorldMapBackGround.cpp">
       <Filter>Actor\World</Filter>
     </ClCompile>
+    <ClCompile Include="TutorialLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialBackGround.cpp">
+      <Filter>Actor\Tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Actor">
@@ -147,6 +159,12 @@
     </Filter>
     <Filter Include="Actor\World">
       <UniqueIdentifier>{81a922c8-8dbd-4f8e-8af2-a17e3c8becd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Tutorial">
+      <UniqueIdentifier>{2f542b73-3832-4fc4-be0d-1319d31a6723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\NPC">
+      <UniqueIdentifier>{a7b6d210-c36d-4324-8a49-0386b2af1d84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

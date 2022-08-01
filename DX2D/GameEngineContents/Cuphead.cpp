@@ -4,6 +4,7 @@
 #include "TitleLevel.h"
 #include "TitleMainLevel.h"
 #include "WorldMapLevel.h"
+#include "TutorialLevel.h"
 
 #pragma comment(lib, "GameEngineBase.lib")
 
@@ -27,9 +28,9 @@ void Cuphead::Start()
 
 	std::vector<GameEngineDirectory> Tmp = Dir.GetRecursiveAllDirectory();
 
-	for (GameEngineDirectory Test : Tmp)
+	for (GameEngineDirectory Temp : Tmp)
 	{
-		GameEngineFolderTexture::Load(Test.GetFullPath());
+		GameEngineFolderTexture::Load(Temp.GetFullPath());
 	}
 	
 
@@ -56,11 +57,11 @@ void Cuphead::Start()
 		Dir.Move("Texture");
 		Dir.Move("TitleScreen");
 
-		std::vector<GameEngineFile> TS = Dir.GetAllFile();
+		std::vector<GameEngineFile> Tmp = Dir.GetAllFile();
 
-		for (size_t i = 0; i < TS.size(); i++)
+		for (size_t i = 0; i < Tmp.size(); i++)
 		{
-			GameEngineTexture::Load(TS[i].GetFullPath());
+			GameEngineTexture::Load(Tmp[i].GetFullPath());
 		}
 	}
 
@@ -72,11 +73,11 @@ void Cuphead::Start()
 		Dir.Move("Texture");
 		Dir.Move("World");
 
-		std::vector<GameEngineFile> TS = Dir.GetAllFile();
+		std::vector<GameEngineFile> Tmp = Dir.GetAllFile();
 
-		for (size_t i = 0; i < TS.size(); i++)
+		for (size_t i = 0; i < Tmp.size(); i++)
 		{
-			GameEngineTexture::Load(TS[i].GetFullPath());
+			GameEngineTexture::Load(Tmp[i].GetFullPath());
 		}
 	}
 
@@ -84,6 +85,7 @@ void Cuphead::Start()
 	CreateLevel<TitleLevel>("Title");
 	CreateLevel<TitleMainLevel>("TitleMain");
 	CreateLevel<WorldMapLevel>("World");
+	CreateLevel<TutorialLevel>("Tutorial");
 
 	ChangeLevel("World");
 

@@ -232,6 +232,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="TutorialBackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TutorialLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UIMaster.h">
       <SubType>
       </SubType>
@@ -321,6 +329,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TitleStartUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TutorialBackGround.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TutorialLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
