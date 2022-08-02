@@ -22,5 +22,11 @@ protected:
 
 private:
 	GameEngineTextureRenderer* Renderer;
+
+	GameEngineTextureRenderer* ParryA;
+	GameEngineTextureRenderer* ParryB;
+	GameEngineTextureRenderer* ParryC;
+
+	void BGEndFunction(const FrameAnimation_DESC& _Info);
 };
 

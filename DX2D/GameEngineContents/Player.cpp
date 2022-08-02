@@ -58,6 +58,8 @@ void Player::Update(float _DeltaTime)
 	}
 	
 	StateManager.Update(_DeltaTime);
+
+	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
 }
 
 void Player::TestFunction(const FrameAnimation_DESC& _Info)
@@ -126,7 +128,5 @@ void Player::MoveUpdate(float _DeltaTime, const StateInfo& _Info)
 	{
 		GetTransform().SetWorldMove(GetTransform().GetDownVector() * Speed * _DeltaTime);
 	}
-
-	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
 }
 

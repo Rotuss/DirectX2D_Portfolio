@@ -39,8 +39,8 @@ void WorldMapLevel::Start()
 
 	WorldMapBackGround* WorldBackGround = CreateActor<WorldMapBackGround>(OBJECTORDER::World);
 	// Test
-	//Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
-	//NewPlayer->GetTransform().SetLocalPosition({ 300, -1430 });
+	Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
+	NewPlayer->GetTransform().SetLocalPosition({ 300, -1430, -3 });
 
 	{
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();

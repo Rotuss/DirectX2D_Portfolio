@@ -87,7 +87,7 @@ void Cuphead::Start()
 	CreateLevel<WorldMapLevel>("World");
 	CreateLevel<TutorialLevel>("Tutorial");
 
-	ChangeLevel("World");
+	ChangeLevel("Tutorial");
 
 	//GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
 }
