@@ -17,6 +17,11 @@ GameEngineRenderer::~GameEngineRenderer()
 {
 }
 
+void GameEngineRenderer::ChangeCamera(CAMERAORDER _Order)
+{
+	GetActor()->GetLevel()->PushRenderer(this, _Order);
+}
+
 void GameEngineRenderer::Start()
 {
 }

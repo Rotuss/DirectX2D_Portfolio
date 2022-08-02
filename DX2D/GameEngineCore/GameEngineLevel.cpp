@@ -150,6 +150,10 @@ void GameEngineLevel::PushCamera(GameEngineCamera* _Camera, int _CameraOrder)
 
 void GameEngineLevel::PushRenderer(GameEngineRenderer* _Renderer, int _CameraOrder)
 {
+	Cameras[static_cast<UINT>(_Renderer->CameraOrder)]->AllRenderer_[_Renderer->GetOrder()].remove(_Renderer);
+
+	_Renderer->CameraOrder = static_cast<CAMERAORDER>(_CameraOrder);
+	
 	Cameras[_CameraOrder]->PushRenderer(_Renderer);
 }
 

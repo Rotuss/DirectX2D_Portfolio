@@ -234,6 +234,8 @@ public:
 	static const float4 ONE;
 
 	// Color
+	static const float4 WHITE;
+	static const float4 BLACK;
 	static const float4 BLUE;
 	static const float4 GREEN;
 	static const float4 RED;
@@ -544,6 +546,19 @@ public:
 	float4 TransformCoordReturn(const float4x4& _Value);
 	void TransformNormal(const float4x4& _Value);
 	float4 TransformNormalReturn(const float4x4& _Value);
+
+public:
+	UINT GetUIntColor() const
+	{
+		UINT Int;
+		char* ColorPtr = reinterpret_cast<char*>(&Int);
+		ColorPtr[0] = static_cast<int>(x * 255.0f);
+		ColorPtr[1] = static_cast<int>(y * 255.0f);
+		ColorPtr[2] = static_cast<int>(z * 255.0f);
+		ColorPtr[3] = static_cast<int>(w * 255.0f);
+
+		return Int;
+	}
 
 public:
 	float4()

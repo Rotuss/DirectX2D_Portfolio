@@ -22,6 +22,7 @@
 
 #include <GameEngineBase/GameEngineFile.h>
 #include <GameEngineBase/GameEngineDebug.h>
+#include <GameEngineBase/GameEngineSound.h>
 #include <GameEngineBase/GameEngineDirectory.h>
 
 #include "GameEngineLevel.h"

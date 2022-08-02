@@ -167,12 +167,36 @@ void GameEngineTextureRenderer::ChangeFrameAnimation(const std::string& _Animati
 
 void GameEngineTextureRenderer::ScaleToTexture()
 {
-	GetTransform().SetLocalScale(CurTex->GetScale() * ScaleRatio);
+	float4 Scale = CurTex->GetScale();
+
+	if (0 > GetTransform().GetLocalScale().x)
+	{
+		Scale = -Scale.x;
+	}
+
+	if (0 > GetTransform().GetLocalScale().y)
+	{
+		Scale = -Scale.y;
+	}
+
+	GetTransform().SetLocalScale(Scale * ScaleRatio);
 }
 
 void GameEngineTextureRenderer::ScaleToCutTexture(int _Index)
 {
-	GetTransform().SetLocalScale(CurTex->GetCutScale(_Index) * ScaleRatio);
+	float4 Scale = CurTex->GetCutScale(_Index);
+
+	if (0 > GetTransform().GetLocalScale().x)
+	{
+		Scale = -Scale.x;
+	}
+
+	if (0 > GetTransform().GetLocalScale().y)
+	{
+		Scale = -Scale.y;
+	}
+
+	GetTransform().SetLocalScale(Scale * ScaleRatio);
 }
 
 void GameEngineTextureRenderer::CurAnimationReset()
@@ -282,7 +306,10 @@ void FrameAnimation::Update(float _DeltaTime)
 			}
 			else
 			{
-				ParentRenderer->ScaleToTexture();
+				if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
+				{
+					ParentRenderer->ScaleToTexture();
+				}
 			}
 		}
 		else if (nullptr != FolderTexture)

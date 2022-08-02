@@ -276,6 +276,7 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineRasterizer::ResourcesDestroy();
 	GameEngineBlend::ResourcesDestroy();
 	GameEngineConstantBuffer::ResourcesDestroy();
+	GameEngineSound::ResourcesDestroy();
 
 	GameEngineDevice::Destroy();
 }
