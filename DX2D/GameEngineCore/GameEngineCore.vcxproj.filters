@@ -138,6 +138,9 @@
     <ClInclude Include="GameEngineStateManager.h">
       <Filter>Contents</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineCollision.h">
+      <Filter>Object\Component\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEngine.cpp" />
@@ -270,6 +273,9 @@
     <ClCompile Include="GameEngineStateManager.cpp">
       <Filter>Contents</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineCollision.cpp">
+      <Filter>Object\Component\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -340,6 +346,9 @@
     </Filter>
     <Filter Include="GUI\EngineGUIWindow">
       <UniqueIdentifier>{0485d9da-76db-4391-b1d2-4f8c5e7f3a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Collision">
+      <UniqueIdentifier>{303e6fac-a6d1-45c1-a19a-7f590a9c4600}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

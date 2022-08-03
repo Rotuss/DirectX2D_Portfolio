@@ -2,10 +2,6 @@
 #include "Player.h"
 #include "GlobalContents.h"
 #include <iostream>
-#include <GameEngineBase/GameEngineInput.h>
-#include <GameEngineCore/GameEngineLevel.h>
-#include <GameEngineCore/GameEngineDefaultRenderer.h>
-#include <GameEngineCore/GameEngineTextureRenderer.h>
 
 Player::Player() 
 	: Renderer(nullptr)
@@ -16,6 +12,12 @@ Player::Player()
 
 Player::~Player() 
 {
+}
+
+bool Player::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	_Other->GetActor()->Death();
+	return true;
 }
 
 void Player::Start()
@@ -43,6 +45,13 @@ void Player::Start()
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 		Renderer->GetTransform().SetLocalScale({ 100, 100, 0 });
 		//Renderer->GetTransform().SetLocalPosition({ 300, -1430 });
+
+		Collision = CreateComponent<GameEngineCollision>();
+		// Collision3D
+		//Collision->GetTransform().SetLocalScale({ 100.0f, 100.0f, 10000.0f });
+		// Collision2D
+		Collision->GetTransform().SetLocalScale({ 100.0f, 100.0f, 1.0f });
+		Collision->ChangeOrder(OBJECTORDER::Player);
 	}
 
 	StateManager.CreateStateMember("Idle", this, &Player::IdleUpdate, &Player::IdleStart);
@@ -60,6 +69,17 @@ void Player::Update(float _DeltaTime)
 	StateManager.Update(_DeltaTime);
 
 	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
+
+	// Collision3D
+	/*Collision->IsCollision(CollisionType::CT_OBB, OBJECTORDER::Monster, CollisionType::CT_OBB,
+		[](GameEngineCollision* _This, GameEngineCollision* _Other)
+		{
+			_Other->GetActor()->Death();
+			return true;
+		});*/
+
+	// Collision2D
+	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Monster, CollisionType::CT_OBB2D, std::bind(&Player::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void Player::TestFunction(const FrameAnimation_DESC& _Info)

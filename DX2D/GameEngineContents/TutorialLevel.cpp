@@ -46,6 +46,13 @@ void TutorialLevel::Start()
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
 	}
 
+	// Test
+	{
+		Monster* actor = CreateActor<Monster>(OBJECTORDER::Monster);
+		actor->GetTransform().SetLocalPosition({ 300.0f, 0.0f, 100.0f });
+		actor->GetTransform().SetWorldScale(float4(1.0f, 1.f, 1.0f));
+	}
+
 	{
 		ParryA = TutorialBG->CreateComponent<GameEngineTextureRenderer>();
 		ParryA->CreateFrameAnimationFolder("ParryWheatA", FrameAnimation_DESC("ParryWheatA", 0.1f, true));

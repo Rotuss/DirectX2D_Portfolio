@@ -23,6 +23,7 @@ class GameEngineCore;
 class GameEngineActor;
 class GameEngineCamera;
 class GameEngineRenderer;
+class GameEngineCollision;
 class GameEngineTransform;
 class GameEngineCameraActor;
 class GameEngineLevel :
@@ -33,6 +34,7 @@ class GameEngineLevel :
 	friend GameEngineActor;
 	friend GameEngineCamera;
 	friend GameEngineRenderer;
+	friend GameEngineCollision;
 
 public:
 	// constrcuter destructer
@@ -121,7 +123,9 @@ protected:
 
 private:
 	std::map<int, std::list<GameEngineActor*>> AllActors;
+	std::map<int, std::list<GameEngineCollision*>> AllCollisions;
 	std::list<GameEngineUpdateObject*> DeleteObject;
+	std::vector<GameEngineCamera*> Cameras;
 
 	void ActorUpdate(float _DeltaTime);
 	void LevelUpdate(float _DeltaTime);
@@ -129,8 +133,6 @@ private:
 	void OverChildMove(GameEngineLevel* _NextLevel);
 
 private:
-	std::vector<GameEngineCamera*> Cameras;
-
 	void PushCamera(GameEngineCamera* _Camera, CAMERAORDER _Order)
 	{
 		PushCamera(_Camera, static_cast<int>(_Order));
@@ -154,6 +156,8 @@ private:
 	void PushCamera(GameEngineCamera* _Camera, int _CameraOrder);
 
 	void PushRenderer(GameEngineRenderer* _Renderer, int _CameraOrder);
+
+	void PushCollision(GameEngineCollision* _Collision, int _Order);
 
 	void Render(float _DelataTime);
 

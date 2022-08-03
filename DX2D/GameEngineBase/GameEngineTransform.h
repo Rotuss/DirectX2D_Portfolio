@@ -5,12 +5,17 @@
 #include <GameEngineBase/GameEngineUpdateObject.h>
 #include "GameEngineMath.h"
 
-enum CollisionType
+enum class CollisionType
 {
+	CT_POINT2D,
+	CT_SPHERE2D,
+	CT_AABB2D,
+	CT_OBB2D,
 	CT_POINT,
 	CT_SPHERE,	// 정방원
 	CT_AABB,	// 회전하지 않은 박스
 	CT_OBB,		// 회전한 박스
+	CT_MAX,
 };
 
 class CollisionData
@@ -369,6 +374,10 @@ private:
 
 //========================= 충돌 =========================
 public:
+	static bool Sphere2DToSphere2D(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
+	static bool AABB2DToAABB2D(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
+	static bool OBB2DToOBB2D(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
+	
 	static bool SphereToSphere(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
 	static bool AABBToAABB(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
 	static bool OBBToOBB(const GameEngineTransform& _Left, const GameEngineTransform& _Right);

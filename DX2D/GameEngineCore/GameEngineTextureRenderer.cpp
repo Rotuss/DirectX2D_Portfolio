@@ -171,12 +171,12 @@ void GameEngineTextureRenderer::ScaleToTexture()
 
 	if (0 > GetTransform().GetLocalScale().x)
 	{
-		Scale = -Scale.x;
+		Scale.x = -Scale.x;
 	}
 
 	if (0 > GetTransform().GetLocalScale().y)
 	{
-		Scale = -Scale.y;
+		Scale.y = -Scale.y;
 	}
 
 	GetTransform().SetLocalScale(Scale * ScaleRatio);
@@ -188,12 +188,12 @@ void GameEngineTextureRenderer::ScaleToCutTexture(int _Index)
 
 	if (0 > GetTransform().GetLocalScale().x)
 	{
-		Scale = -Scale.x;
+		Scale.x = -Scale.x;
 	}
 
 	if (0 > GetTransform().GetLocalScale().y)
 	{
-		Scale = -Scale.y;
+		Scale.y = -Scale.y;
 	}
 
 	GetTransform().SetLocalScale(Scale * ScaleRatio);
@@ -302,7 +302,10 @@ void FrameAnimation::Update(float _DeltaTime)
 
 			if (Texture->GetCutCount() != 0)
 			{
-				ParentRenderer->ScaleToCutTexture(Info.CurFrame);
+				if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
+				{
+					ParentRenderer->ScaleToCutTexture(Info.CurFrame);
+				}
 			}
 			else
 			{

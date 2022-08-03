@@ -2,6 +2,7 @@
 #include <GameEngineCore/CoreMinimal.h>
 
 // Ό³Έν :
+class GameEngineCollision;
 class GameEngineTextureRenderer;
 class Player : public GameEngineActor
 {
@@ -16,12 +17,15 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 	void End() {}
 
 	GameEngineTextureRenderer* Renderer;
+	GameEngineCollision* Collision;
 
 	float4 Color;
 
