@@ -48,6 +48,16 @@ public:
 		return MouseDir;
 	}
 
+	inline float4 SetProjectionSize(const float4& _Value)
+	{
+		Size = _Value;
+	}
+
+	inline float4 GetProjectionSize()
+	{
+		return Size;
+	}
+
 protected:
 	void Start();
 

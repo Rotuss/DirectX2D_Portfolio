@@ -33,6 +33,7 @@ public:
 	static void Cut(const std::string& _Name, UINT _X, UINT _Y);
 
 	ID3D11RenderTargetView* CreateRenderTargetView();
+	ID3D11ShaderResourceView* CreateShaderResourceView();
 	ID3D11DepthStencilView* CreateDepthStencilView();
 
 	void VSSetting(int _BindPoint);

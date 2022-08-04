@@ -24,6 +24,8 @@ protected:
 	~GameEngineCore();
 
 	virtual std::string GetWindowTitle() { return "MainWindow"; }
+	//virtual float4 StartWindowSize() { return { 1280.0f, 720.0f }; }
+	//virtual float4 StartWindowPosition() { return { 0,0 }; }
 
 	virtual void Start() = 0;
 	virtual void Update(float _DeltaTime) = 0;

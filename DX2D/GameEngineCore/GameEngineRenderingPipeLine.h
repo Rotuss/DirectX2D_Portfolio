@@ -13,6 +13,7 @@ class GameEngineBlend;
 class GameEngineRenderingPipeLine : public GameEngineRes<GameEngineRenderingPipeLine>
 {
 public:
+	static void AllShaderReset();
 	static GameEngineRenderingPipeLine* Create(const std::string& _Name);
 
 public:

@@ -15,6 +15,19 @@ enum class SCALEMODE
 	CUSTOM,
 };
 
+struct ColorData
+{
+	float4 MulColor;
+	float4 PlusColor;
+
+	ColorData()
+		: MulColor(float4::WHITE)
+		, PlusColor(float4::ZERO)
+	{
+
+	}
+};
+
 class FrameAnimation_DESC
 {
 public:
@@ -118,6 +131,11 @@ public:
 	float GetScaleRatio()
 	{
 		return ScaleRatio;
+	}
+
+	ColorData& GetColorData()
+	{
+		return ColorData;
 	}
 
 	void SetSamplingModePoint();
@@ -271,6 +289,8 @@ private:
 
 	std::map<std::string, FrameAnimation> FrameAni;
 	FrameAnimation* CurAni;
+
+	ColorData ColorData;
 
 	void FrameDataReset();
 };

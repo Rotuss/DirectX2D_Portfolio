@@ -110,24 +110,24 @@ public:
 		return Return;
 	}
 	
-	static float4 ABS3DReturn(const float4& _Postion)
+	static float4 ABS3DReturn(const float4& _Position)
 	{
-		return _Postion.ABS3DReturn();
+		return _Position.ABS3DReturn();
 	}
 
-	static float VectorXYtoDegree(const float4& _Postion, const float4& _Target)
+	static float VectorXYtoDegree(const float4& _Position, const float4& _Target)
 	{
-		return VectorXYtoRadian(_Postion, _Target) * GameEngineMath::RadianToDegree;
+		return VectorXYtoRadian(_Position, _Target) * GameEngineMath::RadianToDegree;
 	}
 
-	static float VectorXYtoRadian(const float4& _Postion, const float4& _Target)
+	static float VectorXYtoRadian(const float4& _Position, const float4& _Target)
 	{
-		float4 Dir = _Target - _Postion;
+		float4 Dir = _Target - _Position;
 		Dir.Normalize();
 
 		float Angle = acosf(Dir.x);
 
-		if (_Postion.y > _Target.y)
+		if (_Position.y > _Target.y)
 		{
 			Angle = GameEngineMath::PI2 - Angle;
 		}
@@ -843,19 +843,19 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
-	void LookToLH(const float4& _EyePostion, const float4& _EyeFocus, const float4& _Up)
+	void LookToLH(const float4& _EyePosition, const float4& _EyeFocus, const float4& _Up)
 	{
-		LookAtLH(_EyePostion, (_EyeFocus - _EyePostion), _Up);
+		LookAtLH(_EyePosition, (_EyeFocus - _EyePosition), _Up);
 	}
 
-	void LookAtLH(const float4& _EyePostion, const float4& _EyeDir, const float4& _Up)
+	void LookAtLH(const float4& _EyePosition, const float4& _EyeDir, const float4& _Up)
 	{
 		float4 R2 = float4::NormalizeReturn(_EyeDir);
 		float4 R0 = float4::Cross(_Up, R2);
 		R0.Normalize();
 		float4 R1 = float4::Cross(R2, R0);
 
-		float4 NegEyePosition = -_EyePostion;
+		float4 NegEyePosition = -_EyePosition;
 
 		float D0Value = float4::DotProduct3D(R0, NegEyePosition);
 		float D1Value = float4::DotProduct3D(R1, NegEyePosition);

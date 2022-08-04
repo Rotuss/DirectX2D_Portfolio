@@ -3,6 +3,7 @@
 #include <GameEngineBase/GameEngineWindow.h>
 
 // Ό³Έν :
+class GameEngineRenderTarget;
 class GameEngineDevice
 {
 public:
@@ -30,6 +31,11 @@ public:
 	static ID3D11DeviceContext* GetContext()
 	{
 		return Context_;
+	}
+
+	static GameEngineRenderTarget* GetBackBuffer()
+	{
+		return BackBufferTarget;
 	}
 
 	static void Destroy();

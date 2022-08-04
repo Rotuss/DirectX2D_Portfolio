@@ -6,9 +6,12 @@
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineNameObject.h>
 
-class GameEngineGUIWindow : public GameEngineNameObject
+class GameEngineGUIWindow : public GameEngineNameObject, public GameEngineUpdateObject
 {
 	friend class GameEngineGUI;
+
+	void Start() override {}
+	void Update(float _DeltaTime) override {}
 
 public:
 	virtual void Initialize(class GameEngineLevel* _Level) = 0;
@@ -17,8 +20,6 @@ public:
 protected:
 
 private:
-	bool IsOpen;
-
 	void Begin()
 	{
 		std::string Name = GameEngineString::AnsiToUTF8Return(GetNameConstPtr());

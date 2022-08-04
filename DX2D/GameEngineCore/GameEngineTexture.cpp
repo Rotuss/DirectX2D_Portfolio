@@ -93,6 +93,21 @@ ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetView()
 	return RenderTargetView;
 }
 
+ID3D11ShaderResourceView* GameEngineTexture::CreateShaderResourceView()
+{
+	if (nullptr != ShaderResourceView)
+	{
+		return ShaderResourceView;
+	}
+
+	if (S_OK != GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, nullptr, &ShaderResourceView))
+	{
+		MsgBoxAssert("쉐이더 리소스 뷰 생성에 실패했습니다.");
+	}
+
+	return ShaderResourceView;
+}
+
 ID3D11DepthStencilView* GameEngineTexture::CreateDepthStencilView()
 {
 	if (nullptr != DepthStencilView)

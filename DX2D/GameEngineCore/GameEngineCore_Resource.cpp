@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineCore.h"
+#include "GameEngineFont.h"
 #include "GameEngineLevel.h"
 #include "GameEngineVertexs.h"
 #include "GameEngineConstantBuffer.h"
@@ -230,6 +231,8 @@ void EngineMesh()
 
 		GameEngineIndexBuffer::Create("Box", Index);
 	}
+
+	GameEngineFont::Load("µ¸¿ò");
 }
 
 void ShaderCompile()
@@ -277,6 +280,8 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineBlend::ResourcesDestroy();
 	GameEngineConstantBuffer::ResourcesDestroy();
 	GameEngineSound::ResourcesDestroy();
+	GameEngineSound::ResourcesDestroy();
+	GameEngineFont::ResourcesDestroy();
 
 	GameEngineDevice::Destroy();
 }

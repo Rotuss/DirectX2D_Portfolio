@@ -27,10 +27,12 @@
 // core
 #include <GameEngineCore/GEngine.h>
 #include <GameEngineCore/CoreMinimal.h>
+#include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineDevice.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineVertexShader.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineConstantBuffer.h>
 #include <GameEngineCore/GameEngineDefaultRenderer.h>
 #include <GameEngineCore/GameEngineTextureRenderer.h>

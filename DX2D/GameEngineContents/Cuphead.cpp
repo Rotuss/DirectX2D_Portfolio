@@ -81,6 +81,8 @@ void Cuphead::Start()
 		}
 	}
 
+	GameEngineFont::Load("±Ã¼­");
+
 	CreateLevel<MDHRLogoLevel>("MDHRLogo");
 	CreateLevel<TitleLevel>("Title");
 	CreateLevel<TitleMainLevel>("TitleMain");
@@ -89,7 +91,7 @@ void Cuphead::Start()
 
 	ChangeLevel("Tutorial");
 
-	//GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
+	GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
 }
 
 void Cuphead::Update(float _DeltaTime)
