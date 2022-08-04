@@ -32,11 +32,10 @@ class FrameAnimation_DESC
 {
 public:
 	std::string TextureName;
+	std::vector<unsigned int> Frames;
 
 	unsigned int CurFrame;
-	unsigned int Start;
-	unsigned int End;
-
+	
 	float FrameTime;
 	float Inter;
 
@@ -45,8 +44,6 @@ public:
 public:
 	FrameAnimation_DESC()
 		: CurFrame(-1)
-		, Start(-1)
-		, End(-1)
 		, FrameTime(0.0f)
 		, Inter(0.1f)
 		, Loop(false)
@@ -55,9 +52,20 @@ public:
 
 	FrameAnimation_DESC(const std::string _TextureName, unsigned int _Start, unsigned int _End, float _Inter, bool _Loop = true)
 		: TextureName(_TextureName)
-		, CurFrame(_Start)
-		, Start(_Start)
-		, End(_End)
+		, CurFrame(0)
+		, FrameTime(0.0f)
+		, Inter(_Inter)
+		, Loop(_Loop)
+	{
+		for (unsigned int i = _Start; i < _End; i++)
+		{
+			Frames.push_back(i);
+		}
+	}
+
+	FrameAnimation_DESC(const std::string _TextureName, const std::vector<unsigned int>& _Frames, float _Inter, bool _Loop = true)
+		: TextureName(_TextureName)
+		, Frames(_Frames)
 		, FrameTime(0.0f)
 		, Inter(_Inter)
 		, Loop(_Loop)
@@ -67,8 +75,6 @@ public:
 	FrameAnimation_DESC(const std::string _TextureName, float _Inter, bool _Loop = true)
 		: TextureName(_TextureName)
 		, CurFrame(0)
-		, Start(-1)
-		, End(-1)
 		, FrameTime(0.0f)
 		, Inter(_Inter)
 		, Loop(_Loop)
@@ -153,7 +159,7 @@ public:
 
 	void CreateFrameAnimationFolder(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc);
 
-	void CreateFrameAnimation(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc);
+	void CreateFrameAnimationCutTexture(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc);
 	void ChangeFrameAnimation(const std::string& _AnimationName);
 
 	// ¸â¹ö

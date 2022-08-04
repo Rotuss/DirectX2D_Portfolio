@@ -81,7 +81,7 @@ void Cuphead::Start()
 		}
 	}
 
-	GameEngineFont::Load("±Ã¼­");
+	//GameEngineFont::Load("±Ã¼­");
 
 	CreateLevel<MDHRLogoLevel>("MDHRLogo");
 	CreateLevel<TitleLevel>("Title");
