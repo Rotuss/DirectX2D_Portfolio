@@ -180,6 +180,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeBackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Player.h">
       <SubType>
       </SubType>
@@ -275,6 +283,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Iris.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeBackGround.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

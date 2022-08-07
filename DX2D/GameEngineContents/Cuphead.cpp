@@ -5,6 +5,7 @@
 #include "TitleMainLevel.h"
 #include "WorldMapLevel.h"
 #include "TutorialLevel.h"
+#include "MortimerFreezeLevel.h"
 
 #pragma comment(lib, "GameEngineBase.lib")
 
@@ -81,6 +82,42 @@ void Cuphead::Start()
 		}
 	}
 
+	{
+		GameEngineDirectory Dir;
+
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Texture");
+		Dir.Move("MortimerFreeze");
+		Dir.Move("MFBackGround");
+		Dir.Move("Structure_etc");
+
+		std::vector<GameEngineFile> Tmp = Dir.GetAllFile();
+
+		for (size_t i = 0; i < Tmp.size(); i++)
+		{
+			GameEngineTexture::Load(Tmp[i].GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory Dir;
+
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Texture");
+		Dir.Move("MortimerFreeze");
+		Dir.Move("MFBackGround");
+		Dir.Move("Candles");
+
+		std::vector<GameEngineFile> Tmp = Dir.GetAllFile();
+
+		for (size_t i = 0; i < Tmp.size(); i++)
+		{
+			GameEngineTexture::Load(Tmp[i].GetFullPath());
+		}
+	}
+
 	//GameEngineFont::Load("±Ã¼­");
 
 	CreateLevel<MDHRLogoLevel>("MDHRLogo");
@@ -88,8 +125,9 @@ void Cuphead::Start()
 	CreateLevel<TitleMainLevel>("TitleMain");
 	CreateLevel<WorldMapLevel>("World");
 	CreateLevel<TutorialLevel>("Tutorial");
+	CreateLevel<MortimerFreezeLevel>("MortimerFreeze");
 
-	ChangeLevel("Tutorial");
+	ChangeLevel("MortimerFreeze");
 
 	GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
 }

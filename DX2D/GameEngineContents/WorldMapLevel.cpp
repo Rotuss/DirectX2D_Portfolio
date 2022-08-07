@@ -2,7 +2,6 @@
 #include "WorldMapLevel.h"
 #include "WorldMapBackGround.h"
 #include "Player.h"
-#include "GlobalContents.h"
 #include <GameEngineCore/GEngine.h>
 
 WorldMapLevel::WorldMapLevel() 

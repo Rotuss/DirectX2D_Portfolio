@@ -4,12 +4,6 @@
     <ClInclude Include="Cuphead.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GlobalContents.h" />
-    <ClInclude Include="TitleLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
-    <ClInclude Include="MDHRLogoLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>Actor</Filter>
     </ClInclude>
@@ -49,37 +43,43 @@
     <ClInclude Include="PreCompile.h">
       <Filter>PreCompile</Filter>
     </ClInclude>
-    <ClInclude Include="TitleMainLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="TItleMainBackGround.h">
       <Filter>Actor\Title</Filter>
     </ClInclude>
     <ClInclude Include="TitleStartUI.h">
       <Filter>Actor\Title</Filter>
     </ClInclude>
-    <ClInclude Include="WorldMapLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="WorldMapBackGround.h">
       <Filter>Actor\World</Filter>
     </ClInclude>
-    <ClInclude Include="TutorialLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="TutorialBackGround.h">
       <Filter>Actor\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="MDHRLogoLevel.h">
+      <Filter>Level\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>Level\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleMainLevel.h">
+      <Filter>Level\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialLevel.h">
+      <Filter>Level\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMapLevel.h">
+      <Filter>Level\World</Filter>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeLevel.h">
+      <Filter>Level\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeBackGround.h">
+      <Filter>Actor\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
     <ClCompile Include="GlobalContents.cpp" />
-    <ClCompile Include="TitleLevel.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
-    <ClCompile Include="MDHRLogoLevel.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
@@ -119,26 +119,38 @@
     <ClCompile Include="PreCompile.cpp">
       <Filter>PreCompile</Filter>
     </ClCompile>
-    <ClCompile Include="TitleMainLevel.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
     <ClCompile Include="TItleMainBackGround.cpp">
       <Filter>Actor\Title</Filter>
     </ClCompile>
     <ClCompile Include="TitleStartUI.cpp">
       <Filter>Actor\Title</Filter>
     </ClCompile>
-    <ClCompile Include="WorldMapLevel.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
     <ClCompile Include="WorldMapBackGround.cpp">
       <Filter>Actor\World</Filter>
     </ClCompile>
-    <ClCompile Include="TutorialLevel.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
     <ClCompile Include="TutorialBackGround.cpp">
       <Filter>Actor\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="MDHRLogoLevel.cpp">
+      <Filter>Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleMainLevel.cpp">
+      <Filter>Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialLevel.cpp">
+      <Filter>Level\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMapLevel.cpp">
+      <Filter>Level\World</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeLevel.cpp">
+      <Filter>Level\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeBackGround.cpp">
+      <Filter>Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +177,21 @@
     </Filter>
     <Filter Include="Actor\NPC">
       <UniqueIdentifier>{a7b6d210-c36d-4324-8a49-0386b2af1d84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Boss">
+      <UniqueIdentifier>{e16c92df-f11e-4f47-83b9-308526c3da60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\Title">
+      <UniqueIdentifier>{4506fee8-2c56-4002-b2a4-31d581b0a707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\Tutorial">
+      <UniqueIdentifier>{59a01063-0da9-44f5-a1d7-90c1d4545bde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\World">
+      <UniqueIdentifier>{df507d5e-f2b4-4335-80a6-2f1f8dfbedda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\Boss">
+      <UniqueIdentifier>{f9e30516-945e-4441-958c-0e97e00ff5f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

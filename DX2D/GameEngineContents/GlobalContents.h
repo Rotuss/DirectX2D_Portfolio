@@ -9,6 +9,7 @@ enum class OBJECTORDER
 	Tutorial,
 	Player,
 	Monster,
+	Boss,
 	UI = 1000,
 };
 
