@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 #include "MortimerFreezeLevel.h"
 #include "MortimerFreezeBackGround.h"
+#include "MortimerFreezeBoss.h"
 // Test
 #include "Player.h"
 
@@ -21,9 +22,14 @@ void MortimerFreezeLevel::Start()
 	}
 
 	MortimerFreezeBackGround* MFBackGround = CreateActor<MortimerFreezeBackGround>(OBJECTORDER::Boss);
+	MortimerFreezeBoss* MFBoss = CreateActor<MortimerFreezeBoss>(OBJECTORDER::Boss);
+	// 좌상단
+	//MFBoss->GetTransform().SetLocalPosition({ 300, -380, -1 });
+	// 우상단
+	MFBoss->GetTransform().SetLocalPosition({ 1350, -380, -1 });
 	// Test
 	Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
-
+	NewPlayer->GetTransform().SetLocalPosition({ 750, -380, -1 });
 	{
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("sky.png");

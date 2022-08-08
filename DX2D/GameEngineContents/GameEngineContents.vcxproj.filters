@@ -76,6 +76,9 @@
     <ClInclude Include="MortimerFreezeBackGround.h">
       <Filter>Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeBoss.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -150,6 +153,9 @@
       <Filter>Level\Boss</Filter>
     </ClCompile>
     <ClCompile Include="MortimerFreezeBackGround.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeBoss.cpp">
       <Filter>Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>
