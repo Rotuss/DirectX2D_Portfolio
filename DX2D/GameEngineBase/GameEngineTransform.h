@@ -265,7 +265,7 @@ public:
 		return -(Data.WorldWorldMatrix.ArrV[0].NormalizeReturn());
 	}
 
-	inline const TransformData& GetTransformData()
+	inline const TransformData& GetTransformData() const
 	{
 		return Data;
 	}
@@ -277,7 +277,7 @@ public:
 	void PixLocalNegativeX();
 	void PixLocalPositiveX();
 
-	void Copy(GameEngineTransform& _Trans);
+	void Copy(const GameEngineTransform& _Trans);
 
 protected:
 

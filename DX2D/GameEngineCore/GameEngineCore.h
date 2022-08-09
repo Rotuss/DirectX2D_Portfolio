@@ -3,6 +3,7 @@
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineMath.h>
+#include "GameEngineLevel.h"
 
 // Ό³Έν :
 class GameEngineCore
@@ -17,6 +18,11 @@ public:
 
 		CoreType Core;
 		WindowCreate(Core.GetWindowTitle(), &Core);
+	}
+
+	static GameEngineLevel* GetCurLevel()
+	{
+		return CurrentLevel;
 	}
 
 protected:

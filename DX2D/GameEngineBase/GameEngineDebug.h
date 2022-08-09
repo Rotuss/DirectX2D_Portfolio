@@ -5,28 +5,30 @@
 #include <Windows.h>
 
 // Ό³Έν :
-class GameEngineDebug
+namespace GameEngineDebug
 {
-public:
-	static void LeakCheckOn();
-	static void ConsoleOpen();
-	static void OutPutString(const std::string& _Text);
-	static void Destroy();
+//public:
+	void LeakCheckOn();
+	void ConsoleOpen();
+	void OutPutString(const std::string& _Text);
+	void Destroy();
 
-protected:
+//protected:
 
-private:
+//private:
 	// constrcuter destructer
-	GameEngineDebug();
-	~GameEngineDebug();
+	//GameEngineDebug();
+	//~GameEngineDebug();
 
 	// delete Function
+	/*
 	GameEngineDebug(const GameEngineDebug& _Other) = delete;
 	GameEngineDebug(GameEngineDebug&& _Other) noexcept = delete;
 	GameEngineDebug& operator=(const GameEngineDebug& _Other) = delete;
 	GameEngineDebug& operator=(GameEngineDebug&& _Other) noexcept = delete;
 
 	static HANDLE hConsole;
+	*/
 };
 
 #define MsgBox(Text) 	MessageBeep(0); \

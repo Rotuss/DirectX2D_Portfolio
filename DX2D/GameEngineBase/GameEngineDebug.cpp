@@ -2,47 +2,41 @@
 #include "GameEngineDebug.h"
 #include <iostream>
 
-HANDLE GameEngineDebug::hConsole = nullptr;
-
-void GameEngineDebug::LeakCheckOn()
+namespace GameEngineDebug
 {
-	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_ALLOC_MEM_DF);
-}
+	HANDLE hConsole = nullptr;
 
-void GameEngineDebug::ConsoleOpen()
-{
-	if (AllocConsole())
+	void LeakCheckOn()
 	{
-		FILE* FIle;
-		freopen_s(&FIle, "CONIN$", "rb", stdin);
-		freopen_s(&FIle, "CONOUT$", "wb", stdout);
-		freopen_s(&FIle, "CONOUT$", "wb", stderr);
+		_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_ALLOC_MEM_DF);
+	}
 
-		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		std::cout << "Console Start" << std::endl;
+	void ConsoleOpen()
+	{
+		if (AllocConsole())
+		{
+			FILE* FIle;
+			freopen_s(&FIle, "CONIN$", "rb", stdin);
+			freopen_s(&FIle, "CONOUT$", "wb", stdout);
+			freopen_s(&FIle, "CONOUT$", "wb", stderr);
+
+			hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+			std::cout << "Console Start" << std::endl;
+		}
+	}
+
+	void OutPutString(const std::string& _Text)
+	{
+		// #ifdef _DEBUG
+		OutputDebugStringA((_Text + "\n").c_str());
+		// #endif
+	}
+
+	void Destroy()
+	{
+		if (nullptr != hConsole)
+		{
+			FreeConsole();
+		}
 	}
 }
-
-void GameEngineDebug::OutPutString(const std::string& _Text)
-{
-	// #ifdef _DEBUG
-	OutputDebugStringA((_Text + "\n").c_str());
-	// #endif
-}
-
-void GameEngineDebug::Destroy()
-{
-	if (nullptr != hConsole)
-	{
-		FreeConsole();
-	}
-}
-
-GameEngineDebug::GameEngineDebug()
-{
-}
-
-GameEngineDebug::~GameEngineDebug() 
-{
-}
-

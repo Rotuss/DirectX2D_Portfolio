@@ -41,6 +41,10 @@ void GameEngineActor::SetParent(GameEngineUpdateObject* _Object)
 	MsgBoxAssert("트랜스폼이 있는 컴포넌트에 트랜스폼이 없는 부모를 붙이려고 했습니다.");
 }
 
+void GameEngineActor::ActorUpdate(float _DeltaTime)
+{
+}
+
 void GameEngineActor::Start()
 {
 }
@@ -53,21 +57,4 @@ void GameEngineActor::End()
 {
 }
 
-void GameEngineActor::AllUpdate(float _ScaleDeltaTime, float _DeltaTime)
-{
-	AddAccTime(_DeltaTime);
-	ReleaseUpdate(_DeltaTime);
-	Update(_ScaleDeltaTime);
-	
-	for (GameEngineUpdateObject* Com : Childs)
-	{
-		Com->AddAccTime(_DeltaTime);
-		Com->ReleaseUpdate(_DeltaTime);
-		if (false == Com->IsUpdate())
-		{
-			continue;
-		}
-		Com->Update(_ScaleDeltaTime);
-	}
-}
 

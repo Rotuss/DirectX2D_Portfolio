@@ -43,6 +43,16 @@ public:
 	float4 GetMouseWorldPosition();
 	float4 GetMouseWorldPositionToActor();
 
+	inline float4x4 GetView()
+	{
+		return View;
+	}
+
+	inline float4x4 GetProjectionMatrix()
+	{
+		return Projection;
+	}
+
 	inline float4 GetMouseWorldDir()
 	{
 		return MouseDir;

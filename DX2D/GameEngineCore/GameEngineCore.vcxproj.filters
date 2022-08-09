@@ -147,6 +147,9 @@
     <ClInclude Include="GameEngineFontRenderer.h">
       <Filter>Object\Component\Rendering\Content</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineCoreDebug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEngine.cpp" />
@@ -288,6 +291,9 @@
     <ClCompile Include="GameEngineFontRenderer.cpp">
       <Filter>Object\Component\Rendering\Content</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineCoreDebug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -364,6 +370,9 @@
     </Filter>
     <Filter Include="Resources\Font">
       <UniqueIdentifier>{05fc99f0-13ee-48a0-8ee5-51c58751ea3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{d242da93-da7f-4563-8c79-f25bc2f9e7fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

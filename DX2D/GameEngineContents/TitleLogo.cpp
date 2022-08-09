@@ -19,7 +19,7 @@ void TitleLogo::Start()
 
 		Renderer->CreateFrameAnimationFolder("Logo", FrameAnimation_DESC("MDHR_Logo", 0.05f, false));
 		Renderer->ChangeFrameAnimation("Logo");
-		Renderer->AnimationBindEnd("Logo", &TitleLogo::EndFunction, this);
+		Renderer->AnimationBindEnd("Logo", std::bind(&TitleLogo::EndFunction, this, std::placeholders::_1));
 		Renderer->GetTransform().SetLocalScale({ 1280, 720, 100 });
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 	}

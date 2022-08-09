@@ -25,4 +25,5 @@
 
 // GUI
 #include <GameEngineCore/GameEngineGUI.h>
+#include <GameEngineCore/GameEngineCoreDebug.h>
 #include <GameEngineCore/GameEngineStatusWindow.h>

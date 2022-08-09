@@ -51,7 +51,7 @@ void TitleLevel::Update(float _DeltaTime)
 	if (GameEngineInput::GetInst()->IsDown("ChangeNextTitle"))
 	{
 		Iris* FX = CreateActor<Iris>(OBJECTORDER::Title);
-		FX->GetRenderer()->AnimationBindEnd("IrisFX", &TitleLevel::EndFunction, this);
+		FX->GetRenderer()->AnimationBindEnd("IrisFX", std::bind(&TitleLevel::EndFunction, this, std::placeholders::_1));
 	}
 }
 

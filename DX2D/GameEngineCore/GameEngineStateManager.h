@@ -31,7 +31,7 @@ private:
 	StateInfo Info;
 	std::function<void(const StateInfo&)> Start;
 	std::function<void(const StateInfo&)> End;
-	std::function<void(float _DeltaTime, const StateInfo&)> Update;
+	std::function<void(float, const StateInfo&)> Update;
 
 
 public:
@@ -57,8 +57,7 @@ public:
 	GameEngineStateManager& operator=(const GameEngineStateManager& _Other) = delete;
 	GameEngineStateManager& operator=(GameEngineStateManager&& _Other) noexcept = delete;
 
-	template<typename ObjectType>
-	void CreateStateMember(const std::string& _StateName, ObjectType* _Object, void(ObjectType::* _Update)(float, const StateInfo&), void(ObjectType::* _Start)(const StateInfo&) = nullptr, void(ObjectType::* _End)(const StateInfo&) = nullptr)
+	void CreateStateMember(const std::string& _StateName, std::function<void(float, const StateInfo&)> _Update, std::function<void(const StateInfo&)> _Start = nullptr, std::function<void(const StateInfo&)> _End = nullptr)
 	{
 		if (AllState.end() != AllState.find(_StateName))
 		{
@@ -69,15 +68,15 @@ public:
 		NewState.SetName(_StateName);
 		if (nullptr != _Update)
 		{
-			NewState.Update = std::bind(_Update, _Object, std::placeholders::_1, std::placeholders::_2);
+			NewState.Update = _Update;
 		}
 		if (nullptr != _Start)
 		{
-			NewState.Start = std::bind(_Start, _Object, std::placeholders::_1);
+			NewState.Start = _Start;
 		}
 		if (nullptr != _End)
 		{
-			NewState.End = std::bind(_End, _Object, std::placeholders::_1);
+			NewState.End = _End;
 		}
 	}
 

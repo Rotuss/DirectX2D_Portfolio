@@ -59,13 +59,19 @@ void Player::Start()
 	Font->SetColor({ 1.0f, 0.0f, 0.0f });
 	Font->SetScreenPostion({ 100.0f, 100.0f });
 
-	StateManager.CreateStateMember("Idle", this, &Player::IdleUpdate, &Player::IdleStart);
-	StateManager.CreateStateMember("Move", this, &Player::MoveUpdate, &Player::MoveStart);
+	StateManager.CreateStateMember("Idle", std::bind(&Player::IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&Player::IdleStart, this, std::placeholders::_1));
+	StateManager.CreateStateMember("Move", std::bind(&Player::MoveUpdate, this, std::placeholders::_1, std::placeholders::_2)
+		, [/*&*/=](const StateInfo& _Info)
+		{
+			Renderer->ChangeFrameAnimation("Move");
+		});
 	StateManager.ChangeState("Idle");
 }
 
 void Player::Update(float _DeltaTime)
 {
+	//GameEngineDebug::DrawBox(Collision->GetTransform(), { 1.0f, 0.0f, 0.0f, 0.5f });
+	
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{
 		return;

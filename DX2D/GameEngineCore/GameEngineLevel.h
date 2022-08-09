@@ -127,6 +127,8 @@ private:
 	std::list<GameEngineUpdateObject*> DeleteObject;
 	std::vector<GameEngineCamera*> Cameras;
 
+	void ActorOnEvent();
+	void ActorOffEvent();
 	void ActorUpdate(float _DeltaTime);
 	void LevelUpdate(float _DeltaTime);
 	void RemoveActor(GameEngineActor* _Actor);

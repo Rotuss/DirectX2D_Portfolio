@@ -3,6 +3,9 @@
 #include "GameEngineGUI.h"
 #include "GameEngineLevel.h"
 #include "GameEngineDevice.h"
+#include "GameEngineCamera.h"
+#include "GameEngineCoreDebug.h"
+#include "GameEngineCameraActor.h"
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineBase/GameEngineTime.h>
@@ -66,6 +69,8 @@ void GameEngineCore::CoreStart(GameEngineCore* _UserCore)
 	
 	EngineResourcesInitialize();
 
+	GameEngineDebug::Debug3DInitialize();
+
 	_UserCore->Start();
 }
 
@@ -77,6 +82,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 		
 		if (nullptr != CurrentLevel)
 		{
+			CurrentLevel->ActorOffEvent();
 			CurrentLevel->OffEvent();
 			CurrentLevel->OverChildMove(NextLevel);
 		}
@@ -85,6 +91,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 		NextLevel = nullptr;
 
 		CurrentLevel->OnEvent();
+		CurrentLevel->ActorOnEvent();
 		CurrentLevel->ReSetAccTime();
 		GameEngineTime::GetInst()->Reset();
 	}

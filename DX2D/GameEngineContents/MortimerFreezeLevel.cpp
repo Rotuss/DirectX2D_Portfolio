@@ -26,7 +26,7 @@ void MortimerFreezeLevel::Start()
 	// 좌상단
 	//MFBoss->GetTransform().SetLocalPosition({ 300, -380, -1 });
 	// 우상단
-	MFBoss->GetTransform().SetLocalPosition({ 1350, -380, -1 });
+	//MFBoss->GetTransform().SetLocalPosition({ 1350, -380, -1 });
 	// Test
 	Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
 	NewPlayer->GetTransform().SetLocalPosition({ 750, -380, -1 });
@@ -112,7 +112,14 @@ void MortimerFreezeLevel::Start()
 		Renderer->CreateFrameAnimationFolder("Members_Back", FrameAnimation_DESC("Members_Back", 0.15f, true));
 		Renderer->ChangeFrameAnimation("Members_Back");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 795, -430 });
+		Renderer->GetTransform().SetLocalPosition({ 795, -440 });
+	}
+
+	{
+		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
+		Renderer->SetTexture("mid-main_back_seats.png");
+		Renderer->ScaleToTexture();
+		Renderer->GetTransform().SetLocalPosition({ 800, -290 });
 	}
 
 	{
@@ -120,7 +127,14 @@ void MortimerFreezeLevel::Start()
 		Renderer->CreateFrameAnimationFolder("Members_Front", FrameAnimation_DESC("Members_Front", 0.15f, true));
 		Renderer->ChangeFrameAnimation("Members_Front");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 800, -475 });
+		Renderer->GetTransform().SetLocalPosition({ 800, -490 });
+	}
+
+	{
+		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
+		Renderer->SetTexture("min-main_front_layer.png");
+		Renderer->ScaleToTexture();
+		Renderer->GetTransform().SetLocalPosition({ 805, -530 });
 	}
 
 	{

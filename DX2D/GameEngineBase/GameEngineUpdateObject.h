@@ -147,6 +147,8 @@ public:
 	virtual void ReleaseHierarchy();
 	virtual void Update(float _DeltaTime) = 0;
 
+	void AllUpdate(float _DeltaTime);
+
 protected:
 	virtual void OnEvent() {}
 	virtual void OffEvent() {}
