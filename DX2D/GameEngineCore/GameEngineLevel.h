@@ -119,6 +119,8 @@ public:
 		return Result;
 	}
 
+	void AllClear();
+
 protected:
 
 private:

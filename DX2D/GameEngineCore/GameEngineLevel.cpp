@@ -1,6 +1,7 @@
 #include "PreCompile.h"
-#include "GameEngineGUI.h"
 #include "GameEngineLevel.h"
+#include "GEngine.h"
+#include "GameEngineGUI.h"
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
 #include "GameEngineRenderer.h"
@@ -63,6 +64,32 @@ GameEngineTransform& GameEngineLevel::GetUICameraActorTransform()
 	return Cameras[static_cast<int>(CAMERAORDER::UICAMERA)]->GetActor()->GetTransform();
 }
 
+void GameEngineLevel::AllClear()
+{
+	{
+		std::map<int, std::list<GameEngineActor*>>::iterator StartGroupIter = AllActors.begin();
+		std::map<int, std::list<GameEngineActor*>>::iterator EndGroupIter = AllActors.end();
+
+		std::list<GameEngineActor*> OverList;
+
+		for (; StartGroupIter != EndGroupIter; ++StartGroupIter)
+		{
+			std::list<GameEngineActor*>& Group = StartGroupIter->second;
+
+			std::list<GameEngineActor*>::iterator GroupStart = Group.begin();
+			std::list<GameEngineActor*>::iterator GroupEnd = Group.end();
+			for (; GroupStart != GroupEnd; ++GroupStart)
+			{
+				delete* GroupStart;
+			}
+		}
+	}
+
+	AllActors.clear();
+	Cameras.clear();
+	AllCollisions.clear();
+}
+
 void GameEngineLevel::ActorOnEvent()
 {
 	for (const std::pair<int, std::list<GameEngineActor*>>& Group : AllActors)
@@ -76,7 +103,7 @@ void GameEngineLevel::ActorOnEvent()
 				continue;
 			}
 
-			Actor->OnEvent();
+			Actor->AllOnEvent();
 		}
 	}
 }
@@ -94,7 +121,7 @@ void GameEngineLevel::ActorOffEvent()
 				continue;
 			}
 
-			Actor->OffEvent();
+			Actor->AllOffEvent();
 		}
 	}
 }
@@ -136,6 +163,11 @@ void GameEngineLevel::RemoveActor(GameEngineActor* _Actor)
 
 void GameEngineLevel::OverChildMove(GameEngineLevel* _NextLevel)
 {
+	if (this == _NextLevel)
+	{
+		return;
+	}
+	
 	{
 		std::map<int, std::list<GameEngineActor*>>::iterator StartGroupIter = AllActors.begin();
 		std::map<int, std::list<GameEngineActor*>>::iterator EndGroupIter = AllActors.end();
@@ -239,6 +271,28 @@ void GameEngineLevel::PushCollision(GameEngineCollision* _Collision, int _Order)
 
 void GameEngineLevel::Render(float _DelataTime)
 {
+	{
+		if (true == GEngine::IsCollisionDebug())
+		{
+			std::map<int, std::list<GameEngineCollision*>>::iterator StartGroupIter = AllCollisions.begin();
+			std::map<int, std::list<GameEngineCollision*>>::iterator EndGroupIter = AllCollisions.end();
+			for (; StartGroupIter != EndGroupIter; ++StartGroupIter)
+			{
+				std::list<GameEngineCollision*>& Group = StartGroupIter->second;
+
+				std::list<GameEngineCollision*>::iterator GroupStart = Group.begin();
+				std::list<GameEngineCollision*>::iterator GroupEnd = Group.end();
+				for (; GroupStart != GroupEnd; ++GroupStart)
+				{
+					if (true == (*GroupStart)->IsUpdate())
+					{
+						(*GroupStart)->DebugRender();
+					}
+				}
+			}
+		}
+	}
+	
 	GameEngineDevice::RenderStart();
 	
 	for (size_t i = 0; i < Cameras.size(); i++)

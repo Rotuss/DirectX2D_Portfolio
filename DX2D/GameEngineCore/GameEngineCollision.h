@@ -35,11 +35,22 @@ public:
 
 	bool IsCollision(CollisionType _ThisType, int _GroupOrder, CollisionType _OtherType, std::function<bool(GameEngineCollision* _This, GameEngineCollision* _Other)> _Function = nullptr);
 
+	void SetDebugSetting(CollisionType _DebugType, float4 _Color)
+	{
+		DebugType = _DebugType;
+		Color = _Color;
+	}
+
+	void DebugRender();
+
 protected:
 
 private:
 	static bool (*CollisionFunction[static_cast<int>(CollisionType::CT_MAX)][static_cast<int>(CollisionType::CT_MAX)])(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
 
 	void Start() override;
+
+	CollisionType	DebugType;
+	float4			Color;
 };
 

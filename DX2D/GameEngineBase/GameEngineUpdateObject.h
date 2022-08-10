@@ -34,6 +34,11 @@ public:
 	}
 
 
+	inline bool& IsUpdateRef()
+	{
+		return IsUpdate_;
+	}
+
 	inline bool IsUpdate()
 	{
 		if (nullptr != Parent)
@@ -148,6 +153,8 @@ public:
 	virtual void Update(float _DeltaTime) = 0;
 
 	void AllUpdate(float _DeltaTime);
+	void AllOnEvent();
+	void AllOffEvent();
 
 protected:
 	virtual void OnEvent() {}
