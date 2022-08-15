@@ -35,7 +35,7 @@ void TutorialLevel::Start()
 
 	TutorialBackGround* TutorialBG = CreateActor<TutorialBackGround>(OBJECTORDER::Tutorial);
 	Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
-	NewPlayer->GetTransform().SetLocalPosition({ 300, -750, -3 });
+	//NewPlayer->GetTransform().SetLocalPosition({ 300, -750, -3 });
 
 	{
 		Renderer = TutorialBG->CreateComponent<GameEngineTextureRenderer>();

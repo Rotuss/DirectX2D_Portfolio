@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/CoreMinimal.h>
+#include "Weapon.h"
 
 // Ό³Έν :
 class GameEngineCollision;
@@ -17,7 +18,19 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	static Player* MainPlayer;
+
 	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+
+	void SetColMap(GameEngineTextureRenderer* _Collision)
+	{
+		ColRenderer = _Collision;
+	}
+
+	GameEngineTextureRenderer* GetColMap()
+	{
+		return ColRenderer;
+	}
 
 protected:
 	void Start() override;
@@ -25,7 +38,10 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer* Renderer;
+	GameEngineTextureRenderer* ColRenderer;
+	GameEngineTexture* ColorCheck;
 	GameEngineCollision* Collision;
+	Weapon* TestPtr;
 
 	float4 Color;
 
@@ -37,9 +53,13 @@ protected:
 	void MoveStart(const StateInfo& _Info);
 	void MoveUpdate(float _DeltaTime, const StateInfo& _Info);
 
+	void AttackStart(const StateInfo& _Info);
+	void AttackUpdate(float _DeltaTime, const StateInfo& _Info);
+
 private:
 	GameEngineStateManager StateManager;
 	
+	std::string PlayerDir;
 	float Speed;
 	bool LRCheck;
 };

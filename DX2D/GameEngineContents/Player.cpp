@@ -1,13 +1,18 @@
 #include "PreCompile.h"
 #include "Player.h"
+#include "Weapon.h"
 #include "GlobalContents.h"
 #include <iostream>
+
+Player* Player::MainPlayer = nullptr;
 
 Player::Player() 
 	: Renderer(nullptr)
 	, Speed(1000.0f)
 	, LRCheck(true)
+	, PlayerDir("Right")
 {
+	MainPlayer = this;
 }
 
 Player::~Player() 
@@ -30,6 +35,8 @@ void Player::Start()
 		GameEngineInput::GetInst()->CreateKey("PlayerDown", VK_NUMPAD5);
 		GameEngineInput::GetInst()->CreateKey("PlayerForward", VK_NUMPAD1);
 		GameEngineInput::GetInst()->CreateKey("PlayerBack", VK_NUMPAD2);
+
+		GameEngineInput::GetInst()->CreateKey("Attack", 'Z');
 	}
 
 	{
@@ -45,7 +52,7 @@ void Player::Start()
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 		Renderer->GetTransform().SetLocalScale({ 100, 100, 0 });
 		//Renderer->GetTransform().SetLocalPosition({ 300, -1430 });
-
+		GetTransform().SetLocalPosition({ 1550, -550 , -1 });
 		Collision = CreateComponent<GameEngineCollision>();
 		// Collision3D
 		//Collision->GetTransform().SetLocalScale({ 100.0f, 100.0f, 10000.0f });
@@ -65,6 +72,7 @@ void Player::Start()
 		{
 			Renderer->ChangeFrameAnimation("Move");
 		});
+	StateManager.CreateStateMember("Attack", std::bind(&Player::AttackUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&Player::AttackStart, this, std::placeholders::_1));
 	StateManager.ChangeState("Idle");
 }
 
@@ -72,6 +80,19 @@ void Player::Update(float _DeltaTime)
 {
 	//GameEngineDebug::DrawBox(Collision->GetTransform(), { 1.0f, 0.0f, 0.0f, 0.5f });
 	
+	//GetTransform().SetLocalMove(GetTransform().GetDownVector() * 100.0f);
+
+	ColorCheck = ColRenderer->GetCurTexture();
+	if (nullptr == ColorCheck)
+	{
+		return;
+	}
+	while (true == ColorCheck->GetPixelToFloat4(GetTransform().GetLocalPosition().x, -(GetTransform().GetLocalPosition().y - 50.0f)).CompareInt4D(float4::BLACK))
+	{
+		// 중력 적용하고 up 시키기
+		GetTransform().SetLocalMove(GetTransform().GetUpVector());
+	}
+
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{
 		return;
@@ -123,6 +144,11 @@ void Player::IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	{
 		StateManager.ChangeState("Move");
 	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		StateManager.ChangeState("Attack");
+	}
 }
 
 void Player::MoveStart(const StateInfo& _Info)
@@ -141,23 +167,70 @@ void Player::MoveUpdate(float _DeltaTime, const StateInfo& _Info)
 		return;
 	}
 
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		StateManager.ChangeState("Attack");
+	}
+
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetLeftVector() * Speed * _DeltaTime);
 		Renderer->GetTransform().PixLocalNegativeX();
+		PlayerDir = "Left";
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerRight"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetRightVector() * Speed * _DeltaTime);
 		Renderer->GetTransform().PixLocalPositiveX();
+		PlayerDir = "Right";
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerUp"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetUpVector() * Speed * _DeltaTime);
+		PlayerDir = "Up";
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("PlayerUp") && true == GameEngineInput::GetInst()->IsPress("PlayerLeft"))
+	{
+		//GetTransform().SetWorldMove(GetTransform().GetLeftVector() * Speed * _DeltaTime);
+		PlayerDir = "LeftUp";
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("PlayerUp") && true == GameEngineInput::GetInst()->IsPress("PlayerRight"))
+	{
+		//GetTransform().SetWorldMove(GetTransform().GetRightVector() * Speed * _DeltaTime);
+		PlayerDir = "RightUp";
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("PlayerDown"))
 	{
 		GetTransform().SetWorldMove(GetTransform().GetDownVector() * Speed * _DeltaTime);
 	}
 }
+
+void Player::AttackStart(const StateInfo& _Info)
+{
+	Renderer->ChangeFrameAnimation("Idle");
+	TestPtr = GetLevel()->CreateActor<Weapon>(OBJECTORDER::Weapon);
+	TestPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+	TestPtr->SetWeaponDir(PlayerDir);
+}
+
+void Player::AttackUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+	if (false == GameEngineInput::GetInst()->IsPress("PlayerLeft")
+		&& false == GameEngineInput::GetInst()->IsPress("PlayerRight")
+		&& false == GameEngineInput::GetInst()->IsPress("PlayerUp")
+		&& false == GameEngineInput::GetInst()->IsPress("PlayerDown"))
+	{
+		StateManager.ChangeState("Idle");
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("PlayerLeft")
+		|| true == GameEngineInput::GetInst()->IsPress("PlayerRight")
+		|| true == GameEngineInput::GetInst()->IsPress("PlayerUp")
+		|| true == GameEngineInput::GetInst()->IsPress("PlayerDown"))
+	{
+		StateManager.ChangeState("Move");
+	}
+}
+
 

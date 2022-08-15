@@ -28,8 +28,18 @@ void MortimerFreezeLevel::Start()
 	// ¿ì»ó´Ü
 	//MFBoss->GetTransform().SetLocalPosition({ 1350, -380, -1 });
 	// Test
-	Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
-	NewPlayer->GetTransform().SetLocalPosition({ 750, -380, -1 });
+	{
+		Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
+		//NewPlayer->GetTransform().SetLocalPosition({ 750, -380, -1 });
+
+		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
+		Renderer->SetTexture("mid-main-ColMap.png");
+		Renderer->ScaleToTexture();
+		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
+		Renderer->Off();
+		NewPlayer->SetColMap(Renderer);
+	}
+
 	{
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("sky.png");
