@@ -39,7 +39,7 @@ public:
 		Mode = _Mode;
 	}
 
-	float4 GetScreenPosition();
+	float4 GetMouseScreenPosition();
 	float4 GetMouseWorldPosition();
 	float4 GetMouseWorldPositionToActor();
 

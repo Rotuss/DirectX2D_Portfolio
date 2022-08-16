@@ -24,6 +24,7 @@ void GameEngineTime::Update()
 }
 
 GameEngineTime::GameEngineTime()
+	: GlobalScale(1.0f)
 {
 }
 

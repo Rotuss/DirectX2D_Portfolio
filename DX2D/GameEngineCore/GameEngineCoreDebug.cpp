@@ -79,17 +79,39 @@ namespace GameEngineDebug
 		DebugData.push_back(DebugRenderData{ DebugInfo(DebugRenderType::Box, _Color) , DebugTrans.GetTransformData(), nullptr });
 	}
 
-	void DrawTexture(const std::string& _Texture, const float4& _Pos, const float4& _Rot, const float4& _Scale)
+	void DrawBox(const float4& _Pos, const float4& _Scale, const float4& _Rot, const float4& _Color)
+	{
+		static GameEngineTransform DebugTrans;
+
+		DebugTrans.SetLocalPosition(_Pos);
+		DebugTrans.SetLocalRotate(_Rot);
+		DebugTrans.SetLocalScale(_Scale);
+
+		DrawBox(DebugTrans, GameEngineCore::GetCurLevel()->GetMainCamera(), _Color);
+	}
+
+	void DrawTexture(const std::string& _Texture, const float4& _Pos, const float4& _Scale, const float4& _Rot)
+	{
+		GameEngineTexture* FindTexture = GameEngineTexture::Find(_Texture);
+		DrawTexture(FindTexture, GameEngineCore::GetCurLevel()->GetMainCamera(), _Pos, _Rot, _Scale);
+	}
+
+	void DrawTexture(const std::string& _Texture, GameEngineCamera* _Camera, const float4& _Pos, const float4& _Scale, const float4& _Rot)
+	{
+		GameEngineTexture* FindTexture = GameEngineTexture::Find(_Texture);
+		DrawTexture(FindTexture, _Camera, _Pos, _Rot, _Scale);
+	}
+
+	void DrawTexture(GameEngineTexture* _Texture, const float4& _Pos, const float4& _Scale, const float4& _Rot)
 	{
 		DrawTexture(_Texture, GameEngineCore::GetCurLevel()->GetMainCamera(), _Pos, _Rot, _Scale);
 	}
 
-	void DrawTexture(const std::string& _Texture, GameEngineCamera* _Camera, const float4& _Pos, const float4& _Rot, const float4& _Scale)
+	void DrawTexture(GameEngineTexture* _Texture, GameEngineCamera* _Camera, const float4& _Pos, const float4& _Scale, const float4& _Rot)
 	{
 		static GameEngineTransform DebugTrans;
 
-		GameEngineTexture* FindTexture = GameEngineTexture::Find(_Texture);
-		if (nullptr == FindTexture)
+		if (nullptr == _Texture)
 		{
 			MsgBoxAssert("존재하지 않는 텍스처를 디버그 랜더링 하려고 했습니다.");
 		}
@@ -100,14 +122,14 @@ namespace GameEngineDebug
 
 		if (_Scale.CompareInt2D(float4::ZERO))
 		{
-			DebugTrans.SetLocalScale(FindTexture->GetScale());
+			DebugTrans.SetLocalScale(_Texture->GetScale());
 		}
 
 		DebugTrans.SetView(_Camera->GetView());
 		DebugTrans.SetProjection(_Camera->GetProjectionMatrix());
 		DebugTrans.CalculateWorldViewProjection();
 
-		DebugData.push_back(DebugRenderData{ DebugInfo(DebugRenderType::Box, float4::WHITE) , DebugTrans.GetTransformData(), FindTexture });
+		DebugData.push_back(DebugRenderData{ DebugInfo(DebugRenderType::Box, float4::WHITE) , DebugTrans.GetTransformData(), _Texture });
 	}
 
 	void Debug3DRender()

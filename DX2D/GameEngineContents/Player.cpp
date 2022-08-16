@@ -87,7 +87,7 @@ void Player::Update(float _DeltaTime)
 	{
 		return;
 	}
-	while (true == ColorCheck->GetPixelToFloat4(GetTransform().GetLocalPosition().x, -(GetTransform().GetLocalPosition().y - 50.0f)).CompareInt4D(float4::BLACK))
+	while (true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-(GetTransform().GetLocalPosition().y - 50.0f))).CompareInt4D(float4::BLACK))
 	{
 		// 중력 적용하고 up 시키기
 		GetTransform().SetLocalMove(GetTransform().GetUpVector());

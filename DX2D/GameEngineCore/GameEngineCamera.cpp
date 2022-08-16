@@ -35,7 +35,7 @@ void GameEngineCamera::SetCameraOrder(CAMERAORDER _Order)
 	GetActor()->GetLevel()->PushCamera(this, _Order);
 }
 
-float4 GameEngineCamera::GetScreenPosition()
+float4 GameEngineCamera::GetMouseScreenPosition()
 {
 	POINT P;
 	GetCursorPos(&P);
@@ -46,7 +46,7 @@ float4 GameEngineCamera::GetScreenPosition()
 
 float4 GameEngineCamera::GetMouseWorldPosition()
 {
-	float4 Pos = GetScreenPosition();
+	float4 Pos = GetMouseScreenPosition();
 
 	float4x4 ViewPort;
 	ViewPort.ViewPort(Size.x, Size.y, 0, 0, 0, 1);

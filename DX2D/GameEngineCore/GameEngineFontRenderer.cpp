@@ -39,6 +39,6 @@ void GameEngineFontRenderer::Render(float _DeltaTime)
 		return;
 	}
 
-	Font->FontDraw(Text, FontSize, ScreenPosition, Color);
+	Font->FontDraw(Text, FontSize, ScreenPosition, Color, static_cast<int>(LR) | static_cast<int>(TB));
 	GameEngineRenderingPipeLine::AllShaderReset();
 }

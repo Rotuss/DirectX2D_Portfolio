@@ -90,6 +90,17 @@ void GameEngineLevel::AllClear()
 	AllCollisions.clear();
 }
 
+void GameEngineLevel::PushActor(GameEngineActor* _Actor, int _ObjectGroupIndex)
+{
+	if (nullptr != _Actor->GetParent())
+	{
+		MsgBoxAssert("부모가 존재하는 오브젝트는 루트가 될 수 없습니다.");
+	}
+
+	std::list<GameEngineActor*>& Group = AllActors[_ObjectGroupIndex];
+	Group.push_back(_Actor);
+}
+
 void GameEngineLevel::ActorOnEvent()
 {
 	for (const std::pair<int, std::list<GameEngineActor*>>& Group : AllActors)

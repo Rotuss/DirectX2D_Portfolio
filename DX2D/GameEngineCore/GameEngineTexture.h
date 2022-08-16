@@ -86,17 +86,22 @@ public:
 		return { CutData[_Index].SizeX * static_cast<float>(Desc.Width), CutData[_Index].SizeY * static_cast<float>(Desc.Height) };
 	}
 
+	float4 GetCutPos(int _Index)
+	{
+		return { CutData[_Index].PosX * static_cast<float>(Desc.Width), CutData[_Index].PosY * static_cast<float>(Desc.Height) };
+	}
+
 	size_t GetCutCount()
 	{
 		return CutData.size();
 	}
 
 	void TextureLoad(const std::string& _Path);
-
 	void TextureCreate(const D3D11_TEXTURE2D_DESC& _Desc);
 
-	PixelColor GetPixelToPixelColor(int _x, int _y);
+	void Cut(UINT _StartX, UINT _StartY, UINT _SizeX, UINT _SizeY);
 
+	PixelColor GetPixelToPixelColor(int _x, int _y);
 	float4 GetPixelToFloat4(int _x, int _y);
 
 protected:

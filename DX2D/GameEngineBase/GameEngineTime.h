@@ -35,7 +35,7 @@ public:
 			Inst_->DeltaTimef = 0.05f;
 		}
 		
-		return Inst_->DeltaTimef;
+		return Inst_->DeltaTimef * Inst_->GlobalScale;
 	}
 
 	template<typename EnumType>
@@ -70,6 +70,11 @@ public:
 		return TimeScale_[_Key];
 	}
 
+	void SetGlobalScale(float _GlobalScale)
+	{
+		GlobalScale = _GlobalScale;
+	}
+
 protected:
 
 private:
@@ -88,5 +93,6 @@ private:
 
 	double DeltaTimed;
 	float DeltaTimef;
+	float GlobalScale;
 };
 

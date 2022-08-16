@@ -83,9 +83,7 @@ public:
 		NewActor->SetOrder(_ObjectGroupIndex);
 		NewActor->Start();
 
-		std::list<GameEngineActor*>& Group = AllActors[_ObjectGroupIndex];
-
-		Group.push_back(NewActor);
+		PushActor(NewActor, _ObjectGroupIndex);
 
 		return dynamic_cast<ActorType*>(NewActor);
 	}
@@ -129,6 +127,7 @@ private:
 	std::list<GameEngineUpdateObject*> DeleteObject;
 	std::vector<GameEngineCamera*> Cameras;
 
+	void PushActor(GameEngineActor* _Actor, int _ObjectGroupIndex);
 	void ActorOnEvent();
 	void ActorOffEvent();
 	void ActorUpdate(float _DeltaTime);

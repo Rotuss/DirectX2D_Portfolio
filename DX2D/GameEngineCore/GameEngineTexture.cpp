@@ -229,6 +229,17 @@ void GameEngineTexture::TextureCreate(const D3D11_TEXTURE2D_DESC& _Desc)
 	}
 }
 
+void GameEngineTexture::Cut(UINT _StartX, UINT _StartY, UINT _SizeX, UINT _SizeY)
+{
+	float4 FrameData;
+	FrameData.PosX = _StartX / GetScale().x;
+	FrameData.PosY = _StartY / GetScale().y;
+	FrameData.SizeX = _SizeX / GetScale().x;
+	FrameData.SizeY = _SizeY / GetScale().y;
+
+	CutData.push_back(FrameData);
+}
+
 PixelColor GameEngineTexture::GetPixelToPixelColor(int _x, int _y)
 {
 	if (0 > _x)
