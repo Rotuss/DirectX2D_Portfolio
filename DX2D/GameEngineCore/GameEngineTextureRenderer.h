@@ -5,6 +5,7 @@ enum class PIVOTMODE
 {
 	CENTER,
 	LEFTTOP,
+	TOP,
 	BOT,
 	CUSTOM,
 };

@@ -80,6 +80,9 @@ void GameEngineTextureRenderer::SetPivot(PIVOTMODE _Mode)
 	case PIVOTMODE::LEFTTOP:
 		SetPivotToVector(float4(GetTransform().GetWorldScale().hx(), -GetTransform().GetWorldScale().hy()));
 		break;
+	case PIVOTMODE::TOP:
+		SetPivotToVector(float4(0.0f, -GetTransform().GetWorldScale().hy()));
+		break;
 	case PIVOTMODE::BOT:
 		SetPivotToVector(float4(0.0f, GetTransform().GetWorldScale().hy()));
 		break;
@@ -209,7 +212,7 @@ void GameEngineTextureRenderer::ScaleToCutTexture(int _Index)
 
 void GameEngineTextureRenderer::CurAnimationReset()
 {
-	CurAnimationSetStartPivotFrame(0);
+	CurAni->Reset();
 }
 
 void GameEngineTextureRenderer::CurAnimationSetStartPivotFrame(int SetFrame)
@@ -286,7 +289,7 @@ void FrameAnimation::Update(float _DeltaTime)
 			bOnceEnd = true;
 			bOnceStart = false;
 		}
-		
+
 		++Info.CurFrame;
 		if (nullptr != Frame)
 		{
@@ -299,50 +302,49 @@ void FrameAnimation::Update(float _DeltaTime)
 			{
 				Info.CurFrame = 0;
 			}
-			else 
+			else
 			{
 				Info.CurFrame = static_cast<unsigned int>(Info.Frames.size()) - 1;
 			}
 		}
+		Info.FrameTime -= Info.Inter;
+	}
 
-		if (nullptr != Texture)
+	if (nullptr != Texture)
+	{
+		ParentRenderer->CurTex = Texture;
+		ParentRenderer->SetTexture(Texture, Info.Frames[Info.CurFrame]);
+		ParentRenderer->SetPivot();
+
+		if (Texture->GetCutCount() != 0)
 		{
-			ParentRenderer->CurTex = Texture;
-			ParentRenderer->SetTexture(Texture, Info.Frames[Info.CurFrame]);
-			ParentRenderer->SetPivot();
-
-			if (Texture->GetCutCount() != 0)
+			if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
 			{
-				if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
-				{
-					ParentRenderer->ScaleToCutTexture(Info.Frames[Info.CurFrame]);
-				}
-			}
-			else
-			{
-				if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
-				{
-					ParentRenderer->ScaleToTexture();
-				}
+				ParentRenderer->ScaleToCutTexture(Info.Frames[Info.CurFrame]);
 			}
 		}
-		else if (nullptr != FolderTexture)
+		else
 		{
-			ParentRenderer->FrameDataReset();
-			ParentRenderer->CurTex = FolderTexture->GetTexture(Info.Frames[Info.CurFrame]);
-			ParentRenderer->SetTexture(FolderTexture->GetTexture(Info.Frames[Info.CurFrame]));
-			ParentRenderer->SetPivot();
-
 			if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
 			{
 				ParentRenderer->ScaleToTexture();
 			}
 		}
-		else
-		{
-			MsgBoxAssert("텍스처가 세팅되지 않은 애니메이션입니다.");
-		}
+	}
+	else if (nullptr != FolderTexture)
+	{
+		ParentRenderer->FrameDataReset();
+		ParentRenderer->CurTex = FolderTexture->GetTexture(Info.Frames[Info.CurFrame]);
+		ParentRenderer->SetTexture(FolderTexture->GetTexture(Info.Frames[Info.CurFrame]));
+		ParentRenderer->SetPivot();
 
-		Info.FrameTime -= Info.Inter;
+		if (ParentRenderer->ScaleMode == SCALEMODE::IMAGE)
+		{
+			ParentRenderer->ScaleToTexture();
+		}
+	}
+	else
+	{
+		MsgBoxAssert("텍스처가 세팅되지 않은 애니메이션입니다.");
 	}
 }

@@ -3,6 +3,7 @@
 #include "GlobalContents.h"
 #include "MortimerFreezeTable.h"
 #include "MortimerFreezeCard.h"
+#include "MortimerFreezeWhale.h"
 #include <iostream>
 
 MortimerFreezeBoss* MortimerFreezeBoss::MFBoss= nullptr;
@@ -46,9 +47,12 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MFIdleTrans", FrameAnimation_DESC("MFIdle", 24, 32, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("PeashotIntro", FrameAnimation_DESC("Peashot_Intro", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("PeashotIdle", FrameAnimation_DESC("Peashot_Idle", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.1f, true));		
+		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.1f, true));	
+		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("WhaleDropAttackOutro", FrameAnimation_DESC("Wizard_Drop_Attack_Outro", 0.1f, false));
 		Renderer->ChangeFrameAnimation("MFIdle");
 		//Renderer->AnimationBindEnd("Move", &Player::TestFunction, this);
+		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 		GetTransform().SetLocalPosition({ 1350, -380, -1 });
@@ -90,7 +94,7 @@ void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
 	StateManager.CreateStateMember("Quadshot", std::bind(&MortimerFreezeBoss::AttackQuadshotUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackQuadshotStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Whale", std::bind(&MortimerFreezeBoss::AttackWhaleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackWhaleStart, this, std::placeholders::_1));
 
-	StateManager.ChangeState("Peashot");
+	StateManager.ChangeState("Whale");
 }
 
 void MortimerFreezeBoss::Phase1Update(float _DeltaTime, const StateInfo& _Info)
@@ -176,6 +180,21 @@ void MortimerFreezeBoss::AttackQuadshotUpdate(float _DeltaTime, const StateInfo&
 
 void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("WhaleDrop");
+	Renderer->SetPivot(PIVOTMODE::TOP);
+	Renderer->AnimationBindEnd("WhaleDrop", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("WhaleDropAttackOutro");
+			Renderer->SetPivot(PIVOTMODE::CENTER);
+			
+			// Whale »ý¼º
+			MortimerFreezeWhale* Whale = GetLevel()->CreateActor<MortimerFreezeWhale>(OBJECTORDER::Boss);
+			Whale->GetTransform().SetLocalPosition({ GetTransform().GetLocalPosition().x, GetTransform().GetLocalPosition().y * 3 + 90.0f, GetTransform().GetLocalPosition().z });
+		});
+	Renderer->AnimationBindEnd("WhaleDropAttackOutro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			//StateManager.ChangeState("MF1Idle");
+		});
 }
 
 void MortimerFreezeBoss::AttackWhaleUpdate(float _DeltaTime, const StateInfo& _Info)
