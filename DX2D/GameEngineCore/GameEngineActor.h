@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include <GameEngineBase/GameEngineNameObject.h>
-#include <GameEngineBase/GameEngineUpdateObject.h>
+#include "GameEngineUpdateObject.h"
 #include "GameEngineTransformBase.h"
 
 // 설명 : 화면에 등장하는 모든것을 표현하기 위한 클래스

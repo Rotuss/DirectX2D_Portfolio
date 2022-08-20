@@ -2,7 +2,7 @@
 #include <map>
 #include <list>
 #include <GameEngineBase/GameEngineNameObject.h>
-#include <GameEngineBase/GameEngineUpdateObject.h>
+#include "GameEngineUpdateObject.h"
 
 enum class CAMERAORDER
 {
@@ -128,8 +128,8 @@ private:
 	std::vector<GameEngineCamera*> Cameras;
 
 	void PushActor(GameEngineActor* _Actor, int _ObjectGroupIndex);
-	void ActorOnEvent();
-	void ActorOffEvent();
+	void ActorLevelStartEvent();
+	void ActorLevelEndEvent();
 	void ActorUpdate(float _DeltaTime);
 	void LevelUpdate(float _DeltaTime);
 	void RemoveActor(GameEngineActor* _Actor);

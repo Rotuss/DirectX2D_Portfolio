@@ -11,11 +11,17 @@ class GameEngineRes : public GameEngineNameObject
 {
 public:
 	// constrcuter destructer
-	GameEngineRes() {}
+	GameEngineRes() 
+		: Original(true)
+	{
+	}
 	~GameEngineRes() {}
 
 	// delete Function
-	GameEngineRes(const GameEngineRes& _Other) = delete;
+	GameEngineRes(const GameEngineRes& _Other)
+		: Original(false)
+	{
+	}
 	GameEngineRes(GameEngineRes&& _Other) noexcept = delete;
 	GameEngineRes& operator=(const GameEngineRes& _Other) = delete;
 	GameEngineRes& operator=(GameEngineRes&& _Other) noexcept = delete;
@@ -45,6 +51,11 @@ public:
 		{
 			delete Res.second;
 		}
+	}
+
+	bool IsOriginal()
+	{
+		return Original;
 	}
 
 protected:
@@ -81,6 +92,8 @@ protected:
 
 		return NewRes;
 	}
+
+	bool Original;
 
 private:
 

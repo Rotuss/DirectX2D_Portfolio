@@ -16,7 +16,15 @@ GameEngineInputLayOut::~GameEngineInputLayOut()
 	}
 }
 
-void GameEngineInputLayOut::Create(const GameEngineLayOutDesc& _Desc, GameEngineVertexShader* _Shader)
+GameEngineInputLayOut* GameEngineInputLayOut::Create(const GameEngineLayOutDesc& _Desc, GameEngineVertexShader* _Shader)
+{
+	GameEngineInputLayOut* Input = CreateResUnName();
+	Input->CreateRes(_Desc, _Shader);
+
+	return Input;
+}
+
+void GameEngineInputLayOut::CreateRes(const GameEngineLayOutDesc& _Desc, GameEngineVertexShader* _Shader)
 {
 	if (S_OK != GameEngineDevice::GetDevice()->CreateInputLayout(
 			&_Desc.InputLayOutDesc[0],

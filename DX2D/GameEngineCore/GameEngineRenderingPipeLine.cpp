@@ -19,6 +19,11 @@ void GameEngineRenderingPipeLine::AllShaderReset()
 	GameEngineDevice::GetContext()->PSSetShader(nullptr, nullptr, 0);
 }
 
+GameEngineRenderingPipeLine* GameEngineRenderingPipeLine::Create()
+{
+	return CreateResUnName();
+}
+
 GameEngineRenderingPipeLine* GameEngineRenderingPipeLine::Create(const std::string& _Name)
 {
 	return CreateResName(_Name);
@@ -44,11 +49,6 @@ GameEngineRenderingPipeLine::GameEngineRenderingPipeLine()
 
 GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine() 
 {
-	if (nullptr != InputLayOut)
-	{
-		delete InputLayOut;
-		InputLayOut = nullptr;
-	}
 }
 
 void GameEngineRenderingPipeLine::SetInputAssembler1VertexBuffer(const std::string& _Name)
@@ -61,16 +61,9 @@ void GameEngineRenderingPipeLine::SetInputAssembler1VertexBuffer(const std::stri
 		return;
 	}
 
-	if (nullptr != InputLayOut)
-	{
-		delete InputLayOut;
-		InputLayOut = nullptr;
-	}
-
 	if (nullptr == InputLayOut && nullptr != VertexShader)
 	{
-		InputLayOut = new GameEngineInputLayOut();
-		InputLayOut->Create(*VertexBuffer->GetLayOutDesc(), VertexShader);
+		InputLayOut = GameEngineInputLayOut::Create(*VertexBuffer->GetLayOutDesc(), VertexShader);
 	}
 }
 
@@ -84,16 +77,9 @@ void GameEngineRenderingPipeLine::SetVertexShader(const std::string& _Name)
 		return;
 	}
 
-	if (nullptr != InputLayOut)
-	{
-		delete InputLayOut;
-		InputLayOut = nullptr;
-	}
-
 	if (nullptr == InputLayOut && nullptr != VertexBuffer)
 	{
-		InputLayOut = new GameEngineInputLayOut();
-		InputLayOut->Create(*VertexBuffer->GetLayOutDesc(), VertexShader);
+		InputLayOut = GameEngineInputLayOut::Create(*VertexBuffer->GetLayOutDesc(), VertexShader);
 	}
 }
 
@@ -162,6 +148,19 @@ void GameEngineRenderingPipeLine::Rendering()
 	OutputMergerBlendSetting();
 	OutputMergerDepthStencilSetting();
 	Draw();
+}
+
+void GameEngineRenderingPipeLine::Copy(GameEngineRenderingPipeLine* _Original)
+{
+	InputLayOut = _Original->InputLayOut;
+	VertexBuffer = _Original->VertexBuffer;
+	VertexShader = _Original->VertexShader;
+	IndexBuffer = _Original->IndexBuffer;
+	Topology = _Original->Topology;
+	Rasterizer = _Original->Rasterizer;
+	PixelShader = _Original->PixelShader;
+	DepthStencil = _Original->DepthStencil;
+	Blend = _Original->Blend;
 }
 
 void GameEngineRenderingPipeLine::InputAssembler1VertexBufferSetting()

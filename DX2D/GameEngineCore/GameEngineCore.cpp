@@ -82,16 +82,16 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 		
 		if (nullptr != CurrentLevel)
 		{
-			CurrentLevel->ActorOffEvent();
-			CurrentLevel->OffEvent();
+			CurrentLevel->ActorLevelEndEvent();
+			CurrentLevel->LevelEndEvent();
 			CurrentLevel->OverChildMove(NextLevel);
 		}
 
 		CurrentLevel = NextLevel;
 		NextLevel = nullptr;
 
-		CurrentLevel->OnEvent();
-		CurrentLevel->ActorOnEvent();
+		CurrentLevel->LevelStartEvent();
+		CurrentLevel->ActorLevelStartEvent();
 		CurrentLevel->ReSetAccTime();
 		GameEngineTime::GetInst()->Reset();
 	}

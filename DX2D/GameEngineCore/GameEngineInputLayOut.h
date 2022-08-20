@@ -18,7 +18,9 @@ public:
 	GameEngineInputLayOut& operator=(const GameEngineInputLayOut& _Other) = delete;
 	GameEngineInputLayOut& operator=(GameEngineInputLayOut&& _Other) noexcept = delete;
 
-	void Create(const GameEngineLayOutDesc& _Desc, GameEngineVertexShader* _Shader);
+	static GameEngineInputLayOut* Create(const GameEngineLayOutDesc& _Desc, GameEngineVertexShader* _Shader);
+
+	void CreateRes(const GameEngineLayOutDesc& _Desc, GameEngineVertexShader* _Shader);
 
 	void Setting();
 

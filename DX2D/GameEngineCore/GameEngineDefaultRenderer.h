@@ -17,10 +17,7 @@ public:
 	GameEngineDefaultRenderer& operator=(const GameEngineDefaultRenderer& _Other) = delete;
 	GameEngineDefaultRenderer& operator=(GameEngineDefaultRenderer&& _Other) noexcept = delete;
 
-	GameEngineRenderingPipeLine* GetPipeLine()
-	{
-		return PipeLine;
-	}
+	GameEngineRenderingPipeLine* GetPipeLine();
 
 	GameEngineShaderResourcesHelper ShaderResources;
 

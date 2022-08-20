@@ -3,6 +3,7 @@
 #include "GameEngineLevel.h"
 
 // Ό³Έν :
+class GameEngineRenderingPipeLine;
 class GameEngineRenderer : public GameEngineTransformComponent
 {
 	friend class GameEngineLevel;
@@ -18,6 +19,8 @@ public:
 	GameEngineRenderer(GameEngineRenderer&& _Other) noexcept = delete;
 	GameEngineRenderer& operator=(const GameEngineRenderer& _Other) = delete;
 	GameEngineRenderer& operator=(GameEngineRenderer&& _Other) noexcept = delete;
+
+	GameEngineRenderingPipeLine* GetClonePipeLine(GameEngineRenderingPipeLine* _Rendering);
 
 	void ChangeCamera(CAMERAORDER _Order);
 

@@ -14,6 +14,7 @@ class GameEngineRenderingPipeLine : public GameEngineRes<GameEngineRenderingPipe
 {
 public:
 	static void AllShaderReset();
+	static GameEngineRenderingPipeLine* Create();
 	static GameEngineRenderingPipeLine* Create(const std::string& _Name);
 
 public:
@@ -35,6 +36,7 @@ public:
 	void SetOutputMergerDepthStencil(const std::string& _Name);
 	void SetOutputMergerBlend(const std::string& _Name);
 	void Rendering();
+	void Copy(GameEngineRenderingPipeLine* _Original);
 
 	inline GameEngineVertexShader* GetVertexShader()
 	{

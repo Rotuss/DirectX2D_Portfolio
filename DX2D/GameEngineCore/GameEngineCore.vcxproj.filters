@@ -150,6 +150,9 @@
     <ClInclude Include="GameEngineCoreDebug.h">
       <Filter>Debug</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineUpdateObject.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEngine.cpp" />
@@ -293,6 +296,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineCoreDebug.cpp">
       <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineUpdateObject.cpp">
+      <Filter>Object\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

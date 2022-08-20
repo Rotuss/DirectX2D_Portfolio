@@ -6,15 +6,25 @@
 #include <GameEngineBase/GameEngineWindow.h>
 
 // Resources Header
+#include "GameEngineRenderingPipeLine.h"
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineIndexBuffer.h"
 
 GameEngineRenderer::GameEngineRenderer() 
+	: CameraOrder(CAMERAORDER::MAINCAMERA)
 {
 }
 
 GameEngineRenderer::~GameEngineRenderer() 
 {
+}
+
+GameEngineRenderingPipeLine* GameEngineRenderer::GetClonePipeLine(GameEngineRenderingPipeLine* _Rendering)
+{
+	GameEngineRenderingPipeLine* Clone = GameEngineRenderingPipeLine::Create();
+	Clone->Copy(_Rendering);
+
+	return Clone;
 }
 
 void GameEngineRenderer::ChangeCamera(CAMERAORDER _Order)
