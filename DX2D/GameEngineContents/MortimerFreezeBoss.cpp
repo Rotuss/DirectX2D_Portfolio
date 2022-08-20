@@ -3,6 +3,7 @@
 #include "GlobalContents.h"
 #include "MortimerFreezeTable.h"
 #include "MortimerFreezeCard.h"
+#include "MortimerFreezeMinion.h"
 #include "MortimerFreezeWhale.h"
 #include <iostream>
 
@@ -11,12 +12,15 @@ MortimerFreezeBoss* MortimerFreezeBoss::MFBoss= nullptr;
 MortimerFreezeBoss::MortimerFreezeBoss() 
 	: Renderer(nullptr)
 	, TableRenderer(nullptr)
+	, Collision(nullptr)
 	, StartPos()
 	, EndPos()
 	, LerpPos()
 	, Speed(200.0f)
 	, YAdd(0.0f)
 	, HP(10)
+	, MinionPixCheck(false)
+	, MinionPixRemove(false)
 {
 	MFBoss = this;
 }
@@ -48,6 +52,9 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("PeashotIntro", FrameAnimation_DESC("Peashot_Intro", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("PeashotIdle", FrameAnimation_DESC("Peashot_Idle", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.1f, true));	
+		Renderer->CreateFrameAnimationFolder("QuadshotStart", FrameAnimation_DESC("MF_Attack_Quadshot", 0, 15, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("QuadshotMinionAppear", FrameAnimation_DESC("MF_Attack_Quadshot", 15, 18, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("QuadshotMinionAfter", FrameAnimation_DESC("MF_Attack_Quadshot", 19, 30, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("WhaleDropAttackOutro", FrameAnimation_DESC("Wizard_Drop_Attack_Outro", 0.1f, false));
 		Renderer->ChangeFrameAnimation("MFIdle");
@@ -94,7 +101,7 @@ void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
 	StateManager.CreateStateMember("Quadshot", std::bind(&MortimerFreezeBoss::AttackQuadshotUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackQuadshotStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Whale", std::bind(&MortimerFreezeBoss::AttackWhaleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackWhaleStart, this, std::placeholders::_1));
 
-	StateManager.ChangeState("Whale");
+	StateManager.ChangeState("Quadshot");
 }
 
 void MortimerFreezeBoss::Phase1Update(float _DeltaTime, const StateInfo& _Info)
@@ -172,10 +179,52 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 
 void MortimerFreezeBoss::AttackQuadshotStart(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("QuadshotStart");
+	Renderer->AnimationBindFrame("QuadshotStart", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (15 == _Info.CurFrame)
+			{
+				Renderer->ChangeFrameAnimation("QuadshotMinionAppear");
+				
+				Minion0 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
+				Minion0->SetDir(DIR::LEFT);
+				Minion0->SetGender(GENDER::BOY);
+				Minion0->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-340.0f, 20.0f));
+				
+				Minion1 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
+				Minion1->SetDir(DIR::LEFT);
+				Minion1->SetGender(GENDER::GIRL);
+				Minion1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-110.0f, -30.0f));
+				
+				Minion2 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
+				Minion2->SetDir(DIR::RIGHT);
+				Minion2->SetGender(GENDER::BOY);
+				Minion2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(110.0f, -40.0f));
+				
+				Minion3 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
+				Minion3->SetDir(DIR::RIGHT);
+				Minion3->SetGender(GENDER::GIRL);
+				Minion3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(340.0f, 30.0f));
+			}
+		});
+
+	Renderer->AnimationBindFrame("QuadshotMinionAfter", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (3 == _Info.CurFrame)
+			{
+				MinionPixRemove = true;
+			}
+		});
 }
 
 void MortimerFreezeBoss::AttackQuadshotUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	if (true == MinionPixCheck)
+	{
+		MinionPixCheck = false;
+
+		Renderer->ChangeFrameAnimation("QuadshotMinionAfter");
+	}
 }
 
 void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)

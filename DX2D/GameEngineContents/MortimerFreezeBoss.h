@@ -3,6 +3,7 @@
 
 // Ό³Έν :
 //class GameEngineCollision;
+class MortimerFreezeMinion;
 class GameEngineTextureRenderer;
 class MortimerFreezeBoss : public GameEngineActor
 {
@@ -21,6 +22,16 @@ public:
 
 	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
 
+	inline void MinionPixStateSwitch(bool _Value)
+	{
+		MinionPixCheck = _Value;
+	}
+
+	inline bool MinionPixRemoveReturn()
+	{
+		return MinionPixRemove;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -29,6 +40,10 @@ protected:
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineTextureRenderer*	TableRenderer;
 	GameEngineCollision*		Collision;
+	MortimerFreezeMinion*		Minion0;
+	MortimerFreezeMinion*		Minion1;
+	MortimerFreezeMinion*		Minion2;
+	MortimerFreezeMinion*		Minion3;
 
 	void Phase1Start(const StateInfo& _Info);
 	void Phase1Update(float _DeltaTime, const StateInfo& _Info);
@@ -55,5 +70,7 @@ private:
 	float	Speed;
 	float	YAdd;
 	int		HP;
+	bool	MinionPixCheck;
+	bool	MinionPixRemove;
 };
 

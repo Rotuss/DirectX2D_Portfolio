@@ -210,6 +210,11 @@ void GameEngineTextureRenderer::ScaleToCutTexture(int _Index)
 	GetTransform().SetLocalScale(Scale * ScaleRatio);
 }
 
+void GameEngineTextureRenderer::CurAnimationPauseSwitch()
+{
+	CurAni->PauseSwtich();
+}
+
 void GameEngineTextureRenderer::CurAnimationReset()
 {
 	CurAni->Reset();
@@ -254,6 +259,11 @@ void GameEngineTextureRenderer::FrameDataReset()
 	FrameData = { 0.0f, 0.0f, 1.0f, 1.0f };
 }
 
+void FrameAnimation::PauseSwtich()
+{
+	Pause = !Pause;
+}
+
 void FrameAnimation::Reset()
 {
 	Info.FrameTime = 0.0f;
@@ -262,52 +272,55 @@ void FrameAnimation::Reset()
 
 void FrameAnimation::Update(float _DeltaTime)
 {
-	Info.FrameTime += _DeltaTime;
-
-	if (nullptr != Time)
+	if (false == Pause)
 	{
-		Time(Info, _DeltaTime);
-	}
+		Info.FrameTime += _DeltaTime;
 
-	if (false == bOnceStart && 0 == Info.CurFrame)
-	{
-		if (nullptr != Start)
+		if (nullptr != Time)
 		{
-			Start(Info);
-		}
-		bOnceStart = true;
-		bOnceEnd = false;
-	}
-
-	if (Info.Inter <= Info.FrameTime)
-	{
-		if (Info.CurFrame == (Info.Frames.size() - 1)
-			&& false == bOnceEnd
-			&& nullptr != End)
-		{
-			End(Info);
-			bOnceEnd = true;
-			bOnceStart = false;
+			Time(Info, _DeltaTime);
 		}
 
-		++Info.CurFrame;
-		if (nullptr != Frame)
+		if (false == bOnceStart && 0 == Info.CurFrame)
 		{
-			Frame(Info);
-		}
-
-		if (Info.CurFrame >= Info.Frames.size())
-		{
-			if (true == Info.Loop)
+			if (nullptr != Start)
 			{
-				Info.CurFrame = 0;
+				Start(Info);
 			}
-			else
-			{
-				Info.CurFrame = static_cast<unsigned int>(Info.Frames.size()) - 1;
-			}
+			bOnceStart = true;
+			bOnceEnd = false;
 		}
-		Info.FrameTime -= Info.Inter;
+
+		if (Info.Inter <= Info.FrameTime)
+		{
+			if (Info.CurFrame == (Info.Frames.size() - 1)
+				&& false == bOnceEnd
+				&& nullptr != End)
+			{
+				End(Info);
+				bOnceEnd = true;
+				bOnceStart = false;
+			}
+
+			++Info.CurFrame;
+			if (nullptr != Frame)
+			{
+				Frame(Info);
+			}
+
+			if (Info.CurFrame >= Info.Frames.size())
+			{
+				if (true == Info.Loop)
+				{
+					Info.CurFrame = 0;
+				}
+				else
+				{
+					Info.CurFrame = static_cast<unsigned int>(Info.Frames.size()) - 1;
+				}
+			}
+			Info.FrameTime -= Info.Inter;
+		}
 	}
 
 	if (nullptr != Texture)
