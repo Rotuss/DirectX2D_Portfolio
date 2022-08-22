@@ -27,6 +27,8 @@ public:
 	MortimerFreezeMinion& operator=(const MortimerFreezeMinion& _Other) = delete;
 	MortimerFreezeMinion& operator=(MortimerFreezeMinion&& _Other) noexcept = delete;
 
+	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+
 	inline void SetGender(GENDER _Type)
 	{
 		GenderType = _Type;
@@ -60,16 +62,38 @@ public:
 		DirType = _Type;
 	}
 
+	inline void SetMoveDir(int _Value)
+	{
+		MoveDir = _Value;
+	}
+
+	inline void SetColMap(GameEngineTextureRenderer* _Collision)
+	{
+		ColRenderer = _Collision;
+	}
+
+	GameEngineTextureRenderer* GetColMap()
+	{
+		return ColRenderer;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 	void End() {}
 
+	GameEngineTexture*			ColorCheck;
+	GameEngineTextureRenderer*	ColRenderer;
 	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	EffectRenderer;
 	GameEngineCollision*		Collision;
 
 private:
 	GENDER	GenderType;
 	DIR		DirType;
+
+	bool	MinionMoveStart;
+	bool	MinionFollowStart;
+	int		MoveDir;
 };
 

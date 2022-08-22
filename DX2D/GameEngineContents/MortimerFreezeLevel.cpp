@@ -161,6 +161,14 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 	{
 		GetMainCameraActor()->FreeCameraModeOnOff();
 	}
+
+	// 카메라 좌우 막기 필요, 플레이어 이동 막기 필요
+	//GetMainCameraActorTransform().SetLocalPosition(float4{ 800.0f + (Player::MainPlayer->GetTransform().GetLocalPosition().x * 0.1f), -610.0f } + float4::BACK * 100.0f);
+	/*GetMainCameraActorTransform().SetLocalPosition(float4{ Player::MainPlayer->GetTransform().GetLocalPosition().x,-610.0f });
+	if (GetMainCameraActorTransform().GetLocalPosition().x <= 750)
+	{
+		GetMainCameraActorTransform().SetLocalPosition(float4{750.0f,-610.0f });
+	}*/
 }
 
 void MortimerFreezeLevel::End()
