@@ -16,7 +16,6 @@
 #include "GameEngineFolderTexture.h"
 #include "GameEngineSampler.h"
 #include "GameEngineRenderTarget.h"
-#include "GameEngineDepthStencilTexture.h"
 #include "GameEngineDepthStencil.h"
 #include "GameEngineVertexShader.h"
 #include "GameEnginePixelShader.h"
@@ -87,6 +86,17 @@ void EngineSubSetting()
 		Desc.StencilEnable = false;
 
 		GameEngineDepthStencil::Create("EngineBaseDepth", Desc);
+	}
+
+	{
+		D3D11_DEPTH_STENCIL_DESC Desc = { 0 };
+
+		Desc.DepthEnable = true;
+		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_ALWAYS;
+		Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		Desc.StencilEnable = false;
+
+		GameEngineDepthStencil::Create("AlwaysDepth", Desc);
 	}
 }
 
@@ -165,6 +175,15 @@ void EngineRenderingPipeLine()
 	}
 
 	{
+		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("TargetMerge");
+		NewPipe->SetInputAssembler1VertexBuffer("FullRect");
+		NewPipe->SetInputAssembler2IndexBuffer("FullRect");
+		NewPipe->SetVertexShader("TargetMerge.hlsl");
+		NewPipe->SetPixelShader("TargetMerge.hlsl");
+		NewPipe->SetOutputMergerDepthStencil("AlwaysDepth");
+	}
+
+	{
 		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("DebugTexture");
 		NewPipe->SetVertexShader("DebugTexture.hlsl");
 		NewPipe->SetPixelShader("DebugTexture.hlsl");
@@ -205,6 +224,34 @@ void EngineMesh()
 		Index[5] = 3;
 
 		GameEngineIndexBuffer::Create("Rect", Index);
+	}
+
+	{
+		std::vector<GameEngineVertex> Vertex;
+		Vertex.push_back({ float4(-1.0f, 1.0f), float4(0.0f, 0.0f) });
+		Vertex.push_back({ float4(1.0f, 1.0f), float4(1.0f, 0.0f) });
+		Vertex.push_back({ float4(1.0f, -1.0f), float4(1.0f, 1.0f) });
+		Vertex.push_back({ float4(-1.0f, -1.0f), float4(0.0f, 1.0f) });
+
+		GameEngineVertexBuffer::Create("FullRect", Vertex);
+	}
+
+	{
+		std::vector<int> Index;
+
+		Index.resize(6);
+
+		// 첫번째
+		Index[0] = 0;
+		Index[1] = 1;
+		Index[2] = 2;
+
+		// 두번째
+		Index[3] = 0;
+		Index[4] = 2;
+		Index[5] = 3;
+
+		GameEngineIndexBuffer::Create("FullRect", Index);
 	}
 
 	{
@@ -307,7 +354,6 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineRenderTarget::ResourcesDestroy();
 	GameEngineTexture::ResourcesDestroy();
 	GameEngineDepthStencil::ResourcesDestroy();
-	GameEngineDepthStencilTexture::ResourcesDestroy();
 	GameEngineFolderTexture::ResourcesDestroy();
 	GameEngineSampler::ResourcesDestroy();
 	GameEngineRasterizer::ResourcesDestroy();

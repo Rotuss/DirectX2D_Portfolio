@@ -18,11 +18,14 @@ cbuffer AtlasData : register(b1)
 {
     float2 TextureFramePos;
     float2 TextureFrameSize;
+    
+    float4 PivotPos;
 };
 
 Output TextureAtlas_VS(Input _Input)
 {
     Output NewOutPut = (Output) 0;
+    _Input.Pos += PivotPos;
     NewOutPut.Pos = _Input.Pos;
     NewOutPut.Pos.w = 1.0f;
     NewOutPut.Pos = mul(_Input.Pos, WorldViewProjection);

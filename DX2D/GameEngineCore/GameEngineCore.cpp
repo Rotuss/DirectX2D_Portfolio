@@ -69,6 +69,8 @@ void GameEngineCore::CoreStart(GameEngineCore* _UserCore)
 	
 	EngineResourcesInitialize();
 
+	GameEngineDevice::CreateSwapChain();
+
 	GameEngineDebug::Debug3DInitialize();
 
 	_UserCore->Start();

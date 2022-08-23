@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 #include "GameEngineTexture.h"
+#include "GameEngineShaderResourcesHelper.h"
 
 // Ό³Έν :
 class GameEngineStatusWindow;
-class GameEngineDepthStencilTexture;
 class GameEngineRenderTarget : public GameEngineRes <GameEngineRenderTarget>
 {
 	friend GameEngineStatusWindow;
@@ -26,6 +26,11 @@ public:
 	static ID3D11RenderTargetView* PrevRenderTargetViews;
 	static ID3D11DepthStencilView* PrevDepthStencilView;
 
+	inline GameEngineTexture* GetDepthTexture()
+	{
+		return DepthTexture;
+	}
+
 	static void GetPrevRenderTarget();
 	static void SetPrevRenderTarget();
 
@@ -39,16 +44,24 @@ public:
 
 	void Setting();
 
+	void SettingDepthTexture(GameEngineTexture* _Texture);
+
 	void CreateDepthTexture(int _Index = 0);
 
-protected:
-	std::vector<GameEngineTexture*> RenderTargets;
-	std::vector<ID3D11RenderTargetView*> RenderTargetViews;
-	std::vector<ID3D11ShaderResourceView*> ShaderResourceViews;
-	std::vector<float4> ClearColors;
+	GameEngineTexture* GetRenderTargetTexture(size_t _Index);
+	void Merge(GameEngineRenderTarget* _Other, int _Index);
+	void Effect(GameEngineRenderingPipeLine* _Other, GameEngineShaderResourcesHelper* _ShaderResourcesHelper);
 
-	ID3D11DepthStencilView* DepthStencilView;
-	GameEngineDepthStencilTexture* DepthTexture;
+protected:
+	std::vector<GameEngineTexture*>			RenderTargets;
+	std::vector<ID3D11RenderTargetView*>	RenderTargetViews;
+	std::vector<ID3D11ShaderResourceView*>	ShaderResourceViews;
+	std::vector<float4>						ClearColors;
+
+	ID3D11DepthStencilView*			DepthStencilView;
+	GameEngineTexture*				DepthTexture;
+	GameEngineRenderingPipeLine*	MergePipeLine;
+	GameEngineShaderResourcesHelper MergeShaderResourcesHelper;
 
 private:
 

@@ -3,6 +3,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineLevel.h"
 #include "GameEngineRenderer.h"
+#include "GameEngineRenderTarget.h"
 #include <GameEngineBase/GameEngineWindow.h>
 
 GameEngineCamera::GameEngineCamera() 
@@ -69,11 +70,16 @@ float4 GameEngineCamera::GetMouseWorldPositionToActor()
 
 void GameEngineCamera::Start()
 {
-	//GetActor()->GetLevel()->PushCamera(this);
+	CameraRenderTarget = GameEngineRenderTarget::Create();
+	CameraRenderTarget->CreateRenderTargetTexture(GameEngineWindow::GetScale(), DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, float4::ZERO);
+	CameraRenderTarget->SettingDepthTexture(GameEngineDevice::GetBackBuffer()->GetDepthTexture());
 }
 
 void GameEngineCamera::Render(float _DeltaTime)
 {
+	CameraRenderTarget->Clear();
+	CameraRenderTarget->Setting();
+	
 	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortDesc);
 	
 	View.LookAtLH(GetActor()->GetTransform().GetLocalPosition(), GetActor()->GetTransform().GetForwardVector(), GetActor()->GetTransform().GetUpVector());

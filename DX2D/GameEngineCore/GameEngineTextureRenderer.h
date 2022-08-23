@@ -4,9 +4,14 @@
 enum class PIVOTMODE
 {
 	CENTER,
-	LEFTTOP,
 	TOP,
 	BOT,
+	LEFT,
+	RIGHT,
+	LEFTTOP,
+	RIGHTTOP,
+	LEFTBOT,
+	RIGHTBOT,
 	CUSTOM,
 };
 
@@ -29,9 +34,18 @@ struct ColorData
 	}
 };
 
+struct AtlasData
+{
+public:
+	float4 FrameData;
+	float4 PivotPos;
+};
+
 class FrameAnimation_DESC
 {
 public:
+	class GameEngineTextureRenderer* Renderer;
+	
 	std::string TextureName;
 	std::vector<unsigned int> Frames;
 
@@ -163,6 +177,7 @@ public:
 	void SetTexture(const std::string& _Name);
 	void SetTexture(const std::string& _Name, UINT _Index);
 	void SetFrame(UINT _Index);
+	void SetFolderTextureToIndex(const std::string& _Text, UINT _Index);
 
 	void SetPivot();
 	void SetPivot(PIVOTMODE _Mode);
@@ -250,6 +265,7 @@ private:
 	FrameAnimation* CurAni;
 
 	ColorData ColorData;
+	AtlasData AtlasDataInst;
 
 	void FrameDataReset();
 };

@@ -11,7 +11,7 @@ enum class CAMERAPROJECTIONMODE
 
 // Ό³Έν :
 class GameEngineLevel;
-class GameEngineCamera;
+class GameEngineRenderTarget;
 class GameEngineCamera : public GameEngineTransformComponent
 {
 	friend GameEngineLevel;
@@ -27,14 +27,19 @@ public:
 	GameEngineCamera& operator=(const GameEngineCamera& _Other) = delete;
 	GameEngineCamera& operator=(GameEngineCamera&& _Other) noexcept = delete;
 
-	CAMERAPROJECTIONMODE GetProjectionMode()
+	inline CAMERAPROJECTIONMODE GetProjectionMode()
 	{
 		return Mode;
 	}
 
+	inline GameEngineRenderTarget* GetCameraRenderTarget()
+	{
+		return CameraRenderTarget;
+	}
+
 	void SetCameraOrder(CAMERAORDER _Order);
 
-	void SetProjectionMode(CAMERAPROJECTIONMODE _Mode)
+	inline void SetProjectionMode(CAMERAPROJECTIONMODE _Mode)
 	{
 		Mode = _Mode;
 	}
@@ -72,6 +77,8 @@ protected:
 	void Start();
 
 private:
+	class GameEngineRenderTarget* CameraRenderTarget;
+	
 	float4x4 View;
 	float4x4 ViewPort;
 	float4x4 Projection;

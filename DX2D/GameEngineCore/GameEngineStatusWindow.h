@@ -27,11 +27,15 @@ public:
 	GameEngineStatusWindow& operator=(const GameEngineStatusWindow& _Other) = delete;
 	GameEngineStatusWindow& operator=(GameEngineStatusWindow&& _Other) noexcept = delete;
 
+	static void AddDebugRenderTarget(const std::string& _DebugName, GameEngineRenderTarget* _RenderTarget);
+
 protected:
 
 private:
 	void Initialize(class GameEngineLevel* _Level) override;
 	void OnGUI(GameEngineLevel* _Level, float _DeltaTime) override;
+
+	static std::map<std::string, GameEngineRenderTarget*> DebugRenderTarget;
 
 	std::list<GameEngineImageShotWindow*> Window;
 };

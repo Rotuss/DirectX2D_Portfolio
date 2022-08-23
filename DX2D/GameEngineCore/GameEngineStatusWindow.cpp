@@ -4,12 +4,24 @@
 #include "GameEngineCameraActor.h"
 #include "GameEngineRenderTarget.h"
 
+std::map<std::string, GameEngineRenderTarget*> GameEngineStatusWindow::DebugRenderTarget;
+
 GameEngineStatusWindow::GameEngineStatusWindow() 
 {
 }
 
 GameEngineStatusWindow::~GameEngineStatusWindow() 
 {
+}
+
+void GameEngineStatusWindow::AddDebugRenderTarget(const std::string& _DebugName, GameEngineRenderTarget* _RenderTarget)
+{
+	if (DebugRenderTarget.end() != DebugRenderTarget.find(_DebugName))
+	{
+		MsgBoxAssert("이미 존재하는 디버그 랜더타겟입니다.");
+	}
+
+	DebugRenderTarget.insert(std::make_pair(_DebugName, _RenderTarget));
 }
 
 void GameEngineStatusWindow::Initialize(class GameEngineLevel* _Level)
@@ -49,7 +61,7 @@ void GameEngineStatusWindow::OnGUI(GameEngineLevel* _Level, float _DeltaTime)
 	std::string AllRenderTarget = "AllRenderTarget";
 	ImGui::Text(AllRenderTarget.c_str());
 
-	for (std::pair<std::string, GameEngineRenderTarget*> RenderTargetPair : GameEngineRenderTarget::NamedRes)
+	for (std::pair<std::string, GameEngineRenderTarget*> RenderTargetPair : DebugRenderTarget)
 	{
 		if (true == ImGui::TreeNodeEx(RenderTargetPair.first.c_str(), 0))
 		{
@@ -69,6 +81,8 @@ void GameEngineStatusWindow::OnGUI(GameEngineLevel* _Level, float _DeltaTime)
 			ImGui::TreePop();
 		}
 	}
+
+	DebugRenderTarget.clear();
 }
 
 void GameEngineImageShotWindow::RenderTextureSetting(ImTextureID _RenderTexture, ImVec2 _Size)

@@ -32,7 +32,7 @@ void GameEngineDevice::Destroy()
 void GameEngineDevice::Initialize()
 {
 	DeviceCreate();
-	CreateSwapChain();
+	//CreateSwapChain();
 }
 
 void GameEngineDevice::DeviceCreate()
@@ -50,10 +50,12 @@ void GameEngineDevice::DeviceCreate()
 #endif
 
 	D3D_FEATURE_LEVEL Level = D3D_FEATURE_LEVEL::D3D_FEATURE_LEVEL_11_0;
+	IDXGIAdapter* pA = GetHighPerformanceAdapter();
 
 	if (S_OK != D3D11CreateDevice(
-			nullptr,
-			D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_HARDWARE,
+			pA,
+			//D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_HARDWARE,
+			D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_UNKNOWN,
 			nullptr,
 			iFlag,
 			nullptr,
@@ -64,6 +66,12 @@ void GameEngineDevice::DeviceCreate()
 			&Context_))
 	{
 		MsgBoxAssert("디바이스 생성이 실패했습니다.");
+	}
+
+	if (nullptr != pA)
+	{
+		pA->Release();
+		pA = nullptr;
 	}
 
 	if (Level != D3D_FEATURE_LEVEL::D3D_FEATURE_LEVEL_11_0)
@@ -162,3 +170,39 @@ void GameEngineDevice::RenderEnd()
 	}
 }
 
+IDXGIAdapter* GameEngineDevice::GetHighPerformanceAdapter()
+{
+	IDXGIFactory* pF = nullptr;
+	IDXGIAdapter* pA = nullptr;
+	HRESULT HR = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&pF);
+	size_t prevAdapterVideoMemory = 0;
+
+	for (UINT adapterIndex = 0; ; ++adapterIndex)
+	{
+		IDXGIAdapter* pA1 = nullptr;
+		pF->EnumAdapters(adapterIndex, &pA1);
+		if (nullptr == pA1)
+		{
+			break;
+		}
+
+		DXGI_ADAPTER_DESC adapterDesc;
+		pA1->GetDesc(&adapterDesc);
+		if (prevAdapterVideoMemory <= adapterDesc.DedicatedVideoMemory)
+		{
+			prevAdapterVideoMemory = adapterDesc.DedicatedVideoMemory;
+			if (nullptr != pA)
+			{
+				pA->Release();
+			}
+
+			pA = pA1;
+			continue;
+		}
+
+		pA1->Release();
+	}
+
+	pF->Release();
+	return pA;
+}

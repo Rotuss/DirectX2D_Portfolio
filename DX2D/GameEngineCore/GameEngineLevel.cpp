@@ -8,6 +8,7 @@
 #include "GameEngineCoreDebug.h"
 #include "GameEngineCollision.h"
 #include "GameEngineCameraActor.h"
+#include "GameEngineRenderTarget.h"
 
 GameEngineLevel::GameEngineLevel() 
 {
@@ -314,6 +315,16 @@ void GameEngineLevel::Render(float _DelataTime)
 		}
 
 		Cameras[i]->Render(_DelataTime);
+	}
+
+	for (size_t i = 0; i < Cameras.size(); i++)
+	{
+		if (nullptr == Cameras[i])
+		{
+			continue;
+		}
+
+		GameEngineDevice::GetBackBuffer()->Merge(Cameras[i]->CameraRenderTarget, 0);
 	}
 
 	GameEngineDebug::Debug3DRender();
