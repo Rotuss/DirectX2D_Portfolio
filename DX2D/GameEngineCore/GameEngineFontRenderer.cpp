@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineFontRenderer.h"
+#include "GameEngineBlend.h"
 
 GameEngineRenderTarget* GameEngineFontRenderer::FontTarget = nullptr;
 

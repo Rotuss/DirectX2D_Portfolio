@@ -15,6 +15,7 @@ class GameEngineRenderTarget;
 class GameEngineCamera : public GameEngineTransformComponent
 {
 	friend GameEngineLevel;
+	friend GameEngineRenderer;
 
 public:
 	// constrcuter destructer
@@ -75,6 +76,7 @@ public:
 
 protected:
 	void Start();
+	void ChangeRenderingOrder(GameEngineRenderer* _Renderer, int _ChangeOrder);
 
 private:
 	class GameEngineRenderTarget* CameraRenderTarget;

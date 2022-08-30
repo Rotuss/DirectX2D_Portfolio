@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineRenderer.h"
+#include "GameEngineCamera.h"
 #include "GameEngineActor.h"
 #include "GameEngineLevel.h"
 #include <Windows.h>
@@ -12,6 +13,7 @@
 
 GameEngineRenderer::GameEngineRenderer() 
 	: CameraOrder(CAMERAORDER::MAINCAMERA)
+	, RenderingOrder(0)
 {
 }
 
@@ -25,6 +27,11 @@ GameEngineRenderingPipeLine* GameEngineRenderer::GetClonePipeLine(GameEngineRend
 	Clone->Copy(_Rendering);
 
 	return Clone;
+}
+
+void GameEngineRenderer::SetRenderingOrder(int _Order)
+{
+	Camera->ChangeRenderingOrder(this, _Order);
 }
 
 void GameEngineRenderer::ChangeCamera(CAMERAORDER _Order)

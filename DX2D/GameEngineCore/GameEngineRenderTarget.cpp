@@ -1,4 +1,5 @@
 #include "PreCompile.h"
+#include "GameEngineRenderSet.h"
 #include "GameEngineRenderTarget.h"
 
 ID3D11RenderTargetView* GameEngineRenderTarget::PrevRenderTargetViews = nullptr;
@@ -13,6 +14,12 @@ GameEngineRenderTarget::GameEngineRenderTarget()
 
 GameEngineRenderTarget::~GameEngineRenderTarget() 
 {
+	for (GameEnginePostEffect* Effect : Effects)
+	{
+		delete Effect;
+	}
+
+	Effects.clear();
 }
 
 GameEngineRenderTarget* GameEngineRenderTarget::Create(const std::string& _Name)
@@ -143,6 +150,15 @@ GameEngineTexture* GameEngineRenderTarget::GetRenderTargetTexture(size_t _Index)
 	return RenderTargets[_Index];
 }
 
+void GameEngineRenderTarget::Copy(GameEngineRenderTarget* _Other, int _Index)
+{
+	Clear();
+
+	MergeShaderResourcesHelper.SetTexture("Tex", _Other->GetRenderTargetTexture(_Index));
+
+	Effect(GameEngineRenderingPipeLine::Find("TargetMerge"), &MergeShaderResourcesHelper);
+}
+
 void GameEngineRenderTarget::Merge(GameEngineRenderTarget* _Other, int _Index)
 {
 	MergeShaderResourcesHelper.SetTexture("Tex", _Other->GetRenderTargetTexture(_Index));
@@ -155,4 +171,17 @@ void GameEngineRenderTarget::Effect(GameEngineRenderingPipeLine* _Other, GameEng
 	Setting();
 	_ShaderResourcesHelper->AllResourcesSetting();
 	_Other->Rendering();
+}
+
+void GameEngineRenderTarget::Effect(GameEngineRenderSet& _RenderSet)
+{
+	Effect(_RenderSet.PipeLine, &_RenderSet.ShaderResources);
+}
+
+void GameEngineRenderTarget::EffectProcess()
+{
+	for (GameEnginePostEffect* Effect : Effects)
+	{
+		Effect->Effect(this);
+	}
 }

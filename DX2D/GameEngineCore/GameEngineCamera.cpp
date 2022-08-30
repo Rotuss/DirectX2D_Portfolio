@@ -75,6 +75,15 @@ void GameEngineCamera::Start()
 	CameraRenderTarget->SettingDepthTexture(GameEngineDevice::GetBackBuffer()->GetDepthTexture());
 }
 
+void GameEngineCamera::ChangeRenderingOrder(GameEngineRenderer* _Renderer, int _ChangeOrder)
+{
+	AllRenderer_[_Renderer->GetRenderingOrder()].remove(_Renderer);
+
+	_Renderer->RenderingOrder = _ChangeOrder;
+
+	AllRenderer_[_Renderer->GetRenderingOrder()].push_back(_Renderer);
+}
+
 void GameEngineCamera::Render(float _DeltaTime)
 {
 	CameraRenderTarget->Clear();
@@ -156,7 +165,7 @@ void GameEngineCamera::OverRenderer(GameEngineCamera* _NextOver)
 
 void GameEngineCamera::PushRenderer(GameEngineRenderer* _Renderer)
 {
-	AllRenderer_[_Renderer->GetOrder()].push_back(_Renderer);
+	AllRenderer_[_Renderer->RenderingOrder].push_back(_Renderer);
 }
 
 void GameEngineCamera::Release(float _DelataTime)

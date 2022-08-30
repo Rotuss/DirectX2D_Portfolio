@@ -169,6 +169,16 @@ public:
 		return ColorData;
 	}
 
+	bool IsCurAnimation()
+	{
+		if (nullptr == CurAni)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	void SetSamplingModePoint();
 	void SetSamplingModeLiner();
 
@@ -243,6 +253,10 @@ public:
 
 	void ScaleToTexture();
 	void ScaleToCutTexture(int _Index);
+	
+	bool IsCurAnimationPause();
+	void CurAnimationPauseOn();
+	void CurAnimationPauseOff();
 	void CurAnimationPauseSwitch();
 	void CurAnimationReset();
 	void CurAnimationSetStartPivotFrame(int SetFrame);

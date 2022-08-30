@@ -239,6 +239,21 @@ void GameEngineTextureRenderer::ScaleToCutTexture(int _Index)
 	GetTransform().SetLocalScale(Scale * ScaleRatio);
 }
 
+bool GameEngineTextureRenderer::IsCurAnimationPause()
+{
+	return CurAni->Pause;
+}
+
+void GameEngineTextureRenderer::CurAnimationPauseOn()
+{
+	CurAni->Pause = true;
+}
+
+void GameEngineTextureRenderer::CurAnimationPauseOff()
+{
+	CurAni->Pause = false;
+}
+
 void GameEngineTextureRenderer::CurAnimationPauseSwitch()
 {
 	CurAni->PauseSwtich();

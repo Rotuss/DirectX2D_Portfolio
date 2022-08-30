@@ -172,6 +172,7 @@ void EngineRenderingPipeLine()
 		NewPipe->SetInputAssembler2IndexBuffer("Box");
 		NewPipe->SetVertexShader("Debug3D.hlsl");
 		NewPipe->SetPixelShader("Debug3D.hlsl");
+		NewPipe->SetOutputMergerDepthStencil("AlwaysDepth");
 	}
 
 	{
@@ -187,6 +188,15 @@ void EngineRenderingPipeLine()
 		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("DebugTexture");
 		NewPipe->SetVertexShader("DebugTexture.hlsl");
 		NewPipe->SetPixelShader("DebugTexture.hlsl");
+	}
+
+	// PostEffect
+	{
+		GameEngineRenderingPipeLine* NewPipe = GameEngineRenderingPipeLine::Create("Blur");
+		NewPipe->SetInputAssembler1VertexBuffer("FullRect");
+		NewPipe->SetInputAssembler2IndexBuffer("FullRect");
+		NewPipe->SetVertexShader("Blur.hlsl");
+		NewPipe->SetPixelShader("Blur.hlsl");
 	}
 }
 

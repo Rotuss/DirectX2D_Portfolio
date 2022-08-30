@@ -265,11 +265,13 @@ void GameEngineLevel::PushCamera(GameEngineCamera* _Camera, int _CameraOrder)
 
 void GameEngineLevel::PushRenderer(GameEngineRenderer* _Renderer, int _CameraOrder)
 {
-	Cameras[static_cast<UINT>(_Renderer->CameraOrder)]->AllRenderer_[_Renderer->GetOrder()].remove(_Renderer);
-
+	GameEngineCamera* PrevCamera = Cameras[static_cast<UINT>(_Renderer->CameraOrder)];
+	PrevCamera->AllRenderer_[_Renderer->GetRenderingOrder()].remove(_Renderer);
 	_Renderer->CameraOrder = static_cast<CAMERAORDER>(_CameraOrder);
-	
+
+	GameEngineCamera* NextCamera = Cameras[_CameraOrder];
 	Cameras[_CameraOrder]->PushRenderer(_Renderer);
+	_Renderer->Camera = NextCamera;
 }
 
 void GameEngineLevel::PushCollision(GameEngineCollision* _Collision, int _Order)
@@ -324,8 +326,20 @@ void GameEngineLevel::Render(float _DelataTime)
 			continue;
 		}
 
+		Cameras[i]->GetCameraRenderTarget()->EffectProcess();
+	}
+
+	for (size_t i = 0; i < Cameras.size(); i++)
+	{
+		if (nullptr == Cameras[i])
+		{
+			continue;
+		}
+
 		GameEngineDevice::GetBackBuffer()->Merge(Cameras[i]->CameraRenderTarget, 0);
 	}
+	
+	GameEngineDevice::GetBackBuffer()->EffectProcess();
 
 	GameEngineDebug::Debug3DRender();
 	GameEngineGUI::GUIRender(this, _DelataTime);

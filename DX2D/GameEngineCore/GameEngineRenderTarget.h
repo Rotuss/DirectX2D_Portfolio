@@ -1,7 +1,19 @@
 #pragma once
 #include <vector>
 #include "GameEngineTexture.h"
+#include "GameEngineRenderer.h"
 #include "GameEngineShaderResourcesHelper.h"
+
+class GameEnginePostEffect
+{
+public:
+	virtual void EffectInit() = 0;
+	virtual void Effect(class GameEngineRenderTarget* _Render) = 0;
+
+	virtual ~GameEnginePostEffect()
+	{
+	}
+};
 
 // Ό³Έν :
 class GameEngineStatusWindow;
@@ -49,8 +61,11 @@ public:
 	void CreateDepthTexture(int _Index = 0);
 
 	GameEngineTexture* GetRenderTargetTexture(size_t _Index);
-	void Merge(GameEngineRenderTarget* _Other, int _Index);
+	void Copy(GameEngineRenderTarget* _Other, int _Index = 0);
+	void Merge(GameEngineRenderTarget* _Other, int _Index = 0);
 	void Effect(GameEngineRenderingPipeLine* _Other, GameEngineShaderResourcesHelper* _ShaderResourcesHelper);
+	void Effect(class GameEngineRenderSet& _RenderSet);
+	void EffectProcess();
 
 protected:
 	std::vector<GameEngineTexture*>			RenderTargets;
@@ -65,5 +80,19 @@ protected:
 
 private:
 
+// PostEffect
+public:
+	template<typename EffectType>
+	void AddEffect()
+	{
+		EffectType* NewEffect = new EffectType();
+		NewEffect->EffectInit();
+		Effects.push_back(NewEffect);
+	}
+
+protected:
+
+private:
+	std::list<GameEnginePostEffect*> Effects;
 };
 
