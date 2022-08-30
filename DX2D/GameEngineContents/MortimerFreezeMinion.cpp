@@ -110,6 +110,8 @@ void MortimerFreezeMinion::Start()
 			if (14 == _Info.CurFrame)
 			{
 				Renderer->CurAnimationPauseSwitch();
+
+				MortimerFreezeBoss::MFBoss->MinionPixStateSwitch(true);
 			}
 		});
 
@@ -185,12 +187,12 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 		if (0 == MoveDir)
 		{
 			// ¿ÞÂÊ
-			GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetLeftVector() + GetTransform().GetDownVector()) * 200 * _DeltaTime));
+			GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + (((GetTransform().GetLeftVector()) / 2.0f + GetTransform().GetDownVector()) * 400 * _DeltaTime));
 		}
 		else
 		{
 			// ¿À¸¥ÂÊ
-			GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetRightVector() + GetTransform().GetDownVector()) * 200 * _DeltaTime));
+			GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + (((GetTransform().GetRightVector()) / 2.0f + GetTransform().GetDownVector()) * 400 * _DeltaTime));
 		}
 	}
 	
@@ -206,11 +208,13 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 
 		if (GENDER::BOY == GenderType)
 		{
+			MortimerFreezeBoss::MFBoss->MinionPixRemoveSetting(false);
 			Renderer->ChangeFrameAnimation("SpawnBoyGroundCol");
 		}
 
 		if (GENDER::GIRL == GenderType)
 		{
+			MortimerFreezeBoss::MFBoss->MinionPixRemoveSetting(false);
 			Renderer->ChangeFrameAnimation("SpawnGirlGroundCol");
 		}	
 	}

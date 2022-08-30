@@ -62,7 +62,7 @@ void GameEngineTextureRenderer::SetTexture(const std::string& _Name, UINT _Index
 
 void GameEngineTextureRenderer::SetFrame(UINT _Index)
 {
-	FrameData = CurTex->GetFrameData(_Index);
+	AtlasDataInst.FrameData = CurTex->GetFrameData(_Index);
 }
 
 void GameEngineTextureRenderer::SetFolderTextureToIndex(const std::string& _Text, UINT _Index)
@@ -286,7 +286,7 @@ void GameEngineTextureRenderer::SetTextureRendererSetting()
 
 void GameEngineTextureRenderer::FrameDataReset()
 {
-	FrameData = { 0.0f, 0.0f, 1.0f, 1.0f };
+	AtlasDataInst.FrameData = { 0.0f, 0.0f, 1.0f, 1.0f };
 }
 
 void FrameAnimation::PauseSwtich()
@@ -323,11 +323,12 @@ void FrameAnimation::Update(float _DeltaTime)
 
 		if (Info.Inter <= Info.FrameTime)
 		{
-			if (Info.CurFrame == (Info.Frames.size() - 1)
-				&& false == bOnceEnd
-				&& nullptr != End)
+			if (Info.CurFrame == (Info.Frames.size() - 1) && false == bOnceEnd)
 			{
-				End(Info);
+				if (nullptr != End)
+				{
+					End(Info);
+				}
 				bOnceEnd = true;
 				bOnceStart = false;
 			}

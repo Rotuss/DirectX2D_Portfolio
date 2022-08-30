@@ -22,6 +22,10 @@ void MortimerFreezeTable::Start()
 			{
 				Renderer->ChangeFrameAnimation("PeashotTableIdle");
 			});
+		Renderer->AnimationBindEnd("PeashotTableOutro", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				Renderer->Off();
+			});
 		Renderer->ChangeFrameAnimation("PeashotTableAppear");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -31,6 +35,11 @@ void MortimerFreezeTable::Start()
 
 void MortimerFreezeTable::Update(float _DeltaTime)
 {
-	GetTransform().SetLocalPosition(MortimerFreezeBoss::MFBoss->GetTransform().GetWorldPosition());
+	GetTransform().SetLocalPosition(MortimerFreezeBoss::MFBoss->GetTransform().GetWorldPosition() + float4(0, -50, -1));
+
+	if (true == MortimerFreezeBoss::MFBoss->GetIsCurPeashotEnd())
+	{
+		Renderer->ChangeFrameAnimation("PeashotTableOutro");
+	}
 }
 

@@ -61,10 +61,10 @@ void Player::Start()
 		Collision->ChangeOrder(OBJECTORDER::Player);
 	}
 
-	GameEngineFontRenderer* Font = CreateComponent<GameEngineFontRenderer>();
+	/*GameEngineFontRenderer* Font = CreateComponent<GameEngineFontRenderer>();
 	Font->SetText("Test", "µ¸¿ò");
 	Font->SetColor({ 1.0f, 0.0f, 0.0f });
-	Font->SetScreenPostion({ 100.0f, 100.0f });
+	Font->SetScreenPostion({ 100.0f, 100.0f });*/
 
 	StateManager.CreateStateMember("Idle", std::bind(&Player::IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&Player::IdleStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Move", std::bind(&Player::MoveUpdate, this, std::placeholders::_1, std::placeholders::_2)

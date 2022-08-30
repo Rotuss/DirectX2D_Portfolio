@@ -67,7 +67,7 @@ void MortimerFreezeCard::Update(float _DeltaTime)
 	float AccTime = GetAccTime();
 	float AccDeltaTime = AccTime / 1.0f;
 	
-	float4 LerpPos = float4::LerpLimit(CurPosition , PlayerPosition, AccDeltaTime);
+	float4 LerpPos = float4::Lerp(CurPosition , PlayerPosition, AccDeltaTime);
 
 	GetTransform().SetLocalRotation({0,0,float4::VectorXYtoDegree(PlayerPosition, CurPosition) -90});
 	GetTransform().SetLocalPosition(LerpPos);

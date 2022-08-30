@@ -10,16 +10,29 @@
 
 MortimerFreezeBoss* MortimerFreezeBoss::MFBoss= nullptr;
 
-MortimerFreezeBoss::MortimerFreezeBoss() 
+MortimerFreezeBoss::MortimerFreezeBoss()
 	: Renderer(nullptr)
 	, TableRenderer(nullptr)
 	, Collision(nullptr)
+	, CurMFDir(MFBossDIR::LEFT)
 	, StartPos()
 	, EndPos()
 	, LerpPos()
 	, Speed(200.0f)
 	, YAdd(0.0f)
+	, IdleLerpRatio(0.0f)
+	, PeashotAttackMoveTime(0.0f)
 	, HP(10)
+	, PeashotStateCount(GameEngineRandom::MainRandom.RandomInt(3, 5))
+	, PeashotAttackCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
+	, QuadshotStateCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
+	, IsP1IdleStart(true)
+	, MFMoveReplay(false)
+	, IsCurRStartPos(true)
+	, IsCurPeashotLStartPos(true)
+	, IsCurPeashotStartAttack(false)
+	, IsCurPeashotEnd(false)
+	, IsIdleTransState(false)
 	, MinionPixCheck(false)
 	, MinionPixRemove(false)
 {
@@ -49,22 +62,26 @@ void MortimerFreezeBoss::Start()
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("MFIdle", FrameAnimation_DESC("MFIdle", 0, 23, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("MFIdleTrans", FrameAnimation_DESC("MFIdle", 24, 32, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("PeashotIntro", FrameAnimation_DESC("Peashot_Intro", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFIdleTrans", FrameAnimation_DESC("MFIdle", 24, 32, 0.1f, false));
+		
+		Renderer->CreateFrameAnimationFolder("PeashotIntro", FrameAnimation_DESC("Peashot_Intro", 0.2f, false));
 		Renderer->CreateFrameAnimationFolder("PeashotIdle", FrameAnimation_DESC("Peashot_Idle", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.1f, true));	
+		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.1f, false));	
+		Renderer->CreateFrameAnimationFolder("PeashotOutro", FrameAnimation_DESC("Peashot_Outro", 0.1f, true));
+
 		Renderer->CreateFrameAnimationFolder("QuadshotStart", FrameAnimation_DESC("MF_Attack_Quadshot", 0, 15, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("QuadshotMinionAppear", FrameAnimation_DESC("MF_Attack_Quadshot", 15, 18, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("QuadshotMinionAfter", FrameAnimation_DESC("MF_Attack_Quadshot", 19, 30, 0.1f, false));
+		
 		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("WhaleDropAttackOutro", FrameAnimation_DESC("Wizard_Drop_Attack_Outro", 0.1f, false));
+		
 		Renderer->ChangeFrameAnimation("MFIdle");
-		//Renderer->AnimationBindEnd("Move", &Player::TestFunction, this);
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 		GetTransform().SetLocalPosition({ 1350, -380, -1 });
-		//GetTransform().SetLocalPosition({ 640, -360, -1 });
+		//GetTransform().SetLocalPosition({ 950, -360, -1 });
 	}
 
 	{
@@ -96,13 +113,20 @@ void MortimerFreezeBoss::Update(float _DeltaTime)
 
 void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
 {
+	if (false == GameEngineInput::GetInst()->IsKey("Num1_Peashot"))
+	{
+		GameEngineInput::GetInst()->CreateKey("Num1_Peashot", VK_NUMPAD1);
+		GameEngineInput::GetInst()->CreateKey("Num2_Quadshot", VK_NUMPAD2);
+		GameEngineInput::GetInst()->CreateKey("Num3_Whale", VK_NUMPAD3);
+	}
+	
 	StateManager.CreateStateMember("MF1Idle", std::bind(&MortimerFreezeBoss::P1IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P1IdleStart, this, std::placeholders::_1));
 
 	StateManager.CreateStateMember("Peashot", std::bind(&MortimerFreezeBoss::AttackPeashotUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackPeashotStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Quadshot", std::bind(&MortimerFreezeBoss::AttackQuadshotUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackQuadshotStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Whale", std::bind(&MortimerFreezeBoss::AttackWhaleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackWhaleStart, this, std::placeholders::_1));
 
-	StateManager.ChangeState("Quadshot");
+	StateManager.ChangeState("MF1Idle");
 }
 
 void MortimerFreezeBoss::Phase1Update(float _DeltaTime, const StateInfo& _Info)
@@ -113,23 +137,152 @@ void MortimerFreezeBoss::Phase1Update(float _DeltaTime, const StateInfo& _Info)
 void MortimerFreezeBoss::P1IdleStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("MFIdle");
+
+	Renderer->AnimationBindEnd("MFIdleTrans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsIdleTransState = false;
+			Renderer->ChangeFrameAnimation("MFIdle");
+			
+			if (0 == Num)
+			{
+				Renderer->GetTransform().PixLocalNegativeX();
+			}
+			if (1 == Num)
+			{
+				Renderer->GetTransform().PixLocalPositiveX();
+			}
+
+			IdleLerpRatio = 0.0f;
+		});
 }
 
 void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 {
-	float AccTime = GetAccTime();
-	float AccDeltaTime = AccTime / 1.0f;
+	float MFCurXPos = GetTransform().GetLocalPosition().x;
+	float PeashotRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
+	float QuadshotRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
 
-	/*if (StartPos[0].x == GetTransform().GetLocalPosition().x)
+	if (true == GameEngineInput::GetInst()->IsDown("Num1_Peashot"))
 	{
-		LerpPos = float4::LerpLimit(StartPos[0], EndPos[0], AccDeltaTime);
+		PeashotRandomPer = 0.5f;
+		PeashotStateCount = 0;
 	}
-	if (StartPos[1].x == GetTransform().GetLocalPosition().x)
+
+	if (true == GameEngineInput::GetInst()->IsDown("Num2_Quadshot"))
 	{
-		LerpPos = float4::LerpLimit(StartPos[1], EndPos[1], AccDeltaTime);
-	}*/
-	LerpPos = float4::LerpLimit(StartPos[1], EndPos[1], AccDeltaTime);
-	float LerpY = GameEngineMath::LerpLimit(-500, 500, AccDeltaTime) * _DeltaTime;
+		QuadshotRandomPer = 0.8f;
+		QuadshotStateCount = 0;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Num3_Whale"))
+	{
+		//QuadshotStateCount = 0;
+	}
+
+	// 보스의 x값이 300 혹은 1350일 때 랜덤한 확률로 Peashot 상태
+	if (300.0f >= MFCurXPos || 1350.0f <= MFCurXPos)
+	{
+		if (0.5f >= PeashotRandomPer && 0 == PeashotStateCount)
+		{
+			PeashotStateCount = GameEngineRandom::MainRandom.RandomInt(3, 5);
+			StateManager.ChangeState("Peashot");
+		}
+
+		if (0 == PeashotStateCount)
+		{
+			PeashotStateCount = GameEngineRandom::MainRandom.RandomInt(1, 3);
+		}
+	}
+
+	// x값이 650 ~ 950일 때 랜덤한 확률 Quadshot 상태
+	if (650.0f <= MFCurXPos && 950.0f >= MFCurXPos)
+	{
+		if (0.8f >= QuadshotRandomPer && 0 == QuadshotStateCount)
+		{
+			QuadshotStateCount = GameEngineRandom::MainRandom.RandomInt(3, 5);
+			StateManager.ChangeState("Quadshot");
+		}
+
+		if (0 == QuadshotStateCount)
+		{
+			QuadshotStateCount = GameEngineRandom::MainRandom.RandomInt(1, 3);
+		}
+	}
+
+	// 보스와 플레이어의 y값이 일치할 때 랜덤한 확률로 Whale 상태
+
+	if (true == MFMoveReplay)
+	{
+		if (MFBossDIR::LEFT == CurMFDir)
+		{
+			MFMoveReplay = false;
+			Num = 1;
+		}
+		if (MFBossDIR::RIGHT == CurMFDir)
+		{
+			MFMoveReplay = false;
+			Num = 0;
+		}
+	}
+
+	if (true == IsCurRStartPos)
+	{
+		if (StartPos[1].x <= MFCurXPos)
+		{
+			IsCurRStartPos = false;
+			IsIdleTransState = true;
+			CurMFDir = MFBossDIR::LEFT;
+			Num = 1;
+
+			if (false == IsP1IdleStart)
+			{
+				Renderer->ChangeFrameAnimation("MFIdleTrans");
+			}
+			if (true == IsP1IdleStart)
+			{
+				IsP1IdleStart = false;
+				IsIdleTransState = false;
+			}
+			--PeashotStateCount;
+			--QuadshotStateCount;
+		}
+	}
+	else
+	{
+		if (StartPos[0].x >= MFCurXPos)
+		{
+			IsCurRStartPos = true;
+			IsIdleTransState = true;
+			CurMFDir = MFBossDIR::RIGHT;
+			Num = 0;
+
+			if (false == IsP1IdleStart)
+			{
+				Renderer->ChangeFrameAnimation("MFIdleTrans");
+			}
+			if (true == IsP1IdleStart)
+			{
+				IsP1IdleStart = false;
+				IsIdleTransState = false;
+			}
+			--PeashotStateCount;
+			--QuadshotStateCount;
+		}
+	}
+
+	if (true == IsIdleTransState)
+	{
+		return;
+	}
+
+	IdleLerpRatio += _DeltaTime;
+	if (1.0f <= IdleLerpRatio)
+	{
+		IdleLerpRatio = 1.0f;
+	}
+
+	LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
+	float LerpY = GameEngineMath::LerpLimit(-300, 300, IdleLerpRatio) * _DeltaTime;
 
 	YAdd += LerpY;
 	if (0 <= YAdd)
@@ -137,31 +290,138 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		YAdd = 0.0f;
 	}
 
-	float4 Test = LerpPos + float4(0, YAdd, -30);
-	GetTransform().SetLocalPosition(Test);
+	float4 MFMovePos = LerpPos + float4(0, YAdd, 0);
+	GetTransform().SetLocalPosition(MFMovePos);
 }
 
 void MortimerFreezeBoss::AttackPeashotStart(const StateInfo& _Info)
 {
+	PeashotAttackMoveTime = 0.0f;
+	PeashotAttackCount = GameEngineRandom::MainRandom.RandomInt(1, 2);
+	IsCurPeashotStartAttack = false;
+	IsCurPeashotEnd = false;
+
+	if (true == IsCurRStartPos)
+	{
+		IsCurPeashotLStartPos = true;
+	}
+	else
+	{
+		IsCurPeashotLStartPos = false;
+	}
+
 	Renderer->ChangeFrameAnimation("PeashotIntro");
+	MortimerFreezeTable* TableActor = GetLevel()->CreateActor<MortimerFreezeTable>(OBJECTORDER::Boss);
+
+	Renderer->AnimationBindStart("PeashotIntro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (MFBossDIR::RIGHT == CurMFDir)
+			{
+				Renderer->GetTransform().PixLocalNegativeX();
+			}
+		});
+
 	Renderer->AnimationBindEnd("PeashotIntro", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("PeashotIdle");
 		});
 
-	//MortimerFreezeCard* Ptr = GetLevel()->CreateActor<MortimerFreezeCard>(OBJECTORDER::Boss);
-	//Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+	Renderer->AnimationBindStart("PeashotShoot", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsCurPeashotStartAttack = true;
+		});
 
-	MortimerFreezeTable* TableActor = GetLevel()->CreateActor<MortimerFreezeTable>(OBJECTORDER::Boss);
+	Renderer->AnimationBindEnd("PeashotShoot", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsCurPeashotStartAttack = false;
+			Renderer->ChangeFrameAnimation("PeashotIdle");
+		});
+
+	Renderer->AnimationBindEnd("PeashotOutro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsP1IdleStart = true;
+			IdleLerpRatio = 0.0f;
+			StateManager.ChangeState("MF1Idle");
+		});
 }
 
 void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& _Info)
 {
-	/*float AccTime = GetAccTime();
-	float AccDeltaTime = AccTime / 1.0f;
+	float MFCurXPos = GetTransform().GetLocalPosition().x;
 	
-	LerpPos = float4::LerpLimit(StartPos[1], EndPos[1], AccDeltaTime);
-	float LerpY = GameEngineMath::LerpLimit(-500, 500, AccDeltaTime) * _DeltaTime;
+	PeashotAttackMoveTime += _DeltaTime;
+
+	if (1.0f >= PeashotAttackMoveTime)
+	{
+		return;
+	}
+
+	if (true == IsCurPeashotStartAttack)
+	{
+		return;
+	}
+
+	if (false == IsCurPeashotLStartPos)
+	{
+		if (StartPos[1].x <= MFCurXPos)
+		{
+			IsCurPeashotLStartPos = true;
+			CurMFDir = MFBossDIR::LEFT;
+
+			if (0 == PeashotAttackCount)
+			{
+				Renderer->ChangeFrameAnimation("PeashotOutro");
+				Renderer->GetTransform().PixLocalPositiveX();
+				IsCurRStartPos = true;
+				IsCurPeashotEnd = true;
+				return;
+			}
+
+			Renderer->ChangeFrameAnimation("PeashotShoot");
+			Renderer->GetTransform().PixLocalPositiveX();
+			Num = 1;
+			--PeashotAttackCount;
+			IdleLerpRatio = 0.0f;
+
+			MortimerFreezeCard* Ptr = GetLevel()->CreateActor<MortimerFreezeCard>(OBJECTORDER::Boss);
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+		}
+	}
+	else
+	{
+		if (StartPos[0].x >= MFCurXPos)
+		{
+			IsCurPeashotLStartPos = false;
+			CurMFDir = MFBossDIR::RIGHT;
+
+			if (0 == PeashotAttackCount)
+			{
+				Renderer->ChangeFrameAnimation("PeashotOutro");
+				Renderer->GetTransform().PixLocalNegativeX();
+				IsCurRStartPos = false;
+				IsCurPeashotEnd = true;
+				return;
+			}
+
+			Renderer->ChangeFrameAnimation("PeashotShoot");
+			Renderer->GetTransform().PixLocalNegativeX();
+			Num = 0;
+			--PeashotAttackCount;
+			IdleLerpRatio = 0.0f;
+
+			MortimerFreezeCard* Ptr = GetLevel()->CreateActor<MortimerFreezeCard>(OBJECTORDER::Boss);
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+		}
+	}
+
+	IdleLerpRatio += _DeltaTime;
+	if (1.0f <= IdleLerpRatio)
+	{
+		IdleLerpRatio = 1.0f;
+	}
+
+	LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
+	float LerpY = GameEngineMath::LerpLimit(-300, 300, IdleLerpRatio) * _DeltaTime;
 
 	YAdd += LerpY;
 	if (0 <= YAdd)
@@ -169,19 +429,13 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 		YAdd = 0.0f;
 	}
 
-	float4 Test = LerpPos + float4(0, YAdd, 0);
-	GetTransform().SetLocalPosition(Test);*/
-	
-	if (300.0f >= GetTransform().GetLocalPosition().x || 1350.0f <= GetTransform().GetLocalPosition().x)
-	{
-		//Renderer->ChangeFrameAnimation("PeashotShoot");
-	}
+	float4 MFMovePos = LerpPos + float4(0, YAdd, 0);
+	GetTransform().SetLocalPosition(MFMovePos);
 }
 
 void MortimerFreezeBoss::AttackQuadshotStart(const StateInfo& _Info)
 {
-	GameEngineRandom RandomValue_;
-	int RandomItemNum = RandomValue_.RandomInt(0, 1);
+	int RandomItemNum = GameEngineRandom::MainRandom.RandomInt(0, 1);
 	
 	Renderer->ChangeFrameAnimation("QuadshotStart");
 	Renderer->AnimationBindFrame("QuadshotStart", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -227,6 +481,12 @@ void MortimerFreezeBoss::AttackQuadshotStart(const StateInfo& _Info)
 				MinionPixRemove = true;
 			}
 		});
+
+	Renderer->AnimationBindEnd("QuadshotMinionAfter", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			MFMoveReplay = true;
+			StateManager.ChangeState("MF1Idle");
+		});
 }
 
 void MortimerFreezeBoss::AttackQuadshotUpdate(float _DeltaTime, const StateInfo& _Info)
@@ -254,7 +514,7 @@ void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 		});
 	Renderer->AnimationBindEnd("WhaleDropAttackOutro", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
-			//StateManager.ChangeState("MF1Idle");
+			StateManager.ChangeState("MF1Idle");
 		});
 }
 

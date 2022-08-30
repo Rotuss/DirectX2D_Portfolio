@@ -125,7 +125,7 @@ class FrameAnimation : public GameEngineNameObject
 public:
 	FrameAnimation()
 		: Pause(false)
-		, bOnceStart(true)
+		, bOnceStart(false)
 		, bOnceEnd(false)
 	{
 	}
@@ -259,7 +259,6 @@ private:
 	float		ScaleRatio;
 
 	GameEngineTexture*	CurTex;
-	float4				FrameData;
 
 	std::map<std::string, FrameAnimation> FrameAni;
 	FrameAnimation* CurAni;

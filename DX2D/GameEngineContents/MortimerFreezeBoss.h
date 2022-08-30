@@ -1,6 +1,12 @@
 #pragma once
 #include <GameEngineCore/CoreMinimal.h>
 
+enum class MFBossDIR
+{
+	LEFT,
+	RIGHT,
+};
+
 // Ό³Έν :
 //class GameEngineCollision;
 class MortimerFreezeMinion;
@@ -27,9 +33,19 @@ public:
 		MinionPixCheck = _Value;
 	}
 
+	inline void MinionPixRemoveSetting(bool _Value)
+	{
+		MinionPixRemove = _Value;
+	}
+
 	inline bool MinionPixRemoveReturn()
 	{
 		return MinionPixRemove;
+	}
+
+	inline bool GetIsCurPeashotEnd()
+	{
+		return IsCurPeashotEnd;
 	}
 
 protected:
@@ -64,12 +80,27 @@ private:
 	GameEngineStateManager PhaseManager;
 	GameEngineStateManager StateManager;
 
+	MFBossDIR CurMFDir;
+
 	std::vector<float4> StartPos;
 	std::vector<float4> EndPos;
 	float4 LerpPos;
 	float	Speed;
 	float	YAdd;
+	float	IdleLerpRatio;
+	float	PeashotAttackMoveTime;
+	int		Num;
 	int		HP;
+	int		PeashotStateCount;
+	int		PeashotAttackCount;
+	int		QuadshotStateCount;
+	bool	IsP1IdleStart;
+	bool	MFMoveReplay;
+	bool	IsCurRStartPos;
+	bool	IsCurPeashotLStartPos;
+	bool	IsCurPeashotStartAttack;
+	bool	IsCurPeashotEnd;
+	bool	IsIdleTransState;
 	bool	MinionPixCheck;
 	bool	MinionPixRemove;
 };
