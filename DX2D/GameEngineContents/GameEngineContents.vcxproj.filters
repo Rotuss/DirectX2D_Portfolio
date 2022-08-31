@@ -94,6 +94,9 @@
     <ClInclude Include="MortimerFreezeMinion.h">
       <Filter>Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="OldFilm.h">
+      <Filter>Actor\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="MortimerFreezeMinion.cpp">
       <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="OldFilm.cpp">
+      <Filter>Actor\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

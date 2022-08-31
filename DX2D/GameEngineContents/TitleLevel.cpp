@@ -5,6 +5,7 @@
 #include "TitleScreenChalice.h"
 #include "TitleScreenMugman.h"
 #include "TitleScreenChips.h"
+#include "ScreenFX.h"
 #include "Iris.h"
 //#include "HourGlass.h"
 #include "TitleMainLevel.h"
@@ -38,6 +39,11 @@ void TitleLevel::Start()
 		TitleScreenChalice* TitleChalice = CreateActor<TitleScreenChalice>(OBJECTORDER::Title);
 		TitleScreenMugman* TitleMugman = CreateActor<TitleScreenMugman>(OBJECTORDER::Title);
 		TitleScreenChips* TitleChips = CreateActor<TitleScreenChips>(OBJECTORDER::Title);
+	}
+
+	{
+		ScreenFX* SFX = CreateActor<ScreenFX>(100);
+		SFX->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
 	}
 }
 

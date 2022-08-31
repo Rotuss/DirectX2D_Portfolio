@@ -24,8 +24,8 @@ void MDHRLogoLevel::Start()
 	}
 
 	{
-		//ScreenFX* SFX = CreateActor<ScreenFX>(OBJECTORDER::Title);
-		//SFX->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
+		ScreenFX* SFX = CreateActor<ScreenFX>(OBJECTORDER::Title);
+		SFX->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
 	}
 }
 

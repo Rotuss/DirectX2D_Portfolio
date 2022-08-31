@@ -20,6 +20,15 @@ Output Blur_VS(Input _Input)
 }
 
 
+static float Gau[5][5] =
+{
+    { 01, 04, 06, 04, 01 },
+    { 04, 16, 24, 16, 04 },
+    { 06, 24, 36, 24, 06 },
+    { 04, 16, 24, 16, 04 },
+    { 01, 04, 06, 04, 01 }
+};
+
 Texture2D Tex : register(t0);
 SamplerState Smp : register(s0);
 
@@ -36,7 +45,7 @@ float4 Blur_PS(Output _Input) : SV_Target0
     {
         for (int x = 0; x < 5; ++x)
         {
-            Result += Tex.Sample(Smp, CurUV);
+            Result += Tex.Sample(Smp, CurUV) * Gau[y][x];
             CurUV.x += PixelUVSize.x;
         }
         
@@ -44,7 +53,7 @@ float4 Blur_PS(Output _Input) : SV_Target0
         CurUV.y += PixelUVSize.y;
     }
     
-    Result /= 25.0f;
+    Result /= 256.0f;
     
     if (Result.a <= 0.0f)
     {
