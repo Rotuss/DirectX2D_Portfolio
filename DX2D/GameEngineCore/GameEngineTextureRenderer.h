@@ -21,14 +21,16 @@ enum class SCALEMODE
 	CUSTOM,
 };
 
-struct ColorData
+struct PixelData
 {
 	float4 MulColor;
 	float4 PlusColor;
+	float4 Slice;
 
-	ColorData()
+	PixelData()
 		: MulColor(float4::WHITE)
 		, PlusColor(float4::ZERO)
+		, Slice(float4::ZERO)
 	{
 
 	}
@@ -164,9 +166,9 @@ public:
 		return ScaleRatio;
 	}
 
-	ColorData& GetColorData()
+	PixelData& GetPixelData()
 	{
-		return ColorData;
+		return PixelDataInst;
 	}
 
 	bool IsCurAnimation()
@@ -277,7 +279,7 @@ private:
 	std::map<std::string, FrameAnimation> FrameAni;
 	FrameAnimation* CurAni;
 
-	ColorData ColorData;
+	PixelData PixelDataInst;
 	AtlasData AtlasDataInst;
 
 	void FrameDataReset();

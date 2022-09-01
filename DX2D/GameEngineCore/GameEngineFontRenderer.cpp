@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineFontRenderer.h"
+#include "GameEngineCamera.h"
 #include "GameEngineBlend.h"
 
 GameEngineRenderTarget* GameEngineFontRenderer::FontTarget = nullptr;
@@ -40,6 +41,10 @@ void GameEngineFontRenderer::Render(float _DeltaTime)
 		return;
 	}
 
+	FontTarget->Clear();
+	FontTarget->Setting();
+
 	Font->FontDraw(Text, FontSize, ScreenPosition, Color, static_cast<int>(LR) | static_cast<int>(TB));
 	GameEngineRenderingPipeLine::AllShaderReset();
+	Camera->GetCameraRenderTarget()->Merge(FontTarget);
 }

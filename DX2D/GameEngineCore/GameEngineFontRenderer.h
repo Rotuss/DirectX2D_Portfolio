@@ -22,8 +22,7 @@ class GameEngineDevice;
 class GameEngineFontRenderer : public GameEngineDefaultRenderer
 {
 	friend GameEngineDevice;
-	static GameEngineRenderTarget* FontTarget;
-
+	
 public:
 	// constrcuter destructer
 	GameEngineFontRenderer();
@@ -70,6 +69,8 @@ public:
 protected:
 	virtual void Start();
 	virtual void Render(float _DeltaTime);
+
+	static GameEngineRenderTarget* FontTarget;
 
 	LeftAndRightSort	LR;
 	TopAndBotSort		TB;
