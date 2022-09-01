@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Monster.h"
+#include "MsChalice.h"
 
 enum class OBJECTORDER
 {

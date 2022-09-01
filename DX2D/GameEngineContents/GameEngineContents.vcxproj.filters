@@ -94,6 +94,9 @@
     <ClInclude Include="MortimerFreezeMinion.h">
       <Filter>Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="MsChalice.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="MortimerFreezeMinion.cpp">
       <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MsChalice.cpp">
+      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

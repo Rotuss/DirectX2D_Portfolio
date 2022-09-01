@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 #include "MortimerFreezeCard.h"
 #include "Player.h"
+#include "MsChalice.h"
 #include "MortimerFreezeBoss.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
@@ -59,7 +60,7 @@ void MortimerFreezeCard::Start()
 	}
 
 	CurPosition = MortimerFreezeBoss::MFBoss->GetTransform().GetLocalPosition();
-	PlayerPosition = Player::MainPlayer->GetTransform().GetLocalPosition();
+	PlayerPosition = MsChalice::Chalice->GetTransform().GetLocalPosition();
 }
 
 void MortimerFreezeCard::Update(float _DeltaTime)

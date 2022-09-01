@@ -449,28 +449,28 @@ void MortimerFreezeBoss::AttackQuadshotStart(const StateInfo& _Info)
 				Minion0->SetMoveDir(RandomItemNum);
 				Minion0->SetGender(GENDER::BOY);
 				Minion0->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-340.0f, 20.0f));
-				Minion0->SetColMap(Player::MainPlayer->GetColMap());
+				Minion0->SetColMap(MsChalice::Chalice->GetColMap());
 
 				Minion1 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
 				Minion1->SetDir(DIR::LEFT);
 				Minion1->SetMoveDir(RandomItemNum);
 				Minion1->SetGender(GENDER::GIRL);
 				Minion1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-110.0f, -30.0f));
-				Minion1->SetColMap(Player::MainPlayer->GetColMap());
+				Minion1->SetColMap(MsChalice::Chalice->GetColMap());
 
 				Minion2 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
 				Minion2->SetDir(DIR::RIGHT);
 				Minion2->SetMoveDir(RandomItemNum);
 				Minion2->SetGender(GENDER::BOY);
 				Minion2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(110.0f, -40.0f));
-				Minion2->SetColMap(Player::MainPlayer->GetColMap());
+				Minion2->SetColMap(MsChalice::Chalice->GetColMap());
 
 				Minion3 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
 				Minion3->SetDir(DIR::RIGHT);
 				Minion3->SetMoveDir(RandomItemNum);
 				Minion3->SetGender(GENDER::GIRL);
 				Minion3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(340.0f, 30.0f));
-				Minion3->SetColMap(Player::MainPlayer->GetColMap());
+				Minion3->SetColMap(MsChalice::Chalice->GetColMap());
 			}
 		});
 

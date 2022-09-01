@@ -145,7 +145,7 @@ void Cuphead::Start()
 	CreateLevel<TutorialLevel>("Tutorial");
 	CreateLevel<MortimerFreezeLevel>("MortimerFreeze");
 
-	ChangeLevel("MDHRLogo");
+	ChangeLevel("MortimerFreeze");
 
 	GameEngineGUI::CreateGUIWindow<GameEngineStatusWindow>("EngineStatus", nullptr);
 }

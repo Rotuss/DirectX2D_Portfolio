@@ -76,7 +76,7 @@ void MortimerFreezeMinion::Start()
 
 					// (미니언 < 플레이어 = 음수)미니언 - 플레이어 => 미니언이 오른쪽으로
 					// (미니언 > 플레이어 = 양수)미니언 - 플레이어 => 미니언이 왼쪽으로
-					float Value = GetTransform().GetLocalPosition().x - Player::MainPlayer->GetTransform().GetLocalPosition().x;
+					float Value = GetTransform().GetLocalPosition().x - MsChalice::Chalice->GetTransform().GetLocalPosition().x;
 
 					if (0 < Value)
 					{

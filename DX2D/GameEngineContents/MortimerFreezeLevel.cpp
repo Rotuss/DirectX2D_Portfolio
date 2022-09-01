@@ -4,6 +4,7 @@
 #include "MortimerFreezeBoss.h"
 // Test
 #include "Player.h"
+#include "MsChalice.h"
 
 MortimerFreezeLevel::MortimerFreezeLevel() 
 	: Renderer(nullptr)
@@ -27,17 +28,16 @@ void MortimerFreezeLevel::Start()
 	//MFBoss->GetTransform().SetLocalPosition({ 300, -380, -1 });
 	// 우상단
 	//MFBoss->GetTransform().SetLocalPosition({ 1350, -380, -1 });
-	// Test
+
 	{
-		Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
-		//NewPlayer->GetTransform().SetLocalPosition({ 750, -380, -1 });
+		MsChalice* MSChalice = CreateActor<MsChalice>(OBJECTORDER::Player);
 
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("mid-main-ColMap.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
 		Renderer->Off();
-		NewPlayer->SetColMap(Renderer);
+		MSChalice->SetColMap(Renderer);
 	}
 
 	{
@@ -168,8 +168,8 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 
 	// 카메라 좌우 막기 필요, 플레이어 이동 막기 필요
 	//GetMainCameraActorTransform().SetLocalPosition(float4{ 800.0f + (Player::MainPlayer->GetTransform().GetLocalPosition().x * 0.1f), -610.0f } + float4::BACK * 100.0f);
-	/*GetMainCameraActorTransform().SetLocalPosition(float4{ Player::MainPlayer->GetTransform().GetLocalPosition().x,-610.0f });
-	if (GetMainCameraActorTransform().GetLocalPosition().x <= 750)
+	GetMainCameraActorTransform().SetLocalPosition(float4{ 830.0f,-610.0f });
+	/*if (GetMainCameraActorTransform().GetLocalPosition().x <= 750)
 	{
 		GetMainCameraActorTransform().SetLocalPosition(float4{750.0f,-610.0f });
 	}*/
