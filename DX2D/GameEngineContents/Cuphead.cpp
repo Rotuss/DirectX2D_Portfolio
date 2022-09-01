@@ -21,7 +21,7 @@ Cuphead::~Cuphead()
 
 void Cuphead::Start()
 {
-	/*{
+	{
 		D3D11_BLEND_DESC Desc = { 0 };
 
 		Desc.AlphaToCoverageEnable = FALSE;
@@ -37,7 +37,7 @@ void Cuphead::Start()
 		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
 
 		GameEngineBlend::Create("ContentOF", Desc);
-	}*/
+	}
 
 	GameEngineDirectory Dir;
 

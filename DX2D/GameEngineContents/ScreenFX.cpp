@@ -1,6 +1,5 @@
 #include "PreCompile.h"
 #include "ScreenFX.h"
-#include "OldFilm.h"
 #include <GameEngineCore/GameEngineBlur.h>
 
 ScreenFX::ScreenFX() 
@@ -15,7 +14,6 @@ ScreenFX::~ScreenFX()
 void ScreenFX::Start()
 {
 	GetLevel()->GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
-	GetLevel()->GetMainCamera()->GetCameraRenderTarget()->AddEffect<OldFilm>();
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		
@@ -24,7 +22,7 @@ void ScreenFX::Start()
 		Renderer->GetTransform().SetLocalScale({ 1280, 720, 100 });
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 
-		//Renderer->GetPipeLine()->SetOutputMergerBlend("ContentOF");
+		Renderer->GetPipeLine()->SetOutputMergerBlend("ContentOF");
 		//Renderer->SetRenderingOrder(100000);
 	}
 }

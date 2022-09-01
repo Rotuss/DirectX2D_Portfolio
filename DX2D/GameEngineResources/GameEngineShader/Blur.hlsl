@@ -60,5 +60,10 @@ float4 Blur_PS(Output _Input) : SV_Target0
         clip(-1);
     }
     
+    if (1.0f <= Result.a)
+    {
+        Result.a = 1.0f;
+    }
+    
     return Result;
 }

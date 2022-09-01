@@ -208,10 +208,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="OldFilm.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <SubType>
       </SubType>
@@ -339,10 +335,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MortimerFreezeWhale.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="OldFilm.cpp">
       <SubType>
       </SubType>
     </ClCompile>
