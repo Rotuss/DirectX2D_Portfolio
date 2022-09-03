@@ -8,8 +8,9 @@ MsChalice* MsChalice::Chalice = nullptr;
 
 MsChalice::MsChalice() 
 	: Renderer(nullptr)
-	, Speed(1000.0f)
 	, ChaliceDir("Right")
+	, MoveDir(float4::ZERO)
+	, Speed(1000.0f)
 {
 	Chalice = this;
 }
@@ -42,7 +43,7 @@ void MsChalice::Start()
 
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle", FrameAnimation_DESC("Chalice_Idle", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Run", FrameAnimation_DESC("Chalice_Run_Regular_Regular", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Chalice_Jump_Regular_Jump", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Chalice_Jump_Regular_Jump", 0.08f, false));
 		Renderer->CreateFrameAnimationFolder("Chalice_Shoot_Straight", FrameAnimation_DESC("Chalice_Shoot_Straight_Shoot", 0.1f, false));
 		Renderer->ChangeFrameAnimation("Chalice_Idle");
 		Renderer->SetScaleModeImage();
@@ -74,6 +75,8 @@ void MsChalice::Start()
 
 void MsChalice::Update(float _DeltaTime)
 {
+	StateManager.Update(_DeltaTime);
+	
 	ColorCheck = ColRenderer->GetCurTexture();
 	if (nullptr == ColorCheck)
 	{
@@ -81,7 +84,8 @@ void MsChalice::Update(float _DeltaTime)
 	}
 	while (true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-GetTransform().GetLocalPosition().y)).CompareInt4D(float4::BLACK))
 	{
-		GetTransform().SetLocalMove(GetTransform().GetUpVector());
+		MoveDir += GetTransform().GetUpVector();
+		GetTransform().SetLocalMove(MoveDir);
 	}
 
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
@@ -89,9 +93,18 @@ void MsChalice::Update(float _DeltaTime)
 		return;
 	}
 
-	StateManager.Update(_DeltaTime);
+	if (250.0f > GetTransform().GetLocalPosition().x)
+	{
+		GetTransform().SetLocalPosition(float4(250.0f, GetTransform().GetLocalPosition().y, GetTransform().GetLocalPosition().z));
+		return;
+	}
+	if (1400.0f < GetTransform().GetLocalPosition().x)
+	{
+		GetTransform().SetLocalPosition(float4(1400.0f, GetTransform().GetLocalPosition().y, GetTransform().GetLocalPosition().z));
+		return;
+	}
 
-	GetTransform().SetLocalMove(GetTransform().GetDownVector() * _DeltaTime * 200.0f);
+	GetTransform().SetLocalMove(MoveDir + (GetTransform().GetDownVector() * _DeltaTime * 200.0f));
 
 	// Collision3D
 	/*Collision->IsCollision(CollisionType::CT_OBB, OBJECTORDER::Monster, CollisionType::CT_OBB,
@@ -112,6 +125,7 @@ void MsChalice::IdleStart(const StateInfo& _Info)
 
 void MsChalice::IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	MoveDir = float4::ZERO;
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft")
 		|| true == GameEngineInput::GetInst()->IsPress("ChaliceRight")
 		|| true == GameEngineInput::GetInst()->IsPress("ChaliceUp")
@@ -120,10 +134,10 @@ void MsChalice::IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		StateManager.ChangeState("ChaliceRun");
 	}
 
-	/*if (true == GameEngineInput::GetInst()->IsDown("ChaliceJump"))
+	if (true == GameEngineInput::GetInst()->IsDown("ChaliceJump"))
 	{
 		StateManager.ChangeState("ChaliceJump");
-	}*/
+	}
 
 	if (true == GameEngineInput::GetInst()->IsDown("ChaliceShoot"))
 	{
@@ -138,6 +152,7 @@ void MsChalice::RunStart(const StateInfo& _Info)
 
 void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	MoveDir = float4::ZERO;
 	if (false == GameEngineInput::GetInst()->IsPress("ChaliceLeft")
 		&& false == GameEngineInput::GetInst()->IsPress("ChaliceRight")
 		&& false == GameEngineInput::GetInst()->IsPress("ChaliceUp")
@@ -147,36 +162,26 @@ void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 		return;
 	}
 
-	/*if (true == GameEngineInput::GetInst()->IsDown("ChaliceJump"))
+	if (true == GameEngineInput::GetInst()->IsDown("ChaliceJump"))
 	{
 		StateManager.ChangeState("ChaliceJump");
-	}*/
+		return;
+	}
 
 	/*if (true == GameEngineInput::GetInst()->IsDown("ChaliceShoot"))
 	{
 		StateManager.ChangeState("ChaliceShoot");
 	}*/
 
-	if (250.0f > GetTransform().GetLocalPosition().x)
-	{
-		GetTransform().SetLocalPosition(float4(250.0f, GetTransform().GetLocalPosition().y, GetTransform().GetLocalPosition().z));
-		return;
-	}
-	if (1400.0f < GetTransform().GetLocalPosition().x)
-	{
-		GetTransform().SetLocalPosition(float4(1400.0f, GetTransform().GetLocalPosition().y, GetTransform().GetLocalPosition().z));
-		return;
-	}
-
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
 	{
-		GetTransform().SetWorldMove(GetTransform().GetLeftVector() * Speed * _DeltaTime);
+		MoveDir = GetTransform().GetLeftVector();
 		Renderer->GetTransform().PixLocalNegativeX();
 		ChaliceDir = "Left";
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
 	{
-		GetTransform().SetWorldMove(GetTransform().GetRightVector() * Speed * _DeltaTime);
+		MoveDir = GetTransform().GetRightVector();
 		Renderer->GetTransform().PixLocalPositiveX();
 		ChaliceDir = "Right";
 	}
@@ -199,21 +204,36 @@ void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 	{
 		//GetTransform().SetWorldMove(GetTransform().GetDownVector() * Speed * _DeltaTime);
 	}
+
+	GetTransform().SetLocalMove(MoveDir * _DeltaTime);
 }
 
 void MsChalice::JumpStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("Chalice_Jump_Regular");
 
-	GetTransform().SetLocalMove(GetTransform().GetUpVector() * 200.0f * GameEngineTime::GetDeltaTime());
+	MoveDir = GetTransform().GetUpVector();
 }
 
 void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
 {
-	if(true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-(GetTransform().GetLocalPosition().y + 50.0f))).CompareInt4D(float4::BLACK))
+	GetTransform().SetLocalMove(MoveDir * _DeltaTime);
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
+	{
+		MoveDir = float4{ -0.5f,MoveDir.y };
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
+	{
+		MoveDir = float4{ 0.5f,MoveDir.y };
+	}
+
+	if(true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-GetTransform().GetLocalPosition().y)).CompareInt4D(float4::BLACK))
 	{
 		StateManager.ChangeState("ChaliceIdle");
+		return;
 	}
+
+	MoveDir += GetTransform().GetDownVector() * _DeltaTime;
 }
 
 void MsChalice::ShootStart(const StateInfo& _Info)

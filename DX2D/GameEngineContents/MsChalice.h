@@ -62,6 +62,7 @@ private:
 
 	std::string				ChaliceDir;
 
+	float4					MoveDir;
 	float					Speed;
 };
 
