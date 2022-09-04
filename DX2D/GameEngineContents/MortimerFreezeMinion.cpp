@@ -129,7 +129,7 @@ void MortimerFreezeMinion::Start()
 					Collision->GetTransform().SetLocalScale({ 50,50,-1 });
 					Collision->ChangeOrder(OBJECTORDER::Boss);
 
-					float Value = GetTransform().GetLocalPosition().x - Player::MainPlayer->GetTransform().GetLocalPosition().x;
+					float Value = GetTransform().GetLocalPosition().x - MsChalice::Chalice->GetTransform().GetLocalPosition().x;
 
 					if (0 < Value)
 					{

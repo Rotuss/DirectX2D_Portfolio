@@ -44,7 +44,7 @@ void MsChalice::Start()
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle", FrameAnimation_DESC("Chalice_Idle", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Run", FrameAnimation_DESC("Chalice_Run_Regular_Regular", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Chalice_Jump_Regular_Jump", 0.08f, false));
-		Renderer->CreateFrameAnimationFolder("Chalice_Shoot_Straight", FrameAnimation_DESC("Chalice_Shoot_Straight_Shoot", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("Chalice_Shoot_Straight", FrameAnimation_DESC("Shoot_Straight_Shoot", 0.1f, false));
 		Renderer->ChangeFrameAnimation("Chalice_Idle");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -84,8 +84,8 @@ void MsChalice::Update(float _DeltaTime)
 	}
 	while (true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-GetTransform().GetLocalPosition().y)).CompareInt4D(float4::BLACK))
 	{
-		MoveDir += GetTransform().GetUpVector();
-		GetTransform().SetLocalMove(MoveDir);
+		//MoveDir += GetTransform().GetUpVector();
+		GetTransform().SetLocalMove(MoveDir + GetTransform().GetUpVector());
 	}
 
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())

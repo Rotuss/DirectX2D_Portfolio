@@ -54,6 +54,7 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	AddRenderer;
 	GameEngineTextureRenderer*	TableRenderer;
 	GameEngineCollision*		Collision;
 	MortimerFreezeMinion*		Minion0;
@@ -75,6 +76,9 @@ protected:
 
 	void AttackWhaleStart(const StateInfo& _Info);
 	void AttackWhaleUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void Phase1to2Start(const StateInfo& _Info);
+	void Phase1to2Update(float _DeltaTime, const StateInfo& _Info);
 
 private:
 	GameEngineStateManager PhaseManager;

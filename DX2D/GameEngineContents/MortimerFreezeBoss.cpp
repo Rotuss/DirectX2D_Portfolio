@@ -12,6 +12,7 @@ MortimerFreezeBoss* MortimerFreezeBoss::MFBoss= nullptr;
 
 MortimerFreezeBoss::MortimerFreezeBoss()
 	: Renderer(nullptr)
+	, AddRenderer(nullptr)
 	, TableRenderer(nullptr)
 	, Collision(nullptr)
 	, CurMFDir(MFBossDIR::LEFT)
@@ -22,7 +23,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, YAdd(0.0f)
 	, IdleLerpRatio(0.0f)
 	, PeashotAttackMoveTime(0.0f)
-	, HP(10)
+	, HP(1)
 	, PeashotStateCount(GameEngineRandom::MainRandom.RandomInt(3, 5))
 	, PeashotAttackCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
 	, QuadshotStateCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
@@ -51,7 +52,8 @@ bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCo
 	
 	if (0 == HP)
 	{
-		_This->GetActor()->Death();
+		//_This->GetActor()->Death();
+		StateManager.ChangeState("Transition_Phase2");
 	}
 
 	return true;
@@ -76,12 +78,28 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("WhaleDropAttackOutro", FrameAnimation_DESC("Wizard_Drop_Attack_Outro", 0.1f, false));
 		
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition0", FrameAnimation_DESC("MFPhase2_Transition", 0, 10, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition1", FrameAnimation_DESC("MFPhase2_Transition", 11, 15, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition2", FrameAnimation_DESC("MFPhase2_Transition", 16, 27, 0.1f, false));
+		
 		Renderer->ChangeFrameAnimation("MFIdle");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 		GetTransform().SetLocalPosition({ 1350, -380, -1 });
 		//GetTransform().SetLocalPosition({ 950, -360, -1 });
+	}
+
+	{
+		AddRenderer = CreateComponent<GameEngineTextureRenderer>();
+		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.1f, false));
+
+		AddRenderer->ChangeFrameAnimation("MFPhase2Transition1_Arm");
+		AddRenderer->SetScaleModeImage();
+		AddRenderer->ScaleToTexture();
+		AddRenderer->SetPivot(PIVOTMODE::TOP);
+		AddRenderer->Off();
+		AddRenderer->GetTransform().SetLocalPosition(float4{ -100, 100, 1 });
 	}
 
 	{
@@ -125,6 +143,7 @@ void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
 	StateManager.CreateStateMember("Peashot", std::bind(&MortimerFreezeBoss::AttackPeashotUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackPeashotStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Quadshot", std::bind(&MortimerFreezeBoss::AttackQuadshotUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackQuadshotStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Whale", std::bind(&MortimerFreezeBoss::AttackWhaleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackWhaleStart, this, std::placeholders::_1));
+	StateManager.CreateStateMember("Transition_Phase2", std::bind(&MortimerFreezeBoss::Phase1to2Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase1to2Start, this, std::placeholders::_1));
 
 	StateManager.ChangeState("MF1Idle");
 }
@@ -519,5 +538,20 @@ void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 }
 
 void MortimerFreezeBoss::AttackWhaleUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+}
+
+void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
+{
+	Renderer->ChangeFrameAnimation("MFPhase2Transition0");
+	AddRenderer->On();
+
+	Renderer->AnimationBindEnd("MFPhase2Transition0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("MFPhase2Transition1");
+		});
+}
+
+void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Info)
 {
 }
