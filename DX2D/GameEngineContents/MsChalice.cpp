@@ -41,9 +41,9 @@ void MsChalice::Start()
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 
-		Renderer->CreateFrameAnimationFolder("Chalice_Idle", FrameAnimation_DESC("Chalice_Idle", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("Chalice_Run", FrameAnimation_DESC("Chalice_Run_Regular_Regular", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Chalice_Jump_Regular_Jump", 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("Chalice_Idle", FrameAnimation_DESC("Idle", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Run", FrameAnimation_DESC("Run_Regular_Regular", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Jump_Regular_Jump", 0.08f, false));
 		Renderer->CreateFrameAnimationFolder("Chalice_Shoot_Straight", FrameAnimation_DESC("Shoot_Straight_Shoot", 0.1f, false));
 		Renderer->ChangeFrameAnimation("Chalice_Idle");
 		Renderer->SetScaleModeImage();
