@@ -54,15 +54,15 @@ protected:
 	void JumpStart(const StateInfo& _Info);
 	void JumpUpdate(float _DeltaTime, const StateInfo& _Info);
 
-	void ShootStart(const StateInfo& _Info);
-	void ShootUpdate(float _DeltaTime, const StateInfo& _Info);
-
 private:
 	GameEngineStateManager	StateManager;
 
 	std::string				ChaliceDir;
+	std::string				CurStateName;
+	std::string				CurShootName;
 
 	float4					MoveDir;
 	float					Speed;
+	float					WeaponTime;
 };
 
