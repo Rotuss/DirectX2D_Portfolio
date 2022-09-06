@@ -24,6 +24,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IdleLerpRatio(0.0f)
 	, PeashotAttackMoveTime(0.0f)
 	, HP(1)
+	, Phase2TransitionMotionCount(2)
 	, PeashotStateCount(GameEngineRandom::MainRandom.RandomInt(3, 5))
 	, PeashotAttackCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
 	, QuadshotStateCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
@@ -46,9 +47,15 @@ MortimerFreezeBoss::~MortimerFreezeBoss()
 
 bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
-	HP -= 1;
-
 	_Other->GetActor()->Death();
+	
+	if ("Peashot" == StateManager.GetCurStateStateName()
+		|| "Quadshot" == StateManager.GetCurStateStateName())
+	{
+		return false;
+	}
+
+	HP -= 1;
 	
 	if (0 == HP)
 	{
@@ -91,15 +98,15 @@ void MortimerFreezeBoss::Start()
 	}
 
 	{
+		// AddRenderer 을 Renderer의 자식으로?-?
 		AddRenderer = CreateComponent<GameEngineTextureRenderer>();
-		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.1f, false));
+		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.1f, true));
 
 		AddRenderer->ChangeFrameAnimation("MFPhase2Transition1_Arm");
 		AddRenderer->SetScaleModeImage();
 		AddRenderer->ScaleToTexture();
 		AddRenderer->SetPivot(PIVOTMODE::TOP);
 		AddRenderer->Off();
-		AddRenderer->GetTransform().SetLocalPosition(float4{ -100, 100, 1 });
 	}
 
 	{
@@ -544,14 +551,36 @@ void MortimerFreezeBoss::AttackWhaleUpdate(float _DeltaTime, const StateInfo& _I
 void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("MFPhase2Transition0");
-	AddRenderer->On();
-
+	
 	Renderer->AnimationBindEnd("MFPhase2Transition0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("MFPhase2Transition1");
+			
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				AddRenderer->GetTransform().PixLocalPositiveX();
+				AddRenderer->GetTransform().SetLocalPosition(float4{ -100, 100, 0.5 });
+				AddRenderer->On();
+			}
+			if (MFBossDIR::RIGHT== CurMFDir)
+			{
+				AddRenderer->GetTransform().PixLocalNegativeX();
+				AddRenderer->GetTransform().SetLocalPosition(float4{ 100, 100, 0.5 });
+				AddRenderer->On();
+			}
 		});
 }
 
 void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Info)
 {
+	AddRenderer->AnimationBindEnd("MFPhase2Transition1_Arm", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 == Phase2TransitionMotionCount)
+			{
+				AddRenderer->Off();
+				Renderer->ChangeFrameAnimation("MFPhase2Transition2");
+			}
+
+			Phase2TransitionMotionCount -= 1;
+		});
 }

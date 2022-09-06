@@ -98,6 +98,7 @@ private:
 	int		PeashotStateCount;
 	int		PeashotAttackCount;
 	int		QuadshotStateCount;
+	int		Phase2TransitionMotionCount;
 	bool	IsP1IdleStart;
 	bool	MFMoveReplay;
 	bool	IsCurRStartPos;

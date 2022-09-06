@@ -58,6 +58,7 @@ private:
 	GameEngineStateManager	StateManager;
 
 	std::string				ChaliceDir;
+	std::string				ChalicePrevDir;
 	std::string				CurStateName;
 	std::string				CurShootName;
 
