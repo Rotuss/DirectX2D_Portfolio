@@ -65,6 +65,17 @@ void MortimerFreezeCard::Start()
 
 void MortimerFreezeCard::Update(float _DeltaTime)
 {
+	if (-10.0f > GetTransform().GetLocalPosition().x)
+	{
+		Renderer->GetActor()->Death();
+		return;
+	}
+	if (1650.0f < GetTransform().GetLocalPosition().x)
+	{
+		Renderer->GetActor()->Death();
+		return;
+	}
+	
 	float AccTime = GetAccTime();
 	float AccDeltaTime = AccTime / 1.0f;
 	

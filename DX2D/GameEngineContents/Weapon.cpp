@@ -31,6 +31,17 @@ void Weapon::Start()
 
 void Weapon::Update(float _DeltaTime)
 {
+	if (-10.0f > GetTransform().GetLocalPosition().x)
+	{
+		Renderer->GetActor()->Death();
+		return;
+	}
+	if (1650.0f < GetTransform().GetLocalPosition().x)
+	{
+		Renderer->GetActor()->Death();
+		return;
+	}
+	
 	if ("Right" == WeaponDir)
 	{
 		Renderer->GetTransform().PixLocalPositiveX();

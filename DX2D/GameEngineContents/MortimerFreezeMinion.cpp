@@ -172,6 +172,17 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 	// [O]보스 18~21 - 미니언 13c고정
 	// [O]보스 22~23 - 미니언 14~ + 효과
 	// [O]보스 24~30 - 미니언 16~19 반복(첫 18부터 이동 시작, 땅에 닿을시 20~ 이 때 충돌체 생성)
+	if (-10.0f > GetTransform().GetLocalPosition().x)
+	{
+		Renderer->GetActor()->Death();
+		return;
+	}
+	if (1650.0f < GetTransform().GetLocalPosition().x)
+	{
+		Renderer->GetActor()->Death();
+		return;
+	}
+	
 	if (true == MortimerFreezeBoss::MFBoss->MinionPixRemoveReturn())
 	{
 		Renderer->CurAnimationPauseSwitch();
