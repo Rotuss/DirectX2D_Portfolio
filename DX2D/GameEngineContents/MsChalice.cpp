@@ -47,6 +47,10 @@ void MsChalice::Start()
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle_Shoot", FrameAnimation_DESC("Shoot_Straight_Shoot", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle_Up", FrameAnimation_DESC("Aim_Up", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle_Up_Shoot", FrameAnimation_DESC("Shoot_Up_Shoot", 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Duck_Start", FrameAnimation_DESC("Duck_Duck", 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("Chalice_Duck_Idle", FrameAnimation_DESC("Duck_Idle", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Duck_Idle_Shoot", FrameAnimation_DESC("Duck_Shoot_Shoot", 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Duck_StandUp", FrameAnimation_DESC("Duck_StandUp", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("Chalice_Run", FrameAnimation_DESC("Run_Regular_Regular", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Run_Shoot", FrameAnimation_DESC("Run_Shoot_Straight_Straight", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Jump_Regular_Jump", 0.05f, false));
@@ -72,6 +76,7 @@ void MsChalice::Start()
 	}
 
 	StateManager.CreateStateMember("ChaliceIdle", std::bind(&MsChalice::IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::IdleStart, this, std::placeholders::_1));
+	StateManager.CreateStateMember("ChaliceDuck", std::bind(&MsChalice::DuckUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::DuckStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceRun", std::bind(&MsChalice::RunUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::RunStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceJump", std::bind(&MsChalice::JumpUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::JumpStart, this, std::placeholders::_1));
 	StateManager.ChangeState("ChaliceIdle");
@@ -107,7 +112,7 @@ void MsChalice::Update(float _DeltaTime)
 		return;
 	}
 
-	MoveDir += GetTransform().GetDownVector() * _DeltaTime * 2000.0f * 2.0f;
+	MoveDir += GetTransform().GetDownVector() * _DeltaTime * 2500.0f * 2.0f;
 	GetTransform().SetLocalMove(MoveDir * _DeltaTime);
 
 	// Collision3D
@@ -166,6 +171,14 @@ void MsChalice::Update(float _DeltaTime)
 		WeaponTime = 0.0f;
 	}
 
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceDown"))
+	{
+		if ("ChaliceJump" != StateManager.GetCurStateStateName())
+		{
+			StateManager.ChangeState("ChaliceDuck");
+		}
+	}
+
 	Renderer->ChangeFrameAnimation(CurStateName + CurShootName);
 }
 
@@ -178,8 +191,7 @@ void MsChalice::IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 {
 	MoveDir = float4::ZERO;
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft")
-		|| true == GameEngineInput::GetInst()->IsPress("ChaliceRight")
-		|| true == GameEngineInput::GetInst()->IsPress("ChaliceDown"))
+		|| true == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
 	{
 		StateManager.ChangeState("ChaliceRun");
 		return;
@@ -217,6 +229,61 @@ void MsChalice::IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	}
 }
 
+void MsChalice::DuckStart(const StateInfo& _Info)
+{
+	if (false == GameEngineInput::GetInst()->IsPress("ChaliceShoot"))
+	{
+		CurStateName = "Chalice_Duck_Start";
+	}
+	
+	CurStateName = "Chalice_Duck_Idle";
+
+	// duck_duck 애니메이션이 끝나면 duck_idle 애니메이션으로 전환
+	Renderer->AnimationBindEnd("Chalice_Duck_Start", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			CurStateName = "Chalice_Duck_Idle";
+		});
+	// duck_stand 애니메이션이 끝나면 idle 상태로 전환
+	Renderer->AnimationBindEnd("Chalice_Duck_StandUp", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager.ChangeState("ChaliceIdle");
+			return;
+		});
+}
+
+void MsChalice::DuckUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+	MoveDir = float4::ZERO;
+	if (true == GameEngineInput::GetInst()->IsUp("ChaliceDown"))
+	{
+		if (false == GameEngineInput::GetInst()->IsPress("ChaliceShoot"))
+		{
+			CurStateName = "Chalice_Duck_StandUp";
+			return;
+		}
+
+		StateManager.ChangeState("ChaliceIdle");
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
+	{
+		Renderer->GetTransform().PixLocalNegativeX();
+		ChaliceDir = "Left";
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
+	{
+		Renderer->GetTransform().PixLocalPositiveX();
+		ChaliceDir = "Right";
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceJump"))
+	{
+		StateManager.ChangeState("ChaliceJump");
+		return;
+	}
+}
+
 void MsChalice::RunStart(const StateInfo& _Info)
 {
 	CurStateName = "Chalice_Run";
@@ -226,8 +293,7 @@ void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 {
 	MoveDir = float4::ZERO;
 	if (false == GameEngineInput::GetInst()->IsPress("ChaliceLeft")
-		&& false == GameEngineInput::GetInst()->IsPress("ChaliceRight")
-		&& false == GameEngineInput::GetInst()->IsPress("ChaliceDown"))
+		&& false == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
 	{
 		StateManager.ChangeState("ChaliceIdle");
 		return;
@@ -261,10 +327,6 @@ void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 		ChaliceDir = "RightUp";
 		return;
 	}
-	if (true == GameEngineInput::GetInst()->IsPress("ChaliceDown"))
-	{
-		//GetTransform().SetWorldMove(GetTransform().GetDownVector() * Speed * _DeltaTime);
-	}
 }
 
 void MsChalice::JumpStart(const StateInfo& _Info)
@@ -278,11 +340,15 @@ void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
 {
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
 	{
-		MoveDir = float4{ -Speed / 5.0f,MoveDir.y };
+		MoveDir = float4{ -Speed,MoveDir.y };
+		Renderer->GetTransform().PixLocalNegativeX();
+		ChaliceDir = "Left";
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
 	{
-		MoveDir = float4{ Speed / 5.0f,MoveDir.y };
+		MoveDir = float4{ Speed,MoveDir.y };
+		Renderer->GetTransform().PixLocalPositiveX();
+		ChaliceDir = "Right";
 	}
 
 	if(true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-GetTransform().GetLocalPosition().y)).CompareInt4D(float4::BLACK))

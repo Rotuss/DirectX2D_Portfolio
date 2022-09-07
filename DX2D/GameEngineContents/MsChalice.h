@@ -48,6 +48,9 @@ protected:
 	void IdleStart(const StateInfo& _Info);
 	void IdleUpdate(float _DeltaTime, const StateInfo& _Info);
 
+	void DuckStart(const StateInfo& _Info);
+	void DuckUpdate(float _DeltaTime, const StateInfo& _Info);
+
 	void RunStart(const StateInfo& _Info);
 	void RunUpdate(float _DeltaTime, const StateInfo& _Info);
 
