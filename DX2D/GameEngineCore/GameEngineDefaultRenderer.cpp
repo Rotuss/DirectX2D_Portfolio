@@ -50,6 +50,11 @@ void GameEngineDefaultRenderer::SetPipeLine(const std::string& _Name)
 	{
 		ShaderResources.SetConstantBufferLink("TRANSFORMDATA", &GetTransformData(), sizeof(GetTransformData()));
 	}
+
+	if (true == ShaderResources.IsConstantBuffer("RENDEROPTION"))
+	{
+		ShaderResources.SetConstantBufferLink("RENDEROPTION", &Option, sizeof(Option));
+	}
 }
 
 void GameEngineDefaultRenderer::Start()

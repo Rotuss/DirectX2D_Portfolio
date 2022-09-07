@@ -43,8 +43,6 @@ protected:
 	GameEngineCollision*		Collision;
 	Weapon*						WeaponPtr;
 
-	float4 Color;
-
 	void IdleStart(const StateInfo& _Info);
 	void IdleUpdate(float _DeltaTime, const StateInfo& _Info);
 
@@ -57,6 +55,9 @@ protected:
 	void JumpStart(const StateInfo& _Info);
 	void JumpUpdate(float _DeltaTime, const StateInfo& _Info);
 
+	void HitStart(const StateInfo& _Info);
+	void HitUpdate(float _DeltaTime, const StateInfo& _Info);
+
 private:
 	GameEngineStateManager	StateManager;
 
@@ -68,5 +69,6 @@ private:
 	float4					MoveDir;
 	float					Speed;
 	float					WeaponTime;
+	float					NoDamageTime;
 };
 

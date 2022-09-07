@@ -23,6 +23,7 @@
     <FxCompile Include="TargetMerge.hlsl">
       <Filter>TargetEffect</Filter>
     </FxCompile>
+    <FxCompile Include="RenderOption.fx" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">

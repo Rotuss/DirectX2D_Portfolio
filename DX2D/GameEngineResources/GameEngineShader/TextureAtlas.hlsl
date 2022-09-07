@@ -1,4 +1,5 @@
 #include "TransformHeader.fx"
+#include "RenderOption.fx"
 
 struct Input
 {

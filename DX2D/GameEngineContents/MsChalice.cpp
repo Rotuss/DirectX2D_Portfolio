@@ -13,6 +13,7 @@ MsChalice::MsChalice()
 	, MoveDir(float4::ZERO)
 	, Speed(500.0f)
 	, WeaponTime(0.0f)
+	, NoDamageTime(0.0f)
 {
 	Chalice = this;
 }
@@ -23,7 +24,8 @@ MsChalice::~MsChalice()
 
 bool MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
-	_Other->GetActor()->Death();
+	//_Other->GetActor()->Death();
+	StateManager.ChangeState("ChaliceHit");
 	return true;
 }
 
@@ -54,6 +56,7 @@ void MsChalice::Start()
 		Renderer->CreateFrameAnimationFolder("Chalice_Run", FrameAnimation_DESC("Run_Regular_Regular", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Run_Shoot", FrameAnimation_DESC("Run_Shoot_Straight_Straight", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Jump_Regular_Jump", 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("Chalice_Hit", FrameAnimation_DESC("Hit_Ground", 0.05f, true));
 		Renderer->ChangeFrameAnimation("Chalice_Idle");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -62,6 +65,11 @@ void MsChalice::Start()
 		GetTransform().SetLocalPosition({ 550, -900 , -1 });
 
 		Renderer->AnimationBindEnd("Chalice_Idle_Shoot", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				StateManager.ChangeState("ChaliceIdle");
+			});
+
+		Renderer->AnimationBindEnd("Chalice_Hit", [/*&*/=](const FrameAnimation_DESC& _Info)
 			{
 				StateManager.ChangeState("ChaliceIdle");
 			});
@@ -79,6 +87,7 @@ void MsChalice::Start()
 	StateManager.CreateStateMember("ChaliceDuck", std::bind(&MsChalice::DuckUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::DuckStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceRun", std::bind(&MsChalice::RunUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::RunStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceJump", std::bind(&MsChalice::JumpUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::JumpStart, this, std::placeholders::_1));
+	StateManager.CreateStateMember("ChaliceHit", std::bind(&MsChalice::HitUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::HitStart, this, std::placeholders::_1));
 	StateManager.ChangeState("ChaliceIdle");
 }
 
@@ -112,6 +121,12 @@ void MsChalice::Update(float _DeltaTime)
 		return;
 	}
 
+	NoDamageTime -= _DeltaTime;
+	if(0 >= NoDamageTime)
+	{
+		Collision->On();
+	}
+
 	MoveDir += GetTransform().GetDownVector() * _DeltaTime * 2500.0f * 2.0f;
 	GetTransform().SetLocalMove(MoveDir * _DeltaTime);
 
@@ -123,8 +138,8 @@ void MsChalice::Update(float _DeltaTime)
 			return true;
 		});*/
 
-	// Collision2D
-	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Monster, CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+		// Collision2D
+	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Boss, CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
 
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceShoot"))
 	{
@@ -235,7 +250,7 @@ void MsChalice::DuckStart(const StateInfo& _Info)
 	{
 		CurStateName = "Chalice_Duck_Start";
 	}
-	
+
 	CurStateName = "Chalice_Duck_Idle";
 
 	// duck_duck 애니메이션이 끝나면 duck_idle 애니메이션으로 전환
@@ -356,4 +371,16 @@ void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
 		StateManager.ChangeState("ChaliceIdle");
 		return;
 	}
+}
+
+void MsChalice::HitStart(const StateInfo& _Info)
+{
+	Collision->Off();
+	CurStateName = "Chalice_Hit";
+	NoDamageTime = 1.8f;
+}
+
+void MsChalice::HitUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+	// 이동??
 }
