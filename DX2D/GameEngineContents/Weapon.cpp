@@ -15,7 +15,7 @@ void Weapon::Start()
 {
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->CreateFrameAnimationFolder("Peashooter_Loop", FrameAnimation_DESC("Peashooter_Loop", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("Peashooter_Loop", FrameAnimation_DESC("Peashooter_Loop", 0.03f, false));
 		Renderer->ChangeFrameAnimation("Peashooter_Loop");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -45,27 +45,27 @@ void Weapon::Update(float _DeltaTime)
 	if ("Right" == WeaponDir)
 	{
 		Renderer->GetTransform().PixLocalPositiveX();
-		GetTransform().SetWorldRightMove(500.0f, _DeltaTime);
+		GetTransform().SetWorldRightMove(2000.0f, _DeltaTime);
 	}
 	if ("Left" == WeaponDir)
 	{
 		Renderer->GetTransform().PixLocalNegativeX();
-		GetTransform().SetWorldLeftMove(500.0f, _DeltaTime);
+		GetTransform().SetWorldLeftMove(2000.0f, _DeltaTime);
 	}
 	if ("Up" == WeaponDir)
 	{
 		Renderer->GetTransform().SetLocalRotation(float4{ 0,0,90 });
-		GetTransform().SetWorldUpMove(500.0f, _DeltaTime);
+		GetTransform().SetWorldUpMove(2000.0f, _DeltaTime);
 	}
 	if ("RightUp" == WeaponDir)
 	{
 		Renderer->GetTransform().SetLocalRotation(float4{ 0,0,45 });
-		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetRightVector() + GetTransform().GetUpVector()) * 200 * _DeltaTime));
+		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetRightVector() + GetTransform().GetUpVector()) * 1000.0f * _DeltaTime));
 	}
 	if ("LeftUp" == WeaponDir)
 	{
 		Renderer->GetTransform().SetLocalRotation(float4{ 0,0,135 });
-		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetLeftVector() + GetTransform().GetUpVector()) * 200 * _DeltaTime));
+		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetLeftVector() + GetTransform().GetUpVector()) * 1000.0f * _DeltaTime));
 	}
 
 	//GetTransform().SetWorldRightMove(200.0f, _DeltaTime);
