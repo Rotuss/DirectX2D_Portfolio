@@ -57,6 +57,7 @@ protected:
 	GameEngineTextureRenderer*	AddRenderer;
 	GameEngineTextureRenderer*	TableRenderer;
 	GameEngineCollision*		Collision;
+	GameEngineCollision*		WhaleCollision;
 	MortimerFreezeMinion*		Minion0;
 	MortimerFreezeMinion*		Minion1;
 	MortimerFreezeMinion*		Minion2;

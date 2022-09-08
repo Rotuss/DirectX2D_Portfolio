@@ -32,7 +32,7 @@ private:
 GameEngineCollisionFunctionInit Inst;
 
 GameEngineCollision::GameEngineCollision() 
-	: DebugType(CollisionType::CT_SPHERE)
+	: DebugType(CollisionType::CT_AABB)
 	, Color(1.0f, 0.0f, 0.0f, 0.5f)
 {
 }

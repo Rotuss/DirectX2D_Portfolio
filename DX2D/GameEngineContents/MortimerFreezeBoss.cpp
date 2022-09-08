@@ -15,6 +15,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, AddRenderer(nullptr)
 	, TableRenderer(nullptr)
 	, Collision(nullptr)
+	, WhaleCollision(nullptr)
 	, CurMFDir(MFBossDIR::LEFT)
 	, StartPos()
 	, EndPos()
@@ -219,7 +220,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			return;
 		}
 
-		if (0 == PeashotStateCount)
+		if (0 >= PeashotStateCount)
 		{
 			PeashotStateCount = GameEngineRandom::MainRandom.RandomInt(1, 3);
 		}
@@ -235,7 +236,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			return;
 		}
 
-		if (0 == QuadshotStateCount)
+		if (0 >= QuadshotStateCount)
 		{
 			QuadshotStateCount = GameEngineRandom::MainRandom.RandomInt(1, 3);
 		}
@@ -252,7 +253,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			return;
 		}
 
-		if (0 == WhaleStateCount)
+		if (0 >= WhaleStateCount)
 		{
 			WhaleStateCount = GameEngineRandom::MainRandom.RandomInt(1, 3);
 		}
@@ -554,12 +555,29 @@ void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 	Renderer->SetPivot(PIVOTMODE::TOP);
 	Renderer->SetPivotToVector(float4{ 0, 250.0f });
 
+	{
+		WhaleCollision = CreateComponent<GameEngineCollision>();
+		WhaleCollision->GetTransform().SetLocalScale({ 700,800,1 });
+		WhaleCollision->GetTransform().SetLocalPosition(float4{ 0.0f,-200.0f });
+		WhaleCollision->ChangeOrder(OBJECTORDER::BossWhale);
+		WhaleCollision->Off();
+	}
+
+	Renderer->AnimationBindFrame("WhaleDrop", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (29 == _Info.CurFrame)
+			{
+				WhaleCollision->On();
+			}
+		});
+
 	Renderer->AnimationBindEnd("WhaleDrop", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("WhaleDropAttackOutro");
 			Renderer->SetPivot(PIVOTMODE::CENTER);
 			Renderer->SetPivotToVector(float4{ 0, -20.0f });
 
+			WhaleCollision->Death();
 			// Whale »ý¼º
 			MortimerFreezeWhale* Whale = GetLevel()->CreateActor<MortimerFreezeWhale>(OBJECTORDER::Boss);
 			Whale->GetTransform().SetLocalPosition({ GetTransform().GetLocalPosition().x, GetTransform().GetLocalPosition().y * 3 + 90.0f, GetTransform().GetLocalPosition().z });

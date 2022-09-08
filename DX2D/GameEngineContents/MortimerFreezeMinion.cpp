@@ -8,8 +8,10 @@ MortimerFreezeMinion::MortimerFreezeMinion()
 	, Collision(nullptr)
 	, GenderType(GENDER::BOY)
 	, DirType(DIR::LEFT)
+	, Speed(200.0f)
 	, MinionMoveStart(false)
 	, MinionFollowStart(false)
+	, IsRanding(false)
 	, MoveDir(0)
 {
 }
@@ -20,8 +22,28 @@ MortimerFreezeMinion::~MortimerFreezeMinion()
 
 bool MortimerFreezeMinion::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
-	_This->GetActor()->Death();
-	_Other->GetActor()->Death();
+	if (true == IsRanding)
+	{
+		_This->GetActor()->Death();
+		_Other->GetActor()->Death();
+	}
+	return true;
+}
+
+bool MortimerFreezeMinion::CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	// 애니메이션 전환
+	_This->Death();
+	Speed = 400.0f;
+
+	if (GENDER::BOY == GenderType)
+	{
+		Renderer->ChangeFrameAnimation("3DDeathBoy");
+	}
+	if (GENDER::GIRL == GenderType)
+	{
+		Renderer->ChangeFrameAnimation("3DDeathGirl");
+	}
 
 	return true;
 }
@@ -35,14 +57,14 @@ void MortimerFreezeMinion::Start()
 		Renderer->CreateFrameAnimationFolder("SpawnBoyRolling", FrameAnimation_DESC("Minion_Spawn_Boy", 17, 20, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("SpawnBoyGroundCol", FrameAnimation_DESC("Minion_Spawn_Boy", 21, 36, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SpawnRunBoy", FrameAnimation_DESC("Minion_Spawn_Run_Boy", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("3DDeathBoy", FrameAnimation_DESC("Minion_3D_Death_Boy", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("3DDeathBoy", FrameAnimation_DESC("Minion_3D_Death_Boy", 0.08f, false));
 
 		// Girl
 		Renderer->CreateFrameAnimationFolder("SpawnGirlAppear", FrameAnimation_DESC("Minion_Spawn_Girl", 0, 16, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SpawnGirlRolling", FrameAnimation_DESC("Minion_Spawn_Girl", 17, 20, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("SpawnGirlGroundCol", FrameAnimation_DESC("Minion_Spawn_Girl", 21, 36, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SpawnRunGirl", FrameAnimation_DESC("Minion_Spawn_Run_Girl", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("3DDeathGirl", FrameAnimation_DESC("Minion_3D_Death_Girl", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("3DDeathGirl", FrameAnimation_DESC("Minion_3D_Death_Girl", 0.08f, false));
 	}
 
 	{
@@ -72,7 +94,7 @@ void MortimerFreezeMinion::Start()
 				{
 					Collision = CreateComponent<GameEngineCollision>();
 					Collision->GetTransform().SetLocalScale({ 50,50,-1 });
-					Collision->ChangeOrder(OBJECTORDER::Boss);
+					Collision->ChangeOrder(OBJECTORDER::BossMinion);
 
 					// (미니언 < 플레이어 = 음수)미니언 - 플레이어 => 미니언이 오른쪽으로
 					// (미니언 > 플레이어 = 양수)미니언 - 플레이어 => 미니언이 왼쪽으로
@@ -105,6 +127,11 @@ void MortimerFreezeMinion::Start()
 			MinionFollowStart = true;
 		});
 
+	Renderer->AnimationBindEnd("3DDeathBoy", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Death();
+		});
+
 	Renderer->AnimationBindFrame("SpawnGirlAppear", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			if (14 == _Info.CurFrame)
@@ -127,7 +154,7 @@ void MortimerFreezeMinion::Start()
 				{
 					Collision = CreateComponent<GameEngineCollision>();
 					Collision->GetTransform().SetLocalScale({ 50,50,-1 });
-					Collision->ChangeOrder(OBJECTORDER::Boss);
+					Collision->ChangeOrder(OBJECTORDER::BossMinion);
 
 					float Value = GetTransform().GetLocalPosition().x - MsChalice::Chalice->GetTransform().GetLocalPosition().x;
 
@@ -156,6 +183,11 @@ void MortimerFreezeMinion::Start()
 		{
 			Renderer->ChangeFrameAnimation("SpawnRunGirl");
 			MinionFollowStart = true;
+		});
+
+	Renderer->AnimationBindEnd("3DDeathGirl", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Death();
 		});
 
 	EffectRenderer->AnimationBindEnd("MinionSparkB", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -215,6 +247,7 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 	if (true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-(GetTransform().GetLocalPosition().y - 30.0f))).CompareInt4D(float4::BLACK) && true == MinionMoveStart)
 	{
 		MinionMoveStart = false;
+		IsRanding = true;
 		GetTransform().SetWorldMove(float4::ZERO);
 
 		if (GENDER::BOY == GenderType)
@@ -236,6 +269,7 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 	}
 
 	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Weapon, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeMinion::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::BossWhale, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeMinion::CollisionCheckWhale, this, std::placeholders::_1, std::placeholders::_2));
 
 	if (false == MinionFollowStart)
 	{
@@ -244,11 +278,11 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 
 	if (DirType == DIR::LEFT)
 	{
-		GetTransform().SetWorldLeftMove(200.0f, _DeltaTime);
+		GetTransform().SetWorldLeftMove(Speed, _DeltaTime);
 	}
 	if(DirType == DIR::RIGHT)
 	{
-		GetTransform().SetWorldRightMove(200.0f, _DeltaTime);
+		GetTransform().SetWorldRightMove(Speed, _DeltaTime);
 	}
 }
 

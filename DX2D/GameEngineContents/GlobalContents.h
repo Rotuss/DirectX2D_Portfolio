@@ -11,6 +11,8 @@ enum class OBJECTORDER
 	Player,
 	Monster,
 	Boss,
+	BossMinion,
+	BossWhale,
 	Weapon,
 	UI = 1000,
 };

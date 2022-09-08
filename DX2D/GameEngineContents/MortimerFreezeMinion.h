@@ -28,6 +28,7 @@ public:
 	MortimerFreezeMinion& operator=(MortimerFreezeMinion&& _Other) noexcept = delete;
 
 	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+	bool CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other);
 
 	inline void SetGender(GENDER _Type)
 	{
@@ -92,8 +93,10 @@ private:
 	GENDER	GenderType;
 	DIR		DirType;
 
+	float	Speed;
 	bool	MinionMoveStart;
 	bool	MinionFollowStart;
+	bool	IsRanding;
 	int		MoveDir;
 };
 
