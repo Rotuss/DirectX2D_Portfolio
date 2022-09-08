@@ -28,6 +28,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, PeashotStateCount(GameEngineRandom::MainRandom.RandomInt(3, 5))
 	, PeashotAttackCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
 	, QuadshotStateCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
+	, WhaleStateCount(GameEngineRandom::MainRandom.RandomInt(3, 4))
 	, IsP1IdleStart(true)
 	, MFMoveReplay(false)
 	, IsCurRStartPos(true)
@@ -50,7 +51,8 @@ bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCo
 	_Other->GetActor()->Death();
 	
 	if ("Peashot" == StateManager.GetCurStateStateName()
-		|| "Quadshot" == StateManager.GetCurStateStateName())
+		|| "Quadshot" == StateManager.GetCurStateStateName()
+		|| "Whale" == StateManager.GetCurStateStateName())
 	{
 		return false;
 	}
@@ -187,6 +189,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	float MFCurXPos = GetTransform().GetLocalPosition().x;
 	float PeashotRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
 	float QuadshotRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
+	float WhaleRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
 
 	if (true == GameEngineInput::GetInst()->IsDown("Num1_Peashot"))
 	{
@@ -202,7 +205,8 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 	if (true == GameEngineInput::GetInst()->IsDown("Num3_Whale"))
 	{
-		//QuadshotStateCount = 0;
+		WhaleRandomPer = 0.9f;
+		WhaleStateCount = 0;
 	}
 
 	// 보스의 x값이 300 혹은 1350일 때 랜덤한 확률로 Peashot 상태
@@ -212,6 +216,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		{
 			PeashotStateCount = GameEngineRandom::MainRandom.RandomInt(3, 5);
 			StateManager.ChangeState("Peashot");
+			return;
 		}
 
 		if (0 == PeashotStateCount)
@@ -227,6 +232,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		{
 			QuadshotStateCount = GameEngineRandom::MainRandom.RandomInt(3, 5);
 			StateManager.ChangeState("Quadshot");
+			return;
 		}
 
 		if (0 == QuadshotStateCount)
@@ -235,7 +241,22 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		}
 	}
 
-	// 보스와 플레이어의 y값이 일치할 때 랜덤한 확률로 Whale 상태
+	// 보스와 플레이어의 x값이 일치할 때 랜덤한 확률로 Whale 상태
+	if (MsChalice::Chalice->GetTransform().GetLocalPosition().x + 10.0f >= MFCurXPos
+		&& MsChalice::Chalice->GetTransform().GetLocalPosition().x - 10.0f <= MFCurXPos)
+	{
+		if (0.9f >= WhaleRandomPer && 0 == WhaleStateCount)
+		{
+			WhaleStateCount = GameEngineRandom::MainRandom.RandomInt(3, 5);
+			StateManager.ChangeState("Whale");
+			return;
+		}
+
+		if (0 == WhaleStateCount)
+		{
+			WhaleStateCount = GameEngineRandom::MainRandom.RandomInt(1, 3);
+		}
+	}
 
 	if (true == MFMoveReplay)
 	{
@@ -271,6 +292,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			}
 			--PeashotStateCount;
 			--QuadshotStateCount;
+			--WhaleStateCount;
 		}
 	}
 	else
@@ -293,6 +315,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			}
 			--PeashotStateCount;
 			--QuadshotStateCount;
+			--WhaleStateCount;
 		}
 	}
 
@@ -308,7 +331,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	}
 
 	LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
-	float LerpY = GameEngineMath::LerpLimit(-300, 300, IdleLerpRatio) * _DeltaTime;
+	float LerpY = GameEngineMath::LerpLimit(-200, 200, IdleLerpRatio) * _DeltaTime;
 
 	YAdd += LerpY;
 	if (0 <= YAdd)
@@ -447,7 +470,7 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 	}
 
 	LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
-	float LerpY = GameEngineMath::LerpLimit(-300, 300, IdleLerpRatio) * _DeltaTime;
+	float LerpY = GameEngineMath::LerpLimit(-200, 200, IdleLerpRatio) * _DeltaTime;
 
 	YAdd += LerpY;
 	if (0 <= YAdd)
@@ -529,11 +552,14 @@ void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("WhaleDrop");
 	Renderer->SetPivot(PIVOTMODE::TOP);
+	Renderer->SetPivotToVector(float4{ 0, 250.0f });
+
 	Renderer->AnimationBindEnd("WhaleDrop", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("WhaleDropAttackOutro");
 			Renderer->SetPivot(PIVOTMODE::CENTER);
-			
+			Renderer->SetPivotToVector(float4{ 0, -20.0f });
+
 			// Whale 생성
 			MortimerFreezeWhale* Whale = GetLevel()->CreateActor<MortimerFreezeWhale>(OBJECTORDER::Boss);
 			Whale->GetTransform().SetLocalPosition({ GetTransform().GetLocalPosition().x, GetTransform().GetLocalPosition().y * 3 + 90.0f, GetTransform().GetLocalPosition().z });
