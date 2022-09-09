@@ -110,5 +110,6 @@ private:
 	bool	IsIdleTransState;
 	bool	MinionPixCheck;
 	bool	MinionPixRemove;
+	bool	IsEndPhase1;
 };
 

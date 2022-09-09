@@ -39,6 +39,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsIdleTransState(false)
 	, MinionPixCheck(false)
 	, MinionPixRemove(false)
+	, IsEndPhase1(false)
 {
 	MFBoss = this;
 }
@@ -60,10 +61,11 @@ bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCo
 
 	HP -= 1;
 	
-	if (0 == HP)
+	if (0 >= HP)
 	{
+		HP = 0;
 		//_This->GetActor()->Death();
-		StateManager.ChangeState("Transition_Phase2");
+		//StateManager.ChangeState("Transition_Phase2");
 	}
 
 	return true;
@@ -294,6 +296,18 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			--PeashotStateCount;
 			--QuadshotStateCount;
 			--WhaleStateCount;
+
+			if (0 == HP)
+			{
+				IsEndPhase1 = true;
+				return;
+			}
+		}
+
+		if (StartPos[0].x + 100 <= MFCurXPos && true == IsEndPhase1)
+		{
+			StateManager.ChangeState("Transition_Phase2");
+			return;
 		}
 	}
 	else
@@ -317,6 +331,18 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			--PeashotStateCount;
 			--QuadshotStateCount;
 			--WhaleStateCount;
+
+			if (0 == HP)
+			{
+				IsEndPhase1 = true;
+				return;
+			}
+		}
+
+		if (StartPos[1].x - 100 >= MFCurXPos && true == IsEndPhase1)
+		{
+			StateManager.ChangeState("Transition_Phase2");
+			return;
 		}
 	}
 

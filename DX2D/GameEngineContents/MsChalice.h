@@ -55,6 +55,9 @@ protected:
 	void JumpStart(const StateInfo& _Info);
 	void JumpUpdate(float _DeltaTime, const StateInfo& _Info);
 
+	void DashStart(const StateInfo& _Info);
+	void DashUpdate(float _DeltaTime, const StateInfo& _Info);
+
 	void HitStart(const StateInfo& _Info);
 	void HitUpdate(float _DeltaTime, const StateInfo& _Info);
 
