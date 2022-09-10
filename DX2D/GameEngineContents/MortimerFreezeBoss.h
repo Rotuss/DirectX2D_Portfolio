@@ -63,6 +63,7 @@ protected:
 	MortimerFreezeMinion*		Minion2;
 	MortimerFreezeMinion*		Minion3;
 
+	// Phase1
 	void Phase1Start(const StateInfo& _Info);
 	void Phase1Update(float _DeltaTime, const StateInfo& _Info);
 
@@ -81,9 +82,29 @@ protected:
 	void Phase1to2Start(const StateInfo& _Info);
 	void Phase1to2Update(float _DeltaTime, const StateInfo& _Info);
 
+	// Phase2
+	void Phase2Start(const StateInfo& _Info);
+	void Phase2Update(float _DeltaTime, const StateInfo& _Info);
+
+	void P2IdleStart(const StateInfo& _Info);
+	void P2IdleUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void AttackDashStart(const StateInfo& _Info);
+	void AttackDashUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void AttackFridgeStart(const StateInfo& _Info);
+	void AttackFridgeUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void AttackSmashStart(const StateInfo& _Info);
+	void AttackSmashUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void Phase2to3Start(const StateInfo& _Info);
+	void Phase2to3Update(float _DeltaTime, const StateInfo& _Info);
+
 private:
 	GameEngineStateManager PhaseManager;
 	GameEngineStateManager StateManager;
+	GameEngineStateManager StateManager2;
 
 	MFBossDIR CurMFDir;
 
@@ -111,5 +132,18 @@ private:
 	bool	MinionPixCheck;
 	bool	MinionPixRemove;
 	bool	IsEndPhase1;
+
+	// Phase2
+	float	DashTime;
+	float	FridgeTime;
+	float	SmashTime;
+	float	IceTime;
+	float	BladeTime;
+	int		PrevSkill;
+	int		DashMove;
+	int		IceCubeCount;
+	int		IceBatCount;
+	int		BladeCount;
+	bool	IsJump;
 };
 

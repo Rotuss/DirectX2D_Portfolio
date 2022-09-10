@@ -322,6 +322,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="MortimerFreezeBoss_Phase2.cpp" />
     <ClCompile Include="MortimerFreezeCard.cpp">
       <SubType>
       </SubType>

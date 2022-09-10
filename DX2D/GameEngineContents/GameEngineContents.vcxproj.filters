@@ -194,6 +194,9 @@
     <ClCompile Include="MsChalice.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="MortimerFreezeBoss_Phase2.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Actor">

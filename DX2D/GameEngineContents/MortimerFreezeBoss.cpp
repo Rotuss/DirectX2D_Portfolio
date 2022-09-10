@@ -40,6 +40,18 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, MinionPixCheck(false)
 	, MinionPixRemove(false)
 	, IsEndPhase1(false)
+	, DashTime(GameEngineRandom::MainRandom.RandomFloat(0.2f, 1.0f))
+	, FridgeTime(GameEngineRandom::MainRandom.RandomFloat(0.5f, 1.0f))
+	, SmashTime(GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f))
+	, IceTime(0.0f)
+	, BladeTime(1.0f)
+	, PrevSkill(GameEngineRandom::MainRandom.RandomInt(1, 3))
+	, DashMove(GameEngineRandom::MainRandom.RandomInt(1, 3))
+	, IceCubeCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
+	, IceBatCount(4)
+	, BladeCount(-1)
+	, IsJump(static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1)))
+
 {
 	MFBoss = this;
 }
@@ -129,6 +141,7 @@ void MortimerFreezeBoss::Start()
 	}
 
 	PhaseManager.CreateStateMember("MFPhase1", std::bind(&MortimerFreezeBoss::Phase1Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase1Start, this, std::placeholders::_1));
+	PhaseManager.CreateStateMember("MFPhase2", std::bind(&MortimerFreezeBoss::Phase2Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase2Start, this, std::placeholders::_1));
 	PhaseManager.ChangeState("MFPhase1");
 }
 
@@ -639,18 +652,24 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 				AddRenderer->On();
 			}
 		});
-}
 
-void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Info)
-{
 	AddRenderer->AnimationBindEnd("MFPhase2Transition1_Arm", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			if (0 == Phase2TransitionMotionCount)
 			{
 				AddRenderer->Off();
 				Renderer->ChangeFrameAnimation("MFPhase2Transition2");
+				
+				// 페이즈2 전환 확인용
+				PhaseManager.ChangeState("MFPhase2");
 			}
 
 			Phase2TransitionMotionCount -= 1;
 		});
 }
+
+void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Info)
+{
+
+}
+
