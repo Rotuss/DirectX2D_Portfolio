@@ -135,9 +135,13 @@ void MortimerFreezeBoss::Start()
 	{
 		StartPos.push_back({ 300,-380,-1 });
 		StartPos.push_back({ 1350,-380,-1 });
+		StartPos.push_back({ 400,-380,-1 });
+		StartPos.push_back({ 1250,-380,-1 });
 
 		EndPos.push_back({ 1350,-380,-1 });
 		EndPos.push_back({ 300,-380,-1 });
+		EndPos.push_back({ 1250,-380,-1 });
+		EndPos.push_back({ 400,-380,-1 });
 	}
 
 	PhaseManager.CreateStateMember("MFPhase1", std::bind(&MortimerFreezeBoss::Phase1Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase1Start, this, std::placeholders::_1));
@@ -659,7 +663,7 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 			{
 				AddRenderer->Off();
 				Renderer->ChangeFrameAnimation("MFPhase2Transition2");
-				
+
 				// 페이즈2 전환 확인용
 				PhaseManager.ChangeState("MFPhase2");
 			}

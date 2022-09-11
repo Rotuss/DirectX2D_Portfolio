@@ -100,12 +100,13 @@ void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 {
-	//StateManager2.ChangeState("MF2Idle");
 	DashMove = GameEngineRandom::MainRandom.RandomInt(1, 3);
 }
 
 void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	float MFCurXPos = GetTransform().GetLocalPosition().x;
+
 	if (0 >= DashMove)
 	{
 		StateManager2.ChangeState("MF2Idle");
@@ -115,9 +116,11 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 	if(MFBossDIR::LEFT == CurMFDir)
 	{
 		// 왼쪽 방향으로 가다가 분기점 도달했을 때, 오른쪽 방향으로 이동할 수 있게 전환
-		if (/*도달 지점 조건*/1)
+		if (StartPos[2].x >= MFCurXPos && IdleLerpRatio >= 1.0f)
 		{
 			CurMFDir = MFBossDIR::RIGHT;
+			Num = 2;
+			IdleLerpRatio = 0.0f;
 			IsJump = static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1));
 			DashMove -= 1;
 			return;
@@ -125,36 +128,42 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 	}
 	else
 	{
-		if (/*도달 지점 조건*/1)
+		if (StartPos[3].x <= MFCurXPos)
 		{
 			CurMFDir = MFBossDIR::LEFT;
+			Num = 3;
+			IdleLerpRatio = 0.0f;
 			IsJump = static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1));
 			DashMove -= 1;
 			return;
 		}
 	}
 	
-	// 점프 할건가?
-	/*if (true == IsJump)
+	IdleLerpRatio += _DeltaTime;
+	if (1.0f <= IdleLerpRatio)
 	{
-		movedir
+		IdleLerpRatio = 1.0f;
+	}
+
+	if (true == IsJump)
+	{
+		float LerpY = GameEngineMath::LerpLimit(500, -500, IdleLerpRatio) * _DeltaTime;
+
+		YAdd += LerpY;
+		if (0 >= YAdd)
+		{
+			YAdd = 0.0f;
+		}
 	}
 	else
-	{
-	}*/
-
-	// 움직임(점프일 경우 LerpY 변경은 위에서 조정)
-	/*LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
-	float LerpY = GameEngineMath::LerpLimit(-200, 200, IdleLerpRatio) * _DeltaTime;
-
-	YAdd += LerpY;
-	if (0 <= YAdd)
 	{
 		YAdd = 0.0f;
 	}
 
+	LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
+
 	float4 MFMovePos = LerpPos + float4(0, YAdd, 0);
-	GetTransform().SetLocalPosition(MFMovePos);*/
+	GetTransform().SetLocalPosition(MFMovePos);
 }
 
 void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
