@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "MortimerFreezeBoss.h"
+#include "MortimerFreezeBlade.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
 void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
@@ -77,10 +78,10 @@ void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	{
 		if (0.8f >= SmashRandomPer && 0 >= SmashTime)
 		{
-			if (PrevSkill == 3)
+			/*if (PrevSkill == 3)
 			{
 				return;
-			}
+			}*/
 			SmashTime = GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f);
 			StateManager2.ChangeState("Smash");
 			PrevSkill = 3;
@@ -211,6 +212,8 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 {
 	// 스매시 애니메이션바인드엔드에 BladeTime 시간설정 + BladeCount 4 설정, StateManager2.ChangeState("MF2Idle");
+	BladeTime = 0.0f;
+	BladeCount = 4;
 }
 
 void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _Info)
@@ -228,6 +231,16 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 		--BladeCount;
 
 		// Blade 생성(좌우 방향 CurMFDir 확인 후 간격 조정-카운트에 맞춰-)
+		if (MFBossDIR::LEFT == CurMFDir)
+		{
+			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 100.0f * (4 - BladeCount),0,0});
+		}
+		if (MFBossDIR::RIGHT == CurMFDir)
+		{
+			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 100.0f * (4 - BladeCount),0,0});
+		}
 	}
 }
 

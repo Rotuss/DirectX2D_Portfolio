@@ -97,6 +97,9 @@
     <ClInclude Include="MsChalice.h">
       <Filter>Actor</Filter>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeBlade.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -195,6 +198,9 @@
       <Filter>Actor</Filter>
     </ClCompile>
     <ClCompile Include="MortimerFreezeBoss_Phase2.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeBlade.cpp">
       <Filter>Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>
