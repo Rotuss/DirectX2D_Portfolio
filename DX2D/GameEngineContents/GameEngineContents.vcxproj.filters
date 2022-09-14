@@ -100,6 +100,12 @@
     <ClInclude Include="MortimerFreezeBlade.h">
       <Filter>Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeIceCube.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeIceBat.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -201,6 +207,12 @@
       <Filter>Actor\Boss</Filter>
     </ClCompile>
     <ClCompile Include="MortimerFreezeBlade.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeIceCube.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeIceBat.cpp">
       <Filter>Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>

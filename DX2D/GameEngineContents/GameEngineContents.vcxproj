@@ -196,6 +196,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeIceBat.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeIceCube.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MortimerFreezeLevel.h">
       <SubType>
       </SubType>
@@ -332,6 +340,14 @@
     </ClCompile>
     <ClCompile Include="MortimerFreezeBoss_Phase2.cpp" />
     <ClCompile Include="MortimerFreezeCard.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeIceBat.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeIceCube.cpp">
       <SubType>
       </SubType>
     </ClCompile>

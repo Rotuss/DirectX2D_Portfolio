@@ -1,5 +1,7 @@
 #include "PreCompile.h"
 #include "MortimerFreezeBoss.h"
+#include "MortimerFreezeIceCube.h"
+#include "MortimerFreezeIceBat.h"
 #include "MortimerFreezeBlade.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
@@ -78,10 +80,10 @@ void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	{
 		if (0.8f >= SmashRandomPer && 0 >= SmashTime)
 		{
-			/*if (PrevSkill == 3)
+			if (PrevSkill == 3)
 			{
 				return;
-			}*/
+			}
 			SmashTime = GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f);
 			StateManager2.ChangeState("Smash");
 			PrevSkill = 3;
@@ -187,10 +189,17 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 
 		if (0 == IceCubeCount)
 		{
-			IceTime = 0.1f;
+			IceTime = 0.5f;
 			--IceBatCount;
-			// 배트 생성
 
+			float BatRandomMove = GameEngineRandom::MainRandom.RandomFloat(100.0f, 500.0f);
+			// 배트 생성
+			MortimerFreezeIceBat* BPtr = GetLevel()->CreateActor<MortimerFreezeIceBat>(OBJECTORDER::Boss);
+			BPtr->SetMovePos(GetTransform().GetLocalPosition(), GetTransform().GetLocalPosition() + float4{-BatRandomMove, 300});
+			BPtr->SetColorType(static_cast<ColorType>(GameEngineRandom::MainRandom.RandomInt(0, 2)));
+			BPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{0,50,0});
+			BPtr->SetReAppearTime(GameEngineRandom::MainRandom.RandomFloat(3.0f, 5.0f) * (4 - IceBatCount));
+			
 			if (0 == IceBatCount)
 			{
 				// Fridge 애니메이션 변경
@@ -201,6 +210,11 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 		IceTime = 1.0f;
 		--IceCubeCount;
 		// 큐브 생성
+		MortimerFreezeIceCube* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCube>(OBJECTORDER::Boss);
+		Ptr->SetMovePos(GetTransform().GetLocalPosition(), MsChalice::Chalice->GetTransform().GetLocalPosition());
+		Ptr->SetSizeType(static_cast<SizeType>(GameEngineRandom::MainRandom.RandomInt(0, 1)));
+		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+		Ptr->SetColMap(MsChalice::Chalice->GetColMap());
 
 		if (0 == IceCubeCount)
 		{
