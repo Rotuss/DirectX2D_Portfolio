@@ -41,6 +41,13 @@ public:
 		Color = _Color;
 	}
 
+	void SetDebugCamera(CAMERAORDER _Order)
+	{
+		DebugCameraOrder = _Order;
+	}
+
+	void SetUIDebugCamera();
+
 	virtual void DebugRender();
 
 protected:
@@ -49,6 +56,8 @@ private:
 	static bool (*CollisionFunction[static_cast<int>(CollisionType::CT_MAX)][static_cast<int>(CollisionType::CT_MAX)])(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
 
 	void Start() override;
+
+	CAMERAORDER DebugCameraOrder;
 
 	CollisionType	DebugType;
 	float4			Color;

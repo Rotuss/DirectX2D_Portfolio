@@ -41,6 +41,11 @@ public:
 		return Text;
 	}
 
+	float4 SetScreenPostion()
+	{
+		return ScreenPosition;
+	}
+
 	void SetLeftAndRightSort(LeftAndRightSort _Value)
 	{
 		LR = _Value;

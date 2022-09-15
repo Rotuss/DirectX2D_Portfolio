@@ -4,6 +4,9 @@
 std::map<std::string, std::map<int, GameEngineConstantBuffer*>> GameEngineConstantBuffer::NamedRes;
 
 GameEngineConstantBuffer::GameEngineConstantBuffer() 
+	: Buffer(nullptr)
+	, BufferDesc()
+	, ShaderDesc()
 {
 }
 

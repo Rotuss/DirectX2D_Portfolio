@@ -9,9 +9,14 @@ enum class CAMERAPROJECTIONMODE
 	Orthographic,
 };
 
+class RenderingInstancing
+{
+};
+
 // Ό³Έν :
 class GameEngineLevel;
 class GameEngineRenderTarget;
+class GameEngineRenderingPipeLine;
 class GameEngineCamera : public GameEngineTransformComponent
 {
 	friend GameEngineLevel;
@@ -98,6 +103,7 @@ private:
 	float Fov;
 
 	std::map<int, std::list<class GameEngineRenderer*>> AllRenderer_;
+	std::map<GameEngineRenderingPipeLine*, RenderingInstancing*> InstancingMap;
 
 	void Render(float _DeltaTime);
 	void OverRenderer(GameEngineCamera* _NextOver);

@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineCollision.h"
+#include "GameEngineCore.h"
 #include "GameEngineCoreDebug.h"
 
 bool (*GameEngineCollision::CollisionFunction[static_cast<int>(CollisionType::CT_MAX)][static_cast<int>(CollisionType::CT_MAX)])(const GameEngineTransform& _Left, const GameEngineTransform& _Right);
@@ -90,8 +91,15 @@ bool GameEngineCollision::IsCollision(CollisionType _ThisType, int _GroupOrder, 
 	return false;
 }
 
+void GameEngineCollision::SetUIDebugCamera()
+{
+	DebugCameraOrder = CAMERAORDER::UICAMERA;
+}
+
 void GameEngineCollision::DebugRender()
 {
+	GameEngineCamera* DebugRenderCamera = GetActor()->GetLevel()->Cameras[static_cast<UINT>(DebugCameraOrder)];
+	
 	switch (DebugType)
 	{
 	case CollisionType::CT_POINT2D:
@@ -99,20 +107,20 @@ void GameEngineCollision::DebugRender()
 	case CollisionType::CT_SPHERE2D:
 		break;
 	case CollisionType::CT_AABB2D:
-		GameEngineDebug::DrawBox(GetTransform(), Color);
+		GameEngineDebug::DrawBox(GetTransform(), DebugRenderCamera, Color);
 		break;
 	case CollisionType::CT_OBB2D:
-		GameEngineDebug::DrawBox(GetTransform(), Color);
+		GameEngineDebug::DrawBox(GetTransform(), DebugRenderCamera, Color);
 		break;
 	case CollisionType::CT_POINT:
 		break;
 	case CollisionType::CT_SPHERE:
 		break;
 	case CollisionType::CT_AABB:
-		GameEngineDebug::DrawBox(GetTransform(), Color);
+		GameEngineDebug::DrawBox(GetTransform(), DebugRenderCamera, Color);
 		break;
 	case CollisionType::CT_OBB:
-		GameEngineDebug::DrawBox(GetTransform(), Color);
+		GameEngineDebug::DrawBox(GetTransform(), DebugRenderCamera, Color);
 		break;
 	case CollisionType::CT_MAX:
 		break;
@@ -123,6 +131,7 @@ void GameEngineCollision::DebugRender()
 
 void GameEngineCollision::Start()
 {
+	DebugCameraOrder = CAMERAORDER::MAINCAMERA;
 	GetActor()->GetLevel()->PushCollision(this, GetOrder());
 }
 
