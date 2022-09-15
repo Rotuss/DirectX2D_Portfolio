@@ -13,7 +13,8 @@ MortimerFreezeBoss* MortimerFreezeBoss::MFBoss= nullptr;
 MortimerFreezeBoss::MortimerFreezeBoss()
 	: Renderer(nullptr)
 	, AddRenderer(nullptr)
-	, TableRenderer(nullptr)
+	, SubRenderer00(nullptr)
+	, SubRenderer01(nullptr)
 	, Collision(nullptr)
 	, WhaleCollision(nullptr)
 	, CurMFDir(MFBossDIR::LEFT)
@@ -30,6 +31,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, PeashotAttackCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
 	, QuadshotStateCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
 	, WhaleStateCount(GameEngineRandom::MainRandom.RandomInt(3, 4))
+	, SnowBeastIntroCount(1)
 	, IsP1IdleStart(true)
 	, MFMoveReplay(false)
 	, IsCurRStartPos(true)
@@ -40,6 +42,8 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, MinionPixCheck(false)
 	, MinionPixRemove(false)
 	, IsEndPhase1(false)
+	, IsSnowBeastIntroStartEnd(false)
+	, IsSnowBeastIntroMoveDown(false)
 	, DashTime(GameEngineRandom::MainRandom.RandomFloat(0.2f, 1.0f))
 	, FridgeTime(GameEngineRandom::MainRandom.RandomFloat(0.5f, 1.0f))
 	, SmashTime(GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f))
@@ -76,8 +80,6 @@ bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCo
 	if (0 >= HP)
 	{
 		HP = 0;
-		//_This->GetActor()->Death();
-		//StateManager.ChangeState("Transition_Phase2");
 	}
 
 	return true;
@@ -127,6 +129,30 @@ void MortimerFreezeBoss::Start()
 	}
 
 	{
+		SubRenderer00 = CreateComponent<GameEngineTextureRenderer>();
+		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Start", FrameAnimation_DESC("SnowBeast_Intro", 0, 2, 0.1f, true));
+		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 56, 0.1f, false));
+
+		SubRenderer00->ChangeFrameAnimation("SnowBeastIntro_Start");
+		SubRenderer00->SetScaleModeImage();
+		SubRenderer00->ScaleToTexture();
+		SubRenderer00->SetPivot(PIVOTMODE::CENTER);
+		SubRenderer00->Off();
+	}
+
+	{
+		SubRenderer01 = CreateComponent<GameEngineTextureRenderer>();
+		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer_Start", FrameAnimation_DESC("SnowBeast_Intro_Backer", 0, 2, 0.1f, true));
+		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer", FrameAnimation_DESC("SnowBeast_Intro_Backer", 3, 11, 0.1f, false));
+
+		SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer_Start");
+		SubRenderer01->SetScaleModeImage();
+		SubRenderer01->ScaleToTexture();
+		SubRenderer01->SetPivot(PIVOTMODE::CENTER);
+		SubRenderer01->Off();
+	}
+
+	{
 		Collision = CreateComponent<GameEngineCollision>();
 		Collision->GetTransform().SetLocalScale({ 200,300,1 });
 		Collision->ChangeOrder(OBJECTORDER::Boss);
@@ -154,8 +180,6 @@ void MortimerFreezeBoss::Update(float _DeltaTime)
 	PhaseManager.Update(_DeltaTime);
 
 	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Weapon, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeBoss::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
-
-	//GameEngineDebug::DrawBox(Collision->GetTransform(), { 1.0f, 1.0f, 1.0f, 0.5f });
 }
 
 void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
@@ -376,6 +400,10 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 	LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
 	float LerpY = GameEngineMath::LerpLimit(-200, 200, IdleLerpRatio) * _DeltaTime;
+	if (0 == HP)
+	{
+		LerpY = GameEngineMath::LerpLimit(-500, 500, IdleLerpRatio) * _DeltaTime;
+	}
 
 	YAdd += LerpY;
 	if (0 <= YAdd)
@@ -657,23 +685,102 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 			}
 		});
 
+	Renderer->AnimationBindEnd("MFPhase2Transition2", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				SubRenderer00->GetTransform().PixLocalPositiveX();
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0, 350, -1.5 });
+				SubRenderer00->On();
+
+				SubRenderer01->GetTransform().PixLocalPositiveX();
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0, 350, 0.5 });
+				SubRenderer01->On();
+			}
+			if (MFBossDIR::RIGHT == CurMFDir)
+			{
+				SubRenderer00->GetTransform().PixLocalNegativeX();
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0, 350, -1.5 });
+				SubRenderer00->On();
+
+				SubRenderer01->GetTransform().PixLocalNegativeX();
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0, 350, 0.5 });
+				SubRenderer01->On();
+			}
+		});
+
 	AddRenderer->AnimationBindEnd("MFPhase2Transition1_Arm", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			if (0 == Phase2TransitionMotionCount)
 			{
 				AddRenderer->Off();
 				Renderer->ChangeFrameAnimation("MFPhase2Transition2");
-
-				// 페이즈2 전환 확인용
-				PhaseManager.ChangeState("MFPhase2");
 			}
 
 			Phase2TransitionMotionCount -= 1;
+		});
+
+	SubRenderer00->AnimationBindFrame("SnowBeastIntro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (9 == _Info.CurFrame)
+			{
+				Renderer->Off();
+			}
+			if (40 == _Info.CurFrame)
+			{
+				IsSnowBeastIntroMoveDown = true;
+			}
+		});
+
+	SubRenderer01->AnimationBindEnd("SnowBeastIntro_Backer", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer01->Off();
 		});
 }
 
 void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Info)
 {
+	if (true == IsSnowBeastIntroStartEnd)
+	{
+		IsSnowBeastIntroStartEnd = false;
 
+		SubRenderer00->ChangeFrameAnimation("SnowBeastIntro");
+		SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer");
+	}
+
+	if ((true == SubRenderer00->IsUpdate() || true == SubRenderer01->IsUpdate()) && false == IsSnowBeastIntroMoveDown)
+	{
+		if (Renderer->GetTransform().GetLocalPosition().y + 70.0f > SubRenderer00->GetTransform().GetLocalPosition().y)
+		{
+			float a = Renderer->GetTransform().GetLocalPosition().y + 70.0f;
+			float b = SubRenderer00->GetTransform().GetLocalPosition().y;
+
+			SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,Renderer->GetTransform().GetLocalPosition().y + 70.0f ,0 });
+
+			if (1 == SnowBeastIntroCount)
+			{
+				--SnowBeastIntroCount;
+				IsSnowBeastIntroStartEnd = true;
+			}
+		}
+		if (Renderer->GetTransform().GetLocalPosition().y + 70.0f > SubRenderer01->GetTransform().GetLocalPosition().y)
+		{
+			SubRenderer01->GetTransform().SetLocalPosition(float4{ 0,Renderer->GetTransform().GetLocalPosition().y + 70.0f ,0 });
+
+			//IsSnowBeastIntroStartEnd = true;
+		}
+	}
+
+	if (true == IsSnowBeastIntroMoveDown)
+	{
+		if (-250.0f >= SubRenderer00->GetTransform().GetLocalPosition().y)
+		{
+			SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-250.0f ,0 });
+			PhaseManager.ChangeState("MFPhase2");
+		}
+	}
+
+	SubRenderer00->GetTransform().SetLocalMove(GetTransform().GetDownVector() * _DeltaTime * 500.0f);
+	SubRenderer01->GetTransform().SetLocalMove(GetTransform().GetDownVector() * _DeltaTime * 500.0f);
 }
 

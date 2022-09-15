@@ -55,7 +55,8 @@ protected:
 
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineTextureRenderer*	AddRenderer;
-	GameEngineTextureRenderer*	TableRenderer;
+	GameEngineTextureRenderer*	SubRenderer00;
+	GameEngineTextureRenderer*	SubRenderer01;
 	GameEngineCollision*		Collision;
 	GameEngineCollision*		WhaleCollision;
 	MortimerFreezeMinion*		Minion0;
@@ -122,6 +123,7 @@ private:
 	int		QuadshotStateCount;
 	int		WhaleStateCount;
 	int		Phase2TransitionMotionCount;
+	int		SnowBeastIntroCount;
 	bool	IsP1IdleStart;
 	bool	MFMoveReplay;
 	bool	IsCurRStartPos;
@@ -132,6 +134,8 @@ private:
 	bool	MinionPixCheck;
 	bool	MinionPixRemove;
 	bool	IsEndPhase1;
+	bool	IsSnowBeastIntroStartEnd;
+	bool	IsSnowBeastIntroMoveDown;
 
 	// Phase2
 	float	DashTime;
