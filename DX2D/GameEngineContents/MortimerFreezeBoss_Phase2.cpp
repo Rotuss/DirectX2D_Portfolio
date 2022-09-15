@@ -31,6 +31,7 @@ void MortimerFreezeBoss::Phase2Update(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::P2IdleStart(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("MF2Idle");
 }
 
 void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
@@ -225,8 +226,20 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 
 void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("SnowBeastSmash");
+	
+	Renderer->AnimationBindEnd("SnowBeastSmash", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeastSmashOutro");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeastSmashOutro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager2.ChangeState("MF2Idle");
+		});
+
 	// 스매시 애니메이션바인드엔드에 BladeTime 시간설정 + BladeCount 4 설정, StateManager2.ChangeState("MF2Idle");
-	BladeTime = 0.0f;
+	BladeTime = 2.0f;
 	BladeCount = 4;
 }
 
@@ -241,19 +254,19 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 
 	if (0 < BladeCount)
 	{
-		BladeTime = 1.0f;
+		BladeTime = 0.3f;
 		--BladeCount;
 
 		// Blade 생성(좌우 방향 CurMFDir 확인 후 간격 조정-카운트에 맞춰-)
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 100.0f * (4 - BladeCount),0,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 265.0f * (4 - BladeCount),480,0});
 		}
 		if (MFBossDIR::RIGHT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 100.0f * (4 - BladeCount),0,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 265.0f * (4 - BladeCount),-480,0});
 		}
 	}
 }

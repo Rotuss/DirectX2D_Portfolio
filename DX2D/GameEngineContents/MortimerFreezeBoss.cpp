@@ -108,6 +108,12 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MFPhase2Transition1", FrameAnimation_DESC("MFPhase2_Transition", 11, 15, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("MFPhase2Transition2", FrameAnimation_DESC("MFPhase2_Transition", 16, 27, 0.1f, false));
 		
+		// Phase2
+		Renderer->CreateFrameAnimationFolder("MF2Idle", FrameAnimation_DESC("MF2Idle", 0.1f, true));
+
+		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastSmashOutro", FrameAnimation_DESC("SnowBeast_Smash_Outro", 0.1f, false));
+
 		Renderer->ChangeFrameAnimation("MFIdle");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -776,6 +782,12 @@ void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Inf
 		if (-250.0f >= SubRenderer00->GetTransform().GetLocalPosition().y)
 		{
 			SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-250.0f ,0 });
+			SubRenderer00->Off();
+			
+			Renderer->ChangeFrameAnimation("MF2Idle");
+			Renderer->SetPivot(PIVOTMODE::BOT);
+			Renderer->GetTransform().SetLocalPosition(float4{ 0,-550.0f,0 });
+			Renderer->On();
 			PhaseManager.ChangeState("MFPhase2");
 		}
 	}
