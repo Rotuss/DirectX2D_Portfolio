@@ -4,6 +4,7 @@
 #include "GameEngineVertexShader.h"
 #include "GameEnginePixelShader.h"
 #include "GameEngineConstantBuffer.h"
+#include "GameEngineStructuredBuffer.h"
 #include "GameEngineTexture.h"
 #include "GameEngineSampler.h"
 
@@ -116,7 +117,7 @@ void GameEngineShader::ShaderResCheck()
 			NewSetter.ParentShader = this;
 			NewSetter.SetName(Name);
 			NewSetter.ShaderType = ShaderSettingType;
-			NewSetter.Res = GameEngineConstantBuffer::CreateAndFind(Name, BufferDesc, CBufferPtr);
+			NewSetter.Res = GameEngineConstantBuffer::CreateAndFind(Name, BufferDesc);
 			NewSetter.BindPoint = ResInfo.BindPoint;
 
 			ConstantBufferMap.insert(std::make_pair(Name, NewSetter));
@@ -154,6 +155,7 @@ void GameEngineShader::ShaderResCheck()
 			NewSetter.ParentShader = this;
 			NewSetter.SetName(Name);
 			NewSetter.ShaderType = ShaderSettingType;
+			NewSetter.Res = GameEngineStructuredBuffer::CreateAndFind(Name, BufferDesc, 0);
 			NewSetter.BindPoint = ResInfo.BindPoint;
 			StructuredBufferMap.insert(std::make_pair(Name, NewSetter));
 			break;
@@ -180,6 +182,11 @@ void GameEngineConstantBufferSetter::Setting() const
 void GameEngineTextureSetter::Setting() const
 {
 	SettingFunction();
+}
+
+void GameEngineTextureSetter::Reset() const
+{
+	ResetFunction();
 }
 
 void GameEngineSamplerSetter::Setting() const

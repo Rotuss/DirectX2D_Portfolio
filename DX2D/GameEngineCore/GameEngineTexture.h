@@ -61,6 +61,9 @@ public:
 	void VSSetting(int _BindPoint);
 	void PSSetting(int _BindPoint);
 
+	void VSReset(int _BindPoint);
+	void PSReset(int _BindPoint);
+
 	float4 GetFrameData(UINT _Index)
 	{
 		if (true == CutData.empty())

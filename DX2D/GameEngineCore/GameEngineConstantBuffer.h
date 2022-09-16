@@ -3,18 +3,18 @@
 #include <list>
 #include <string>
 #include <GameEngineBase/GameEngineString.h>
-#include <GameEngineBase/GameEngineNameObject.h>
+#include "GameEngineRes.h"
 
 // Ό³Έν :
-class GameEngineConstantBuffer : public GameEngineNameObject
+class GameEngineConstantBuffer : public GameEngineRes<GameEngineConstantBuffer>
 {
 public:
 	static GameEngineConstantBuffer* Find(const std::string& _Name, int _ByteSize)
 	{
 		std::string UpperName = GameEngineString::ToUpperReturn(_Name);
-		std::map<std::string, std::map<int, GameEngineConstantBuffer*>>::iterator NameIter = NamedRes.find(UpperName);
+		std::map<std::string, std::map<int, GameEngineConstantBuffer*>>::iterator NameIter = ConstantBufferRes.find(UpperName);
 
-		if (NamedRes.end() == NameIter)
+		if (ConstantBufferRes.end() == NameIter)
 		{
 			return nullptr;
 		}
@@ -30,15 +30,15 @@ public:
 		return SizeIter->second;
 	}
 
-	static GameEngineConstantBuffer* Create(const std::string& _Name, D3D11_SHADER_BUFFER_DESC _Desc, ID3D11ShaderReflectionConstantBuffer* _CBufferPtr)
+	static GameEngineConstantBuffer* Create(const std::string& _Name, D3D11_SHADER_BUFFER_DESC _Desc)
 	{
 		GameEngineConstantBuffer* NewBuffer = CreateResName(_Name, _Desc.Size);
-		NewBuffer->Create(_Desc, _CBufferPtr);
+		NewBuffer->Create(_Desc);
 		
 		return NewBuffer;
 	}
 
-	static GameEngineConstantBuffer* CreateAndFind(const std::string& _Name, D3D11_SHADER_BUFFER_DESC _Desc, ID3D11ShaderReflectionConstantBuffer* _CBufferPtr)
+	static GameEngineConstantBuffer* CreateAndFind(const std::string& _Name, D3D11_SHADER_BUFFER_DESC _Desc)
 	{
 		GameEngineConstantBuffer* FindBuffer = Find(_Name, _Desc.Size);
 
@@ -48,14 +48,14 @@ public:
 		}
 
 		GameEngineConstantBuffer* NewBuffer = CreateResName(_Name, _Desc.Size);
-		NewBuffer->Create(_Desc, _CBufferPtr);
+		NewBuffer->Create(_Desc);
 
 		return NewBuffer;
 	}
 
 	static void ResourcesDestroy()
 	{
-		for (auto& NameRes : NamedRes)
+		for (auto& NameRes : ConstantBufferRes)
 		{
 			for (auto& SizeRes : NameRes.second)
 			{
@@ -65,14 +65,6 @@ public:
 	}
 
 protected:
-	static GameEngineConstantBuffer* CreateRes(const std::string& _Name)
-	{
-		GameEngineConstantBuffer* NewRes = new GameEngineConstantBuffer();
-		NewRes->SetName(_Name);
-
-		return NewRes;
-	}
-
 	static GameEngineConstantBuffer* CreateResName(const std::string& _Name, int _ByteSize)
 	{
 		std::string Name = GameEngineString::ToUpperReturn(_Name);
@@ -83,13 +75,13 @@ protected:
 			return FindBuffer;
 		}
 		GameEngineConstantBuffer* Res = CreateRes(Name);
-		NamedRes[Name][_ByteSize] = Res;
+		ConstantBufferRes[Name][_ByteSize] = Res;
 
 		return Res;
 	}
 
 private:
-	static std::map<std::string, std::map<int, GameEngineConstantBuffer*>> NamedRes;
+	static std::map<std::string, std::map<int, GameEngineConstantBuffer*>> ConstantBufferRes;
 
 public:
 	// constrcuter destructer
@@ -114,6 +106,6 @@ private:
 	D3D11_BUFFER_DESC BufferDesc;
 	D3D11_SHADER_BUFFER_DESC ShaderDesc;
 	
-	void Create(const D3D11_SHADER_BUFFER_DESC& _Desc, ID3D11ShaderReflectionConstantBuffer* _CBufferPtr);
+	void Create(const D3D11_SHADER_BUFFER_DESC& _Desc);
 };
 

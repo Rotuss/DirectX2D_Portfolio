@@ -198,7 +198,7 @@ public:
 	void CreateFrameAnimationFolder(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc);
 
 	void CreateFrameAnimationCutTexture(const std::string& _AnimationName, const FrameAnimation_DESC& _Desc);
-	void ChangeFrameAnimation(const std::string& _AnimationName);
+	void ChangeFrameAnimation(const std::string& _AnimationName, bool _Force = false);
 
 	// 시작 프레임
 	void AnimationBindStart(const std::string& _AnimationName, std::function<void(const FrameAnimation_DESC&)> _Function)

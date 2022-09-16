@@ -143,43 +143,17 @@ void GameEngineTexture::PSSetting(int _BindPoint)
 	GameEngineDevice::GetContext()->PSSetShaderResources(_BindPoint, 1, &ShaderResourceView);
 }
 
-//float4 GameEngineTexture::GetPixel(int _x, int _y)
-//{
-//	
-//	
-//	
-//	
-//
-//	
-//	
-//	
-//	
-//
-//	
-//	
-//	
-//	
-//
-//	
-//	
-//	
-//	
-//
-//	
-//
-//
-//	
-//
-//	
-//	
-//
-//	
-//	
-//	
-//	
-//
-//	
-//}
+void GameEngineTexture::VSReset(int _BindPoint)
+{
+	ID3D11ShaderResourceView* Nullptr = nullptr;
+	GameEngineDevice::GetContext()->VSSetShaderResources(_BindPoint, 1, &Nullptr);
+}
+
+void GameEngineTexture::PSReset(int _BindPoint)
+{
+	ID3D11ShaderResourceView* Nullptr = nullptr;
+	GameEngineDevice::GetContext()->PSSetShaderResources(_BindPoint, 1, &Nullptr);
+}
 
 void GameEngineTexture::TextureLoad(const std::string& _Path)
 {

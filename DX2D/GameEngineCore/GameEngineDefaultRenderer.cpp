@@ -32,6 +32,7 @@ void GameEngineDefaultRenderer::Render(float _DeltaTime)
 
 	ShaderResources.AllResourcesSetting();
 	PipeLine->Rendering();
+	ShaderResources.AllResourcesReset();
 }
 
 void GameEngineDefaultRenderer::SetPipeLine(const std::string& _Name)
@@ -53,7 +54,7 @@ void GameEngineDefaultRenderer::SetPipeLine(const std::string& _Name)
 
 	if (true == ShaderResources.IsConstantBuffer("RENDEROPTION"))
 	{
-		ShaderResources.SetConstantBufferLink("RENDEROPTION", &Option, sizeof(Option));
+		ShaderResources.SetConstantBufferLink("RENDEROPTION", &RenderOption, sizeof(RenderOption));
 	}
 }
 

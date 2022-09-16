@@ -49,7 +49,7 @@ public:
 	GameEngineRenderer& operator=(GameEngineRenderer&& _Other) noexcept = delete;
 
 	GameEngineRenderingPipeLine* GetClonePipeLine(GameEngineRenderingPipeLine* _Rendering);
-	RenderOption Option;
+	RenderOption RenderOption;
 
 	inline int GetRenderingOrder()
 	{

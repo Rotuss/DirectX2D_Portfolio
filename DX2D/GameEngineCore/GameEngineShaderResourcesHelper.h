@@ -21,6 +21,8 @@ public:
 
 	void AllResourcesSetting();
 
+	void AllResourcesReset();
+
 	void ResourcesCheck(GameEngineRenderingPipeLine* _Line);
 
 	bool IsConstantBuffer(const std::string& _Name);

@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "GameEngineConstantBuffer.h"
 
-std::map<std::string, std::map<int, GameEngineConstantBuffer*>> GameEngineConstantBuffer::NamedRes;
+std::map<std::string, std::map<int, GameEngineConstantBuffer*>> GameEngineConstantBuffer::ConstantBufferRes;
 
 GameEngineConstantBuffer::GameEngineConstantBuffer() 
 	: Buffer(nullptr)
@@ -56,7 +56,7 @@ void GameEngineConstantBuffer::PSSetting(int _BindPoint)
 	GameEngineDevice::GetContext()->PSSetConstantBuffers(_BindPoint, 1, &Buffer);
 }
 
-void GameEngineConstantBuffer::Create(const D3D11_SHADER_BUFFER_DESC& _Desc, ID3D11ShaderReflectionConstantBuffer* _CBufferPtr)
+void GameEngineConstantBuffer::Create(const D3D11_SHADER_BUFFER_DESC& _Desc)
 {
 	ShaderDesc = _Desc;
 

@@ -31,6 +31,7 @@ void GameEngineRenderSet::Render()
 
 	ShaderResources.AllResourcesSetting();
 	PipeLine->Rendering();
+	ShaderResources.AllResourcesReset();
 }
 
 GameEngineRenderingPipeLine* GameEngineRenderSet::GetPipeLine()

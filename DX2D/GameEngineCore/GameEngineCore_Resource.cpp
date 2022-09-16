@@ -4,6 +4,7 @@
 #include "GameEngineLevel.h"
 #include "GameEngineVertexs.h"
 #include "GameEngineConstantBuffer.h"
+#include "GameEngineStructuredBuffer.h"
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineBase/GameEngineTime.h>
@@ -369,7 +370,7 @@ void GameEngineCore::EngineResourcesDestroy()
 	GameEngineRasterizer::ResourcesDestroy();
 	GameEngineBlend::ResourcesDestroy();
 	GameEngineConstantBuffer::ResourcesDestroy();
-	GameEngineSound::ResourcesDestroy();
+	GameEngineStructuredBuffer::ResourcesDestroy();
 	GameEngineSound::ResourcesDestroy();
 	GameEngineFont::ResourcesDestroy();
 
