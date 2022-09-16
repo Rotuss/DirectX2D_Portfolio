@@ -26,36 +26,36 @@ void MortimerFreezeIceBat::SetColorType(ColorType _Type)
 
 	if (BatColor == ColorType::Green && CurBatDir == BatDIR::LEFT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
+		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Green");
 	}
 	if (BatColor == ColorType::Green && CurBatDir == BatDIR::RIGHT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		//Renderer->GetTransform().PixLocalNegativeX();
+		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Green");
+		Renderer->GetTransform().PixLocalNegativeX();
 	}
 
 	if (BatColor == ColorType::Pink && CurBatDir == BatDIR::LEFT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
+		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Pink");
 	}
 	if (BatColor == ColorType::Pink && CurBatDir == BatDIR::RIGHT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		//Renderer->GetTransform().PixLocalNegativeX();
+		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Pink");
+		Renderer->GetTransform().PixLocalNegativeX();
 	}
 
 	if (BatColor == ColorType::Yellow && CurBatDir == BatDIR::LEFT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
+		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Yellow");
 	}
 	if (BatColor == ColorType::Yellow && CurBatDir == BatDIR::RIGHT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		//Renderer->GetTransform().PixLocalNegativeX();
+		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Yellow");
+		Renderer->GetTransform().PixLocalNegativeX();
 	}
 
-	//Renderer->SetScaleModeImage();
-	//Renderer->ScaleToTexture();
+	Renderer->SetScaleModeImage();
+	Renderer->ScaleToTexture();
 	Renderer->SetPivot(PIVOTMODE::CENTER);
 }
 
@@ -63,15 +63,52 @@ void MortimerFreezeIceBat::Start()
 {
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->GetTransform().SetLocalScale({ 50, 50, 1 });
+		// Green
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Green", FrameAnimation_DESC("IceBat_Flap_Antic", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Green", FrameAnimation_DESC("IceBat_Flap_Green", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Green", FrameAnimation_DESC("IceBat_Swoop_Green", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Green", FrameAnimation_DESC("IceBat_Outro_Trans_Green", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Green", FrameAnimation_DESC("IceBat_Outro_Green", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatDeath_Green", FrameAnimation_DESC("IceBat_DeathA_Green", 0.1f, false));
+
+		// Pink
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Pink", FrameAnimation_DESC("IceBat_Flap_Antic_Pink", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Pink", FrameAnimation_DESC("IceBat_Flap_Pink", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Pink", FrameAnimation_DESC("IceBat_Swoop_Pink", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Pink", FrameAnimation_DESC("IceBat_Outro_Trans_Pink", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Pink", FrameAnimation_DESC("IceBat_Outro_Pink", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatDeath_Pink", FrameAnimation_DESC("IceBat_DeathA_Pink", 0.1f, false));
+		
+		// Yellow
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Yellow", FrameAnimation_DESC("IceBat_Flap_Antic_Yellow", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Yellow", FrameAnimation_DESC("IceBat_Flap_Yellow", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Yellow", FrameAnimation_DESC("IceBat_Swoop_Yellow", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Yellow", FrameAnimation_DESC("IceBat_Outro_Trans_Yellow", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Yellow", FrameAnimation_DESC("IceBat_Outro_Yellow", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatDeathA_Yellow", FrameAnimation_DESC("IceBat_DeathA_Yellow", 0.1f, false));
 	}
+
+	Renderer->AnimationBindEnd("IceBatFlap_Antic_Green", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("IceBatFlap_Green");
+		});
+
+	Renderer->AnimationBindEnd("IceBatFlap_Antic_Pink", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("IceBatFlap_Pink");
+		});
+
+	Renderer->AnimationBindEnd("IceBatFlap_Antic_Yellow", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("IceBatFlap_Yellow");
+		});
 }
 
 void MortimerFreezeIceBat::Update(float _DeltaTime)
 {
 	ReAppearTime -= _DeltaTime;
 
-	if (-100.0f <= GetTransform().GetLocalPosition().y && false == IsYOut && 0.0f >= ReAppearTime)
+	if (-400.0f <= GetTransform().GetLocalPosition().y && false == IsYOut && 0.0f >= ReAppearTime)
 	{
 		IsYOut = true;
 		YValue = 1000.0f;
@@ -82,11 +119,13 @@ void MortimerFreezeIceBat::Update(float _DeltaTime)
 		{
 			SetMovePos(float4{ 1500, YRandom, 0 }, float4{ 1500, YRandom, 0 } + float4{ -BatRandomMove, 0 });
 			GetTransform().SetLocalPosition(float4{ 1500, YRandom, 0 });
+			Renderer->GetTransform().PixLocalPositiveX();
 		}
 		if (BatDIR::RIGHT == CurBatDir)
 		{
 			SetMovePos(float4{ 0, YRandom, 0 }, float4{ 0, YRandom, 0 } + float4{ BatRandomMove, 0 });
 			GetTransform().SetLocalPosition(float4{ 0, YRandom,0 });
+			Renderer->GetTransform().PixLocalNegativeX();
 		}
 
 		BatLerpRatio = 0.0f;

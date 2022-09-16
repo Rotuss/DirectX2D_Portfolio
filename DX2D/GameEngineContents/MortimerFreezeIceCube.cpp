@@ -24,42 +24,36 @@ void MortimerFreezeIceCube::SetSizeType(SizeType _Type)
 
 	if (CubeSize == SizeType::Large && DirType == CubeDIR::LEFT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		Renderer->GetTransform().SetLocalScale({ 200, 200, 1 });
+		Renderer->ChangeFrameAnimation("IceCube_Large");
 	}
 	if (CubeSize == SizeType::Large && DirType == CubeDIR::RIGHT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		//Renderer->GetTransform().PixLocalNegativeX();
-		Renderer->GetTransform().SetLocalScale({ 200, 200, 1 });
+		Renderer->ChangeFrameAnimation("IceCube_Large");
+		Renderer->GetTransform().PixLocalNegativeX();
 	}
 	
 	if (CubeSize == SizeType::Medium && DirType == CubeDIR::LEFT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		Renderer->GetTransform().SetLocalScale({ 100, 100, 1 });
+		Renderer->ChangeFrameAnimation("IceCube_Medium");
 	}
 	if (CubeSize == SizeType::Medium && DirType == CubeDIR::RIGHT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		//Renderer->GetTransform().PixLocalNegativeX();
-		Renderer->GetTransform().SetLocalScale({ 100, 100, 1 });
+		Renderer->ChangeFrameAnimation("IceCube_Medium");
+		Renderer->GetTransform().PixLocalNegativeX();
 	}
 
 	if (CubeSize == SizeType::Small && DirType == CubeDIR::LEFT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		Renderer->GetTransform().SetLocalScale({ 50, 50, 1 });
+		Renderer->ChangeFrameAnimation("IceCube_Small");
 	}
 	if (CubeSize == SizeType::Small && DirType == CubeDIR::RIGHT)
 	{
-		//Renderer->ChangeFrameAnimation("SpawnBoyAppear");
-		//Renderer->GetTransform().PixLocalNegativeX();
-		Renderer->GetTransform().SetLocalScale({ 50, 50, 1 });
+		Renderer->ChangeFrameAnimation("IceCube_Small");
+		Renderer->GetTransform().PixLocalNegativeX();
 	}
 
-	//Renderer->SetScaleModeImage();
-	//Renderer->ScaleToTexture();
+	Renderer->SetScaleModeImage();
+	Renderer->ScaleToTexture();
 	Renderer->SetPivot(PIVOTMODE::CENTER);
 }
 
@@ -67,6 +61,14 @@ void MortimerFreezeIceCube::Start()
 {
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
+		// Large
+		Renderer->CreateFrameAnimationFolder("IceCube_Large", FrameAnimation_DESC("IceCube_Large", 0.1f, true));
+
+		// Medium
+		Renderer->CreateFrameAnimationFolder("IceCube_Medium", FrameAnimation_DESC("IceCube_Medium", 0.1f, true));
+
+		// Small
+		Renderer->CreateFrameAnimationFolder("IceCube_Small", FrameAnimation_DESC("IceCube_Small", 0.1f, true));
 	}
 }
 
@@ -115,7 +117,7 @@ void MortimerFreezeIceCube::Update(float _DeltaTime)
 
 	LerpPos = float4::Lerp(StartPosition, EndPosition, CubeLerpRatio);
 
-	float LerpY = GameEngineMath::Lerp(500, -500, CubeLerpRatio) * _DeltaTime;
+	float LerpY = GameEngineMath::Lerp(1800, -1800, CubeLerpRatio) * _DeltaTime;
 
 	YAdd += LerpY;
 	if (0 >= YAdd)

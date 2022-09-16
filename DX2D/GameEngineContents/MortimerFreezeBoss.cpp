@@ -55,6 +55,8 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IceBatCount(4)
 	, BladeCount(-1)
 	, IsJump(static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1)))
+	, IsShoot(false)
+	, IsBatOpen(false)
 
 {
 	MFBoss = this;
@@ -111,6 +113,12 @@ void MortimerFreezeBoss::Start()
 		// Phase2
 		Renderer->CreateFrameAnimationFolder("MF2Idle", FrameAnimation_DESC("MF2Idle", 0.1f, true));
 
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Morph", FrameAnimation_DESC("SnowBeast_Fridge_Morph", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Idle", FrameAnimation_DESC("SnowBeast_Fridge_Idle", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Shoot", FrameAnimation_DESC("SnowBeast_Fridge_Shoot", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer", FrameAnimation_DESC("SnowBeast_Fridge_Freezer", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer_Outro", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Outro", 0.1f, false));
+
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmashOutro", FrameAnimation_DESC("SnowBeast_Smash_Outro", 0.1f, false));
 
@@ -126,6 +134,7 @@ void MortimerFreezeBoss::Start()
 		// AddRenderer 을 Renderer의 자식으로?-?
 		AddRenderer = CreateComponent<GameEngineTextureRenderer>();
 		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.1f, true));
+		AddRenderer->CreateFrameAnimationFolder("SnowBeastFridgeFreezer_Top", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Top", 0.1f, false));
 
 		AddRenderer->ChangeFrameAnimation("MFPhase2Transition1_Arm");
 		AddRenderer->SetScaleModeImage();
@@ -758,9 +767,6 @@ void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Inf
 	{
 		if (Renderer->GetTransform().GetLocalPosition().y + 70.0f > SubRenderer00->GetTransform().GetLocalPosition().y)
 		{
-			float a = Renderer->GetTransform().GetLocalPosition().y + 70.0f;
-			float b = SubRenderer00->GetTransform().GetLocalPosition().y;
-
 			SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,Renderer->GetTransform().GetLocalPosition().y + 70.0f ,0 });
 
 			if (1 == SnowBeastIntroCount)

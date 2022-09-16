@@ -172,6 +172,56 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 
 void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("SnowBeastFridge_Morph");
+	
+	Renderer->AnimationBindEnd("SnowBeastFridge_Morph", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeastFridge_Shoot");
+			IsShoot = true;
+		});
+
+	Renderer->AnimationBindEnd("SnowBeastFridge_Shoot", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			//--IceCubeCount;
+			
+			if (0 == IceCubeCount)
+			{
+				Renderer->ChangeFrameAnimation("SnowBeastFridge_Freezer");
+
+				/*if (MFBossDIR::LEFT == CurMFDir)
+				{
+					AddRenderer->ChangeFrameAnimation("SnowBeastFridgeFreezer_Top");
+					AddRenderer->GetTransform().PixLocalPositiveX();
+					AddRenderer->GetTransform().SetLocalPosition(float4{ 100, 100, -1.5 });
+					AddRenderer->On();
+				}
+				if (MFBossDIR::RIGHT == CurMFDir)
+				{
+					AddRenderer->ChangeFrameAnimation("SnowBeastFridgeFreezer_Top");
+					AddRenderer->GetTransform().PixLocalNegativeX();
+					AddRenderer->GetTransform().SetLocalPosition(float4{ -100, 100, -1.5 });
+					AddRenderer->On();
+				}*/
+
+				return;
+			}
+
+			--IceCubeCount;
+		});
+
+	Renderer->AnimationBindFrame("SnowBeastFridge_Freezer", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if ( 4 == _Info.CurFrame)
+			{
+				IsBatOpen = true;
+			}
+		});
+
+	Renderer->AnimationBindEnd("SnowBeastFridge_Freezer_Outro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager2.ChangeState("MF2Idle");
+		});
+
 	IceCubeCount = GameEngineRandom::MainRandom.RandomInt(1, 3);
 	IceBatCount = 4;
 	// Fridge 애니메이션 끝났을 때 상태 전환(바인드엔드)
@@ -188,7 +238,7 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 			return;
 		}
 
-		if (0 == IceCubeCount)
+		if (0 == IceCubeCount && true == IsBatOpen)
 		{
 			IceTime = 0.5f;
 			--IceBatCount;
@@ -196,30 +246,44 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 			float BatRandomMove = GameEngineRandom::MainRandom.RandomFloat(100.0f, 500.0f);
 			// 배트 생성
 			MortimerFreezeIceBat* BPtr = GetLevel()->CreateActor<MortimerFreezeIceBat>(OBJECTORDER::Boss);
-			BPtr->SetMovePos(GetTransform().GetLocalPosition(), GetTransform().GetLocalPosition() + float4{-BatRandomMove, 300});
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,-30,0 }, GetTransform().GetLocalPosition() + float4{ -BatRandomMove, 300 });
+			}
+			if (MFBossDIR::RIGHT== CurMFDir)
+			{
+				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,-30,0 }, GetTransform().GetLocalPosition() + float4{ BatRandomMove, 300 });
+			}
 			BPtr->SetColorType(static_cast<ColorType>(GameEngineRandom::MainRandom.RandomInt(0, 2)));
-			BPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{0,50,0});
+			BPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-30,0 });
 			BPtr->SetReAppearTime(GameEngineRandom::MainRandom.RandomFloat(3.0f, 5.0f) * (4 - IceBatCount));
 			
 			if (0 == IceBatCount)
 			{
+				IceBatCount = -1;
+				IsBatOpen = false;
 				// Fridge 애니메이션 변경
+				Renderer->ChangeFrameAnimation("SnowBeastFridge_Freezer_Outro");
 			}
 			return;
 		}
 
-		IceTime = 1.0f;
-		--IceCubeCount;
-		// 큐브 생성
-		MortimerFreezeIceCube* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCube>(OBJECTORDER::Boss);
-		Ptr->SetMovePos(GetTransform().GetLocalPosition(), MsChalice::Chalice->GetTransform().GetLocalPosition());
-		Ptr->SetSizeType(static_cast<SizeType>(GameEngineRandom::MainRandom.RandomInt(0, 1)));
-		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
-		Ptr->SetColMap(MsChalice::Chalice->GetColMap());
-
-		if (0 == IceCubeCount)
+		if (true == IsShoot)
 		{
-			IceTime = 0.5f;
+			IceTime = 1.0f;
+			//--IceCubeCount;
+			// 큐브 생성
+			MortimerFreezeIceCube* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCube>(OBJECTORDER::Boss);
+			Ptr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,-200,0 }, MsChalice::Chalice->GetTransform().GetLocalPosition());
+			Ptr->SetSizeType(static_cast<SizeType>(GameEngineRandom::MainRandom.RandomInt(0, 1)));
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-200,0 });
+			Ptr->SetColMap(MsChalice::Chalice->GetColMap());
+
+			if (0 == IceCubeCount)
+			{
+				//IceTime = 0.5f;
+				IsShoot = false;
+			}
 		}
 	}
 }

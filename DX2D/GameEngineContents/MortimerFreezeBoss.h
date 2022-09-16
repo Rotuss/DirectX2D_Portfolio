@@ -149,5 +149,7 @@ private:
 	int		IceBatCount;
 	int		BladeCount;
 	bool	IsJump;
+	bool	IsShoot;
+	bool	IsBatOpen;
 };
 
