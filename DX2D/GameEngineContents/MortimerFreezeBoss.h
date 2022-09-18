@@ -102,10 +102,33 @@ protected:
 	void Phase2to3Start(const StateInfo& _Info);
 	void Phase2to3Update(float _DeltaTime, const StateInfo& _Info);
 
+	// Phase3
+	void Phase3Start(const StateInfo& _Info);
+	void Phase3Update(float _DeltaTime, const StateInfo& _Info);
+
+	void P3IdleStart(const StateInfo& _Info);
+	void P3IdleUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void P3SwapStart(const StateInfo& _Info);
+	void P3SwapUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void AttackEyeStart(const StateInfo& _Info);
+	void AttackEyeUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void AttackIceCreamStart(const StateInfo& _Info);
+	void AttackCreamUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void AttackSplitStart(const StateInfo& _Info);
+	void AttackSplitUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void Phase3KnockOutStart(const StateInfo& _Info);
+	void Phase3KnockOutUpdate(float _DeltaTime, const StateInfo& _Info);
+
 private:
 	GameEngineStateManager PhaseManager;
 	GameEngineStateManager StateManager;
 	GameEngineStateManager StateManager2;
+	GameEngineStateManager StateManager3;
 
 	MFBossDIR CurMFDir;
 
@@ -151,5 +174,12 @@ private:
 	bool	IsJump;
 	bool	IsShoot;
 	bool	IsBatOpen;
+
+	// Phase3
+	float	EyeTime;
+	float	IceCreamTime;
+	float	SplitTime;
+	int		SwapCount;
+	bool	IsReverse;
 };
 

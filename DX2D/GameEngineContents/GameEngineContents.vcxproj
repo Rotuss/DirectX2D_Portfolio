@@ -192,11 +192,23 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeBucket.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MortimerFreezeCard.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeEye.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MortimerFreezeIceBat.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeIceCream.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -209,6 +221,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="MortimerFreezeMinion.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeMoon.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -339,11 +355,24 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MortimerFreezeBoss_Phase2.cpp" />
+    <ClCompile Include="MortimerFreezeBoss_Phase3.cpp" />
+    <ClCompile Include="MortimerFreezeBucket.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MortimerFreezeCard.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="MortimerFreezeEye.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MortimerFreezeIceBat.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeIceCream.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -356,6 +385,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MortimerFreezeMinion.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeMoon.cpp">
       <SubType>
       </SubType>
     </ClCompile>

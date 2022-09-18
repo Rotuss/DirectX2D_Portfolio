@@ -106,6 +106,18 @@
     <ClInclude Include="MortimerFreezeIceBat.h">
       <Filter>Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeEye.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeIceCream.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeBucket.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="MortimerFreezeMoon.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -213,6 +225,21 @@
       <Filter>Actor\Boss</Filter>
     </ClCompile>
     <ClCompile Include="MortimerFreezeIceBat.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeBoss_Phase3.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeEye.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeIceCream.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeBucket.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeMoon.cpp">
       <Filter>Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>

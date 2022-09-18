@@ -57,7 +57,11 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsJump(static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1)))
 	, IsShoot(false)
 	, IsBatOpen(false)
-
+	, EyeTime(GameEngineRandom::MainRandom.RandomFloat(0.2f, 1.0f))
+	, IceCreamTime(GameEngineRandom::MainRandom.RandomFloat(0.5f, 1.0f))
+	, SplitTime(GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f))
+	, SwapCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
+	, IsReverse(false)
 {
 	MFBoss = this;
 }
@@ -89,6 +93,11 @@ bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCo
 
 void MortimerFreezeBoss::Start()
 {
+	if (false == GameEngineInput::GetInst()->IsKey("Change_Phase3"))
+	{
+		GameEngineInput::GetInst()->CreateKey("Change_Phase3", 'Q');
+	}
+
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("MFIdle", FrameAnimation_DESC("MFIdle", 0, 23, 0.1f, true));
@@ -121,6 +130,8 @@ void MortimerFreezeBoss::Start()
 
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmashOutro", FrameAnimation_DESC("SnowBeast_Smash_Outro", 0.1f, false));
+
+		// Phase3
 
 		Renderer->ChangeFrameAnimation("MFIdle");
 		Renderer->SetScaleModeImage();
@@ -187,6 +198,7 @@ void MortimerFreezeBoss::Start()
 
 	PhaseManager.CreateStateMember("MFPhase1", std::bind(&MortimerFreezeBoss::Phase1Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase1Start, this, std::placeholders::_1));
 	PhaseManager.CreateStateMember("MFPhase2", std::bind(&MortimerFreezeBoss::Phase2Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase2Start, this, std::placeholders::_1));
+	PhaseManager.CreateStateMember("MFPhase3", std::bind(&MortimerFreezeBoss::Phase3Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase3Start, this, std::placeholders::_1));
 	PhaseManager.ChangeState("MFPhase1");
 }
 
@@ -195,6 +207,11 @@ void MortimerFreezeBoss::Update(float _DeltaTime)
 	PhaseManager.Update(_DeltaTime);
 
 	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Weapon, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeBoss::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+
+	if (true == GameEngineInput::GetInst()->IsDown("Change_Phase3"))
+	{
+		PhaseManager.ChangeState("MFPhase3");
+	}
 }
 
 void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
