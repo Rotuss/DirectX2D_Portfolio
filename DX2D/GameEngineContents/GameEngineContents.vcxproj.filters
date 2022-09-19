@@ -118,6 +118,9 @@
     <ClInclude Include="MortimerFreezeMoon.h">
       <Filter>Actor\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="MortimerFreezeSnowPlatform.h">
+      <Filter>Actor\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -240,6 +243,9 @@
       <Filter>Actor\Boss</Filter>
     </ClCompile>
     <ClCompile Include="MortimerFreezeMoon.cpp">
+      <Filter>Actor\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MortimerFreezeSnowPlatform.cpp">
       <Filter>Actor\Boss</Filter>
     </ClCompile>
   </ItemGroup>

@@ -21,6 +21,7 @@ public:
 	static MsChalice* Chalice;
 
 	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+	bool CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other);
 
 	void SetColMap(GameEngineTextureRenderer* _Collision)
 	{
@@ -70,6 +71,7 @@ private:
 	std::string				CurShootName;
 
 	float4					MoveDir;
+	float4					AddDir;
 	float					Speed;
 	float					WeaponTime;
 	float					NoDamageTime;

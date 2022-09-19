@@ -13,6 +13,7 @@ enum class OBJECTORDER
 	Boss,
 	BossMinion,
 	BossWhale,
+	SnowPlatform,
 	Weapon,
 	UI = 1000,
 };

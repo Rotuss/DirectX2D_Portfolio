@@ -63,6 +63,8 @@ protected:
 	MortimerFreezeMinion*		Minion1;
 	MortimerFreezeMinion*		Minion2;
 	MortimerFreezeMinion*		Minion3;
+	// 발판 테스트
+	//GameEngineTextureRenderer* PPtr;
 
 	// Phase1
 	void Phase1Start(const StateInfo& _Info);
