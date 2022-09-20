@@ -55,8 +55,11 @@ protected:
 
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineTextureRenderer*	AddRenderer;
+	GameEngineTextureRenderer*	AddRenderer01;
 	GameEngineTextureRenderer*	SubRenderer00;
 	GameEngineTextureRenderer*	SubRenderer01;
+	GameEngineTextureRenderer*	SubRenderer02;
+	GameEngineTextureRenderer*	SubRenderer03;
 	GameEngineCollision*		Collision;
 	GameEngineCollision*		WhaleCollision;
 	MortimerFreezeMinion*		Minion0;
@@ -173,6 +176,10 @@ private:
 	int		IceCubeCount;
 	int		IceBatCount;
 	int		BladeCount;
+	bool	IsDashPatternBegin;
+	bool	IsPreparing;
+	bool	IsPrevDash;
+	bool	IsPrevJump;
 	bool	IsJump;
 	bool	IsShoot;
 	bool	IsBatOpen;

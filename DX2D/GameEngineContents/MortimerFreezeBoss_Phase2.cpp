@@ -104,7 +104,181 @@ void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("SnowBeast_DashPreAttack");
+
+	Renderer->AnimationBindEnd("SnowBeast_Jump_Attack", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsPreparing = false;
+			Renderer->ChangeFrameAnimation("SnowBeast_DashSnowBeastBall");
+			// Boss에 붙어 있는 것이 아닌 바닥에 따로 분리되어 생성이므로 CreateActor 형식으로 구조 전환 필요
+			/*if (MFBossDIR::LEFT == CurMFDir)
+			{
+				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA");
+				SubRenderer00->GetTransform().PixLocalPositiveX();
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-500.0f,0 });
+				SubRenderer00->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer00->On();
+
+				SubRenderer01->ChangeFrameAnimation("SnowBeast_Limbs_MeltingB");
+				SubRenderer01->GetTransform().PixLocalPositiveX();
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ -50.0f,-450.0f,0 });
+				SubRenderer01->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer01->On();
+
+				SubRenderer02->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingA");
+				SubRenderer02->GetTransform().PixLocalNegativeX();
+				SubRenderer02->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer02->On();
+
+				SubRenderer03->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingB");
+				SubRenderer03->GetTransform().PixLocalNegativeX();
+				SubRenderer03->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer03->On();
+			}
+			else
+			{
+				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA");
+				SubRenderer00->GetTransform().PixLocalNegativeX();
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-500.0f,0 });
+				SubRenderer00->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer00->On();
+
+				SubRenderer01->ChangeFrameAnimation("SnowBeast_Limbs_MeltingB");
+				SubRenderer01->GetTransform().PixLocalNegativeX();
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ 50.0f,-450.0f,0 });
+				SubRenderer01->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer01->On();
+
+				SubRenderer02->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingA");
+				SubRenderer02->GetTransform().PixLocalPositiveX();
+				SubRenderer02->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer02->On();
+
+				SubRenderer03->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingB");
+				SubRenderer03->GetTransform().PixLocalPositiveX();
+				SubRenderer03->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer03->On();
+			}*/
+		});
+	
+	Renderer->AnimationBindEnd("SnowBeast_Dash_Attack", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsPreparing = false;
+			Renderer->ChangeFrameAnimation("SnowBeast_DashSnowBeastBall");
+			/*if (MFBossDIR::LEFT == CurMFDir)
+			{
+				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA");
+				SubRenderer00->GetTransform().PixLocalPositiveX();
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-500.0f,0 });
+				SubRenderer00->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer00->On();
+
+				SubRenderer01->ChangeFrameAnimation("SnowBeast_Limbs_MeltingB");
+				SubRenderer01->GetTransform().PixLocalPositiveX();
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ -50.0f,-450.0f,0 });
+				SubRenderer01->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer01->On();
+
+				SubRenderer02->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingA");
+				SubRenderer02->GetTransform().PixLocalNegativeX();
+				SubRenderer02->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer02->On();
+
+				SubRenderer03->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingB");
+				SubRenderer03->GetTransform().PixLocalNegativeX();
+				SubRenderer03->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer03->On();
+			}
+			else
+			{
+				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA");
+				SubRenderer00->GetTransform().PixLocalNegativeX();
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-500.0f,0 });
+				SubRenderer00->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer00->On();
+
+				SubRenderer01->ChangeFrameAnimation("SnowBeast_Limbs_MeltingB");
+				SubRenderer01->GetTransform().PixLocalNegativeX();
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ 50.0f,-450.0f,0 });
+				SubRenderer01->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer01->On();
+
+				SubRenderer02->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingA");
+				SubRenderer02->GetTransform().PixLocalPositiveX();
+				SubRenderer02->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer02->On();
+
+				SubRenderer03->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingB");
+				SubRenderer03->GetTransform().PixLocalPositiveX();
+				SubRenderer03->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer03->On();
+			}*/
+		});
+
+	Renderer->AnimationBindEnd("SnowBeast_JumptoJump_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeast_DashtoJump_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeast_DashtoAny_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_Dash_Attack");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeast_JumptoDash_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_Dash_Attack");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeast_JumptoIdle_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_AttacktoIdle_Trans");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeast_DashtoIdle_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_AttacktoIdle_Trans");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeast_AttacktoIdle_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager2.ChangeState("MF2Idle");
+		});
+
+	SubRenderer00->AnimationBindEnd("SnowBeast_Limbs_MeltingA", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->CurAnimationReset();
+			SubRenderer00->Off();
+		});
+
+	SubRenderer01->AnimationBindEnd("SnowBeast_Limbs_MeltingB", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer01->CurAnimationReset();
+			SubRenderer01->Off();
+		});
+	
+	SubRenderer02->AnimationBindEnd("SnowBeast_Limbs_RMeltingA", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer02->CurAnimationReset();
+			SubRenderer02->Off();
+		});
+
+	SubRenderer03->AnimationBindEnd("SnowBeast_Limbs_RMeltingB", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer03->CurAnimationReset();
+			SubRenderer03->Off();
+		});
+
 	DashMove = GameEngineRandom::MainRandom.RandomInt(1, 3);
+	IsDashPatternBegin = true;
+	IsPreparing = false;
+	IsPrevDash = false;
+	IsPrevJump = false;
 }
 
 void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _Info)
@@ -113,32 +287,166 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 
 	if (0 >= DashMove)
 	{
-		StateManager2.ChangeState("MF2Idle");
+		if (0 > DashMove)
+		{
+			return;
+		}
+
+		if (true == IsJump)
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_JumptoIdle_Trans");
+		}
+		else
+		{
+			Renderer->ChangeFrameAnimation("SnowBeast_DashtoIdle_Trans");
+		}
+		DashMove = -1;
+		return;
+	}
+
+	if (true == IsPreparing)
+	{
 		return;
 	}
 
 	if(MFBossDIR::LEFT == CurMFDir)
 	{
+		if (true == IsDashPatternBegin)
+		{
+			IsDashPatternBegin = false;
+			Num = 3;
+			IdleLerpRatio = 0.0f;
+			IsJump = static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1));
+			if (true == IsJump)
+			{
+				if (false == IsPrevDash && false == IsPrevJump)
+				{
+					IsPrevJump = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack");
+				}
+			}
+			else
+			{
+				if (false == IsPrevDash && false == IsPrevJump)
+				{
+					IsPrevDash = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_Dash_Attack");
+				}
+			}
+			IsPreparing = true;
+			return;
+		}
+		
 		// 왼쪽 방향으로 가다가 분기점 도달했을 때, 오른쪽 방향으로 이동할 수 있게 전환
 		if (StartPos[2].x >= MFCurXPos && IdleLerpRatio >= 1.0f)
 		{
 			CurMFDir = MFBossDIR::RIGHT;
+			Renderer->GetTransform().PixLocalNegativeX();
 			Num = 2;
 			IdleLerpRatio = 0.0f;
 			IsJump = static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1));
+			if (true == IsJump)
+			{
+				if (true == IsPrevDash)
+				{
+					IsPrevDash = false;
+					IsPrevJump = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_DashtoJump_Trans");
+				}
+				if (true == IsPrevJump)
+				{
+					IsPrevDash = false;
+					IsPrevJump = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_JumptoJump_Trans");
+				}
+			}
+			else
+			{
+				if (true == IsPrevDash)
+				{
+					IsPrevDash = true;
+					IsPrevJump = false;
+					Renderer->ChangeFrameAnimation("SnowBeast_DashtoAny_Trans");
+				}
+				if (true == IsPrevJump)
+				{
+					IsPrevDash = true;
+					IsPrevJump = false;
+					Renderer->ChangeFrameAnimation("SnowBeast_JumptoDash_Trans");
+				}
+			}
 			DashMove -= 1;
+			IsPreparing = true;
 			return;
 		}
 	}
 	else
 	{
-		if (StartPos[3].x <= MFCurXPos)
+		if (true == IsDashPatternBegin)
+		{
+			IsDashPatternBegin = false;
+			Num = 2;
+			IdleLerpRatio = 0.0f;
+			IsJump = static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1));
+			if (true == IsJump)
+			{
+				if (false == IsPrevDash && false == IsPrevJump)
+				{
+					IsPrevJump = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack");
+				}
+			}
+			else
+			{
+				if (false == IsPrevDash && false == IsPrevJump)
+				{
+					IsPrevDash = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_Dash_Attack");
+				}
+			}
+			IsPreparing = true;
+			return;
+		}
+		
+		if (StartPos[3].x <= MFCurXPos && IdleLerpRatio >= 1.0f)
 		{
 			CurMFDir = MFBossDIR::LEFT;
+			Renderer->GetTransform().PixLocalPositiveX();
 			Num = 3;
 			IdleLerpRatio = 0.0f;
 			IsJump = static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1));
+			if (true == IsJump)
+			{
+				if (true == IsPrevDash)
+				{
+					IsPrevDash = false;
+					IsPrevJump = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_DashtoJump_Trans");
+				}
+				if (true == IsPrevJump)
+				{
+					IsPrevDash = false;
+					IsPrevJump = true;
+					Renderer->ChangeFrameAnimation("SnowBeast_JumptoJump_Trans");
+				}
+			}
+			else
+			{
+				if (true == IsPrevDash)
+				{
+					IsPrevDash = true;
+					IsPrevJump = false;
+					Renderer->ChangeFrameAnimation("SnowBeast_DashtoAny_Trans");
+				}
+				if (true == IsPrevJump)
+				{
+					IsPrevDash = true;
+					IsPrevJump = false;
+					Renderer->ChangeFrameAnimation("SnowBeast_JumptoDash_Trans");
+				}
+			}
 			DashMove -= 1;
+			IsPreparing = true;
 			return;
 		}
 	}
@@ -151,7 +459,7 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 
 	if (true == IsJump)
 	{
-		float LerpY = GameEngineMath::LerpLimit(500, -500, IdleLerpRatio) * _DeltaTime;
+		float LerpY = GameEngineMath::LerpLimit(1300, -1300, IdleLerpRatio) * _DeltaTime;
 
 		YAdd += LerpY;
 		if (0 >= YAdd)
