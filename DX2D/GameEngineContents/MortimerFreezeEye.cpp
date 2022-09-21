@@ -23,13 +23,14 @@ MortimerFreezeEye::~MortimerFreezeEye()
 void MortimerFreezeEye::Start()
 {
 	Renderer = CreateComponent<GameEngineTextureRenderer>();
+	Renderer->GetTransform().SetLocalScale(float4{ 50,50,0 });
 }
 
 void MortimerFreezeEye::Update(float _DeltaTime)
 {
 	if (0 > EyeMoveCount)
 	{
-		//
+		Death();
 	}
 	
 	if (1.0f <= EyeLerpRatio)
@@ -41,7 +42,7 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 		{
 			if (2 == EyeMoveCount)
 			{
-				EndPosition = StartPosition + float4{ 300.0f,0,0 };
+				EndPosition = StartPosition + float4{ -300.0f,0,0 };
 				XValue = 0.0f;
 			}
 			if (1 == EyeMoveCount)
@@ -53,7 +54,7 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 			if (0 == EyeMoveCount)
 			{
 				StartPosition = EndPosition;
-				EndPosition = StartPosition + float4{ -300.0f,0,0 };
+				EndPosition = StartPosition + float4{ 300.0f,0,0 };
 				XValue = 0.0f;
 			}
 		}
@@ -61,7 +62,7 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 		{
 			if (2 == EyeMoveCount)
 			{
-				EndPosition = StartPosition + float4{ 300.0f,0,0 };
+				EndPosition = StartPosition + float4{ -300.0f,0,0 };
 				XValue = 0.0f;
 			}
 			if (1 == EyeMoveCount)
@@ -73,7 +74,7 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 			if (0 == EyeMoveCount)
 			{
 				StartPosition = EndPosition;
-				EndPosition = StartPosition + float4{ -300.0f,0,0 };
+				EndPosition = StartPosition + float4{ 300.0f,0,0 };
 				XValue = 0.0f;
 			}
 		}
@@ -81,19 +82,19 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 		{
 			if (2 == EyeMoveCount)
 			{
-				EndPosition = StartPosition + float4{ -300.0f,0,0 };
+				EndPosition = StartPosition + float4{ 300.0f,0,0 };
 				XValue = 0.0f;
 			}
 			if (1 == EyeMoveCount)
 			{
 				StartPosition = EndPosition;
 				EndPosition = StartPosition + float4{ 0,-100.0f,0 };
-				XValue = 200.0f;
+				XValue = -200.0f;
 			}
 			if (0 == EyeMoveCount)
 			{
 				StartPosition = EndPosition;
-				EndPosition = StartPosition + float4{ 300.0f,0,0 };
+				EndPosition = StartPosition + float4{ -300.0f,0,0 };
 				XValue = 0.0f;
 			}
 		}
@@ -101,32 +102,48 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 		{
 			if (2 == EyeMoveCount)
 			{
-				EndPosition = StartPosition + float4{ -300.0f,0,0 };
+				EndPosition = StartPosition + float4{ 300.0f,0,0 };
 				XValue = 0.0f;
 			}
 			if (1 == EyeMoveCount)
 			{
 				StartPosition = EndPosition;
 				EndPosition = StartPosition + float4{ 0,100.0f,0 };
-				XValue = 200.0f;
+				XValue = -200.0f;
 			}
 			if (0 == EyeMoveCount)
 			{
 				StartPosition = EndPosition;
-				EndPosition = StartPosition + float4{ 300.0f,0,0 };
+				EndPosition = StartPosition + float4{ -300.0f,0,0 };
 				XValue = 0.0f;
 			}
 		}
 	}
 	
+	EyeLerpRatio += _DeltaTime;
+	if (1.0f <= EyeLerpRatio)
+	{
+		EyeLerpRatio = 1.0f;
+	}
+
 	LerpPos = float4::LerpLimit(StartPosition, EndPosition, EyeLerpRatio);
 
 	float LerpX = GameEngineMath::LerpLimit(-XValue, XValue, EyeLerpRatio) * _DeltaTime;
 
 	XAdd += LerpX;
-	if (0 <= XAdd)
+	if (0 < XValue)
 	{
-		XAdd = 0.0f;
+		if (0 <= XAdd)
+		{
+			XAdd = 0.0f;
+		}
+	}
+	else
+	{
+		if (0 >= XAdd)
+		{
+			XAdd = 0.0f;
+		}
 	}
 	
 	float4 EyeMovePos = LerpPos + float4(XAdd, 0, 0);

@@ -134,20 +134,20 @@ void MortimerFreezeBoss::AttackEyeStart(const StateInfo& _Info)
 	}
 	if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
 	{
-		Ptr->SetEyePosition(EyePos::LeftTop);
+		Ptr->SetEyePosition(EyePos::LeftBot);
 		Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
 		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
 	}
 
 	if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
 	{
-		Ptr->SetEyePosition(EyePos::LeftTop);
+		Ptr->SetEyePosition(EyePos::RightTop);
 		Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
 		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
 	}
-	if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
+	if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
 	{
-		Ptr->SetEyePosition(EyePos::LeftTop);
+		Ptr->SetEyePosition(EyePos::RightBot);
 		Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
 		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
 	}
