@@ -27,8 +27,8 @@ public:
 	MortimerFreezeMinion& operator=(const MortimerFreezeMinion& _Other) = delete;
 	MortimerFreezeMinion& operator=(MortimerFreezeMinion&& _Other) noexcept = delete;
 
-	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
-	bool CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other);
 
 	inline void SetGender(GENDER _Type)
 	{

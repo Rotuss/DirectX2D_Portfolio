@@ -24,18 +24,18 @@ MsChalice::~MsChalice()
 {
 }
 
-bool MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	//_Other->GetActor()->Death();
 	StateManager.ChangeState("ChaliceHit");
-	return true;
+	return CollisionReturn::ContinueCheck;
 }
 
 // 발판 테스트
-bool MsChalice::CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other)
+CollisionReturn MsChalice::CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	AddDir.x = _Other->GetActor<MortimerFreezeSnowPlatform>()->GetMovePos().x;
-	return true;
+	return CollisionReturn::ContinueCheck;
 }
 
 void MsChalice::Start()

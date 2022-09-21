@@ -2,6 +2,18 @@
 #include <GameEngineBase/GameEngineTransform.h>
 #include "GameEngineTransformComponent.h"
 
+enum class CollisionMode
+{
+	Normal,
+	Ex,
+};
+
+enum class CollisionReturn
+{
+	ContinueCheck,
+	Break,
+};
+
 // Ό³Έν :
 class GameEngineCollisionFunctionInit;
 class GameEngineCollision : public GameEngineTransformComponent
@@ -28,12 +40,35 @@ public:
 	void ChangeOrder(int _Order);
 
 	template<typename EnumType>
-	bool IsCollision(CollisionType _ThisType, EnumType _GroupOrder, CollisionType _OtherCollision, std::function<bool(GameEngineCollision* _This, GameEngineCollision* _Other)> _Function = nullptr)
+	bool IsCollision(CollisionType _ThisType, EnumType _GroupOrder, CollisionType _OtherCollision, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Function = nullptr)
 	{
 		return IsCollision(_ThisType, static_cast<int>(_GroupOrder), _OtherCollision, _Function);
 	}
 
-	bool IsCollision(CollisionType _ThisType, int _GroupOrder, CollisionType _OtherType, std::function<bool(GameEngineCollision* _This, GameEngineCollision* _Other)> _Function = nullptr);
+	bool IsCollision(CollisionType _ThisType, int _GroupOrder, CollisionType _OtherType
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Update = nullptr
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Enter = nullptr
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Exit = nullptr);
+
+	bool IsCollisionEnterBase(CollisionType _ThisType, int _GroupOrder
+		, CollisionType _OtherType
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Enter = nullptr
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Update = nullptr
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Exit = nullptr
+	)
+	{
+		return IsCollision(_ThisType, _GroupOrder, _OtherType, _Update, _Enter, _Exit);
+	}
+
+	bool IsCollisionExitBase(CollisionType _ThisType, int _GroupOrder
+		, CollisionType _OtherType
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Enter = nullptr
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Update = nullptr
+		, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Exit = nullptr
+	)
+	{
+		return IsCollision(_ThisType, _GroupOrder, _OtherType, _Update, _Enter, _Exit);
+	}
 
 	void SetDebugSetting(CollisionType _DebugType, float4 _Color)
 	{
@@ -44,6 +79,21 @@ public:
 	void SetDebugCamera(CAMERAORDER _Order)
 	{
 		DebugCameraOrder = _Order;
+	}
+
+	void OffEvent() override
+	{
+		ResetExData();
+	}
+
+	void SetCollisionMode(CollisionMode _Mode)
+	{
+		E_CollisionMode = _Mode;
+	}
+
+	void ResetExData()
+	{
+		CollisionCheck.clear();
 	}
 
 	void SetUIDebugCamera();
@@ -57,9 +107,11 @@ private:
 
 	void Start() override;
 
-	CAMERAORDER DebugCameraOrder;
-
+	CAMERAORDER		DebugCameraOrder;
 	CollisionType	DebugType;
+	CollisionMode	E_CollisionMode;
 	float4			Color;
+
+	std::set<GameEngineCollision*> CollisionCheck;
 };
 

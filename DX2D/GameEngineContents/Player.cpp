@@ -19,10 +19,10 @@ Player::~Player()
 {
 }
 
-bool Player::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+CollisionReturn Player::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	_Other->GetActor()->Death();
-	return true;
+	return CollisionReturn::ContinueCheck;
 }
 
 void Player::Start()

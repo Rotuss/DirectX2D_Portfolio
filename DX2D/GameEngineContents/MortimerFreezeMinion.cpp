@@ -20,17 +20,17 @@ MortimerFreezeMinion::~MortimerFreezeMinion()
 {
 }
 
-bool MortimerFreezeMinion::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+CollisionReturn MortimerFreezeMinion::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	if (true == IsRanding)
 	{
 		_This->GetActor()->Death();
 		_Other->GetActor()->Death();
 	}
-	return true;
+	return CollisionReturn::ContinueCheck;
 }
 
-bool MortimerFreezeMinion::CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other)
+CollisionReturn MortimerFreezeMinion::CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	// 애니메이션 전환
 	_This->Death();
@@ -45,7 +45,7 @@ bool MortimerFreezeMinion::CollisionCheckWhale(GameEngineCollision* _This, GameE
 		Renderer->ChangeFrameAnimation("3DDeathGirl");
 	}
 
-	return true;
+	return CollisionReturn::ContinueCheck;
 }
 
 void MortimerFreezeMinion::Start()

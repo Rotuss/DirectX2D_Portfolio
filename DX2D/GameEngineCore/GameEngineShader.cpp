@@ -19,11 +19,28 @@ void GameEngineShader::AutoCompile(const std::string& _Path)
 	
 	if (std::string::npos != VSEntryIndex)
 	{
-		size_t FirstIndex = AllHlslCode.find_last_of(" ", VSEntryIndex);
+		GameEngineVertexShader* Vertex = nullptr;
 		
-		std::string EntryName = AllHlslCode.substr(FirstIndex + 1, VSEntryIndex - FirstIndex - 1);
-		EntryName += "_VS";
-		GameEngineVertexShader::Load(_Path, EntryName);
+		{
+			size_t FirstIndex = AllHlslCode.find_last_of(" ", VSEntryIndex);
+
+			std::string EntryName = AllHlslCode.substr(FirstIndex + 1, VSEntryIndex - FirstIndex - 1);
+			EntryName += "_VS";
+			Vertex = GameEngineVertexShader::Load(_Path, EntryName);
+		}
+
+		if (nullptr != Vertex)
+		{
+			size_t VSInstEntryIndex = AllHlslCode.find("_VSINST(");
+			if (std::string::npos != VSInstEntryIndex)
+			{
+				size_t FirstIndex = AllHlslCode.find_last_of(" ", VSInstEntryIndex);
+				
+				std::string EntryName = AllHlslCode.substr(FirstIndex + 1, VSInstEntryIndex - FirstIndex - 1);
+				EntryName += "_VSINST";
+				Vertex->InstancingShaderCompile(_Path, EntryName);
+			}
+		}
 	}
 
 	size_t PSEntryIndex = AllHlslCode.find("_PS(");

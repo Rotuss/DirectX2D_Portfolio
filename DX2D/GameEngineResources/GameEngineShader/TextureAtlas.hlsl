@@ -5,6 +5,8 @@ struct Input
 {
     float4 Pos : POSITION;
     float4 Tex : TEXCOORD;
+    
+    uint Index : ROWINDEX;
 };
 
 struct Output
@@ -42,6 +44,21 @@ Output TextureAtlas_VS(Input _Input)
     return NewOutPut;
 }
 
+Output TextureAtlas_VSINST(Input _Input)
+{
+    Output NewOutPut = (Output) 0;
+    _Input.Pos += PivotPos;
+    NewOutPut.Pos = _Input.Pos;
+    NewOutPut.Pos.w = 1.0f;
+    NewOutPut.Pos = mul(_Input.Pos, WorldViewProjection);
+    NewOutPut.PosLocal = _Input.Pos;
+       
+    NewOutPut.Tex.x = (_Input.Tex.x * TextureFrameSize.x) + TextureFramePos.x;
+    NewOutPut.Tex.y = (_Input.Tex.y * TextureFrameSize.y) + TextureFramePos.y;
+    
+    return NewOutPut;
+}
+
 cbuffer PixelData : register(b0)
 {
     float4 MulColor;
@@ -71,6 +88,11 @@ float4 TextureAtlas_PS(Output _Input) : SV_Target0
     //}
     
     if (_Input.Tex.x < Slice.x)
+    {
+        clip(-1);
+    }
+    
+    if (_Input.Tex.y < Slice.y)
     {
         clip(-1);
     }

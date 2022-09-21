@@ -35,7 +35,7 @@ public:
 	void SetPixelShader(const std::string& _Name);
 	void SetOutputMergerDepthStencil(const std::string& _Name);
 	void SetOutputMergerBlend(const std::string& _Name);
-	void Rendering();
+	void Rendering(bool _IsInstancing = false);
 	void Copy(GameEngineRenderingPipeLine* _Original);
 
 	inline GameEngineVertexShader* GetVertexShader()
@@ -69,5 +69,7 @@ private:
 	void OutputMergerBlendSetting();
 	void OutputMergerDepthStencilSetting();
 	void Draw();
+	void InstancingDraw();
+	void InstancingDataCollect();
 };
 

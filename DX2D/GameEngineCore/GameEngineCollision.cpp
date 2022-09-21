@@ -34,6 +34,7 @@ GameEngineCollisionFunctionInit Inst;
 
 GameEngineCollision::GameEngineCollision() 
 	: DebugType(CollisionType::CT_AABB)
+	, E_CollisionMode(CollisionMode::Normal)
 	, Color(1.0f, 0.0f, 0.0f, 0.5f)
 {
 }
@@ -47,7 +48,10 @@ void GameEngineCollision::ChangeOrder(int _Order)
 	GetActor()->GetLevel()->PushCollision(this, _Order);
 }
 
-bool GameEngineCollision::IsCollision(CollisionType _ThisType, int _GroupOrder, CollisionType _OtherType, std::function<bool(GameEngineCollision* _This, GameEngineCollision* _Other)> _Function)
+bool GameEngineCollision::IsCollision(CollisionType _ThisType, int _GroupOrder, CollisionType _OtherType
+	, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Update
+	, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Enter
+	, std::function<CollisionReturn(GameEngineCollision* _This, GameEngineCollision* _Other)> _Exit)
 {
 	if (false == IsUpdate())
 	{
@@ -74,16 +78,53 @@ bool GameEngineCollision::IsCollision(CollisionType _ThisType, int _GroupOrder, 
 
 		if (true == GameEngineCollision::CollisionFunction[ThisType][OtherType](GetTransform(), Collision->GetTransform()))
 		{
-			if (nullptr != _Function)
+			if (E_CollisionMode == CollisionMode::Ex)
 			{
-				if (true == _Function(this, Collision))
+				if (CollisionCheck.end() == CollisionCheck.find(Collision))
+				{
+					CollisionCheck.insert(Collision);
+
+					if (nullptr == _Enter && CollisionReturn::Break == _Enter(this, Collision))
+					{
+						return true;
+					}
+				}
+				else
+				{
+					if (nullptr != _Update && CollisionReturn::Break == _Update(this, Collision))
+					{
+						return true;
+					}
+				}
+			}
+			else  if (E_CollisionMode == CollisionMode::Normal)
+			{
+				if (nullptr != _Update)
+				{
+					if (CollisionReturn::Break == _Update(this, Collision))
+					{
+						return true;
+					}
+				}
+				else
 				{
 					return true;
 				}
 			}
-			else
+		}
+		else
+		{
+			if (E_CollisionMode == CollisionMode::Ex)
 			{
-				return true;
+				if (CollisionCheck.end() != CollisionCheck.find(Collision))
+				{
+					if (nullptr != _Exit && CollisionReturn::Break == _Exit(this, Collision))
+					{
+						return false;
+					}
+
+					CollisionCheck.erase(Collision);
+				}
 			}
 		}
 	}

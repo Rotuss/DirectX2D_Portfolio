@@ -20,8 +20,8 @@ public:
 
 	static MsChalice* Chalice;
 
-	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
-	bool CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other);
 
 	void SetColMap(GameEngineTextureRenderer* _Collision)
 	{

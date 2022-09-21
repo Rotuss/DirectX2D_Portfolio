@@ -15,8 +15,14 @@ class GameEngineVertexShader
 public:
 	void Setting();
 
+	bool IsInstancing()
+	{
+		return InstancingShaderPtr != nullptr;
+	}
+
 protected:
 	void ShaderCompile(std::string _Path, std::string _EntryPoint, UINT _VersionHigh, UINT _VersionLow);
+	void InstancingShaderCompile(std::string _Path, std::string _EntryPoint, UINT _VersionHigh = 5, UINT _VersionLow = 0);
 
 private:
 	// constrcuter destructer
@@ -33,5 +39,7 @@ private:
 	static GameEngineVertexShader* Load(std::string _Path, std::string _Name, std::string _EntryPoint, UINT _VersionHigh, UINT _VersionLow);
 
 	ID3D11VertexShader* ShaderPtr;
+	ID3D11VertexShader* InstancingShaderPtr;
+	ID3DBlob*			InstancingBinaryPtr;
 };
 

@@ -26,9 +26,13 @@
 
 void EngineInputLayOut()
 {
-	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
-	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
-	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, 0);
+	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, 0);
+	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, 0);
+	GameEngineVertex::LayOut.OffsetReset();
+
+	// 인스턴싱 데이터용
+	GameEngineVertex::LayOut.AddInputLayOut("ROWINDEX", DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 1, D3D11_INPUT_PER_INSTANCE_DATA, 1);
 }
 
 void EngineSubSetting()

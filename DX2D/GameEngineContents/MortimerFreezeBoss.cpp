@@ -81,7 +81,7 @@ MortimerFreezeBoss::~MortimerFreezeBoss()
 {
 }
 
-bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+CollisionReturn MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	_Other->GetActor()->Death();
 	
@@ -89,7 +89,7 @@ bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCo
 		|| "Quadshot" == StateManager.GetCurStateStateName()
 		|| "Whale" == StateManager.GetCurStateStateName())
 	{
-		return false;
+		return CollisionReturn::Break;
 	}
 
 	HP -= 1;
@@ -99,7 +99,7 @@ bool MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCo
 		HP = 0;
 	}
 
-	return true;
+	return CollisionReturn::ContinueCheck;
 }
 
 void MortimerFreezeBoss::Start()

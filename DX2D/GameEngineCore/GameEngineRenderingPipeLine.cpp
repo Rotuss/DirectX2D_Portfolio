@@ -138,8 +138,14 @@ void GameEngineRenderingPipeLine::SetOutputMergerBlend(const std::string& _Name)
 	}
 }
 
-void GameEngineRenderingPipeLine::Rendering()
+void GameEngineRenderingPipeLine::Rendering(bool _IsInstancing)
 {
+	if (true == _IsInstancing)
+	{
+		InstancingDataCollect();
+		return;
+	}
+	
 	InputAssembler1VertexBufferSetting();
 	VertexShaderSetting();
 	InputAssembler2IndexBufferSetting();
@@ -203,4 +209,13 @@ void GameEngineRenderingPipeLine::OutputMergerDepthStencilSetting()
 void GameEngineRenderingPipeLine::Draw()
 {
 	GameEngineDevice::GetContext()->DrawIndexed(IndexBuffer->GetIndexCount(), 0, 0);
+}
+
+void GameEngineRenderingPipeLine::InstancingDraw()
+{
+	GameEngineDevice::GetContext()->DrawIndexedInstanced(IndexBuffer->GetIndexCount(), 100, 0, 0, 0);
+}
+
+void GameEngineRenderingPipeLine::InstancingDataCollect()
+{
 }

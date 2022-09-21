@@ -26,7 +26,7 @@ public:
 
 	static MortimerFreezeBoss* MFBoss;
 
-	bool CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
 
 	inline void MinionPixStateSwitch(bool _Value)
 	{

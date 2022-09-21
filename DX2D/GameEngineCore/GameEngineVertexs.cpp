@@ -55,7 +55,9 @@ unsigned int FormatToByteScale(DXGI_FORMAT _Format)
 	case DXGI_FORMAT_D32_FLOAT:
 	case DXGI_FORMAT_R32_FLOAT:
 	case DXGI_FORMAT_R32_UINT:
+		return 4;
 	case DXGI_FORMAT_R32_SINT:
+		return 4;
 	case DXGI_FORMAT_R24G8_TYPELESS:
 	case DXGI_FORMAT_D24_UNORM_S8_UINT:
 	case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
@@ -144,7 +146,7 @@ unsigned int FormatToByteScale(DXGI_FORMAT _Format)
 	return -1;
 }
 
-void GameEngineLayOutDesc::AddInputLayOut(const char* _SemanticName, DXGI_FORMAT _Format, unsigned int _Index, D3D11_INPUT_CLASSIFICATION _inputClass, unsigned int _InputSlot, unsigned int _InstanceDataStepRate)
+void GameEngineLayOutDesc::AddInputLayOut(const char* _SemanticName, DXGI_FORMAT _Format, unsigned int _InputSlot, D3D11_INPUT_CLASSIFICATION _inputClass, unsigned int _InstanceDataStepRate, unsigned int _Index)
 {
 	D3D11_INPUT_ELEMENT_DESC LayOutDesc = { 0 };
 

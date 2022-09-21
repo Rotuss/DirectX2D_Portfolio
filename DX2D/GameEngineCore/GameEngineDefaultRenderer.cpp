@@ -1,9 +1,10 @@
 #include "PreCompile.h"
 #include "GameEngineDefaultRenderer.h"
+#include "GameEngineVertexShader.h"
 #include "GameEngineRenderingPipeLine.h"
 
 GameEngineDefaultRenderer::GameEngineDefaultRenderer() 
-	:PipeLine(nullptr)
+	: PipeLine(nullptr)
 {
 }
 
@@ -30,9 +31,12 @@ void GameEngineDefaultRenderer::Render(float _DeltaTime)
 		MsgBoxAssert("랜더링 파이프라인이 세팅되지 않으면 랜더링을 할수 없습니다.");
 	}
 
-	ShaderResources.AllResourcesSetting();
-	PipeLine->Rendering();
-	ShaderResources.AllResourcesReset();
+	if (false == IsInstancing)
+	{
+		ShaderResources.AllResourcesSetting();
+		PipeLine->Rendering();
+		ShaderResources.AllResourcesReset();
+	}
 }
 
 void GameEngineDefaultRenderer::SetPipeLine(const std::string& _Name)
@@ -55,6 +59,16 @@ void GameEngineDefaultRenderer::SetPipeLine(const std::string& _Name)
 	if (true == ShaderResources.IsConstantBuffer("RENDEROPTION"))
 	{
 		ShaderResources.SetConstantBufferLink("RENDEROPTION", &RenderOption, sizeof(RenderOption));
+	}
+}
+
+void GameEngineDefaultRenderer::InstancingOn()
+{
+	GameEngineRenderer::InstancingOn();
+
+	if (false == PipeLine->GetVertexShader()->IsInstancing())
+	{
+		MsgBoxAssert("인스턴싱이 불가능한 렌더러입니다.")
 	}
 }
 
