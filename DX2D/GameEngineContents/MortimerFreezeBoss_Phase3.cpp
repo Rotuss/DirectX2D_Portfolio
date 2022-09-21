@@ -193,74 +193,129 @@ void MortimerFreezeBoss::AttackCreamUpdate(float _DeltaTime, const StateInfo& _I
 void MortimerFreezeBoss::AttackSplitStart(const StateInfo& _Info)
 {
 	--SwapCount;
-	
-	MortimerFreezeBucket* Ptr1 = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
-	MortimerFreezeBucket* Ptr2 = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
-	MortimerFreezeBucket* Ptr3 = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
-
-	if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
-	{
-		Ptr1->BucketSetting(BucketDirType::Left, BucketMoveType::TOP);
-		Ptr1->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-
-		Ptr2->BucketSetting(BucketDirType::Left, BucketMoveType::MID);
-		Ptr2->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-
-		Ptr3->BucketSetting(BucketDirType::Left, BucketMoveType::BOT);
-		Ptr3->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-	}
-	if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
-	{
-		Ptr1->BucketSetting(BucketDirType::Left, BucketMoveType::TOP);
-		Ptr1->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-
-		Ptr2->BucketSetting(BucketDirType::Left, BucketMoveType::MID);
-		Ptr2->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-
-		Ptr3->BucketSetting(BucketDirType::Left, BucketMoveType::BOT);
-		Ptr3->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-	}
-
-	if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
-	{
-		Ptr1->BucketSetting(BucketDirType::Right, BucketMoveType::TOP);
-		Ptr1->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-
-		Ptr2->BucketSetting(BucketDirType::Right, BucketMoveType::MID);
-		Ptr2->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-
-		Ptr3->BucketSetting(BucketDirType::Right, BucketMoveType::BOT);
-		Ptr3->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-	}
-	if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
-	{
-		Ptr1->BucketSetting(BucketDirType::Right, BucketMoveType::TOP);
-		Ptr1->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-
-		Ptr2->BucketSetting(BucketDirType::Right, BucketMoveType::MID);
-		Ptr2->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-
-		Ptr3->BucketSetting(BucketDirType::Right, BucketMoveType::BOT);
-		Ptr3->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-	}
+	BucketAppearTime = 0.0f;
+	BucketCount = 3;
 
 	//StateManager3.ChangeState("MF3Idle");
 }
 
 void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	BucketAppearTime += _DeltaTime;
+
+	/*if (0 >= BucketCount)
+	{
+		StateManager3.ChangeState("MF3Idle");
+	}*/
+
+	if (2.0f <= BucketAppearTime)
+	{
+		if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
+		{
+			--BucketCount;
+
+			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
+			if (2 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::TOP);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+			}
+			if (1 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::MID);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+			}
+			if (0 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::BOT);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+			}
+
+			BucketAppearTime = 0.0f;
+		}
+		if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
+		{
+			--BucketCount;
+
+			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
+			if (2 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::BOT);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+			}
+			if (1 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::MID);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+			}
+			if (0 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::TOP);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+			}
+
+			BucketAppearTime = 0.0f;
+		}
+
+		if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
+		{
+			--BucketCount;
+
+			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
+			if (2 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::TOP);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+			}
+			if (1 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::MID);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+			}
+			if (0 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::BOT);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+			}
+
+			BucketAppearTime = 0.0f;
+		}
+		if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
+		{
+			--BucketCount;
+
+			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
+			if (2 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::BOT);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+			}
+			if (1 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::MID);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+			}
+			if (0 == BucketCount)
+			{
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::TOP);
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+			}
+
+			BucketAppearTime = 0.0f;
+		}
+	}
 }
 
 void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)

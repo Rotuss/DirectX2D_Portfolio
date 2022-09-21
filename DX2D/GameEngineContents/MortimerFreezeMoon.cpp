@@ -30,7 +30,7 @@ void MortimerFreezeMoon::MoonSetting(MoonDirType _DirType, MoonMoveType _MoveTyp
 		break;
 	case MoonDirType::Right:
 		// 수치 수정 필요
-		EndPosition.x = 1280.0f;
+		EndPosition.x = 1580.0f;
 		break;
 	default:
 		break;
@@ -40,15 +40,15 @@ void MortimerFreezeMoon::MoonSetting(MoonDirType _DirType, MoonMoveType _MoveTyp
 	{
 	case MoonMoveType::TOP:
 		// 랜덤 수정 필요
-		EndPosition.y = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
+		EndPosition.y = StartPosition.y + GameEngineRandom::MainRandom.RandomFloat(80.0f, 100.0f);
 		break;
 	case MoonMoveType::MID:
 		// 랜덤 수정 필요
-		EndPosition.y = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
+		EndPosition.y = StartPosition.y + GameEngineRandom::MainRandom.RandomFloat(0.0f, 5.0f);
 		break;
 	case MoonMoveType::BOT:
 		// 랜덤 수정 필요
-		EndPosition.y = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
+		EndPosition.y = StartPosition.y + -GameEngineRandom::MainRandom.RandomFloat(80.0f, 100.0f);
 		break;
 	default:
 		break;
@@ -57,10 +57,18 @@ void MortimerFreezeMoon::MoonSetting(MoonDirType _DirType, MoonMoveType _MoveTyp
 
 void MortimerFreezeMoon::Start()
 {
+	Renderer = CreateComponent<GameEngineTextureRenderer>();
+	Renderer->GetTransform().SetLocalScale(float4{ 30,30,0 });
 }
 
 void MortimerFreezeMoon::Update(float _DeltaTime)
 {
+	MoonLerpRatio += _DeltaTime;
+	if (1.0f <= MoonLerpRatio)
+	{
+		MoonLerpRatio = 1.0f;
+	}
+	
 	LerpPos = float4::Lerp(StartPosition, EndPosition, MoonLerpRatio);
 
 	GetTransform().SetLocalPosition(LerpPos);

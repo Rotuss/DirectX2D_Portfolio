@@ -188,7 +188,9 @@ private:
 	float	EyeTime;
 	float	IceCreamTime;
 	float	SplitTime;
+	float	BucketAppearTime;
 	int		SwapCount;
+	int		BucketCount;
 	bool	IsReverse;
 };
 
