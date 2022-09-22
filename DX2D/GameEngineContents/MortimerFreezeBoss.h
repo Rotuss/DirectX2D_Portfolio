@@ -121,7 +121,7 @@ protected:
 	void AttackEyeUpdate(float _DeltaTime, const StateInfo& _Info);
 
 	void AttackIceCreamStart(const StateInfo& _Info);
-	void AttackCreamUpdate(float _DeltaTime, const StateInfo& _Info);
+	void AttackIceCreamUpdate(float _DeltaTime, const StateInfo& _Info);
 
 	void AttackSplitStart(const StateInfo& _Info);
 	void AttackSplitUpdate(float _DeltaTime, const StateInfo& _Info);
@@ -188,8 +188,11 @@ private:
 	float	EyeTime;
 	float	IceCreamTime;
 	float	SplitTime;
+	float	IceCreamAppearTime;
 	float	BucketAppearTime;
 	int		SwapCount;
+	int		IceCreamRandom;
+	int		IceCreamCount;
 	int		BucketCount;
 	bool	IsReverse;
 };
