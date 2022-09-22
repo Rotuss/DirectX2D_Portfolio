@@ -118,6 +118,11 @@ void MortimerFreezeIceCube::Update(float _DeltaTime)
 	LerpPos = float4::Lerp(StartPosition, EndPosition, CubeLerpRatio);
 
 	float LerpY = GameEngineMath::Lerp(1800, -1800, CubeLerpRatio) * _DeltaTime;
+	if (SizeType::Small == CubeSize)
+	{
+		LerpY = GameEngineMath::Lerp(1200, -1200, CubeLerpRatio) * _DeltaTime;
+	}
+
 
 	YAdd += LerpY;
 	if (0 >= YAdd)

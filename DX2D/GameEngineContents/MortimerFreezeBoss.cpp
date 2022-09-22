@@ -272,13 +272,13 @@ void MortimerFreezeBoss::Start()
 	{
 		StartPos.push_back({ 300,-380,-1 });
 		StartPos.push_back({ 1350,-380,-1 });
-		StartPos.push_back({ 400,-380,-1 });
-		StartPos.push_back({ 1250,-380,-1 });
+		StartPos.push_back({ 400,-950,-1 });
+		StartPos.push_back({ 1250,-950,-1 });
 
 		EndPos.push_back({ 1350,-380,-1 });
 		EndPos.push_back({ 300,-380,-1 });
-		EndPos.push_back({ 1250,-380,-1 });
-		EndPos.push_back({ 400,-380,-1 });
+		EndPos.push_back({ 1250,-950,-1 });
+		EndPos.push_back({ 400,-950,-1 });
 	}
 
 	PhaseManager.CreateStateMember("MFPhase1", std::bind(&MortimerFreezeBoss::Phase1Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase1Start, this, std::placeholders::_1));
@@ -933,6 +933,13 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 			}
 		});
 
+	SubRenderer00->AnimationBindEnd("SnowBeastIntro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->Off();
+
+			PhaseManager.ChangeState("MFPhase2");
+		});
+
 	SubRenderer01->AnimationBindEnd("SnowBeastIntro_Backer", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			SubRenderer01->Off();
@@ -949,7 +956,7 @@ void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Inf
 		SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer");
 	}
 
-	if ((true == SubRenderer00->IsUpdate() || true == SubRenderer01->IsUpdate()) && false == IsSnowBeastIntroMoveDown)
+	if (true == SubRenderer00->IsUpdate() || true == SubRenderer01->IsUpdate())
 	{
 		if (Renderer->GetTransform().GetLocalPosition().y + 70.0f > SubRenderer00->GetTransform().GetLocalPosition().y)
 		{
@@ -971,16 +978,17 @@ void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Inf
 
 	if (true == IsSnowBeastIntroMoveDown)
 	{
-		if (-250.0f >= SubRenderer00->GetTransform().GetLocalPosition().y)
+		if (-750.0f >= GetTransform().GetLocalPosition().y)
 		{
-			SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-250.0f ,0 });
-			SubRenderer00->Off();
-			
-			Renderer->ChangeFrameAnimation("MF2Idle");
-			Renderer->SetPivot(PIVOTMODE::BOT);
-			Renderer->GetTransform().SetLocalPosition(float4{ 0,-550.0f,0 });
-			Renderer->On();
-			PhaseManager.ChangeState("MFPhase2");
+			GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+
+			Collision->GetTransform().SetLocalPosition(float4{ 0.0f,150.0f,0.0f });
+
+			return;
+		}
+		else
+		{
+			GetTransform().SetLocalMove(GetTransform().GetDownVector() * _DeltaTime * 500.0f);
 		}
 	}
 

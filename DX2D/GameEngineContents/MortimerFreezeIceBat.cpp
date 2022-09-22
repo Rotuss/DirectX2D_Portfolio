@@ -117,13 +117,13 @@ void MortimerFreezeIceBat::Update(float _DeltaTime)
 		float YRandom = -GameEngineRandom::MainRandom.RandomFloat(100.0f, 200.0f);
 		if (BatDIR::LEFT == CurBatDir)
 		{
-			SetMovePos(float4{ 1500, YRandom, 0 }, float4{ 1500, YRandom, 0 } + float4{ -BatRandomMove, 0 });
+			SetMovePos(float4{ 1500, YRandom, -1 }, float4{ 1500, YRandom, -1 } + float4{ -BatRandomMove, 0 });
 			GetTransform().SetLocalPosition(float4{ 1500, YRandom, 0 });
 			Renderer->GetTransform().PixLocalPositiveX();
 		}
 		if (BatDIR::RIGHT == CurBatDir)
 		{
-			SetMovePos(float4{ 0, YRandom, 0 }, float4{ 0, YRandom, 0 } + float4{ BatRandomMove, 0 });
+			SetMovePos(float4{ 0, YRandom, -1 }, float4{ 0, YRandom, -1 } + float4{ BatRandomMove, 0 });
 			GetTransform().SetLocalPosition(float4{ 0, YRandom,0 });
 			Renderer->GetTransform().PixLocalNegativeX();
 		}

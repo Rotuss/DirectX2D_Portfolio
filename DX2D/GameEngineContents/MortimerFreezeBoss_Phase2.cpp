@@ -14,6 +14,9 @@ void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
 		GameEngineInput::GetInst()->CreateKey("Num3_Smash", VK_NUMPAD3);
 	}
 
+	Renderer->SetPivot(PIVOTMODE::BOT);
+	GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{0,-200,0});
+
 	StateManager2.CreateStateMember("MF2Idle", std::bind(&MortimerFreezeBoss::P2IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P2IdleStart, this, std::placeholders::_1));
 
 	StateManager2.CreateStateMember("Dash", std::bind(&MortimerFreezeBoss::AttackDashUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackDashStart, this, std::placeholders::_1));
@@ -32,6 +35,10 @@ void MortimerFreezeBoss::Phase2Update(float _DeltaTime, const StateInfo& _Info)
 void MortimerFreezeBoss::P2IdleStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("MF2Idle");
+	if (false == Renderer->IsUpdate())
+	{
+		Renderer->On();
+	}
 }
 
 void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
@@ -556,14 +563,14 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 			MortimerFreezeIceBat* BPtr = GetLevel()->CreateActor<MortimerFreezeIceBat>(OBJECTORDER::Boss);
 			if (MFBossDIR::LEFT == CurMFDir)
 			{
-				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,-30,0 }, GetTransform().GetLocalPosition() + float4{ -BatRandomMove, 300 });
+				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,450,0 }, GetTransform().GetLocalPosition() + float4{ -BatRandomMove, 1000 });
 			}
 			if (MFBossDIR::RIGHT== CurMFDir)
 			{
-				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,-30,0 }, GetTransform().GetLocalPosition() + float4{ BatRandomMove, 300 });
+				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,450,0 }, GetTransform().GetLocalPosition() + float4{ BatRandomMove, 1000 });
 			}
 			BPtr->SetColorType(static_cast<ColorType>(GameEngineRandom::MainRandom.RandomInt(0, 2)));
-			BPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-30,0 });
+			BPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,450,0 });
 			BPtr->SetReAppearTime(GameEngineRandom::MainRandom.RandomFloat(3.0f, 5.0f) * (4 - IceBatCount));
 			
 			if (0 == IceBatCount)
@@ -582,9 +589,9 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 			//--IceCubeCount;
 			// 큐브 생성
 			MortimerFreezeIceCube* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCube>(OBJECTORDER::Boss);
-			Ptr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,-200,0 }, MsChalice::Chalice->GetTransform().GetLocalPosition());
+			Ptr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,200,0 }, MsChalice::Chalice->GetTransform().GetLocalPosition());
 			Ptr->SetSizeType(static_cast<SizeType>(GameEngineRandom::MainRandom.RandomInt(0, 1)));
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-200,0 });
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,200,0 });
 			Ptr->SetColMap(MsChalice::Chalice->GetColMap());
 
 			if (0 == IceCubeCount)
@@ -633,12 +640,12 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 265.0f * (4 - BladeCount),480,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 265.0f * (4 - BladeCount),-50,0});
 		}
 		if (MFBossDIR::RIGHT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 265.0f * (4 - BladeCount),-480,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 265.0f * (4 - BladeCount),50,0});
 		}
 	}
 }
