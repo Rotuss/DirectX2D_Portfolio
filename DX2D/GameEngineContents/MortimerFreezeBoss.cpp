@@ -117,6 +117,7 @@ void MortimerFreezeBoss::Start()
 
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
+		Renderer->CreateFrameAnimationFolder("MFIntro_Top", FrameAnimation_DESC("MFIntro_Top", 0, 43, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("MFIdle", FrameAnimation_DESC("MFIdle", 0, 23, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("MFIdleTrans", FrameAnimation_DESC("MFIdle", 24, 32, 0.1f, false));
 		
@@ -172,10 +173,11 @@ void MortimerFreezeBoss::Start()
 
 		// Phase3
 
-		Renderer->ChangeFrameAnimation("MFIdle");
+		Renderer->ChangeFrameAnimation("MFIntro_Top");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
+		//Renderer->GetTransform().SetLocalPosition({ 1180.0f, -390.0f, -1.0f });
 		GetTransform().SetLocalPosition({ 1350, -380, -1 });
 		//GetTransform().SetLocalPosition({ 950, -360, -1 });
 	}
@@ -213,15 +215,17 @@ void MortimerFreezeBoss::Start()
 
 	{
 		SubRenderer00 = CreateComponent<GameEngineTextureRenderer>();
+		SubRenderer00->CreateFrameAnimationFolder("MFIntro", FrameAnimation_DESC("MFIntro", 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Start", FrameAnimation_DESC("SnowBeast_Intro", 0, 2, 0.1f, true));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 56, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", 0.1f, false));
 
-		SubRenderer00->ChangeFrameAnimation("SnowBeastIntro_Start");
+		SubRenderer00->ChangeFrameAnimation("MFIntro");
 		SubRenderer00->SetScaleModeImage();
 		SubRenderer00->ScaleToTexture();
 		SubRenderer00->SetPivot(PIVOTMODE::CENTER);
 		SubRenderer00->Off();
+		//SubRenderer00->GetTransform().SetLocalPosition({ 1160.0f, -390.0f, -0.3f });
 	}
 
 	{
@@ -367,6 +371,8 @@ void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
 		GameEngineInput::GetInst()->CreateKey("Num3_Whale", VK_NUMPAD3);
 	}
 	
+	StateManager.CreateStateMember("Intro", std::bind(&MortimerFreezeBoss::P1IntroUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P1IntroStart, this, std::placeholders::_1));
+
 	StateManager.CreateStateMember("MF1Idle", std::bind(&MortimerFreezeBoss::P1IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P1IdleStart, this, std::placeholders::_1));
 
 	StateManager.CreateStateMember("Peashot", std::bind(&MortimerFreezeBoss::AttackPeashotUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackPeashotStart, this, std::placeholders::_1));
@@ -380,6 +386,21 @@ void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
 void MortimerFreezeBoss::Phase1Update(float _DeltaTime, const StateInfo& _Info)
 {
 	StateManager.Update(_DeltaTime);
+}
+
+void MortimerFreezeBoss::P1IntroStart(const StateInfo& _Info)
+{
+	Renderer->ChangeFrameAnimation("MFIntro_Top");
+	SubRenderer00->ChangeFrameAnimation("MFIntro");
+
+	SubRenderer00->AnimationBindEnd("MFIntro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->Off();
+		});
+}
+
+void MortimerFreezeBoss::P1IntroUpdate(float _DeltaTime, const StateInfo& _Info)
+{
 }
 
 void MortimerFreezeBoss::P1IdleStart(const StateInfo& _Info)
@@ -865,20 +886,24 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 		{
 			if (MFBossDIR::LEFT == CurMFDir)
 			{
+				SubRenderer00->ChangeFrameAnimation("SnowBeastIntro_Start");
 				SubRenderer00->GetTransform().PixLocalPositiveX();
 				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0, 350, -1.5 });
 				SubRenderer00->On();
 
+				SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer_Start");
 				SubRenderer01->GetTransform().PixLocalPositiveX();
 				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0, 350, 0.5 });
 				SubRenderer01->On();
 			}
 			if (MFBossDIR::RIGHT == CurMFDir)
 			{
+				SubRenderer00->ChangeFrameAnimation("SnowBeastIntro_Start");
 				SubRenderer00->GetTransform().PixLocalNegativeX();
 				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0, 350, -1.5 });
 				SubRenderer00->On();
 
+				SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer_Start");
 				SubRenderer01->GetTransform().PixLocalNegativeX();
 				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0, 350, 0.5 });
 				SubRenderer01->On();

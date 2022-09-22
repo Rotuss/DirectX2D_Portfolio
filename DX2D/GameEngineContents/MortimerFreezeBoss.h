@@ -73,6 +73,9 @@ protected:
 	void Phase1Start(const StateInfo& _Info);
 	void Phase1Update(float _DeltaTime, const StateInfo& _Info);
 
+	void P1IntroStart(const StateInfo& _Info);
+	void P1IntroUpdate(float _DeltaTime, const StateInfo& _Info);
+
 	void P1IdleStart(const StateInfo& _Info);
 	void P1IdleUpdate(float _DeltaTime, const StateInfo& _Info);
 

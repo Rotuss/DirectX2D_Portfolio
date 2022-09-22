@@ -116,6 +116,14 @@ void MortimerFreezeLevel::Start()
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
 	}
 
+	{
+		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
+		Renderer->SetTexture("min-main_front_layer.png");
+		Renderer->ScaleToTexture();
+		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
+		Renderer->GetTransform().SetLocalPosition(float4{ 0.0f, 0.0f, -0.5f });
+	}
+
 	// Members 피벗 조정 필요
 	{
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
