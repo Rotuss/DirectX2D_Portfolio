@@ -179,6 +179,8 @@ private:
 	int		IceCubeCount;
 	int		IceBatCount;
 	int		BladeCount;
+	int		Phase3TransitionMotionCount;
+	int		LegCount;
 	bool	IsDashPatternBegin;
 	bool	IsPreparing;
 	bool	IsPrevDash;
@@ -186,6 +188,7 @@ private:
 	bool	IsJump;
 	bool	IsShoot;
 	bool	IsBatOpen;
+	bool	IsLegMove;
 
 	// Phase3
 	float	EyeTime;

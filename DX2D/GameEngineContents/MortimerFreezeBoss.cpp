@@ -60,6 +60,8 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IceCubeCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
 	, IceBatCount(4)
 	, BladeCount(-1)
+	, Phase3TransitionMotionCount(2)
+	, LegCount(2)
 	, IsDashPatternBegin(true)
 	, IsPreparing(false)
 	, IsPrevDash(false)
@@ -67,6 +69,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsJump(static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1)))
 	, IsShoot(false)
 	, IsBatOpen(false)
+	, IsLegMove(false)
 	, EyeTime(GameEngineRandom::MainRandom.RandomFloat(0.2f, 1.0f))
 	, IceCreamTime(GameEngineRandom::MainRandom.RandomFloat(0.5f, 1.0f))
 	, SplitTime(GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f))
@@ -170,6 +173,14 @@ void MortimerFreezeBoss::Start()
 
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmashOutro", FrameAnimation_DESC("SnowBeast_Smash_Outro", 0.1f, false));
+
+		// 애니메이션 조정 필요
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition0", FrameAnimation_DESC("SnowBeast_Death", 0, 14, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition1", FrameAnimation_DESC("SnowBeast_Death", 15, 19, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition2", FrameAnimation_DESC("SnowBeast_Death", 20, 26, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition3", FrameAnimation_DESC("SnowBeast_Death", 27, 33, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition_Legs", FrameAnimation_DESC("SnowBeast_Death_Legs", 0, 4, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition_LegsMove", FrameAnimation_DESC("SnowBeast_Death_Legs", 5, 15, 0.1f, true));
 
 		// Phase3
 

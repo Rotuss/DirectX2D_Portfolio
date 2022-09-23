@@ -14,6 +14,7 @@ void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
 		GameEngineInput::GetInst()->CreateKey("Num3_Smash", VK_NUMPAD3);
 	}
 
+	HP = 1;
 	Renderer->SetPivot(PIVOTMODE::BOT);
 	GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{0,-200,0});
 
@@ -46,6 +47,12 @@ void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	float DashRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
 	float FridgeRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
 	float SmashRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
+
+	if (0 == HP)
+	{
+		StateManager2.ChangeState("Transition_Phase3");
+		return;
+	}
 
 	{
 		if (0.8f >= DashRandomPer && 0 >= DashTime)
@@ -652,8 +659,67 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 
 void MortimerFreezeBoss::Phase2to3Start(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("MFPhase3Transition0");
+
+	Renderer->AnimationBindEnd("MFPhase3Transition0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("MFPhase3Transition1");
+		});
+
+	Renderer->AnimationBindEnd("MFPhase3Transition1", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 == Phase3TransitionMotionCount)
+			{
+				Renderer->ChangeFrameAnimation("MFPhase3Transition2");
+			}
+
+			--Phase3TransitionMotionCount;
+		});
+
+	Renderer->AnimationBindEnd("MFPhase3Transition2", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			//Phase3TransitionMotionCount = 5;
+			Renderer->ChangeFrameAnimation("MFPhase3Transition3");
+		});
+
+	Renderer->AnimationBindEnd("MFPhase3Transition3", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			//if (0 == Phase3TransitionMotionCount)
+			{
+				// 터지는 효과
+
+				Renderer->ChangeFrameAnimation("MFPhase3Transition_Legs");
+
+				// 얼음결정 올라가는 모션
+
+			}
+
+			//--Phase3TransitionMotionCount;
+		});
+
+	Renderer->AnimationBindEnd("MFPhase3Transition_Legs", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 == LegCount)
+			{
+				Renderer->ChangeFrameAnimation("MFPhase3Transition_LegsMove");
+				IsLegMove = true;
+			}
+
+			--LegCount;
+		});
 }
 
 void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Info)
 {
+	if (true == IsLegMove)
+	{
+		if (MFBossDIR::LEFT == CurMFDir)
+		{
+			GetTransform().SetWorldLeftMove(500.0f, _DeltaTime);
+		}
+		else
+		{
+			GetTransform().SetWorldRightMove(500.0f, _DeltaTime);
+		}
+	}
 }
