@@ -114,6 +114,10 @@ protected:
 	void Phase3Start(const StateInfo& _Info);
 	void Phase3Update(float _DeltaTime, const StateInfo& _Info);
 
+	void P3IntroStart(const StateInfo& _Info);
+	void P3IntroUpdate(float _DeltaTime, const StateInfo& _Info);
+	void P3IntroEnd(const StateInfo& _Info);
+
 	void P3IdleStart(const StateInfo& _Info);
 	void P3IdleUpdate(float _DeltaTime, const StateInfo& _Info);
 
@@ -200,6 +204,9 @@ private:
 	int		IceCreamRandom;
 	int		IceCreamCount;
 	int		BucketCount;
+	bool	IsPh3DownMove;
+	bool	IsPh3XMove;
 	bool	IsReverse;
+	std::string PrevState;
 };
 

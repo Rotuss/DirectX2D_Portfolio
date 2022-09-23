@@ -14,6 +14,11 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 		GameEngineInput::GetInst()->CreateKey("Num3_Split", VK_NUMPAD3);
 	}
 
+	// 수치 조정 필요
+	GetTransform().SetLocalPosition(float4{ 800.0f, -300.0f, -1.0f });
+
+	StateManager3.CreateStateMember("MF3Intro", std::bind(&MortimerFreezeBoss::P3IntroUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3IntroStart, this, std::placeholders::_1), std::bind(&MortimerFreezeBoss::P3IntroEnd, this, std::placeholders::_1));
+
 	StateManager3.CreateStateMember("MF3Idle", std::bind(&MortimerFreezeBoss::P3IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3IdleStart, this, std::placeholders::_1));
 
 	StateManager3.CreateStateMember("Swap", std::bind(&MortimerFreezeBoss::P3SwapUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3SwapStart, this, std::placeholders::_1));
@@ -22,7 +27,7 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 	StateManager3.CreateStateMember("Split", std::bind(&MortimerFreezeBoss::AttackSplitUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackSplitStart, this, std::placeholders::_1));
 	StateManager3.CreateStateMember("KnockOut", std::bind(&MortimerFreezeBoss::Phase3KnockOutUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase3KnockOutStart, this, std::placeholders::_1));
 
-	StateManager3.ChangeState("MF3Idle");
+	StateManager3.ChangeState("MF3Intro");
 }
 
 void MortimerFreezeBoss::Phase3Update(float _DeltaTime, const StateInfo& _Info)
@@ -30,8 +35,105 @@ void MortimerFreezeBoss::Phase3Update(float _DeltaTime, const StateInfo& _Info)
 	StateManager3.Update(_DeltaTime);
 }
 
+void MortimerFreezeBoss::P3IntroStart(const StateInfo& _Info)
+{
+	int DirRandom = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	IsPh3DownMove = true;
+
+	Renderer->ChangeFrameAnimation("MF3Intro");
+
+	Renderer->AnimationBindFrame("MF3Intro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (20 == _Info.CurFrame)
+			{
+				IsPh3DownMove = false;
+			}
+
+			if (42 == _Info.CurFrame)
+			{
+				if (0 == DirRandom)
+				{
+					CurMFDir = MFBossDIR::LEFT;
+					Renderer->GetTransform().PixLocalNegativeX();
+					IsPh3XMove = true;
+				}
+				if (1 == DirRandom)
+				{
+					CurMFDir = MFBossDIR::RIGHT;
+					Renderer->GetTransform().PixLocalPositiveX();
+					IsPh3XMove = true;
+				}
+			}
+		});
+
+	Renderer->AnimationBindEnd("MF3Intro", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("MF3IntroMove");
+		});
+
+	Renderer->AnimationBindEnd("MF3IntroMove", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager3.ChangeState("MF3Idle");
+		});
+}
+
+void MortimerFreezeBoss::P3IntroUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+	if (true == IsPh3DownMove)
+	{
+		GetTransform().SetWorldDownMove(150.0f, _DeltaTime);
+	}
+
+	if (true == IsPh3XMove)
+	{
+		if (MFBossDIR::LEFT == CurMFDir)
+		{
+			if (300 >= GetTransform().GetLocalPosition().x)
+			{
+				GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+				return;
+			}
+			
+			GetTransform().SetWorldLeftMove(500.0f, _DeltaTime);
+		}
+		else
+		{
+			if (1300 <= GetTransform().GetLocalPosition().x)
+			{
+				GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+				return;
+			}
+
+			GetTransform().SetWorldRightMove(500.0f, _DeltaTime);
+		}
+	}
+}
+
+void MortimerFreezeBoss::P3IntroEnd(const StateInfo& _Info)
+{
+	if (MFBossDIR::LEFT == CurMFDir)
+	{
+		CurMFDir = MFBossDIR::RIGHT;
+	}
+	else
+	{
+		CurMFDir = MFBossDIR::LEFT;
+	}
+}
+
 void MortimerFreezeBoss::P3IdleStart(const StateInfo& _Info)
 {
+	if ("" == PrevState || "Swap" == PrevState)
+	{
+		Renderer->ChangeFrameAnimation("MF3Idle");
+	}
+
+	Renderer->ChangeFrameAnimation("Attack_After_MF3Idle");
+
+	Renderer->AnimationBindEnd("Attack_After_MF3Idle", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("MF3Idle");
+		});
 }
 
 void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)

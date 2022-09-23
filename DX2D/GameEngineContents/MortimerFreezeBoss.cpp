@@ -79,7 +79,10 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IceCreamRandom(GameEngineRandom::MainRandom.RandomInt(0, 2))
 	, IceCreamCount(4)
 	, BucketCount(3)
+	, IsPh3DownMove(false)
+	, IsPh3XMove(false)
 	, IsReverse(false)
+	, PrevState("")
 	//, PPtr(nullptr)
 {
 	MFBoss = this;
@@ -183,6 +186,10 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MFPhase3Transition_LegsMove", FrameAnimation_DESC("SnowBeast_Death_Legs", 5, 15, 0.1f, true));
 
 		// Phase3
+		Renderer->CreateFrameAnimationFolder("MF3Intro", FrameAnimation_DESC("MF3Intro", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MF3IntroMove", FrameAnimation_DESC("SnowFlake_SwapA", {3,2,1}, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Attack_After_MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 8, 15, 0.1f, false));
 
 		Renderer->ChangeFrameAnimation("MFIntro_Top");
 		Renderer->SetScaleModeImage();
