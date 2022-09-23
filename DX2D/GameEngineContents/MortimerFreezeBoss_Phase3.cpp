@@ -226,39 +226,119 @@ void MortimerFreezeBoss::AttackEyeStart(const StateInfo& _Info)
 {
 	--SwapCount;
 	
-	MortimerFreezeEye* Ptr = GetLevel()->CreateActor<MortimerFreezeEye>(OBJECTORDER::Boss);
-	
-	if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
-	{
-		Ptr->SetEyePosition(EyePos::LeftTop);
-		Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-	}
-	if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
-	{
-		Ptr->SetEyePosition(EyePos::LeftBot);
-		Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-	}
+	// 일부 애니메이션에서 Count 수치 조정 필요
+	EyeRepeatCount = 4;
 
-	if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
-	{
-		Ptr->SetEyePosition(EyePos::RightTop);
-		Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-	}
-	if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
-	{
-		Ptr->SetEyePosition(EyePos::RightBot);
-		Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-		Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-	}
+	Renderer->ChangeFrameAnimation("EyeBall_BodyBacker0");
 
-	//StateManager3.ChangeState("MF3Idle");
+	Renderer->AnimationBindEnd("EyeBall_BodyBacker0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("EyeBall_BodyBacker1");
+		});
+
+	Renderer->AnimationBindFrame("EyeBall_BodyBacker1", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 == EyeRepeatCount)
+			{
+				if (1 == _Info.CurFrame)
+				{
+					Renderer->ChangeFrameAnimation("EyeBall_BodyBacker2");
+				}
+			}
+		});
+
+	Renderer->AnimationBindEnd("EyeBall_BodyBacker1", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			--EyeRepeatCount;
+		});
+
+	Renderer->AnimationBindFrame("EyeBall_BodyBacker2", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (1 == _Info.CurFrame)
+			{
+				MortimerFreezeEye* Ptr = GetLevel()->CreateActor<MortimerFreezeEye>(OBJECTORDER::Boss);
+
+				if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
+				{
+					Ptr->SetEyePosition(EyePos::LeftTop);
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				}
+				if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
+				{
+					Ptr->SetEyePosition(EyePos::LeftBot);
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				}
+
+				if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
+				{
+					Ptr->SetEyePosition(EyePos::RightTop);
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				}
+				if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
+				{
+					Ptr->SetEyePosition(EyePos::RightBot);
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				}
+
+				// 임시 확인용으로 강제 Renderer 변경(일정 시간 이후 Renderer 바뀌게 해야함)
+				Renderer->ChangeFrameAnimation("EyeBall_BodyBacker3");
+			}
+		});
+
+	Renderer->AnimationBindEnd("EyeBall_BodyBacker3", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			EyeRepeatCount = 4;
+			Renderer->ChangeFrameAnimation("EyeBall_BodyBacker4");
+		});
+
+	Renderer->AnimationBindFrame("EyeBall_BodyBacker4", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 == EyeRepeatCount)
+			{
+				if (6 == _Info.CurFrame)
+				{
+					Renderer->ChangeFrameAnimation("EyeBall_BodyBacker5");
+				}
+			}
+		});
+
+	Renderer->AnimationBindEnd("EyeBall_BodyBacker4", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			--EyeRepeatCount;
+		});
+
+	Renderer->AnimationBindEnd("EyeBall_BodyBacker5", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			// 6에서 7 전환 테스트용
+			EyeRepeatCount = 4;
+			
+			Renderer->ChangeFrameAnimation("EyeBall_BodyBacker6");
+		});
+
+	// 6에서 7 전환 테스트용
+	Renderer->AnimationBindEnd("EyeBall_BodyBacker6", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 == EyeRepeatCount)
+			{
+				Renderer->ChangeFrameAnimation("EyeBall_BodyBacker7");
+			}
+
+			--EyeRepeatCount;
+		});
+
+	Renderer->AnimationBindEnd("EyeBall_BodyBacker7", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager3.ChangeState("MF3Idle");
+		});
 }
 
 void MortimerFreezeBoss::AttackEyeUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	// EyeBall_BodyBacker6에서 Eye와 x축이 일치할 때 EyeBall_BodyBacker7
 }
 
 void MortimerFreezeBoss::AttackIceCreamStart(const StateInfo& _Info)

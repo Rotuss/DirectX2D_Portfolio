@@ -201,6 +201,7 @@ private:
 	float	IceCreamAppearTime;
 	float	BucketAppearTime;
 	int		SwapCount;
+	int		EyeRepeatCount;
 	int		IceCreamRandom;
 	int		IceCreamCount;
 	int		BucketCount;

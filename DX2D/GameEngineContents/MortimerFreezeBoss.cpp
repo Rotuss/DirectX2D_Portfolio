@@ -76,6 +76,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IceCreamAppearTime(0.0f)
 	, BucketAppearTime(0.0f)
 	, SwapCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
+	, EyeRepeatCount(4)
 	, IceCreamRandom(GameEngineRandom::MainRandom.RandomInt(0, 2))
 	, IceCreamCount(4)
 	, BucketCount(3)
@@ -190,6 +191,15 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MF3IntroMove", FrameAnimation_DESC("SnowFlake_SwapA", {3,2,1}, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Attack_After_MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 8, 15, 0.1f, false));
+
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker0", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 0, 19, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker1", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 20, 22, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker2", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 23, 24, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker3", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 25, 33, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker4", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 34, 49, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker5", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 50, 58, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker6", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 59, 61, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker7", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 62, 69, 0.1f, false));
 
 		Renderer->ChangeFrameAnimation("MFIntro_Top");
 		Renderer->SetScaleModeImage();
