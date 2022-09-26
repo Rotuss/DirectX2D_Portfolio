@@ -346,10 +346,68 @@ void MortimerFreezeBoss::AttackIceCreamStart(const StateInfo& _Info)
 	--SwapCount;
 	IceCreamAppearTime = 0.0f;
 	IceCreamCount = 4;
+	IsIceCreamPatternEnd = false;
 
 	IceCreamRandom = GameEngineRandom::MainRandom.RandomInt(0,2);
 
-	//StateManager3.ChangeState("MF3Idle");
+	Renderer->ChangeFrameAnimation("SnowFlake_IceCreamBacker0");
+
+	Renderer->AnimationBindEnd("SnowFlake_IceCreamBacker0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				SubRenderer00->ChangeFrameAnimation("IceCream_Ghost", true);
+				SubRenderer00->GetTransform().PixLocalPositiveX();
+				SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+				SubRenderer00->On();
+			}
+			if (MFBossDIR::RIGHT== CurMFDir)
+			{
+				SubRenderer00->ChangeFrameAnimation("IceCream_Ghost", true);
+				SubRenderer00->GetTransform().PixLocalNegativeX();
+				SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+				SubRenderer00->On();
+			}
+
+			Renderer->ChangeFrameAnimation("SnowFlake_IceCreamBacker1");
+		});
+
+	Renderer->AnimationBindEnd("SnowFlake_IceCreamBackerR0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager3.ChangeState("MF3Idle");
+		});
+
+	Renderer->AnimationBindEnd("SnowFlake_IceCreamBackerR1", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (true == IsIceCreamPatternEnd)
+			{
+				Renderer->ChangeFrameAnimation("SnowFlake_IceCreamBackerR0");
+			}
+		});
+
+	SubRenderer00->AnimationBindFrame("IceCream_Ghost", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (10 == _Info.CurFrame)
+			{
+				Renderer->ChangeFrameAnimation("SnowFlake_IceCreamBackerR1");
+			}
+
+			if (19 == _Info.CurFrame)
+			{
+				Renderer->ChangeFrameAnimation("SnowFlake_IceCreamBacker1");
+			}
+
+			if (28 == _Info.CurFrame)
+			{
+				IsIceCreamPatternEnd = true;
+				Renderer->ChangeFrameAnimation("SnowFlake_IceCreamBackerR1");
+			}
+		});
+
+	SubRenderer00->AnimationBindEnd("IceCream_Ghost", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->Off();
+		});
 }
 
 void MortimerFreezeBoss::AttackIceCreamUpdate(float _DeltaTime, const StateInfo& _Info)

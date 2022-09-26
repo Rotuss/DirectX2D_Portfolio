@@ -48,6 +48,7 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer* Renderer;
+	GameEngineTextureRenderer* EffectRenderer;
 	//GameEngineCollision* Collision;
 
 private:

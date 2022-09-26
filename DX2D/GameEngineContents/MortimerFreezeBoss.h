@@ -209,6 +209,7 @@ private:
 	bool	IsPh3DownMove;
 	bool	IsPh3XMove;
 	bool	IsReverse;
+	bool	IsIceCreamPatternEnd;
 	std::string PrevState;
 };
 

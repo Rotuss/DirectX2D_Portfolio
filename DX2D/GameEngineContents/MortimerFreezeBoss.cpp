@@ -84,6 +84,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsPh3DownMove(false)
 	, IsPh3XMove(false)
 	, IsReverse(false)
+	, IsIceCreamPatternEnd(false)
 	, PrevState("")
 	//, PPtr(nullptr)
 {
@@ -202,6 +203,11 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker6", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 59, 61, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker7", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 62, 69, 0.1f, false));
 
+		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBacker0", FrameAnimation_DESC("SnowFlake_IceCreamBacker", 0, 5, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBacker1", FrameAnimation_DESC("SnowFlake_IceCreamBacker", 6, 12, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBackerR0", FrameAnimation_DESC("SnowFlake_IceCreamBacker", { 5,4,3,2,1,0 }, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBackerR1", FrameAnimation_DESC("SnowFlake_IceCreamBacker", { 12,11,10,9,8,7,6 }, 0.1f, false));
+
 		Renderer->ChangeFrameAnimation("MFIntro_Top");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -248,6 +254,7 @@ void MortimerFreezeBoss::Start()
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Start", FrameAnimation_DESC("SnowBeast_Intro", 0, 2, 0.1f, true));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 56, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("IceCream_Ghost", FrameAnimation_DESC("IceCream_Ghost", 0.1f, false));
 
 		SubRenderer00->ChangeFrameAnimation("MFIntro");
 		SubRenderer00->SetScaleModeImage();
