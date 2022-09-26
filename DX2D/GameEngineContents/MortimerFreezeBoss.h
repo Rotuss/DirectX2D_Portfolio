@@ -38,6 +38,11 @@ public:
 		MinionPixRemove = _Value;
 	}
 
+	inline void SetBucketMove(bool _Value)
+	{
+		IsBucketMove = _Value;
+	}
+
 	inline bool MinionPixRemoveReturn()
 	{
 		return MinionPixRemove;
@@ -210,6 +215,7 @@ private:
 	bool	IsPh3XMove;
 	bool	IsReverse;
 	bool	IsIceCreamPatternEnd;
+	bool	IsBucketMove;
 	std::string PrevState;
 };
 

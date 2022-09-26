@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "MortimerFreezeBucket.h"
+#include "MortimerFreezeBoss.h"
 #include "MortimerFreezeMoon.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
@@ -9,8 +10,9 @@ MortimerFreezeBucket::MortimerFreezeBucket()
 	, BucketMove()
 	, LerpPos()
 	, StartPosition()
-	, EndPosition()
+	, EndPosition({ 0.0f,0.0f,-1.0f })
 	, BucketLerpRatio(0.0f)
+	, IsBucketMove(false)
 {
 }
 
@@ -58,8 +60,43 @@ void MortimerFreezeBucket::BucketSetting(BucketDirType _DirType, BucketMoveType 
 
 void MortimerFreezeBucket::Start()
 {
-	Renderer = CreateComponent<GameEngineTextureRenderer>();
-	Renderer->GetTransform().SetLocalScale(float4{ 50,50,0 });
+	GameEngineRandom RandomValue_;
+	int RandomIntNum = RandomValue_.RandomInt(0, 1);
+	
+	{
+		Renderer = CreateComponent<GameEngineTextureRenderer>();
+		Renderer->CreateFrameAnimationFolder("Bucket_Normal_Start", FrameAnimation_DESC("Bucket_Normal", 0, 11, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("Bucket_Normal", FrameAnimation_DESC("Bucket_Normal", 12, 20, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Bucket_Pink_Start", FrameAnimation_DESC("Bucket_Pink", 0, 11, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("Bucket_Pink", FrameAnimation_DESC("Bucket_Pink", 12, 20, 0.1f, true));
+		
+		if (0 == RandomIntNum)
+		{
+			Renderer->ChangeFrameAnimation("Bucket_Normal_Start");
+		}
+		if (1 == RandomIntNum)
+		{
+			Renderer->ChangeFrameAnimation("Bucket_Pink_Start");
+		}
+
+		Renderer->SetScaleModeImage();
+		Renderer->ScaleToTexture();
+		Renderer->SetPivot(PIVOTMODE::CENTER);
+	}
+
+	Renderer->AnimationBindEnd("Bucket_Normal_Start", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsBucketMove = true;
+			MortimerFreezeBoss::MFBoss->SetBucketMove(IsBucketMove);
+			Renderer->ChangeFrameAnimation("Bucket_Normal");
+		});
+
+	Renderer->AnimationBindEnd("Bucket_Pink_Start", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsBucketMove = true;
+			MortimerFreezeBoss::MFBoss->SetBucketMove(IsBucketMove);
+			Renderer->ChangeFrameAnimation("Bucket_Pink");
+		});
 }
 
 void MortimerFreezeBucket::Update(float _DeltaTime)
@@ -115,14 +152,17 @@ void MortimerFreezeBucket::Update(float _DeltaTime)
 		Death();
 	}
 
-	BucketLerpRatio += _DeltaTime;
-	if (1.0f <= BucketLerpRatio)
+	if (true == IsBucketMove)
 	{
-		BucketLerpRatio = 1.0f;
+		BucketLerpRatio += _DeltaTime;
+		if (1.0f <= BucketLerpRatio)
+		{
+			BucketLerpRatio = 1.0f;
+		}
+
+		LerpPos = float4::Lerp(StartPosition, EndPosition, BucketLerpRatio);
+
+		GetTransform().SetLocalPosition(LerpPos);
 	}
-
-	LerpPos = float4::Lerp(StartPosition, EndPosition, BucketLerpRatio);
-
-	GetTransform().SetLocalPosition(LerpPos);
 }
 

@@ -558,18 +558,86 @@ void MortimerFreezeBoss::AttackSplitStart(const StateInfo& _Info)
 	--SwapCount;
 	BucketAppearTime = 0.0f;
 	BucketCount = 3;
+	IsBucketMove = false;
 
-	//StateManager3.ChangeState("MF3Idle");
+	Renderer->ChangeFrameAnimation("SplitShot_SnowFlakeBacker0");
+
+	Renderer->AnimationBindFrame("SplitShot_SnowFlakeBacker0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (9 == _Info.CurFrame)
+			{
+				if (MFBossDIR::LEFT == CurMFDir)
+				{
+					SubRenderer00->ChangeFrameAnimation("SplitShot_Arms0", true);
+					SubRenderer00->GetTransform().PixLocalPositiveX();
+					SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+					SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-100,0 });
+					SubRenderer00->On();
+				}
+				if (MFBossDIR::RIGHT == CurMFDir)
+				{
+					SubRenderer00->ChangeFrameAnimation("SplitShot_Arms0", true);
+					SubRenderer00->GetTransform().PixLocalNegativeX();
+					SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+					SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-100,0 });
+					SubRenderer00->On();
+				}
+			}
+		});
+
+	Renderer->AnimationBindEnd("SplitShot_SnowFlakeBacker0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("SplitShot_SnowFlakeBacker1");
+		});
+
+	Renderer->AnimationBindTime("SplitShot_SnowFlakeBacker1", [/*&*/=](const FrameAnimation_DESC& _Info, float _Delta)
+		{
+			if (true == IsBucketMove)
+			{
+				IsBucketMove = false;
+				Renderer->ChangeFrameAnimation("SplitShot_SnowFlakeBacker2"); // 양동이 떠나면 SplitShot_SnowFlakeBacker3
+				SubRenderer00->ChangeFrameAnimation("SplitShot_Arms2");
+			}
+		});
+
+	Renderer->AnimationBindEnd("SplitShot_SnowFlakeBacker2", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 > BucketCount)
+			{
+				Renderer->ChangeFrameAnimation("SplitShot_SnowFlakeBacker4");
+				SubRenderer00->ChangeFrameAnimation("SplitShot_Arms4");
+			}
+			else
+			{
+				Renderer->ChangeFrameAnimation("SplitShot_SnowFlakeBacker1");
+				SubRenderer00->ChangeFrameAnimation("SplitShot_Arms1");
+			}
+		});
+
+	Renderer->AnimationBindEnd("SplitShot_SnowFlakeBacker4", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StateManager3.ChangeState("MF3Idle");
+		});
+
+	SubRenderer00->AnimationBindEnd("SplitShot_Arms0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->ChangeFrameAnimation("SplitShot_Arms1");
+		});
+
+	SubRenderer00->AnimationBindEnd("SplitShot_Arms2", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->ChangeFrameAnimation("SplitShot_Arms3");
+		});
+
+	SubRenderer00->AnimationBindEnd("SplitShot_Arms4", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->Off();
+		});
 }
 
 void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _Info)
 {
 	BucketAppearTime += _DeltaTime;
-
-	/*if (0 >= BucketCount)
-	{
-		StateManager3.ChangeState("MF3Idle");
-	}*/
 
 	if (2.0f <= BucketAppearTime)
 	{

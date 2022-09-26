@@ -85,6 +85,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsPh3XMove(false)
 	, IsReverse(false)
 	, IsIceCreamPatternEnd(false)
+	, IsBucketMove(false)
 	, PrevState("")
 	//, PPtr(nullptr)
 {
@@ -208,6 +209,13 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBackerR0", FrameAnimation_DESC("SnowFlake_IceCreamBacker", { 5,4,3,2,1,0 }, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBackerR1", FrameAnimation_DESC("SnowFlake_IceCreamBacker", { 12,11,10,9,8,7,6 }, 0.1f, false));
 
+		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker0", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 0, 12, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker1", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 13, 15, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker2", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 16, 25, 0.1f, true));
+		/*Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker2", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 16, 18, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker3", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 19, 25, 0.1f, false));*/
+		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker4", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 26, 37, 0.1f, false));
+
 		Renderer->ChangeFrameAnimation("MFIntro_Top");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -251,10 +259,17 @@ void MortimerFreezeBoss::Start()
 	{
 		SubRenderer00 = CreateComponent<GameEngineTextureRenderer>();
 		SubRenderer00->CreateFrameAnimationFolder("MFIntro", FrameAnimation_DESC("MFIntro", 0.1f, false));
+		
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Start", FrameAnimation_DESC("SnowBeast_Intro", 0, 2, 0.1f, true));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 56, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", 0.1f, false));
+		
 		SubRenderer00->CreateFrameAnimationFolder("IceCream_Ghost", FrameAnimation_DESC("IceCream_Ghost", 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms0", FrameAnimation_DESC("SplitShot_Arms", 0, 3, 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms1", FrameAnimation_DESC("SplitShot_Arms", 4, 11, 0.1f, true));
+		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms2", FrameAnimation_DESC("SplitShot_Arms", 12, 12, 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms3", FrameAnimation_DESC("SplitShot_Arms", 13, 14, 0.1f, true));
+		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms4", FrameAnimation_DESC("SplitShot_Arms", 15, 19, 0.1f, false));
 
 		SubRenderer00->ChangeFrameAnimation("MFIntro");
 		SubRenderer00->SetScaleModeImage();

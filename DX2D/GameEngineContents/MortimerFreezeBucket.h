@@ -52,5 +52,6 @@ private:
 	float4 EndPosition;
 
 	float BucketLerpRatio;
+	bool IsBucketMove;
 };
 
