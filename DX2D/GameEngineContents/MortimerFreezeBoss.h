@@ -143,6 +143,7 @@ private:
 	GameEngineStateManager StateManager3;
 
 	MFBossDIR CurMFDir;
+	MFBossDIR CurMeltingDir;
 
 	std::vector<float4> StartPos;
 	std::vector<float4> EndPos;
