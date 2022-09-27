@@ -3,6 +3,7 @@
 #include "MortimerFreezeEye.h"
 #include "MortimerFreezeIceCream.h"
 #include "MortimerFreezeBucket.h"
+#include "KnockOut.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
 void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
@@ -14,6 +15,7 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 		GameEngineInput::GetInst()->CreateKey("Num3_Split", VK_NUMPAD3);
 	}
 
+	HP = 1;
 	// 수치 조정 필요
 	GetTransform().SetLocalPosition(float4{ 800.0f, -300.0f, -1.0f });
 
@@ -138,6 +140,12 @@ void MortimerFreezeBoss::P3IdleStart(const StateInfo& _Info)
 
 void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	if (0 == HP)
+	{
+		StateManager3.ChangeState("KnockOut");
+		return;
+	}
+	
 	if (0 == SwapCount)
 	{
 		SwapCount = GameEngineRandom::MainRandom.RandomInt(1, 2);
@@ -751,6 +759,89 @@ void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _I
 
 void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 {
+	Renderer->ChangeFrameAnimation("Ph3Wizard_Death");
+	if (false == IsReverse)
+	{
+		SubRenderer00->ChangeFrameAnimation("SnowFlake_Death0");
+		SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+		SubRenderer00->On();
+	}
+	else
+	{
+		SubRenderer00->ChangeFrameAnimation("SnowFlake_Death_Alt");
+		SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+		SubRenderer00->On();
+	}
+	
+	/*
+	MortimerFreezeEye* Ptr = GetLevel()->CreateActor<MortimerFreezeEye>(OBJECTORDER::Boss);
+
+				if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
+				{
+					Ptr->SetEyePosition(EyePos::LeftTop);
+					Ptr->SetStartPosition(GetTransform().GetLoca
+	*/
+
+	SubRenderer00->AnimationBindFrame("SnowFlake_Death0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (1 == _Info.CurFrame)
+			{
+				SubRenderer00->CurAnimationPauseOn();
+				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();
+				KO->GetTransform().SetWorldPosition({ 830.0f,-610.0f,-15.0f });
+				KO->GetRenderer()->AnimationBindEnd("KnockOut", [/*&*/=](const FrameAnimation_DESC& _Info)
+					{
+						SubRenderer00->CurAnimationPauseOff();
+						KO->Death();
+					});
+			}
+		});
+
+	SubRenderer00->AnimationBindEnd("SnowFlake_Death0", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->ChangeFrameAnimation("SnowFlake_Death1");
+		});
+
+	SubRenderer00->AnimationBindFrame("SnowFlake_Death_Alt", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (1 == _Info.CurFrame)
+			{
+				SubRenderer00->CurAnimationPauseOn();
+				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();
+				KO->GetRenderer()->AnimationBindEnd("KnockOut", [/*&*/=](const FrameAnimation_DESC& _Info)
+					{
+						SubRenderer00->CurAnimationPauseOff();
+					});
+			}
+		});
+
+	SubRenderer00->AnimationBindEnd("SnowFlake_Death_Alt", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SubRenderer00->ChangeFrameAnimation("SnowFlake_Death1");
+		});
+
+	SubRenderer00->AnimationBindFrame("SnowFlake_Death1", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (9 == _Info.CurFrame)
+			{
+				if (MFBossDIR::LEFT == CurMFDir)
+				{
+					SubRenderer01->ChangeFrameAnimation("SnowFlake_DeathBacker");
+					SubRenderer01->GetTransform().PixLocalPositiveX();
+					SubRenderer01->SetPivot(PIVOTMODE::CENTER);;
+					SubRenderer01->GetTransform().SetLocalPosition(float4{ 0,0,-0.5f });
+					SubRenderer01->On();
+				}
+				else
+				{
+					SubRenderer01->ChangeFrameAnimation("SnowFlake_DeathBacker");
+					SubRenderer01->GetTransform().PixLocalNegativeX();
+					SubRenderer01->SetPivot(PIVOTMODE::CENTER);;
+					SubRenderer01->GetTransform().SetLocalPosition(float4{ 0,0,-0.5f });
+					SubRenderer01->On();
+				}
+			}
+		});
 }
 
 void MortimerFreezeBoss::Phase3KnockOutUpdate(float _DeltaTime, const StateInfo& _Info)

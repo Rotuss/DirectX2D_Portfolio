@@ -216,6 +216,8 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker3", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 19, 25, 0.1f, false));*/
 		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker4", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 26, 37, 0.1f, false));
 
+		Renderer->CreateFrameAnimationFolder("Ph3Wizard_Death", FrameAnimation_DESC("Ph3Wizard_Death", 0.1f, true));
+
 		Renderer->ChangeFrameAnimation("MFIntro_Top");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -270,6 +272,9 @@ void MortimerFreezeBoss::Start()
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms2", FrameAnimation_DESC("SplitShot_Arms", 12, 12, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms3", FrameAnimation_DESC("SplitShot_Arms", 13, 14, 0.1f, true));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms4", FrameAnimation_DESC("SplitShot_Arms", 15, 19, 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Death0", FrameAnimation_DESC("SnowFlake_Death", 0, 7, 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Death1", FrameAnimation_DESC("SnowFlake_Death", 8, 32, 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Death_Alt", FrameAnimation_DESC("SnowFlake_Death_AltBacker", 0.1f, false));
 
 		SubRenderer00->ChangeFrameAnimation("MFIntro");
 		SubRenderer00->SetScaleModeImage();
@@ -284,6 +289,8 @@ void MortimerFreezeBoss::Start()
 		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer_Start", FrameAnimation_DESC("SnowBeast_Intro_Backer", 0, 2, 0.1f, true));
 		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer", FrameAnimation_DESC("SnowBeast_Intro_Backer", 3, 11, 0.1f, false));
 		SubRenderer01->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingB", FrameAnimation_DESC("SnowBeast_Limbs_MeltingB", 0.1f, false));
+		
+		SubRenderer01->CreateFrameAnimationFolder("SnowFlake_DeathBacker", FrameAnimation_DESC("SnowFlake_DeathBacker", 0.1f, false));
 
 		SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer_Start");
 		SubRenderer01->SetScaleModeImage();
