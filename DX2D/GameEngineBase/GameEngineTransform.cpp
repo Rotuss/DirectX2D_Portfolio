@@ -88,6 +88,30 @@ void GameEngineTransform::PixLocalPositiveX()
 	SetLocalScale(Data.LocalScaling);
 }
 
+void GameEngineTransform::PixLocalNegativeY()
+{
+	if (0.0f > Data.LocalScaling.y)
+	{
+		return;
+	}
+
+	Data.LocalScaling.y = -Data.LocalScaling.y;
+
+	SetLocalScale(Data.LocalScaling);
+}
+
+void GameEngineTransform::PixLocalPositiveY()
+{
+	if (0.0f < Data.LocalScaling.y)
+	{
+		return;
+	}
+
+	Data.LocalScaling.y = abs(Data.LocalScaling.y);
+
+	SetLocalScale(Data.LocalScaling);
+}
+
 void GameEngineTransform::Copy(const GameEngineTransform& _Trans)
 {
 	Data = _Trans.Data;

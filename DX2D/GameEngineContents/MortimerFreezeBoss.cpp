@@ -84,6 +84,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsPh3DownMove(false)
 	, IsPh3XMove(false)
 	, IsReverse(false)
+	, IsSwapA(false)
 	, IsIceCreamPatternEnd(false)
 	, IsBucketMove(false)
 	, PrevState("")
@@ -194,6 +195,12 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MF3IntroMove", FrameAnimation_DESC("SnowFlake_SwapA", {3,2,1}, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Attack_After_MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 8, 15, 0.1f, false));
+		
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapA", FrameAnimation_DESC("SnowFlake_SwapA", 1, 8, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapAR", FrameAnimation_DESC("SnowFlake_SwapA", { 8,7,6,5,4,3,2,1 }, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapB", FrameAnimation_DESC("SnowFlake_SwapB_Backer", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapC", FrameAnimation_DESC("SnowFlake_SwapC_Backer", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapCLast", FrameAnimation_DESC("SnowFlake_SwapC_Backer", { 2,1,0 }, 0.1f, false));
 
 		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker0", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 0, 19, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker1", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 20, 22, 0.1f, true));

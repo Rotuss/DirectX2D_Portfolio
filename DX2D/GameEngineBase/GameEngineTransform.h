@@ -280,6 +280,8 @@ public:
 	void SetParentTransform(GameEngineTransform& _Parent);
 	void PixLocalNegativeX();
 	void PixLocalPositiveX();
+	void PixLocalNegativeY();
+	void PixLocalPositiveY();
 
 	void Copy(const GameEngineTransform& _Trans);
 

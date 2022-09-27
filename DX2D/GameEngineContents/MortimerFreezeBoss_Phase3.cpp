@@ -221,11 +221,135 @@ void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::P3SwapStart(const StateInfo& _Info)
 {
-	StateManager3.ChangeState("MF3Idle");
+	int RandomIntNum = GameEngineRandom::MainRandom.RandomInt(1, 3);
+
+	if (1 == RandomIntNum)
+	{
+		IsSwapA = true;
+		Renderer->ChangeFrameAnimation("SnowFlake_SwapA");
+	}
+	if (2 == RandomIntNum)
+	{
+		Renderer->ChangeFrameAnimation("SnowFlake_SwapB");
+		IsReverse = !IsReverse;
+	}
+	if (3 == RandomIntNum)
+	{
+		Renderer->ChangeFrameAnimation("SnowFlake_SwapC");
+	}
+	
+	Renderer->AnimationBindEnd("SnowFlake_SwapAR", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				CurMFDir = MFBossDIR::RIGHT;
+			}
+			else if (MFBossDIR::RIGHT == CurMFDir)
+			{
+				CurMFDir = MFBossDIR::LEFT;
+			}
+			
+			StateManager3.ChangeState("MF3Idle");
+		});
+
+	Renderer->AnimationBindEnd("SnowFlake_SwapB", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				Renderer->GetTransform().PixLocalNegativeX();
+				CurMFDir = MFBossDIR::RIGHT;
+			}
+			else if (MFBossDIR::RIGHT == CurMFDir)
+			{
+				Renderer->GetTransform().PixLocalPositiveX();
+				CurMFDir = MFBossDIR::LEFT;
+			}
+			
+			if (true == IsReverse)
+			{
+				Renderer->GetTransform().PixLocalNegativeY();
+			}
+			else if(false == IsReverse)
+			{
+				Renderer->GetTransform().PixLocalPositiveY();
+			}
+
+			StateManager3.ChangeState("MF3Idle");
+		});
+
+	Renderer->AnimationBindEnd("SnowFlake_SwapC", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				Renderer->ChangeFrameAnimation("SnowFlake_SwapCLast");
+				Renderer->GetTransform().PixLocalNegativeX();
+			}
+			else if (MFBossDIR::RIGHT == CurMFDir)
+			{
+				Renderer->ChangeFrameAnimation("SnowFlake_SwapCLast");
+				Renderer->GetTransform().PixLocalPositiveX();
+			}
+		});
+
+	Renderer->AnimationBindEnd("SnowFlake_SwapCLast", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				CurMFDir = MFBossDIR::RIGHT;
+			}
+			else if (MFBossDIR::RIGHT == CurMFDir)
+			{
+				CurMFDir = MFBossDIR::LEFT;
+			}
+			
+			StateManager3.ChangeState("MF3Idle");
+		});
 }
 
 void MortimerFreezeBoss::P3SwapUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	float MFCurXPos = GetTransform().GetLocalPosition().x;
+	
+	if (MFBossDIR::LEFT == CurMFDir)
+	{
+		if (300 >= MFCurXPos)
+		{
+			GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+			return;
+		}
+
+		if (800 >= MFCurXPos)
+		{
+			if (true == IsSwapA)
+			{
+				Renderer->ChangeFrameAnimation("SnowFlake_SwapAR");
+				Renderer->GetTransform().PixLocalNegativeX();
+				IsSwapA = false;
+			}
+		}
+
+		GetTransform().SetWorldLeftMove(600.0f, _DeltaTime);
+	}
+	else
+	{
+		if (1300 <= MFCurXPos)
+		{
+			GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+			return;
+		}
+
+		if (800 <= MFCurXPos)
+		{
+			if (true == IsSwapA)
+			{
+				Renderer->ChangeFrameAnimation("SnowFlake_SwapAR");
+				Renderer->GetTransform().PixLocalPositiveX();
+				IsSwapA = false;
+			}
+		}
+
+		GetTransform().SetWorldRightMove(600.0f, _DeltaTime);
+	}
 	// 2 == b 老 锭 IsReverse = !IsReverse;
 	// 3 == c 老 锭 老何 IsReverse = !IsReverse;
 }
@@ -760,6 +884,7 @@ void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _I
 void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("Ph3Wizard_Death");
+	
 	if (false == IsReverse)
 	{
 		SubRenderer00->ChangeFrameAnimation("SnowFlake_Death0");
@@ -773,15 +898,6 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 		SubRenderer00->On();
 	}
 	
-	/*
-	MortimerFreezeEye* Ptr = GetLevel()->CreateActor<MortimerFreezeEye>(OBJECTORDER::Boss);
-
-				if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
-				{
-					Ptr->SetEyePosition(EyePos::LeftTop);
-					Ptr->SetStartPosition(GetTransform().GetLoca
-	*/
-
 	SubRenderer00->AnimationBindFrame("SnowFlake_Death0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			if (1 == _Info.CurFrame)
