@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "MortimerFreezeBoss.h"
+#include "MortimerFreezeLevel.h"
 #include "MortimerFreezeIceCube.h"
 #include "MortimerFreezeIceBat.h"
 #include "MortimerFreezeBlade.h"
@@ -860,6 +861,7 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
 				Ptr->SetPlatformType(PlatformType::Intro);
 				Ptr->GetTransform().SetLocalPosition({ 880.0f, -700.0f, -1.0f });
+				Ptr->GetLevel<MortimerFreezeLevel>()->SetPh3MoveValue(&Ptr->GetTransform(), { 0,-700,0 });
 
 				PlatformTime = 1.0f;
 			}
@@ -868,6 +870,7 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
 				Ptr->SetPlatformType(PlatformType::Intro);
 				Ptr->GetTransform().SetLocalPosition({ 600.0f, -600.0f, -1.0f });
+				Ptr->GetLevel<MortimerFreezeLevel>()->SetPh3MoveValue( &Ptr->GetTransform(), {0,-700,0});
 
 				PlatformTime = 1.0f;
 			}
@@ -876,6 +879,7 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
 				Ptr->SetPlatformType(PlatformType::Intro);
 				Ptr->GetTransform().SetLocalPosition({ 880.0f, -500.0f, -1.0f });
+				Ptr->GetLevel<MortimerFreezeLevel>()->SetPh3MoveValue(&Ptr->GetTransform(), { 0,-700,0 });
 
 				PlatformTime = 1.0f;
 			}
@@ -884,6 +888,7 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
 				Ptr->SetPlatformType(PlatformType::Intro);
 				Ptr->GetTransform().SetLocalPosition({ 600.0f, -400.0f, -1.0f });
+				Ptr->GetLevel<MortimerFreezeLevel>()->SetPh3MoveValue(&Ptr->GetTransform(), { 0,-700,0 });
 
 				PlatformTime = 1.0f;
 			}
@@ -892,6 +897,7 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
 				Ptr->SetPlatformType(PlatformType::Intro);
 				Ptr->GetTransform().SetLocalPosition({ 880.0f, -300.0f, -1.0f });
+				Ptr->GetLevel<MortimerFreezeLevel>()->SetPh3MoveValue(&Ptr->GetTransform(), { 0,-700,0 });
 
 				PlatformTime = 1.0f;
 			}
