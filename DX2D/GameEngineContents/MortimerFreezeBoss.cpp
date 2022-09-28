@@ -56,12 +56,14 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, SmashTime(GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f))
 	, IceTime(0.0f)
 	, BladeTime(1.0f)
+	, PlatformTime(0.0f)
 	, PrevSkill(GameEngineRandom::MainRandom.RandomInt(1, 3))
 	, DashMove(GameEngineRandom::MainRandom.RandomInt(1, 3))
 	, IceCubeCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
 	, IceBatCount(4)
 	, BladeCount(-1)
 	, Phase3TransitionMotionCount(2)
+	, PlatformCount(5)
 	, LegCount(2)
 	, IsDashPatternBegin(true)
 	, IsPreparing(false)
@@ -70,6 +72,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsJump(static_cast<bool>(GameEngineRandom::MainRandom.RandomInt(0, 1)))
 	, IsShoot(false)
 	, IsBatOpen(false)
+	, IsPlatformOn(false)
 	, IsLegMove(false)
 	, EyeTime(GameEngineRandom::MainRandom.RandomFloat(0.2f, 1.0f))
 	, IceCreamTime(GameEngineRandom::MainRandom.RandomFloat(0.5f, 1.0f))
@@ -88,7 +91,6 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsIceCreamPatternEnd(false)
 	, IsBucketMove(false)
 	, PrevState("")
-	//, PPtr(nullptr)
 {
 	MFBoss = this;
 }
@@ -352,8 +354,6 @@ void MortimerFreezeBoss::Start()
 	PhaseManager.ChangeState("MFPhase1");
 }
 
-// 발판 테스트
-//std::vector<GameEngineTextureRenderer*> TmpVector;
 void MortimerFreezeBoss::Update(float _DeltaTime)
 {
 	PhaseManager.Update(_DeltaTime);
@@ -364,67 +364,6 @@ void MortimerFreezeBoss::Update(float _DeltaTime)
 	{
 		PhaseManager.ChangeState("MFPhase3");
 	}
-	// 발판 테스트
-	/*if (true == GameEngineInput::GetInst()->IsDown("Appear_SnowPlatform"))
-	{
-		GameEngineActor* TmpActor = GetLevel()->CreateActor<GameEngineActor>();
-		TmpActor->GetTransform().SetWorldScale({ 1,1,1 });
-		TmpActor->GetTransform().SetWorldPosition({800, -550, 0});
-		TmpActor->GetTransform().SetWorldRotation(float4::ZERO);
-
-		PPtr = CreateComponent<GameEngineTextureRenderer>();
-		PPtr->SetParent(TmpActor);
-		PPtr->GetTransform().SetLocalScale({1,1,1});
-		PPtr->GetTransform().SetLocalPosition({0,0,0});
-		PPtr->GetTransform().SetWorldRotation(float4::ZERO);
-
-		{
-			GameEngineTextureRenderer* TmpRender = CreateComponent<GameEngineTextureRenderer>();
-			TmpRender->SetParent(PPtr);
-			TmpRender->GetTransform().SetWorldScale(float4::ONE * 100.0f);
-			TmpRender->GetTransform().SetLocalPosition({ 200,50,0 });
-			TmpVector.push_back(TmpRender);
-		}
-		{
-			GameEngineTextureRenderer* TmpRender = CreateComponent<GameEngineTextureRenderer>();
-			TmpRender->SetParent(PPtr);
-			TmpRender->GetTransform().SetWorldScale(float4::ONE * 100.0f);
-			TmpRender->GetTransform().SetLocalPosition({ -200, 50,0 });
-			TmpVector.push_back(TmpRender);
-		}
-		{
-			GameEngineTextureRenderer* TmpRender = CreateComponent<GameEngineTextureRenderer>();
-			TmpRender->SetParent(PPtr);
-			TmpRender->GetTransform().SetWorldScale(float4::ONE * 100.0f);
-			TmpRender->GetTransform().SetLocalPosition({ 0,200,0 });
-			TmpVector.push_back(TmpRender);
-		}
-		{
-			GameEngineTextureRenderer* TmpRender = CreateComponent<GameEngineTextureRenderer>();
-			TmpRender->SetParent(PPtr);
-			TmpRender->GetTransform().SetWorldScale(float4::ONE * 100.0f);
-			TmpRender->GetTransform().SetLocalPosition({ 100,-100,0 });
-			TmpVector.push_back(TmpRender);
-		}
-		{
-			GameEngineTextureRenderer* TmpRender = CreateComponent<GameEngineTextureRenderer>();
-			TmpRender->SetParent(PPtr);
-			TmpRender->GetTransform().SetWorldScale(float4::ONE * 100.0f);
-			TmpRender->GetTransform().SetLocalPosition({ -100,-100,0 });
-			TmpVector.push_back(TmpRender);
-		}
-
-		for (size_t i = 0; i < TmpVector.size(); i++)
-		{
-			MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
-			Ptr->SetPlatformType(PlatformType::TypeA);
-			Ptr->SetFollowObj(&TmpVector[i]->GetTransform());
-		}
-	}
-	if (nullptr != PPtr)
-	{
-		PPtr->GetTransform().SetLocalRotate({ 0,0,100 * _DeltaTime });
-	}*/
 }
 
 void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)

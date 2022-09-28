@@ -28,6 +28,16 @@ public:
 		ColRenderer = _Collision;
 	}
 
+	inline void SetPlatformCount(int _Value)
+	{
+		PlatformCount = _Value;
+	}
+
+	inline int GetPlatformCount()
+	{
+		return PlatformCount;
+	}
+
 	GameEngineTextureRenderer* GetColMap()
 	{
 		return ColRenderer;
@@ -75,5 +85,6 @@ private:
 	float					Speed;
 	float					WeaponTime;
 	float					NoDamageTime;
+	int						PlatformCount;
 };
 

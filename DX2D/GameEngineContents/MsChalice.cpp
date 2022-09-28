@@ -16,6 +16,7 @@ MsChalice::MsChalice()
 	, Speed(500.0f)
 	, WeaponTime(0.0f)
 	, NoDamageTime(0.0f)
+	, PlatformCount(3)
 {
 	Chalice = this;
 }
@@ -35,7 +36,19 @@ CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngine
 CollisionReturn MsChalice::CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	AddDir.x = _Other->GetActor<MortimerFreezeSnowPlatform>()->GetMovePos().x;
-	return CollisionReturn::ContinueCheck;
+
+	// 충돌 확인 필요
+	if (0 < PlatformCount)
+	{
+		--PlatformCount;
+		
+		if (0 == PlatformCount)
+		{
+			PlatformCount = 0;
+		}
+	}
+
+	return CollisionReturn::Break;
 }
 
 void MsChalice::Start()
@@ -91,6 +104,7 @@ void MsChalice::Start()
 		//Collision->GetTransform().SetLocalScale({ 100.0f, 100.0f, 10000.0f });
 
 		// Collision2D
+		Collision->SetCollisionMode(CollisionMode::Ex);
 		Collision->GetTransform().SetLocalScale({ 100.0f, 50.0f, 1.0f });
 		Collision->ChangeOrder(OBJECTORDER::Player);
 	}
@@ -143,14 +157,14 @@ void MsChalice::Update(float _DeltaTime)
 	NoDamageTime -= _DeltaTime;
 	if (0 >= NoDamageTime)
 	{
-		Collision->On();
+		//Collision->On();
 	}
 
 	MoveDir += Gravity;
 	GetTransform().SetLocalMove(MoveDir * _DeltaTime + AddDir);
 
 	// 발판 테스트
-	/*bool IsCollision_ = false;
+	bool IsCollision_ = false;
 	if (0.0f >= MoveDir.y)
 	{
 		while (true == Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::SnowPlatform, CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckPlatform, this, std::placeholders::_1, std::placeholders::_2)))
@@ -177,7 +191,7 @@ void MsChalice::Update(float _DeltaTime)
 	else
 	{
 		AddDir = float4::ZERO;
-	}*/
+	}
 
 	// Collision3D
 	/*Collision->IsCollision(CollisionType::CT_OBB, OBJECTORDER::Monster, CollisionType::CT_OBB,
@@ -188,7 +202,7 @@ void MsChalice::Update(float _DeltaTime)
 		});*/
 
 		// Collision2D
-	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Boss, CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Boss), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
 
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceShoot"))
 	{
@@ -465,7 +479,7 @@ void MsChalice::DashUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MsChalice::HitStart(const StateInfo& _Info)
 {
-	Collision->Off();
+	//Collision->Off();
 	CurStateName = "Chalice_Hit";
 	NoDamageTime = 1.8f;
 }

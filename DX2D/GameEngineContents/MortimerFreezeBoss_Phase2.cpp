@@ -3,6 +3,7 @@
 #include "MortimerFreezeIceCube.h"
 #include "MortimerFreezeIceBat.h"
 #include "MortimerFreezeBlade.h"
+#include "MortimerFreezeSnowPlatform.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
 void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
@@ -785,6 +786,7 @@ void MortimerFreezeBoss::Phase2to3Start(const StateInfo& _Info)
 	Renderer->AnimationBindEnd("MFPhase3Transition0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("MFPhase3Transition1");
+			IsPlatformOn = true;
 		});
 
 	Renderer->AnimationBindEnd("MFPhase3Transition1", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -841,6 +843,58 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 		else
 		{
 			GetTransform().SetWorldRightMove(500.0f, _DeltaTime);
+		}
+	}
+
+	if (true == IsPlatformOn)
+	{
+		PlatformTime -= _DeltaTime;
+
+		if (0.0f >= PlatformTime)
+		{
+			--PlatformCount;
+
+			// MortimerFreezeLevel의 SetPh3MoveValue 작업 필요
+			if (4 == PlatformCount)
+			{
+				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
+				Ptr->SetPlatformType(PlatformType::Intro);
+				Ptr->GetTransform().SetLocalPosition({ 880.0f, -700.0f, -1.0f });
+
+				PlatformTime = 1.0f;
+			}
+			if (3 == PlatformCount)
+			{
+				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
+				Ptr->SetPlatformType(PlatformType::Intro);
+				Ptr->GetTransform().SetLocalPosition({ 600.0f, -600.0f, -1.0f });
+
+				PlatformTime = 1.0f;
+			}
+			if (2 == PlatformCount)
+			{
+				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
+				Ptr->SetPlatformType(PlatformType::Intro);
+				Ptr->GetTransform().SetLocalPosition({ 880.0f, -500.0f, -1.0f });
+
+				PlatformTime = 1.0f;
+			}
+			if (1 == PlatformCount)
+			{
+				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
+				Ptr->SetPlatformType(PlatformType::Intro);
+				Ptr->GetTransform().SetLocalPosition({ 600.0f, -400.0f, -1.0f });
+
+				PlatformTime = 1.0f;
+			}
+			if (0 == PlatformCount)
+			{
+				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
+				Ptr->SetPlatformType(PlatformType::Intro);
+				Ptr->GetTransform().SetLocalPosition({ 880.0f, -300.0f, -1.0f });
+
+				PlatformTime = 1.0f;
+			}
 		}
 	}
 }

@@ -71,8 +71,6 @@ protected:
 	MortimerFreezeMinion*		Minion1;
 	MortimerFreezeMinion*		Minion2;
 	MortimerFreezeMinion*		Minion3;
-	// 발판 테스트
-	//GameEngineTextureRenderer* PPtr;
 
 	// Phase1
 	void Phase1Start(const StateInfo& _Info);
@@ -184,12 +182,14 @@ private:
 	float	SmashTime;
 	float	IceTime;
 	float	BladeTime;
+	float	PlatformTime;
 	int		PrevSkill;
 	int		DashMove;
 	int		IceCubeCount;
 	int		IceBatCount;
 	int		BladeCount;
 	int		Phase3TransitionMotionCount;
+	int		PlatformCount;
 	int		LegCount;
 	bool	IsDashPatternBegin;
 	bool	IsPreparing;
@@ -198,6 +198,7 @@ private:
 	bool	IsJump;
 	bool	IsShoot;
 	bool	IsBatOpen;
+	bool	IsPlatformOn;
 	bool	IsLegMove;
 
 	// Phase3

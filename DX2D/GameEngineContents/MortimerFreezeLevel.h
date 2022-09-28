@@ -39,6 +39,7 @@ protected:
 
 private:
 	GameEngineTextureRenderer* Renderer;
+	GameEngineTextureRenderer* PPtr;
 	std::vector<GameEngineTransform*> MoveVec;
 	std::vector<float4> StartPosVec;
 	std::vector<float4> GoalPosVec;

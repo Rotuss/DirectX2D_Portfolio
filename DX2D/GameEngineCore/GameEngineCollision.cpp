@@ -84,7 +84,7 @@ bool GameEngineCollision::IsCollision(CollisionType _ThisType, int _GroupOrder, 
 				{
 					CollisionCheck.insert(Collision);
 
-					if (nullptr == _Enter && CollisionReturn::Break == _Enter(this, Collision))
+					if (nullptr != _Enter && CollisionReturn::Break == _Enter(this, Collision))
 					{
 						return true;
 					}
@@ -102,6 +102,10 @@ bool GameEngineCollision::IsCollision(CollisionType _ThisType, int _GroupOrder, 
 				if (nullptr != _Update)
 				{
 					if (CollisionReturn::Break == _Update(this, Collision))
+					{
+						return true;
+					}
+					if (CollisionReturn::ContinueCheck == _Update(this, Collision))
 					{
 						return true;
 					}
