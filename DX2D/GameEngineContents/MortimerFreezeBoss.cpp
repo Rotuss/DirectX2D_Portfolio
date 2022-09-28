@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 #include "MortimerFreezeBoss.h"
 #include "GlobalContents.h"
+#include "ReadyWALLOP.h"
 #include "MortimerFreezeTable.h"
 #include "MortimerFreezeCard.h"
 #include "MortimerFreezeMinion.h"
@@ -128,7 +129,8 @@ void MortimerFreezeBoss::Start()
 
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->CreateFrameAnimationFolder("MFIntro_Top", FrameAnimation_DESC("MFIntro_Top", 0, 43, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFIntro_Top", FrameAnimation_DESC("MFIntro_Top", 0, 43, 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("MFIntro_TopLast", FrameAnimation_DESC("MFIntro_Top", 44, 64, 0.04f, false));
 		Renderer->CreateFrameAnimationFolder("MFIdle", FrameAnimation_DESC("MFIdle", 0, 23, 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("MFIdleTrans", FrameAnimation_DESC("MFIdle", 24, 32, 0.1f, false));
 		
@@ -230,7 +232,8 @@ void MortimerFreezeBoss::Start()
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 		//Renderer->GetTransform().SetLocalPosition({ 1180.0f, -390.0f, -1.0f });
-		GetTransform().SetLocalPosition({ 1350, -380, -1 });
+		GetTransform().SetLocalPosition({ 805, -530, -1 });
+		//GetTransform().SetLocalPosition({ 1350, -380, -1 });
 		//GetTransform().SetLocalPosition({ 950, -360, -1 });
 	}
 
@@ -267,7 +270,7 @@ void MortimerFreezeBoss::Start()
 
 	{
 		SubRenderer00 = CreateComponent<GameEngineTextureRenderer>();
-		SubRenderer00->CreateFrameAnimationFolder("MFIntro", FrameAnimation_DESC("MFIntro", 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("MFIntro", FrameAnimation_DESC("MFIntro", 0.05f, false));
 		
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Start", FrameAnimation_DESC("SnowBeast_Intro", 0, 2, 0.1f, true));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 56, 0.1f, false));
@@ -287,8 +290,8 @@ void MortimerFreezeBoss::Start()
 		SubRenderer00->SetScaleModeImage();
 		SubRenderer00->ScaleToTexture();
 		SubRenderer00->SetPivot(PIVOTMODE::CENTER);
-		SubRenderer00->Off();
-		//SubRenderer00->GetTransform().SetLocalPosition({ 1160.0f, -390.0f, -0.3f });
+		//SubRenderer00->Off();
+		SubRenderer00->GetTransform().SetLocalPosition({ 0, 0, 0.8f });
 	}
 
 	{
@@ -382,7 +385,7 @@ void MortimerFreezeBoss::Phase1Start(const StateInfo& _Info)
 	StateManager.CreateStateMember("Whale", std::bind(&MortimerFreezeBoss::AttackWhaleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackWhaleStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Transition_Phase2", std::bind(&MortimerFreezeBoss::Phase1to2Update, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::Phase1to2Start, this, std::placeholders::_1));
 
-	StateManager.ChangeState("MF1Idle");
+	StateManager.ChangeState("Intro");
 }
 
 void MortimerFreezeBoss::Phase1Update(float _DeltaTime, const StateInfo& _Info)
@@ -395,9 +398,27 @@ void MortimerFreezeBoss::P1IntroStart(const StateInfo& _Info)
 	Renderer->ChangeFrameAnimation("MFIntro_Top");
 	SubRenderer00->ChangeFrameAnimation("MFIntro");
 
+	Renderer->AnimationBindEnd("MFIntro_Top", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Renderer->ChangeFrameAnimation("MFIntro_TopLast");
+		});
+
+	Renderer->AnimationBindEnd("MFIntro_TopLast", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			GetTransform().SetLocalPosition({ 1350, -380, -1 });
+			StateManager.ChangeState("MF1Idle");
+		});
+
 	SubRenderer00->AnimationBindEnd("MFIntro", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			SubRenderer00->Off();
+		});
+
+	ReadyWALLOP* RW = GetLevel()->CreateActor<ReadyWALLOP>();
+	RW->GetTransform().SetWorldPosition({ 830.0f,-610.0f,-15.0f });
+	RW->GetRenderer()->AnimationBindEnd("ReadyWALLOP", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			RW->Death();
 		});
 }
 

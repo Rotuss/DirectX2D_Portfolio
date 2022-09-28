@@ -127,6 +127,9 @@
     <ClInclude Include="UIHealth.h">
       <Filter>Actor\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ReadyWALLOP.h">
+      <Filter>Actor\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="UIHealth.cpp">
       <Filter>Actor\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadyWALLOP.cpp">
+      <Filter>Actor\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
