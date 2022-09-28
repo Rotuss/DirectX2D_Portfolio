@@ -1,9 +1,10 @@
 #include "PreCompile.h"
 #include "MsChalice.h"
 #include "Weapon.h"
+#include "UIHealth.h"
 #include "GlobalContents.h"
-#include <iostream>
 #include "MortimerFreezeSnowPlatform.h"
+#include <iostream>
 
 MsChalice* MsChalice::Chalice = nullptr;
 
@@ -16,6 +17,7 @@ MsChalice::MsChalice()
 	, Speed(500.0f)
 	, WeaponTime(0.0f)
 	, NoDamageTime(0.0f)
+	, ChaliceHP(4)
 	, PlatformCount(3)
 {
 	Chalice = this;
@@ -28,6 +30,11 @@ MsChalice::~MsChalice()
 CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	//_Other->GetActor()->Death();
+	if (0 < ChaliceHP)
+	{
+		ChaliceHP += -1;
+	}
+	Health->SetHealthCount(ChaliceHP);
 	StateManager.ChangeState("ChaliceHit");
 	return CollisionReturn::ContinueCheck;
 }
@@ -116,6 +123,8 @@ void MsChalice::Start()
 	StateManager.CreateStateMember("ChaliceDash", std::bind(&MsChalice::DashUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::DashStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceHit", std::bind(&MsChalice::HitUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::HitStart, this, std::placeholders::_1));
 	StateManager.ChangeState("ChaliceIdle");
+
+	Health = GetLevel()->CreateActor<UIHealth>(OBJECTORDER::UI);
 }
 
 void MsChalice::Update(float _DeltaTime)

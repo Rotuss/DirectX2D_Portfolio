@@ -124,6 +124,9 @@
     <ClInclude Include="KnockOut.h">
       <Filter>Actor\Common</Filter>
     </ClInclude>
+    <ClInclude Include="UIHealth.h">
+      <Filter>Actor\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -254,6 +257,9 @@
     <ClCompile Include="KnockOut.cpp">
       <Filter>Actor\Common</Filter>
     </ClCompile>
+    <ClCompile Include="UIHealth.cpp">
+      <Filter>Actor\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Actor">
@@ -294,6 +300,9 @@
     </Filter>
     <Filter Include="Level\Boss">
       <UniqueIdentifier>{f9e30516-945e-4441-958c-0e97e00ff5f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\UI">
+      <UniqueIdentifier>{b8e70623-a7c2-43c6-b3ea-64e3a832e387}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/CoreMinimal.h>
 #include "Weapon.h"
+#include "UIHealth.h"
 
 // Ό³Έν :
 class GameEngineCollision;
@@ -74,7 +75,7 @@ protected:
 
 private:
 	GameEngineStateManager	StateManager;
-
+	UIHealth* Health;
 	std::string				ChaliceDir;
 	std::string				ChalicePrevDir;
 	std::string				CurStateName;
@@ -85,6 +86,7 @@ private:
 	float					Speed;
 	float					WeaponTime;
 	float					NoDamageTime;
+	int						ChaliceHP;
 	int						PlatformCount;
 };
 

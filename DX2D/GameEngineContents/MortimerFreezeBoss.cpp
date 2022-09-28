@@ -5,8 +5,6 @@
 #include "MortimerFreezeCard.h"
 #include "MortimerFreezeMinion.h"
 #include "MortimerFreezeWhale.h"
-// test
-#include "MortimerFreezeSnowPlatform.h"
 
 #include <iostream>
 #include <GameEngineBase/GameEngineRandom.h>
