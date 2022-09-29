@@ -20,12 +20,13 @@ void MDHRLogoLevel::Start()
 	}
 
 	{
-		TitleLogo* Logo = CreateActor<TitleLogo>(OBJECTORDER::Title);
+		ScreenFX* SFX = CreateActor<ScreenFX>(OBJECTORDER::UI);
+		//SFX->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
+		SFX->SetLevelOverOn();
 	}
 
 	{
-		ScreenFX* SFX = CreateActor<ScreenFX>(OBJECTORDER::Title);
-		SFX->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
+		TitleLogo* Logo = CreateActor<TitleLogo>(OBJECTORDER::Title);
 	}
 }
 

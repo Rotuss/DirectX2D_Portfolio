@@ -16,6 +16,7 @@ enum class CAMERAORDER
 	USER6,
 	USER7,
 	UICAMERA,
+	OLDFILMCAMERA,
 };
 
 // 설명 : 화면(타이틀 화면, 플레이 화면, 인벤토리 화면)

@@ -12,7 +12,7 @@
 
 GameEngineLevel::GameEngineLevel() 
 {
-	Cameras.resize(static_cast<unsigned int>(CAMERAORDER::UICAMERA));
+	Cameras.resize(static_cast<unsigned int>(CAMERAORDER::OLDFILMCAMERA));
 
 	{
 		GameEngineCameraActor* CameraActor = CreateActor<GameEngineCameraActor>();
@@ -26,6 +26,13 @@ GameEngineLevel::GameEngineLevel()
 		CameraActor->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
 		CameraActor->GetCameraComponent()->SetProjectionMode(CAMERAPROJECTIONMODE::Orthographic);
 		CameraActor->GetCameraComponent()->SetCameraOrder(CAMERAORDER::UICAMERA);
+	}
+
+	{
+		GameEngineCameraActor* CameraActor = CreateActor<GameEngineCameraActor>();
+		CameraActor->GetTransform().SetLocalPosition({ 0.0f, 0.0f, -100.0f });
+		CameraActor->GetCameraComponent()->SetProjectionMode(CAMERAPROJECTIONMODE::Orthographic);
+		CameraActor->GetCameraComponent()->SetCameraOrder(CAMERAORDER::OLDFILMCAMERA);
 	}
 }
 

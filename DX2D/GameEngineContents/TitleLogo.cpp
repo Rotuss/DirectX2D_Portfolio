@@ -39,5 +39,5 @@ void TitleLogo::End()
 
 void TitleLogo::EndFunction(const FrameAnimation_DESC& _Info)
 {
-	//GEngine::ChangeLevel("Title");
+	GEngine::ChangeLevel("Title");
 }

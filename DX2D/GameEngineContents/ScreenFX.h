@@ -22,7 +22,6 @@ protected:
 	void End() {}
 
 private:
-	GameEngineTextureRenderer* Renderer;
 
 };
 
