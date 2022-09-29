@@ -18,8 +18,8 @@ void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
 
 	HP = 1;
 	Renderer->SetPivot(PIVOTMODE::BOT);
-	GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{0,-200,0});
-
+	GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0.0f,-130.0f,0.0f });
+	
 	StateManager2.CreateStateMember("MF2Idle", std::bind(&MortimerFreezeBoss::P2IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P2IdleStart, this, std::placeholders::_1));
 
 	StateManager2.CreateStateMember("Dash", std::bind(&MortimerFreezeBoss::AttackDashUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackDashStart, this, std::placeholders::_1));
@@ -42,11 +42,11 @@ void MortimerFreezeBoss::P2IdleStart(const StateInfo& _Info)
 	{
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
-			Renderer->GetTransform().SetLocalPosition(float4{ 70.0f, 0.0f, 0.0f });
+			Renderer->GetTransform().SetLocalPosition(float4{ 21.5f,0.0f,0.0f });
 		}
 		if (MFBossDIR::RIGHT == CurMFDir)
 		{
-			Renderer->GetTransform().SetLocalPosition(float4{ -70.0f, 0.0f, 0.0f });
+			Renderer->GetTransform().SetLocalPosition(float4{ -21.5f,0.0f,0.0f });
 		}
 		
 		Renderer->On();

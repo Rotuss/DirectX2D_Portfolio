@@ -175,6 +175,7 @@ private:
 	bool	IsEndPhase1;
 	bool	IsSnowBeastIntroStartEnd;
 	bool	IsSnowBeastIntroMoveDown;
+	bool	IsSnowBeastIntroLand;
 
 	// Phase2
 	float	DashTime;
