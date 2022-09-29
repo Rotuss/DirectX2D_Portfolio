@@ -894,13 +894,13 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 			if (MFBossDIR::LEFT == CurMFDir)
 			{
 				AddRenderer->GetTransform().PixLocalPositiveX();
-				AddRenderer->GetTransform().SetLocalPosition(float4{ -100, 100, 0.5 });
+				AddRenderer->GetTransform().SetLocalPosition(float4{ -150.0f, 110.0f, 0.5f });
 				AddRenderer->On();
 			}
 			if (MFBossDIR::RIGHT== CurMFDir)
 			{
 				AddRenderer->GetTransform().PixLocalNegativeX();
-				AddRenderer->GetTransform().SetLocalPosition(float4{ 100, 100, 0.5 });
+				AddRenderer->GetTransform().SetLocalPosition(float4{ 150.0f, 110.0f, 0.5f });
 				AddRenderer->On();
 			}
 		});
@@ -911,24 +911,24 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 			{
 				SubRenderer00->ChangeFrameAnimation("SnowBeastIntro_Start");
 				SubRenderer00->GetTransform().PixLocalPositiveX();
-				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0, 350, -1.5 });
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0.0f, 350.0f, -1.5f });
 				SubRenderer00->On();
 
 				SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer_Start");
 				SubRenderer01->GetTransform().PixLocalPositiveX();
-				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0, 350, 0.5 });
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0.0f, 350.0f, 0.5f });
 				SubRenderer01->On();
 			}
 			if (MFBossDIR::RIGHT == CurMFDir)
 			{
 				SubRenderer00->ChangeFrameAnimation("SnowBeastIntro_Start");
 				SubRenderer00->GetTransform().PixLocalNegativeX();
-				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0, 350, -1.5 });
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 0.0f, 350.0f, -1.5f });
 				SubRenderer00->On();
 
 				SubRenderer01->ChangeFrameAnimation("SnowBeastIntro_Backer_Start");
 				SubRenderer01->GetTransform().PixLocalNegativeX();
-				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0, 350, 0.5 });
+				SubRenderer01->GetTransform().SetLocalPosition(float4{ 0.0f, 350.0f, 0.5f });
 				SubRenderer01->On();
 			}
 		});
@@ -939,6 +939,15 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 			{
 				AddRenderer->Off();
 				Renderer->ChangeFrameAnimation("MFPhase2Transition2");
+				
+				if (MFBossDIR::LEFT == CurMFDir)
+				{
+					Renderer->GetTransform().SetLocalPosition(float4{ -70.0f, 0.0f, 0.0f });
+				}
+				if (MFBossDIR::RIGHT == CurMFDir)
+				{
+					Renderer->GetTransform().SetLocalPosition(float4{ 70.0f, 0.0f, 0.0f });
+				}
 			}
 
 			Phase2TransitionMotionCount -= 1;

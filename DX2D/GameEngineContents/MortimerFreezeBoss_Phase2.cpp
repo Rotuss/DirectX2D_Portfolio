@@ -40,6 +40,15 @@ void MortimerFreezeBoss::P2IdleStart(const StateInfo& _Info)
 	Renderer->ChangeFrameAnimation("MF2Idle");
 	if (false == Renderer->IsUpdate())
 	{
+		if (MFBossDIR::LEFT == CurMFDir)
+		{
+			Renderer->GetTransform().SetLocalPosition(float4{ 70.0f, 0.0f, 0.0f });
+		}
+		if (MFBossDIR::RIGHT == CurMFDir)
+		{
+			Renderer->GetTransform().SetLocalPosition(float4{ -70.0f, 0.0f, 0.0f });
+		}
+		
 		Renderer->On();
 	}
 }
