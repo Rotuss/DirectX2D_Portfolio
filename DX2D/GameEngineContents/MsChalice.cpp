@@ -94,7 +94,7 @@ void MsChalice::Start()
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::BOT);
 
-		GetTransform().SetLocalPosition({ 550, -900 , -1 });
+		GetTransform().SetLocalPosition({ 550, -900 , -3 });
 
 		Renderer->AnimationBindEnd("Chalice_Idle_Shoot", [/*&*/=](const FrameAnimation_DESC& _Info)
 			{

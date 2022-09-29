@@ -848,8 +848,8 @@ void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 
 	{
 		WhaleCollision = CreateComponent<GameEngineCollision>();
-		WhaleCollision->GetTransform().SetLocalScale({ 700,800,1 });
-		WhaleCollision->GetTransform().SetLocalPosition(float4{ 0.0f,-200.0f });
+		WhaleCollision->GetTransform().SetLocalScale({ 450,100,1 });
+		WhaleCollision->GetTransform().SetLocalPosition(float4{ 0.0f,-450.0f });
 		WhaleCollision->ChangeOrder(OBJECTORDER::BossWhale);
 		WhaleCollision->Off();
 	}
@@ -871,7 +871,7 @@ void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 			WhaleCollision->Death();
 			// Whale »ý¼º
 			MortimerFreezeWhale* Whale = GetLevel()->CreateActor<MortimerFreezeWhale>(OBJECTORDER::Boss);
-			Whale->GetTransform().SetLocalPosition({ GetTransform().GetLocalPosition().x, GetTransform().GetLocalPosition().y * 3 + 90.0f, GetTransform().GetLocalPosition().z });
+			Whale->GetTransform().SetLocalPosition({ GetTransform().GetLocalPosition().x, GetTransform().GetLocalPosition().y * 2 - 115.0f, -1.0f });
 		});
 	Renderer->AnimationBindEnd("WhaleDropAttackOutro", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
