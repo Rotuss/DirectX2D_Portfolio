@@ -189,6 +189,7 @@ private:
 	int		IceCubeCount;
 	int		IceBatCount;
 	int		BladeCount;
+	int		SmashRepeatCount;
 	int		Phase3TransitionMotionCount;
 	int		PlatformCount;
 	int		LegCount;

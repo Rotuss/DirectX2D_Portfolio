@@ -62,6 +62,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IceCubeCount(GameEngineRandom::MainRandom.RandomInt(1, 3))
 	, IceBatCount(4)
 	, BladeCount(-1)
+	, SmashRepeatCount(3)
 	, Phase3TransitionMotionCount(2)
 	, PlatformCount(5)
 	, LegCount(2)
@@ -152,7 +153,7 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MFPhase2Transition2", FrameAnimation_DESC("MFPhase2_Transition", 16, 27, 0.1f, false));
 		
 		// Phase2
-		Renderer->CreateFrameAnimationFolder("MF2Idle", FrameAnimation_DESC("MF2Idle", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("MF2Idle", FrameAnimation_DESC("MF2Idle", 0.06f, true));
 
 		// Dash패턴 첫 공격 전 모션
 		Renderer->CreateFrameAnimationFolder("SnowBeast_DashPreAttack", FrameAnimation_DESC("SnowBeast_PreAttack", 0.1f, false));
@@ -182,8 +183,9 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer", FrameAnimation_DESC("SnowBeast_Fridge_Freezer", 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer_Outro", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Outro", 0.1f, false));
 
-		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("SnowBeastSmashOutro", FrameAnimation_DESC("SnowBeast_Smash_Outro", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0, 19, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastSmashRepeat", FrameAnimation_DESC("SnowBeast_Smash", 20, 22, 0.08f, true));
+		Renderer->CreateFrameAnimationFolder("SnowBeastSmashOutro", FrameAnimation_DESC("SnowBeast_Smash_Outro", 0.06f, false));
 
 		// 애니메이션 조정 필요
 		Renderer->CreateFrameAnimationFolder("MFPhase3Transition0", FrameAnimation_DESC("SnowBeast_Death", 0, 14, 0.1f, false));

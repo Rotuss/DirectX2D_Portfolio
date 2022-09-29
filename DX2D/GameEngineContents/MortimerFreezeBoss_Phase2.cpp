@@ -748,7 +748,17 @@ void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 	
 	Renderer->AnimationBindEnd("SnowBeastSmash", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
-			Renderer->ChangeFrameAnimation("SnowBeastSmashOutro");
+			Renderer->ChangeFrameAnimation("SnowBeastSmashRepeat");
+		});
+
+	Renderer->AnimationBindEnd("SnowBeastSmashRepeat", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (0 == SmashRepeatCount)
+			{
+				Renderer->ChangeFrameAnimation("SnowBeastSmashOutro");
+			}
+
+			SmashRepeatCount -= 1;
 		});
 
 	Renderer->AnimationBindEnd("SnowBeastSmashOutro", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -759,6 +769,7 @@ void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 	// 스매시 애니메이션바인드엔드에 BladeTime 시간설정 + BladeCount 4 설정, StateManager2.ChangeState("MF2Idle");
 	BladeTime = 2.0f;
 	BladeCount = 4;
+	SmashRepeatCount = 3;
 }
 
 void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _Info)
