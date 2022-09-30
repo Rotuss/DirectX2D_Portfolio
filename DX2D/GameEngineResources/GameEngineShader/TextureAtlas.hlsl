@@ -104,5 +104,12 @@ float4 TextureAtlas_PS(Output _Input) : SV_Target0
         clip(-1);
     }
     
+    if (1 == IsOldFilmColor)
+    {
+        float4 OldFilmColor = (float4(1.0f - TexColor.rgb, 1.0f) * MulColor) + PlusColor;
+
+        return OldFilmColor;
+    }
+    
     return RenderColor;
 }

@@ -31,6 +31,7 @@ void ScreenFX::Start()
 		PostEffectRenderer->ChangeFrameAnimation("ScreenFX");
 		PostEffectRenderer->GetTransform().SetLocalScale({ 1920,1080,1 });
 		PostEffectRenderer->ChangeCamera(CAMERAORDER::OLDFILMCAMERA);
+		PostEffectRenderer->GetPixelData().MulColor = 1.05f;
 	}
 
 	{
@@ -38,9 +39,10 @@ void ScreenFX::Start()
 		PostEffectRenderer->CreateFrameAnimationFolder("RevScreenFX", FrameAnimation_DESC("RevScreenFX", 0.1f, true));
 		PostEffectRenderer->ChangeFrameAnimation("RevScreenFX");
 		PostEffectRenderer->GetTransform().SetLocalScale({ 1920,1080,1 });
-		PostEffectRenderer->GetPixelData().MulColor = 0.8f;
 		PostEffectRenderer->ChangeCamera(CAMERAORDER::OLDFILMCAMERA);
 		PostEffectRenderer->GetPipeLine()->SetOutputMergerBlend("OldFilm");
+		PostEffectRenderer->GetPixelData().MulColor = 1.05f;
+		PostEffectRenderer->RenderOption.IsOldFilmColor = 1;
 	}
 }
 

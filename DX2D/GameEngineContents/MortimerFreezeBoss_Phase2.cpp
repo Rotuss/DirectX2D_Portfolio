@@ -790,12 +790,12 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 265.0f * (4 - BladeCount),-50,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 265.0f * (4 - BladeCount),-45,0});
 		}
 		if (MFBossDIR::RIGHT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 265.0f * (4 - BladeCount),50,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 265.0f * (4 - BladeCount),45,0});
 		}
 	}
 }

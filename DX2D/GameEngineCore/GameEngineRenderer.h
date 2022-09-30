@@ -7,9 +7,8 @@ struct RenderOption
 	float	DeltaTime;
 	float	SumDeltaTime = 0.0f;
 	int		IsMask;
-	int		IsJump;
-	int		Option00;
-	int		Option01;
+	int		IsOldFilmColor;
+	//int		Option01;
 };
 
 // Ό³Έν :
