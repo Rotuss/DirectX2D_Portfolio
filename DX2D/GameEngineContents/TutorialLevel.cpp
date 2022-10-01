@@ -3,6 +3,7 @@
 #include "TutorialBackGround.h"
 #include "Player.h"
 #include "GlobalContents.h"
+#include <GameEngineCore/GameEngineBlur.h>
 
 TutorialLevel::TutorialLevel() 
 	: Renderer(nullptr)
@@ -18,6 +19,9 @@ TutorialLevel::~TutorialLevel()
 
 void TutorialLevel::Start()
 {
+	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+	
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');

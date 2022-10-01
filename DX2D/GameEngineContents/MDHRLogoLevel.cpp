@@ -3,6 +3,7 @@
 #include "ScreenFX.h"
 #include "TitleLogo.h"
 #include "GlobalContents.h"
+#include <GameEngineCore/GameEngineBlur.h>
 
 MDHRLogoLevel::MDHRLogoLevel() 
 {
@@ -14,6 +15,9 @@ MDHRLogoLevel::~MDHRLogoLevel()
 
 void MDHRLogoLevel::Start()
 {
+	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');

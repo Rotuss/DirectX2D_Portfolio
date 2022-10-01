@@ -29,6 +29,11 @@ MsChalice::~MsChalice()
 
 CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	if (0 < NoDamageTime)
+	{
+		return CollisionReturn::Break;
+	}
+	
 	//_Other->GetActor()->Death();
 	if (0 < ChaliceHP)
 	{
@@ -164,10 +169,6 @@ void MsChalice::Update(float _DeltaTime)
 	}
 
 	NoDamageTime -= _DeltaTime;
-	if (0 >= NoDamageTime)
-	{
-		//Collision->On();
-	}
 
 	MoveDir += Gravity;
 	GetTransform().SetLocalMove(MoveDir * _DeltaTime + AddDir);
@@ -488,7 +489,6 @@ void MsChalice::DashUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MsChalice::HitStart(const StateInfo& _Info)
 {
-	//Collision->Off();
 	CurStateName = "Chalice_Hit";
 	NoDamageTime = 1.8f;
 }

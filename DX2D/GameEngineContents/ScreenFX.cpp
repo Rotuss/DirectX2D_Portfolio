@@ -1,6 +1,5 @@
 #include "PreCompile.h"
 #include "ScreenFX.h"
-#include <GameEngineCore/GameEngineBlur.h>
 
 ScreenFX::ScreenFX() 
 {
@@ -12,7 +11,6 @@ ScreenFX::~ScreenFX()
 
 void ScreenFX::Start()
 {
-	GetLevel()->GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	//{
 	//	Renderer = CreateComponent<GameEngineTextureRenderer>();
 	//	

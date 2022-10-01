@@ -8,6 +8,7 @@
 #include "GlobalContents.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineCore/GEngine.h>
+#include <GameEngineCore/GameEngineBlur.h>
 
 TitleMainLevel::TitleMainLevel() 
 	: Renderer(nullptr)
@@ -24,6 +25,9 @@ TitleMainLevel::~TitleMainLevel()
 
 void TitleMainLevel::Start()
 {
+	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+	
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');

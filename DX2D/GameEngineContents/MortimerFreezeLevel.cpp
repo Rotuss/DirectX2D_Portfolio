@@ -7,6 +7,8 @@
 #include "Player.h"
 #include "MsChalice.h"
 
+#include <GameEngineCore/GameEngineBlur.h>
+
 MortimerFreezeLevel::MortimerFreezeLevel()
 	: Renderer(nullptr)
 	, PPtr(nullptr)
@@ -22,6 +24,9 @@ MortimerFreezeLevel::~MortimerFreezeLevel()
 std::vector<GameEngineTextureRenderer*> TmpVector;
 void MortimerFreezeLevel::Start()
 {
+	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');
