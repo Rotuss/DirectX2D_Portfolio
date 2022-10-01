@@ -627,10 +627,12 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("SnowBeastFridge_Morph");
-	
+	Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,-20.0f,0.0f });
+
 	Renderer->AnimationBindEnd("SnowBeastFridge_Morph", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("SnowBeastFridge_Shoot");
+			Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,30.0f,0.0f });
 			IsShoot = true;
 		});
 
