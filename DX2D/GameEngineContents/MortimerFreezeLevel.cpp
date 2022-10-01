@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "MsChalice.h"
 
-MortimerFreezeLevel::MortimerFreezeLevel() 
+MortimerFreezeLevel::MortimerFreezeLevel()
 	: Renderer(nullptr)
 	, PPtr(nullptr)
 	, MoveTimer(-10.0f)
@@ -15,7 +15,7 @@ MortimerFreezeLevel::MortimerFreezeLevel()
 {
 }
 
-MortimerFreezeLevel::~MortimerFreezeLevel() 
+MortimerFreezeLevel::~MortimerFreezeLevel()
 {
 }
 
@@ -275,49 +275,49 @@ void MortimerFreezeLevel::Start()
 		TmpActor->GetTransform().SetWorldRotation(float4::ZERO);
 		MoveVec.push_back(&TmpActor->GetTransform());
 		StartPosVec.push_back({ 810, 100, 0 });
-		GoalPosVec.push_back({ 810, -380, 0 });
+		GoalPosVec.push_back({ 810, -550, 0 }); // 수치조정 필요
 
 		GameEngineActor* TmpSubActor = CreateActor<GameEngineActor>();
 		PPtr = TmpSubActor->CreateComponent<GameEngineTextureRenderer>();
 		PPtr->SetParent(TmpActor);
-		PPtr->GetTransform().SetLocalScale({ 1,1,1 });
+		PPtr->GetTransform().SetLocalScale(float4{ 1,1,1 });
 		PPtr->GetTransform().SetLocalPosition({ 0,0,0 });
 		PPtr->GetTransform().SetWorldRotation(float4::ZERO);
+		PPtr->Off();
 
-		// 수치 재조정 필요(X축 회전 적용해서 보이는 것과 다르기 때문)
 		{
 			GameEngineTextureRenderer* TmpRender = TmpSubActor->CreateComponent<GameEngineTextureRenderer>();
 			TmpRender->SetParent(PPtr);
 			TmpRender->GetTransform().SetWorldScale(float4::ONE);
-			TmpRender->GetTransform().SetLocalPosition({ 290.0f,70.0f,-0.8f });
+			TmpRender->GetTransform().SetLocalPosition({ 0.0f, 1.0f,-0.8f });
 			TmpVector.push_back(TmpRender);
 		}
 		{
 			GameEngineTextureRenderer* TmpRender = TmpSubActor->CreateComponent<GameEngineTextureRenderer>();
 			TmpRender->SetParent(PPtr);
 			TmpRender->GetTransform().SetWorldScale(float4::ONE);
-			TmpRender->GetTransform().SetLocalPosition({ -275.0f, 105.0f,-0.8f });
+			TmpRender->GetTransform().SetLocalPosition({ std::cos(18 * GameEngineMath::DegreeToRadian),std::sin(18 * GameEngineMath::DegreeToRadian),-0.8f });
 			TmpVector.push_back(TmpRender);
 		}
 		{
 			GameEngineTextureRenderer* TmpRender = TmpSubActor->CreateComponent<GameEngineTextureRenderer>();
 			TmpRender->SetParent(PPtr);
 			TmpRender->GetTransform().SetWorldScale(float4::ONE);
-			TmpRender->GetTransform().SetLocalPosition({ 30.0f,240.0f,-0.8f });
+			TmpRender->GetTransform().SetLocalPosition({ -std::cos(18 * GameEngineMath::DegreeToRadian),std::sin(18 * GameEngineMath::DegreeToRadian),-0.8f });
 			TmpVector.push_back(TmpRender);
 		}
 		{
 			GameEngineTextureRenderer* TmpRender = TmpSubActor->CreateComponent<GameEngineTextureRenderer>();
 			TmpRender->SetParent(PPtr);
 			TmpRender->GetTransform().SetWorldScale(float4::ONE);
-			TmpRender->GetTransform().SetLocalPosition({ 155.0f,-165.0f,-0.8f });
+			TmpRender->GetTransform().SetLocalPosition({ std::cos(54 * GameEngineMath::DegreeToRadian),-std::sin(54 * GameEngineMath::DegreeToRadian),-0.8f });
 			TmpVector.push_back(TmpRender);
 		}
 		{
 			GameEngineTextureRenderer* TmpRender = TmpSubActor->CreateComponent<GameEngineTextureRenderer>();
 			TmpRender->SetParent(PPtr);
 			TmpRender->GetTransform().SetWorldScale(float4::ONE);
-			TmpRender->GetTransform().SetLocalPosition({ -195.0f,-140.0f,-0.8f });
+			TmpRender->GetTransform().SetLocalPosition({ -std::cos(54 * GameEngineMath::DegreeToRadian),-std::sin(54 * GameEngineMath::DegreeToRadian),-0.8f });
 			TmpVector.push_back(TmpRender);
 		}
 
@@ -328,6 +328,7 @@ void MortimerFreezeLevel::Start()
 			Ptr->SetFollowObj(&TmpVector[i]->GetTransform());
 		}
 
+		PPtr->GetTransform().SetLocalScale(float4{ 1,1,1 }*300);
 		PPtr->GetTransform().SetLocalRotation({ 50,0,0 });
 	}
 }
@@ -337,7 +338,7 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 	GameEngineStatusWindow::AddDebugRenderTarget("BackBuffer", GameEngineDevice::GetBackBuffer());
 	GameEngineStatusWindow::AddDebugRenderTarget("MainCamera", GetMainCamera()->GetCameraRenderTarget());
 	GameEngineStatusWindow::AddDebugRenderTarget("UICamera", GetUICamera()->GetCameraRenderTarget());
-	
+
 	Ph3MoveCheckUpdate(_DeltaTime);
 
 	if (GameEngineInput::GetInst()->IsDown("FreeCameaOnOff"))
@@ -353,7 +354,7 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 	if (0 == MsChalice::Chalice->GetPlatformCount() /*|| true == GameEngineInput::GetInst()->IsDown("Appear_SnowPlatform")*/)
 	{
 		MsChalice::Chalice->SetPlatformCount(-1);
-		
+
 		Ph3MoveCheck();
 	}
 
@@ -366,7 +367,7 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 
 	if (nullptr != PPtr)
 	{
-		PPtr->GetTransform().SetLocalRotate({ 0,0,100 * _DeltaTime });
+		PPtr->GetTransform().SetLocalRotate({ 0,0,65 * _DeltaTime });
 	}
 }
 
@@ -391,13 +392,13 @@ void MortimerFreezeLevel::Ph3MoveCheckUpdate(float _DeltaTime)
 	float4 StartPos = { 830.0f,-610.0f };
 	float4 GoalPos = { 830.0f,-320.0f }; // 수치 조정 필요
 
-	float4 LerpPos = float4::Lerp(StartPos, GoalPos, MoveTimer/2);
+	float4 LerpPos = float4::Lerp(StartPos, GoalPos, MoveTimer / 2);
 	GetMainCameraActorTransform().SetLocalPosition(LerpPos);
 
 
 	for (size_t i = 0; i < MoveVec.size(); i++)
 	{
-		float4 LerpPos = float4::Lerp(StartPosVec[i], GoalPosVec[i], MoveTimer/2);
+		float4 LerpPos = float4::Lerp(StartPosVec[i], GoalPosVec[i], MoveTimer / 2);
 		MoveVec[i]->SetLocalPosition(LerpPos);
 	}
 
