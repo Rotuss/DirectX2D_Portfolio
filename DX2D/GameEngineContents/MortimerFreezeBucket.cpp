@@ -10,7 +10,7 @@ MortimerFreezeBucket::MortimerFreezeBucket()
 	, BucketMove()
 	, LerpPos()
 	, StartPosition()
-	, EndPosition({ 0.0f,0.0f,-1.0f })
+	, EndPosition({ 0.0f,0.0f,-560.0f })
 	, BucketLerpRatio(0.0f)
 	, IsBucketMove(false)
 {
@@ -28,12 +28,10 @@ void MortimerFreezeBucket::BucketSetting(BucketDirType _DirType, BucketMoveType 
 	switch (_DirType)
 	{
 	case BucketDirType::Left:
-		// 수치 수정 필요
-		EndPosition.x = 0.0f;
+		EndPosition.x = 200.0f;
 		break;
 	case BucketDirType::Right:
-		// 수치 수정 필요
-		EndPosition.x = 1580.0f;
+		EndPosition.x = 1450.0f;
 		break;
 	default:
 		break;
@@ -42,16 +40,13 @@ void MortimerFreezeBucket::BucketSetting(BucketDirType _DirType, BucketMoveType 
 	switch (_MoveType)
 	{
 	case BucketMoveType::TOP:
-		// 랜덤 수정 필요
-		EndPosition.y = -GameEngineRandom::MainRandom.RandomFloat(400.0f, 450.0f);
+		EndPosition.y = -GameEngineRandom::MainRandom.RandomFloat(20.0f, 50.0f);
 		break;
 	case BucketMoveType::MID:
-		// 랜덤 수정 필요
-		EndPosition.y = -GameEngineRandom::MainRandom.RandomFloat(650.0f, 700.0f);
+		EndPosition.y = -GameEngineRandom::MainRandom.RandomFloat(300.0f, 350.0f);
 		break;
 	case BucketMoveType::BOT:
-		// 랜덤 수정 필요
-		EndPosition.y = -GameEngineRandom::MainRandom.RandomFloat(850.0f, 900.0f);
+		EndPosition.y = -GameEngineRandom::MainRandom.RandomFloat(550.0f, 600.0f);
 		break;
 	default:
 		break;
@@ -102,8 +97,7 @@ void MortimerFreezeBucket::Start()
 void MortimerFreezeBucket::Update(float _DeltaTime)
 {
 	// 오->왼
-	// 수치 수정 필요
-	if (250.0f >= GetTransform().GetLocalPosition().x)
+	if (200.0f >= GetTransform().GetLocalPosition().x)
 	{
 		{
 			// 달 3개 생성
@@ -127,8 +121,7 @@ void MortimerFreezeBucket::Update(float _DeltaTime)
 		Death();
 	}
 	// 왼->오
-	// 수치 수정 필요
-	if (1380.0f <= GetTransform().GetLocalPosition().x)
+	if (1450.0f <= GetTransform().GetLocalPosition().x)
 	{
 		{
 			// 달 3개 생성

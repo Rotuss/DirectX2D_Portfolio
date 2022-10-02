@@ -197,15 +197,15 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MFPhase3Transition_LegsMove", FrameAnimation_DESC("SnowBeast_Death_Legs", 5, 15, 0.1f, true));
 
 		// Phase3
-		Renderer->CreateFrameAnimationFolder("MF3Intro", FrameAnimation_DESC("MF3Intro", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MF3Intro", FrameAnimation_DESC("MF3Intro", 0.07f, false));
 		Renderer->CreateFrameAnimationFolder("MF3IntroMove", FrameAnimation_DESC("SnowFlake_SwapA", {3,2,1}, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("Attack_After_MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 8, 15, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("Attack_After_MF3Idle", FrameAnimation_DESC("SnowFlake_IdleBacker", 8, 15, 0.06f, false));
 		
-		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapA", FrameAnimation_DESC("SnowFlake_SwapA", 1, 8, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapAR", FrameAnimation_DESC("SnowFlake_SwapA", { 8,7,6,5,4,3,2,1 }, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapB", FrameAnimation_DESC("SnowFlake_SwapB_Backer", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapC", FrameAnimation_DESC("SnowFlake_SwapC_Backer", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapA", FrameAnimation_DESC("SnowFlake_SwapA", 1, 8, 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapAR", FrameAnimation_DESC("SnowFlake_SwapA", { 8,7,6,5,4,3,2,1 }, 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapB", FrameAnimation_DESC("SnowFlake_SwapB_Backer", 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapC", FrameAnimation_DESC("SnowFlake_SwapC_Backer", 0.08f, false));
 		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapCLast", FrameAnimation_DESC("SnowFlake_SwapC_Backer", { 2,1,0 }, 0.1f, false));
 
 		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker0", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 0, 19, 0.1f, false));
@@ -224,7 +224,7 @@ void MortimerFreezeBoss::Start()
 
 		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker0", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 0, 12, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker1", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 13, 15, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker2", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 16, 25, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker2", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 16, 25, 0.08f, true));
 		/*Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker2", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 16, 18, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker3", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 19, 25, 0.1f, false));*/
 		Renderer->CreateFrameAnimationFolder("SplitShot_SnowFlakeBacker4", FrameAnimation_DESC("SplitShot_SnowFlakeBacker", 26, 37, 0.1f, false));
@@ -285,10 +285,10 @@ void MortimerFreezeBoss::Start()
 		
 		SubRenderer00->CreateFrameAnimationFolder("IceCream_Ghost", FrameAnimation_DESC("IceCream_Ghost", 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms0", FrameAnimation_DESC("SplitShot_Arms", 0, 3, 0.1f, false));
-		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms1", FrameAnimation_DESC("SplitShot_Arms", 4, 11, 0.1f, true));
+		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms1", FrameAnimation_DESC("SplitShot_Arms", 4, 11, 0.06f, true));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms2", FrameAnimation_DESC("SplitShot_Arms", 12, 12, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms3", FrameAnimation_DESC("SplitShot_Arms", 13, 14, 0.1f, true));
-		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms4", FrameAnimation_DESC("SplitShot_Arms", 15, 19, 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms4", FrameAnimation_DESC("SplitShot_Arms", 15, 19, 0.06f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Death0", FrameAnimation_DESC("SnowFlake_Death", 0, 7, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Death1", FrameAnimation_DESC("SnowFlake_Death", 8, 32, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Death_Alt", FrameAnimation_DESC("SnowFlake_Death_AltBacker", 0.1f, false));

@@ -136,6 +136,7 @@ protected:
 
 	void P3SwapStart(const StateInfo& _Info);
 	void P3SwapUpdate(float _DeltaTime, const StateInfo& _Info);
+	void P3SwapEnd(const StateInfo& _Info);
 
 	void AttackEyeStart(const StateInfo& _Info);
 	void AttackEyeUpdate(float _DeltaTime, const StateInfo& _Info);

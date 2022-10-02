@@ -17,13 +17,16 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 
 	HP = 1;
 	// 수치 조정 필요
-	GetTransform().SetLocalPosition(float4{ 800.0f, -300.0f, -1.0f });
+	Renderer->SetPivot(PIVOTMODE::CENTER);
+	Collision->GetTransform().SetLocalScale(float4{ 300.0f,600.0f,0.0f });
+	Collision->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,0.0f });
+	GetTransform().SetLocalPosition(float4{ 800.0f, -200.0f, 250.0f });
 
 	StateManager3.CreateStateMember("MF3Intro", std::bind(&MortimerFreezeBoss::P3IntroUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3IntroStart, this, std::placeholders::_1), std::bind(&MortimerFreezeBoss::P3IntroEnd, this, std::placeholders::_1));
 
 	StateManager3.CreateStateMember("MF3Idle", std::bind(&MortimerFreezeBoss::P3IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3IdleStart, this, std::placeholders::_1));
 
-	StateManager3.CreateStateMember("Swap", std::bind(&MortimerFreezeBoss::P3SwapUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3SwapStart, this, std::placeholders::_1));
+	StateManager3.CreateStateMember("Swap", std::bind(&MortimerFreezeBoss::P3SwapUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3SwapStart, this, std::placeholders::_1), std::bind(&MortimerFreezeBoss::P3SwapEnd, this, std::placeholders::_1));
 	StateManager3.CreateStateMember("Eye", std::bind(&MortimerFreezeBoss::AttackEyeUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackEyeStart, this, std::placeholders::_1));
 	StateManager3.CreateStateMember("IceCream", std::bind(&MortimerFreezeBoss::AttackIceCreamUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackIceCreamStart, this, std::placeholders::_1));
 	StateManager3.CreateStateMember("Split", std::bind(&MortimerFreezeBoss::AttackSplitUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackSplitStart, this, std::placeholders::_1));
@@ -83,30 +86,30 @@ void MortimerFreezeBoss::P3IntroUpdate(float _DeltaTime, const StateInfo& _Info)
 {
 	if (true == IsPh3DownMove)
 	{
-		GetTransform().SetWorldDownMove(150.0f, _DeltaTime);
+		GetTransform().SetWorldDownMove(80.0f, _DeltaTime);
 	}
 
 	if (true == IsPh3XMove)
 	{
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
-			if (300 >= GetTransform().GetLocalPosition().x)
+			if (280 >= GetTransform().GetLocalPosition().x)
 			{
 				GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 				return;
 			}
 			
-			GetTransform().SetWorldLeftMove(500.0f, _DeltaTime);
+			GetTransform().SetWorldLeftMove(1000.0f, _DeltaTime);
 		}
 		else
 		{
-			if (1300 <= GetTransform().GetLocalPosition().x)
+			if (1380 <= GetTransform().GetLocalPosition().x)
 			{
 				GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 				return;
 			}
 
-			GetTransform().SetWorldRightMove(500.0f, _DeltaTime);
+			GetTransform().SetWorldRightMove(1000.0f, _DeltaTime);
 		}
 	}
 }
@@ -221,6 +224,7 @@ void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::P3SwapStart(const StateInfo& _Info)
 {
+	Collision->Off();
 	int RandomIntNum = GameEngineRandom::MainRandom.RandomInt(1, 3);
 
 	if (1 == RandomIntNum)
@@ -235,6 +239,7 @@ void MortimerFreezeBoss::P3SwapStart(const StateInfo& _Info)
 	}
 	if (3 == RandomIntNum)
 	{
+		Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,-650.0f });
 		Renderer->ChangeFrameAnimation("SnowFlake_SwapC");
 	}
 	
@@ -289,6 +294,7 @@ void MortimerFreezeBoss::P3SwapStart(const StateInfo& _Info)
 				Renderer->ChangeFrameAnimation("SnowFlake_SwapCLast");
 				Renderer->GetTransform().PixLocalPositiveX();
 			}
+			Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,0.0f });
 		});
 
 	Renderer->AnimationBindEnd("SnowFlake_SwapCLast", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -312,7 +318,7 @@ void MortimerFreezeBoss::P3SwapUpdate(float _DeltaTime, const StateInfo& _Info)
 	
 	if (MFBossDIR::LEFT == CurMFDir)
 	{
-		if (300 >= MFCurXPos)
+		if (280 >= MFCurXPos)
 		{
 			GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 			return;
@@ -328,11 +334,11 @@ void MortimerFreezeBoss::P3SwapUpdate(float _DeltaTime, const StateInfo& _Info)
 			}
 		}
 
-		GetTransform().SetWorldLeftMove(600.0f, _DeltaTime);
+		GetTransform().SetWorldLeftMove(1000.0f, _DeltaTime);
 	}
 	else
 	{
-		if (1300 <= MFCurXPos)
+		if (1380 <= MFCurXPos)
 		{
 			GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 			return;
@@ -348,10 +354,15 @@ void MortimerFreezeBoss::P3SwapUpdate(float _DeltaTime, const StateInfo& _Info)
 			}
 		}
 
-		GetTransform().SetWorldRightMove(600.0f, _DeltaTime);
+		GetTransform().SetWorldRightMove(1000.0f, _DeltaTime);
 	}
 	// 2 == b 일 때 IsReverse = !IsReverse;
 	// 3 == c 일 때 일부 IsReverse = !IsReverse;
+}
+
+void MortimerFreezeBoss::P3SwapEnd(const StateInfo& _Info)
+{
+	Collision->On();
 }
 
 void MortimerFreezeBoss::AttackEyeStart(const StateInfo& _Info)
@@ -698,20 +709,40 @@ void MortimerFreezeBoss::AttackSplitStart(const StateInfo& _Info)
 		{
 			if (9 == _Info.CurFrame)
 			{
-				if (MFBossDIR::LEFT == CurMFDir)
+				if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
 				{
 					SubRenderer00->ChangeFrameAnimation("SplitShot_Arms0", true);
 					SubRenderer00->GetTransform().PixLocalPositiveX();
+					SubRenderer00->GetTransform().PixLocalPositiveY();
 					SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
-					SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-100,0 });
+					SubRenderer00->GetTransform().SetLocalPosition(float4{ -185,-150,-550 });
 					SubRenderer00->On();
 				}
-				if (MFBossDIR::RIGHT == CurMFDir)
+				if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
+				{
+					SubRenderer00->ChangeFrameAnimation("SplitShot_Arms0", true);
+					SubRenderer00->GetTransform().PixLocalPositiveX();
+					SubRenderer00->GetTransform().PixLocalNegativeY();
+					SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+					SubRenderer00->GetTransform().SetLocalPosition(float4{ -185,150,-550 });
+					SubRenderer00->On();
+				}
+				if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
 				{
 					SubRenderer00->ChangeFrameAnimation("SplitShot_Arms0", true);
 					SubRenderer00->GetTransform().PixLocalNegativeX();
+					SubRenderer00->GetTransform().PixLocalPositiveY();
 					SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
-					SubRenderer00->GetTransform().SetLocalPosition(float4{ 0,-100,0 });
+					SubRenderer00->GetTransform().SetLocalPosition(float4{ 185,-150,-550 });
+					SubRenderer00->On();
+				}
+				if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
+				{
+					SubRenderer00->ChangeFrameAnimation("SplitShot_Arms0", true);
+					SubRenderer00->GetTransform().PixLocalNegativeX();
+					SubRenderer00->GetTransform().PixLocalNegativeY();
+					SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+					SubRenderer00->GetTransform().SetLocalPosition(float4{ 185,150,-550 });
 					SubRenderer00->On();
 				}
 			}
@@ -773,110 +804,97 @@ void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _I
 
 	if (2.0f <= BucketAppearTime)
 	{
-		if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
-		{
-			--BucketCount;
+		--BucketCount;
+		BucketAppearTime = 0.0f;
 
+		if (MFBossDIR::LEFT == CurMFDir && false == IsReverse && 0 <= BucketCount)
+		{
 			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
 			if (2 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -180,-130,-560 });
 				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::TOP);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -180,-130,-560 });
 			}
 			if (1 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -180,-130,-560 });
 				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::MID);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -180,-130,-560 });
 			}
 			if (0 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -180,-130,-560 });
 				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::BOT);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -180,-130,-560 });
 			}
-
-			BucketAppearTime = 0.0f;
 		}
-		if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
+		if (MFBossDIR::LEFT == CurMFDir && true == IsReverse && 0 <= BucketCount)
 		{
-			--BucketCount;
-
 			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
 			if (2 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -180,130,-560 });
 				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::BOT);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -180,130,-560 });
 			}
 			if (1 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -180,130,-560 });
 				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::MID);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -180,130,-560 });
 			}
 			if (0 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -180,130,-560 });
 				Ptr->BucketSetting(BucketDirType::Left, BucketMoveType::TOP);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -180,130,-560 });
 			}
-
-			BucketAppearTime = 0.0f;
 		}
 
-		if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
+		if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse && 0 <= BucketCount)
 		{
-			--BucketCount;
-
 			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
 			if (2 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 180,-130,-560 });
 				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::TOP);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 180,-130,-560 });
 			}
 			if (1 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 180,-130,-560 });
 				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::MID);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 180,-130,-560 });
 			}
 			if (0 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 180,-130,-560 });
 				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::BOT);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 180,-130,-560 });
 			}
-
-			BucketAppearTime = 0.0f;
 		}
-		if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
+		if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse && 0 <= BucketCount)
 		{
-			--BucketCount;
-
 			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
 			if (2 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 180,130,-560 });
 				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::BOT);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 180,130,-560 });
 			}
 			if (1 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 180,130,-560 });
 				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::MID);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 180,130,-560 });
 			}
 			if (0 == BucketCount)
 			{
-				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 180,130,-560 });
 				Ptr->BucketSetting(BucketDirType::Right, BucketMoveType::TOP);
-				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+				Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 180,130,-560 });
 			}
-
-			BucketAppearTime = 0.0f;
 		}
 	}
 }

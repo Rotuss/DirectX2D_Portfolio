@@ -137,20 +137,6 @@ void MortimerFreezeLevel::Start()
 		GoalPosVec.push_back({ 780, -330, 300 });
 	}
 
-	/*{
-		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
-		Renderer->SetTexture("icebergs.png");
-		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 780, -150, 100 });
-	}*/
-
-	/*{
-		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
-		Renderer->SetTexture("icebergs.png");
-		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 800, -450 });
-	}*/
-
 	{
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("lower_sky_mountains.png");
@@ -160,13 +146,6 @@ void MortimerFreezeLevel::Start()
 		StartPosVec.push_back({ 780, -680, 300 });
 		GoalPosVec.push_back({ 780, -555, 300 });
 	}
-
-	/*{ 400 이동시
-		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
-		Renderer->SetTexture("lower_sky_mountains.png");
-		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 780, -370, 100 });
-	}*/
 
 	{
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
@@ -182,20 +161,20 @@ void MortimerFreezeLevel::Start()
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("castle.png");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 850, 150, 50 });
+		Renderer->GetTransform().SetLocalPosition({ 850, 150, 300 });
 		MoveVec.push_back(&Renderer->GetTransform());
-		StartPosVec.push_back({ 850, 150, 50 });
-		GoalPosVec.push_back({ 850, -400, 50 });
+		StartPosVec.push_back({ 850, 150, 300 });
+		GoalPosVec.push_back({ 850, -400, 300 });
 	}
 
 	{
 		Renderer = MFBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("front_walls.png");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 850, -50, 50 });
+		Renderer->GetTransform().SetLocalPosition({ 850, -50, 300 });
 		MoveVec.push_back(&Renderer->GetTransform());
-		StartPosVec.push_back({ 850, -50, 50 });
-		GoalPosVec.push_back({ 850, -700, 50 });
+		StartPosVec.push_back({ 850, -50, 300 });
+		GoalPosVec.push_back({ 850, -700, 300 });
 	}
 
 	{
@@ -356,11 +335,11 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 		return;
 	}
 
-	if (2 == MsChalice::Chalice->GetPlatformCount() /*|| true == GameEngineInput::GetInst()->IsDown("Appear_SnowPlatform")*/)
+	if (2 == MsChalice::Chalice->GetPlatformCount() || true == GameEngineInput::GetInst()->IsDown("Change_Phase3"))
 	{
 		Ph3MoveCheck();
 	}
-
+	
 	// 카메라 좌우 막기 필요, 플레이어 이동 막기 필요
 	//GetMainCameraActorTransform().SetLocalPosition(float4{ 800.0f + (Player::MainPlayer->GetTransform().GetLocalPosition().x * 0.1f), -610.0f } + float4::BACK * 100.0f);
 	/*if (GetMainCameraActorTransform().GetLocalPosition().x <= 750)
