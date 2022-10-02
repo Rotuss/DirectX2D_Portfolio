@@ -36,7 +36,7 @@ public:
 	inline void SetMovePos(float4 _Start, float4 _End)
 	{
 		StartPosition = _Start;
-		EndPosition = _End;
+		EndPosition = float4(_End.x, -910.0f, _End.z);
 
 		if (StartPosition.x < EndPosition.x)
 		{

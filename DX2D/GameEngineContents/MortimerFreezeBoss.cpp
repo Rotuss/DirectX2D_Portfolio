@@ -177,11 +177,11 @@ void MortimerFreezeBoss::Start()
 		// Dash 패턴 이후 Idle(Dash -> Idle 또는 Jump -> Idle 끝나고 실행)
 		Renderer->CreateFrameAnimationFolder("SnowBeast_AttacktoIdle_Trans", FrameAnimation_DESC("SnowBeast_AttacktoIdle_Trans", 0.1f, false));
 
-		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Morph", FrameAnimation_DESC("SnowBeast_Fridge_Morph", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Idle", FrameAnimation_DESC("SnowBeast_Fridge_Idle", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Shoot", FrameAnimation_DESC("SnowBeast_Fridge_Shoot", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer", FrameAnimation_DESC("SnowBeast_Fridge_Freezer", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer_Outro", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Outro", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Morph", FrameAnimation_DESC("SnowBeast_Fridge_Morph", 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Idle", FrameAnimation_DESC("SnowBeast_Fridge_Idle", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Shoot", FrameAnimation_DESC("SnowBeast_Fridge_Shoot", 0.12f, true));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer", FrameAnimation_DESC("SnowBeast_Fridge_Freezer", 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer_Outro", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Outro", 0.08f, false));
 
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0, 19, 0.06f, false));
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmashRepeat", FrameAnimation_DESC("SnowBeast_Smash", 20, 22, 0.08f, true));

@@ -62,13 +62,13 @@ void MortimerFreezeIceCube::Start()
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		// Large
-		Renderer->CreateFrameAnimationFolder("IceCube_Large", FrameAnimation_DESC("IceCube_Large", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceCube_Large", FrameAnimation_DESC("IceCube_Large", 0.05f, true));
 
 		// Medium
-		Renderer->CreateFrameAnimationFolder("IceCube_Medium", FrameAnimation_DESC("IceCube_Medium", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceCube_Medium", FrameAnimation_DESC("IceCube_Medium", 0.05f, true));
 
 		// Small
-		Renderer->CreateFrameAnimationFolder("IceCube_Small", FrameAnimation_DESC("IceCube_Small", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("IceCube_Small", FrameAnimation_DESC("IceCube_Small", 0.05f, true));
 	}
 }
 
@@ -112,23 +112,23 @@ void MortimerFreezeIceCube::Update(float _DeltaTime)
 		Renderer->GetActor()->Death();
 	}
 
-	CubeLerpRatio += _DeltaTime;
+	CubeLerpRatio += _DeltaTime * 0.6f;
 
 
 	LerpPos = float4::Lerp(StartPosition, EndPosition, CubeLerpRatio);
 
-	float LerpY = GameEngineMath::Lerp(1800, -1800, CubeLerpRatio) * _DeltaTime;
+	float LerpY = GameEngineMath::Lerp(1100, -1100, CubeLerpRatio) * _DeltaTime;
 	if (SizeType::Small == CubeSize)
 	{
-		LerpY = GameEngineMath::Lerp(1200, -1200, CubeLerpRatio) * _DeltaTime;
+		LerpY = GameEngineMath::Lerp(1100, -1100, CubeLerpRatio * 1.5f) * _DeltaTime;
 	}
 
 
 	YAdd += LerpY;
-	if (0 >= YAdd)
+	/*if (0 >= YAdd)
 	{
 		YAdd = 0.0f;
-	}
+	}*/
 
 	float4 MFMovePos = LerpPos + float4(0, YAdd, 0);
 	GetTransform().SetLocalPosition(MFMovePos);

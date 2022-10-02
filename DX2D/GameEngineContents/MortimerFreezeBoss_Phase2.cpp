@@ -633,6 +633,7 @@ void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 		{
 			Renderer->ChangeFrameAnimation("SnowBeastFridge_Shoot");
 			Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,30.0f,0.0f });
+			IceTime = 0.1f;
 			IsShoot = true;
 		});
 
@@ -726,13 +727,13 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 
 		if (true == IsShoot)
 		{
-			IceTime = 1.0f;
+			IceTime = 1.3f;
 			//--IceCubeCount;
 			// 큐브 생성
 			MortimerFreezeIceCube* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCube>(OBJECTORDER::Boss);
-			Ptr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,200,0 }, MsChalice::Chalice->GetTransform().GetLocalPosition());
+			Ptr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 0,300,0 }, MsChalice::Chalice->GetTransform().GetLocalPosition());
 			Ptr->SetSizeType(static_cast<SizeType>(GameEngineRandom::MainRandom.RandomInt(0, 1)));
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,200,0 });
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,300,0 });
 			Ptr->SetColMap(MsChalice::Chalice->GetColMap());
 
 			if (0 == IceCubeCount)
