@@ -149,6 +149,16 @@ void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		return;
 	}
 	
+	if ("IceCream" == PrevState && 0 <= IceCreamTime)
+	{
+		IceCreamTime -= _DeltaTime;
+		if (0 >= IceCreamTime)
+		{
+			PrevState = "";
+		}
+		return;
+	}
+
 	if (0 == SwapCount)
 	{
 		SwapCount = GameEngineRandom::MainRandom.RandomInt(1, 2);
@@ -186,7 +196,7 @@ void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			{
 				return;
 			}
-			IceCreamTime = GameEngineRandom::MainRandom.RandomFloat(0.5f, 1.0f);
+			IceCreamTime = 1.2f;
 			StateManager3.ChangeState("IceCream");
 			PrevSkill = 2;
 			return;
@@ -225,6 +235,7 @@ void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 void MortimerFreezeBoss::P3SwapStart(const StateInfo& _Info)
 {
 	Collision->Off();
+	PrevState = "Swap";
 	int RandomIntNum = GameEngineRandom::MainRandom.RandomInt(1, 3);
 
 	if (1 == RandomIntNum)
@@ -239,7 +250,7 @@ void MortimerFreezeBoss::P3SwapStart(const StateInfo& _Info)
 	}
 	if (3 == RandomIntNum)
 	{
-		Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,-650.0f });
+		Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,-1000.0f });
 		Renderer->ChangeFrameAnimation("SnowFlake_SwapC");
 	}
 	
@@ -490,6 +501,7 @@ void MortimerFreezeBoss::AttackIceCreamStart(const StateInfo& _Info)
 	IceCreamAppearTime = 0.0f;
 	IceCreamCount = 4;
 	IsIceCreamPatternEnd = false;
+	PrevState = "IceCream";
 
 	IceCreamRandom = GameEngineRandom::MainRandom.RandomInt(0,2);
 
@@ -562,7 +574,7 @@ void MortimerFreezeBoss::AttackIceCreamUpdate(float _DeltaTime, const StateInfo&
 		return;
 	}
 
-	if(0.8f <= IceCreamAppearTime)
+	if(0.5f <= IceCreamAppearTime)
 	{
 		if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
 		{
@@ -571,25 +583,25 @@ void MortimerFreezeBoss::AttackIceCreamUpdate(float _DeltaTime, const StateInfo&
 			MortimerFreezeIceCream* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCream>(OBJECTORDER::Boss);
 			if (3 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(3.0f);
+				Ptr->SetIceCreamMoveTime(1.8f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num1);
 			}
 			if (2 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(2.0f);
+				Ptr->SetIceCreamMoveTime(1.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num0);
 			}
 			if (1 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(1.0f);
+				Ptr->SetIceCreamMoveTime(0.5f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num3);
 			}
 			if (0 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(0.2f);
+				Ptr->SetIceCreamMoveTime(0.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num2);
 			}
@@ -603,25 +615,25 @@ void MortimerFreezeBoss::AttackIceCreamUpdate(float _DeltaTime, const StateInfo&
 			MortimerFreezeIceCream* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCream>(OBJECTORDER::Boss);
 			if (3 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(3.0f);
+				Ptr->SetIceCreamMoveTime(1.8f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num2);
 			}
 			if (2 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(2.0f);
+				Ptr->SetIceCreamMoveTime(1.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num3);
 			}
 			if (1 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(1.0f);
+				Ptr->SetIceCreamMoveTime(0.5f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num0);
 			}
 			if (0 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(0.2f);
+				Ptr->SetIceCreamMoveTime(0.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num1);
 			}
@@ -636,25 +648,25 @@ void MortimerFreezeBoss::AttackIceCreamUpdate(float _DeltaTime, const StateInfo&
 			MortimerFreezeIceCream* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCream>(OBJECTORDER::Boss);
 			if (3 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(3.0f);
+				Ptr->SetIceCreamMoveTime(1.8f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num0);
 			}
 			if (2 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(2.0f);
+				Ptr->SetIceCreamMoveTime(1.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num1);
 			}
 			if (1 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(1.0f);
+				Ptr->SetIceCreamMoveTime(0.5f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num2);
 			}
 			if (0 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(0.2f);
+				Ptr->SetIceCreamMoveTime(0.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num3);
 			}
@@ -668,25 +680,25 @@ void MortimerFreezeBoss::AttackIceCreamUpdate(float _DeltaTime, const StateInfo&
 			MortimerFreezeIceCream* Ptr = GetLevel()->CreateActor<MortimerFreezeIceCream>(OBJECTORDER::Boss);
 			if (3 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(3.0f);
+				Ptr->SetIceCreamMoveTime(1.8f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num3);
 			}
 			if (2 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(2.0f);
+				Ptr->SetIceCreamMoveTime(1.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num2);
 			}
 			if (1 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(1.0f);
+				Ptr->SetIceCreamMoveTime(0.5f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num1);
 			}
 			if (0 == IceCreamCount)
 			{
-				Ptr->SetIceCreamMoveTime(0.2f);
+				Ptr->SetIceCreamMoveTime(0.3f);
 				Ptr->SetPosType(static_cast<PosType>(IceCreamRandom));
 				Ptr->SetNumType(NumType::Num0);
 			}
