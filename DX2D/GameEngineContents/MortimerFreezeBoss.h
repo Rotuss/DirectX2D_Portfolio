@@ -53,6 +53,16 @@ public:
 		return IsCurPeashotEnd;
 	}
 
+	inline void ChangPhase3()
+	{
+		if ("MFPhase3" == PhaseManager.GetCurStateStateName())
+		{
+			return;
+		}
+
+		PhaseManager.ChangeState("MFPhase3");
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);

@@ -180,7 +180,8 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Morph", FrameAnimation_DESC("SnowBeast_Fridge_Morph", 0.05f, false));
 		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Idle", FrameAnimation_DESC("SnowBeast_Fridge_Idle", 0.06f, true));
 		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Shoot", FrameAnimation_DESC("SnowBeast_Fridge_Shoot", 0.12f, true));
-		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer", FrameAnimation_DESC("SnowBeast_Fridge_Freezer", 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer", FrameAnimation_DESC("SnowBeast_Fridge_Freezer", 0, 3, 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer_Repeat", FrameAnimation_DESC("SnowBeast_Fridge_Freezer", 4, 7, 0.06f, true));
 		Renderer->CreateFrameAnimationFolder("SnowBeastFridge_Freezer_Outro", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Outro", 0.08f, false));
 
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmash", FrameAnimation_DESC("SnowBeast_Smash", 0, 19, 0.06f, false));

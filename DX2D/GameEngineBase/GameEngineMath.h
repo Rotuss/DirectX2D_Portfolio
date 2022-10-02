@@ -27,6 +27,11 @@ public:
 
 	static float LerpLimit(float _P1, float _P2, float _Time)
 	{
+		if (0.0f >= _Time)
+		{
+			_Time = 0.0f;
+		}
+
 		if (1.0f <= _Time)
 		{
 			_Time = 1.0f;

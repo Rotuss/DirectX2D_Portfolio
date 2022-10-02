@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "MortimerFreezeIceBat.h"
+#include "MortimerFreezeLevel.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
 MortimerFreezeIceBat::MortimerFreezeIceBat()
@@ -110,6 +111,7 @@ void MortimerFreezeIceBat::Update(float _DeltaTime)
 
 	if (-400.0f <= GetTransform().GetLocalPosition().y && false == IsYOut && 0.0f >= ReAppearTime)
 	{
+		Renderer->On();
 		IsYOut = true;
 		YValue = 1000.0f;
 		CurBatDir = static_cast<BatDIR>(GameEngineRandom::MainRandom.RandomInt(0, 1));
@@ -155,7 +157,6 @@ void MortimerFreezeIceBat::Update(float _DeltaTime)
 		BatLerpRatio += _DeltaTime;
 	}
 
-
 	LerpPos = float4::LerpLimit(StartPosition, EndPosition, BatLerpRatio);
 
 	float LerpY = GameEngineMath::LerpLimit(-YValue, YValue, BatLerpRatio) * _DeltaTime;
@@ -171,7 +172,23 @@ void MortimerFreezeIceBat::Update(float _DeltaTime)
 	{
 		AddPos = float4(0, -600, 0);
 	}
+	if (true == GetLevel<MortimerFreezeLevel>()->GetIsMove())
+	{
+		float Phase3Y = GameEngineMath::LerpLimit(0, -700, GetLevel<MortimerFreezeLevel>()->GetMoveTImer() * 0.5f);
+		AddPos += float4(0, Phase3Y, 0);
+	}
+
 	float4 MFMovePos = LerpPos + AddPos;
 	GetTransform().SetLocalPosition(MFMovePos);
+
+	if (1.0 <= BatLerpRatio)
+	{
+		if (true == IsYOut)
+		{
+			Death();
+		}
+
+		Renderer->Off();
+	}
 }
 

@@ -18,7 +18,7 @@ MsChalice::MsChalice()
 	, WeaponTime(0.0f)
 	, NoDamageTime(0.0f)
 	, ChaliceHP(4)
-	, PlatformCount(3)
+	, PlatformCount(-1)
 {
 	Chalice = this;
 }
@@ -48,17 +48,7 @@ CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngine
 CollisionReturn MsChalice::CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	AddDir.x = _Other->GetActor<MortimerFreezeSnowPlatform>()->GetMovePos().x;
-
-	// 충돌 확인 필요
-	if (0 < PlatformCount)
-	{
-		--PlatformCount;
-		
-		if (0 == PlatformCount)
-		{
-			PlatformCount = 0;
-		}
-	}
+	PlatformCount = _Other->GetActor<MortimerFreezeSnowPlatform>()->Index;
 
 	return CollisionReturn::Break;
 }

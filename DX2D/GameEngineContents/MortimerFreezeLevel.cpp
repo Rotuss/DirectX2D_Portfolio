@@ -356,10 +356,8 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 		return;
 	}
 
-	if (0 == MsChalice::Chalice->GetPlatformCount() /*|| true == GameEngineInput::GetInst()->IsDown("Appear_SnowPlatform")*/)
+	if (2 == MsChalice::Chalice->GetPlatformCount() /*|| true == GameEngineInput::GetInst()->IsDown("Appear_SnowPlatform")*/)
 	{
-		MsChalice::Chalice->SetPlatformCount(-1);
-
 		Ph3MoveCheck();
 	}
 
@@ -382,6 +380,11 @@ void MortimerFreezeLevel::End()
 
 void MortimerFreezeLevel::Ph3MoveCheck()
 {
+	if (true == IsMove)
+	{
+		return;
+	}
+
 	IsMove = true;
 	MoveTimer = 0.0f;
 }
@@ -390,6 +393,11 @@ void MortimerFreezeLevel::Ph3MoveCheckUpdate(float _DeltaTime)
 {
 	if (false == IsMove)
 	{
+		return;
+	}
+	if (MoveTimer >= 2.0f)
+	{
+		MortimerFreezeBoss::MFBoss->ChangPhase3();
 		return;
 	}
 
@@ -405,10 +413,5 @@ void MortimerFreezeLevel::Ph3MoveCheckUpdate(float _DeltaTime)
 	{
 		float4 LerpPos = float4::Lerp(StartPosVec[i], GoalPosVec[i], MoveTimer / 2);
 		MoveVec[i]->SetLocalPosition(LerpPos);
-	}
-
-	if (MoveTimer >= 2.0f)
-	{
-		IsMove = false;
 	}
 }

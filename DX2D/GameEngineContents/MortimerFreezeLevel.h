@@ -29,6 +29,16 @@ public:
 		GoalPosVec.push_back(_Transform->GetWorldPosition() + _AddValue);
 	}
 
+	inline float GetMoveTImer()
+	{
+		return MoveTimer;
+	}
+
+	inline bool GetIsMove()
+	{
+		return IsMove;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

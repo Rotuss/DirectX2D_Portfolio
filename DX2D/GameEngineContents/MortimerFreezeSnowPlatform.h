@@ -33,6 +33,8 @@ public:
 
 	float4 GetMovePos();
 
+	int Index;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);

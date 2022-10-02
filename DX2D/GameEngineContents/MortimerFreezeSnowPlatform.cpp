@@ -57,7 +57,7 @@ float4 MortimerFreezeSnowPlatform::GetMovePos()
 void MortimerFreezeSnowPlatform::Start()
 {
 	Renderer = CreateComponent<GameEngineTextureRenderer>();
-	Renderer->CreateFrameAnimationFolder("SnowCult_Platform_Intro", FrameAnimation_DESC("SnowCult_Platform_Intro", 0.1f, false));
+	Renderer->CreateFrameAnimationFolder("SnowCult_Platform_Intro", FrameAnimation_DESC("SnowCult_Platform_Intro", 0.06f, false));
 	Renderer->CreateFrameAnimationFolder("SnowCult_Platform_A", FrameAnimation_DESC("SnowCult_Platform_A", 0.1f, true));
 	Renderer->CreateFrameAnimationFolder("SnowCult_Platform_B", FrameAnimation_DESC("SnowCult_Platform_B", 0.1f, true));
 	Renderer->CreateFrameAnimationFolder("SnowCult_Platform_C", FrameAnimation_DESC("SnowCult_Platform_C", 0.1f, true));
