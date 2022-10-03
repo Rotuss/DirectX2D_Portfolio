@@ -21,6 +21,7 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 	Renderer->SetPivot(PIVOTMODE::CENTER);
 	Collision->GetTransform().SetLocalScale(float4{ 300.0f,600.0f,0.0f });
 	Collision->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,0.0f });
+	Collision->Off();
 	GetTransform().SetLocalPosition(float4{ 800.0f, -200.0f, 250.0f });
 
 	StateManager3.CreateStateMember("MF3Intro", std::bind(&MortimerFreezeBoss::P3IntroUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P3IntroStart, this, std::placeholders::_1), std::bind(&MortimerFreezeBoss::P3IntroEnd, this, std::placeholders::_1));
@@ -125,6 +126,17 @@ void MortimerFreezeBoss::P3IntroEnd(const StateInfo& _Info)
 	{
 		CurMFDir = MFBossDIR::LEFT;
 	}
+
+	{
+		GameEngineActor* TmpActor = GetLevel()->CreateActor<GameEngineActor>();
+		TmpActor->GetTransform().SetWorldScale({ 1,1,1 });
+		TmpActor->GetTransform().SetWorldPosition({ 820, -680, 0 });
+		Phase3BotCollision = TmpActor->CreateComponent<GameEngineCollision>();
+		Phase3BotCollision->GetTransform().SetLocalScale({ 1300,50,1 });
+		Phase3BotCollision->ChangeOrder(OBJECTORDER::Phase3Bot);
+	}
+
+	Collision->On();
 }
 
 void MortimerFreezeBoss::P3IdleStart(const StateInfo& _Info)

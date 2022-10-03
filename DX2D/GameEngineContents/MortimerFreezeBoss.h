@@ -77,6 +77,7 @@ protected:
 	GameEngineTextureRenderer*	SubRenderer03;
 	GameEngineCollision*		Collision;
 	GameEngineCollision*		WhaleCollision;
+	GameEngineCollision*		Phase3BotCollision;
 	MortimerFreezeMinion*		Minion0;
 	MortimerFreezeMinion*		Minion1;
 	MortimerFreezeMinion*		Minion2;

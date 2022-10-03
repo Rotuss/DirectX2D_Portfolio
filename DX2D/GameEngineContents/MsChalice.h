@@ -23,6 +23,7 @@ public:
 
 	CollisionReturn CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
 	CollisionReturn CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn CollisionCheckPhase3Bot(GameEngineCollision* _This, GameEngineCollision* _Other);
 
 	void SetColMap(GameEngineTextureRenderer* _Collision)
 	{
