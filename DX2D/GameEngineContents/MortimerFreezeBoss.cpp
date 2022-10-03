@@ -156,22 +156,23 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("MF2Idle", FrameAnimation_DESC("MF2Idle", 0.06f, true));
 
 		// Dash패턴 첫 공격 전 모션
-		Renderer->CreateFrameAnimationFolder("SnowBeast_DashPreAttack", FrameAnimation_DESC("SnowBeast_PreAttack", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("SnowBeast_DashSnowBeastBall", FrameAnimation_DESC("SnowBeastBall", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_DashPreAttack", FrameAnimation_DESC("SnowBeast_PreAttack", 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_DashSnowBeastBall", FrameAnimation_DESC("SnowBeastBall", 0.06f, true));
 		// Dash 모션
-		Renderer->CreateFrameAnimationFolder("SnowBeast_Dash_Attack", FrameAnimation_DESC("SnowBeast_Dash_Attack", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_Dash_Attack", FrameAnimation_DESC("SnowBeast_Dash_Attack", 0.08f, false));
 		// Dash -> Dash
-		Renderer->CreateFrameAnimationFolder("SnowBeast_DashtoAny_Trans", FrameAnimation_DESC("SnowBeast_DashtoAny_Trans", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_DashtoAny_Trans", FrameAnimation_DESC("SnowBeast_DashtoAny_Trans", 0.08f, false));
 		// Jump -> Dash
-		Renderer->CreateFrameAnimationFolder("SnowBeast_JumptoDash_Trans", FrameAnimation_DESC("SnowBeast_JumptoDash_Trans", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_JumptoDash_Trans", FrameAnimation_DESC("SnowBeast_JumptoDash_Trans", 0.08f, false));
 		// Dash -> Idle
 		Renderer->CreateFrameAnimationFolder("SnowBeast_DashtoIdle_Trans", FrameAnimation_DESC("SnowBeast_DashtoIdle_Trans", 0.1f, false));
 		// Jump 모션
-		Renderer->CreateFrameAnimationFolder("SnowBeast_Jump_Attack", FrameAnimation_DESC("SnowBeast_Jump_Attack", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_Jump_Attack", FrameAnimation_DESC("SnowBeast_Jump_Attack", 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_Jump_Attack_NotFirst", FrameAnimation_DESC("SnowBeast_Jump_Attack", 1, 14, 0.08f, false));
 		// Jump -> Jump
-		Renderer->CreateFrameAnimationFolder("SnowBeast_JumptoJump_Trans", FrameAnimation_DESC("SnowBeast_JumptoJump_Trans", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_JumptoJump_Trans", FrameAnimation_DESC("SnowBeast_JumptoJump_Trans", 0.08f, false));
 		// Dash -> Jump
-		Renderer->CreateFrameAnimationFolder("SnowBeast_DashtoJump_Trans", FrameAnimation_DESC("SnowBeast_DashtoJump_Trans", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("SnowBeast_DashtoJump_Trans", FrameAnimation_DESC("SnowBeast_DashtoJump_Trans", 0.08f, false));
 		// Jump -> Idle
 		Renderer->CreateFrameAnimationFolder("SnowBeast_JumptoIdle_Trans", FrameAnimation_DESC("SnowBeast_JumptoIdle_Trans", 0.1f, false));
 		// Dash 패턴 이후 Idle(Dash -> Idle 또는 Jump -> Idle 끝나고 실행)
@@ -281,7 +282,7 @@ void MortimerFreezeBoss::Start()
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 44, 0.08f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Fall", FrameAnimation_DESC("SnowBeast_Intro", 45, 48, 0.09f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Land", FrameAnimation_DESC("SnowBeast_Intro", 49, 56, 0.08f, false));
-		SubRenderer00->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", 0.1f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", 0.06f, false));
 		
 		SubRenderer00->CreateFrameAnimationFolder("IceCream_Ghost", FrameAnimation_DESC("IceCream_Ghost", 0.07f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms0", FrameAnimation_DESC("SplitShot_Arms", 0, 3, 0.1f, false));
@@ -305,7 +306,7 @@ void MortimerFreezeBoss::Start()
 		SubRenderer01 = CreateComponent<GameEngineTextureRenderer>();
 		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer_Start", FrameAnimation_DESC("SnowBeast_Intro_Backer", 0, 2, 0.08f, true));
 		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer", FrameAnimation_DESC("SnowBeast_Intro_Backer", 3, 11, 0.08f, false));
-		SubRenderer01->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingB", FrameAnimation_DESC("SnowBeast_Limbs_MeltingB", 0.1f, false));
+		SubRenderer01->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingB", FrameAnimation_DESC("SnowBeast_Limbs_MeltingB", 0.06f, false));
 		
 		SubRenderer01->CreateFrameAnimationFolder("SnowFlake_DeathBacker", FrameAnimation_DESC("SnowFlake_DeathBacker", 0.1f, false));
 
@@ -318,7 +319,7 @@ void MortimerFreezeBoss::Start()
 
 	{
 		SubRenderer02 = CreateComponent<GameEngineTextureRenderer>();
-		SubRenderer02->CreateFrameAnimationFolder("SnowBeast_Limbs_RMeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", Rev, 0.1f, false));
+		SubRenderer02->CreateFrameAnimationFolder("SnowBeast_Limbs_RMeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", Rev, 0.04f, false));
 
 		SubRenderer02->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingA");
 		SubRenderer02->SetScaleModeImage();
@@ -329,7 +330,7 @@ void MortimerFreezeBoss::Start()
 
 	{
 		SubRenderer03 = CreateComponent<GameEngineTextureRenderer>();
-		SubRenderer03->CreateFrameAnimationFolder("SnowBeast_Limbs_RMeltingB", FrameAnimation_DESC("SnowBeast_Limbs_MeltingB", Rev, 0.1f, false));
+		SubRenderer03->CreateFrameAnimationFolder("SnowBeast_Limbs_RMeltingB", FrameAnimation_DESC("SnowBeast_Limbs_MeltingB", Rev, 0.04f, false));
 
 		SubRenderer03->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingB");
 		SubRenderer03->SetScaleModeImage();

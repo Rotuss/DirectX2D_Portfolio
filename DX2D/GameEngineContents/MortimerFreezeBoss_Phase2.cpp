@@ -186,6 +186,61 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 			}
 		});
 	
+	Renderer->AnimationBindEnd("SnowBeast_Jump_Attack_NotFirst", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			IsPreparing = false;
+			CurMeltingDir = CurMFDir;
+			Renderer->ChangeFrameAnimation("SnowBeast_DashSnowBeastBall");
+			if (MFBossDIR::LEFT == CurMFDir)
+			{
+				// 출발 앞
+				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA", true);
+				SubRenderer00->GetTransform().PixLocalPositiveX();
+				SubRenderer00->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer00->On();
+
+				// 출발 뒤
+				SubRenderer01->ChangeFrameAnimation("SnowBeast_Limbs_MeltingB", true);
+				SubRenderer01->GetTransform().PixLocalPositiveX();
+				SubRenderer01->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer01->On();
+
+				// 도착 앞
+				SubRenderer02->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingA", true);
+				SubRenderer02->GetTransform().PixLocalNegativeX();
+				SubRenderer02->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer02->On();
+
+				// 도착 뒤
+				SubRenderer03->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingB", true);
+				SubRenderer03->GetTransform().PixLocalNegativeX();
+				SubRenderer03->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer03->On();
+			}
+			else
+			{
+				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA", true);
+				SubRenderer00->GetTransform().PixLocalNegativeX();
+				SubRenderer00->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer00->On();
+
+				SubRenderer01->ChangeFrameAnimation("SnowBeast_Limbs_MeltingB", true);
+				SubRenderer01->GetTransform().PixLocalNegativeX();
+				SubRenderer01->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer01->On();
+
+				SubRenderer02->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingA", true);
+				SubRenderer02->GetTransform().PixLocalPositiveX();
+				SubRenderer02->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer02->On();
+
+				SubRenderer03->ChangeFrameAnimation("SnowBeast_Limbs_RMeltingB", true);
+				SubRenderer03->GetTransform().PixLocalPositiveX();
+				SubRenderer03->SetPivot(PIVOTMODE::BOT);;
+				SubRenderer03->On();
+			}
+		});
+
 	Renderer->AnimationBindEnd("SnowBeast_Dash_Attack", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			IsPreparing = false;
@@ -239,12 +294,12 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowBeast_JumptoJump_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
-			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack");
+			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack_NotFirst");
 		});
 
 	Renderer->AnimationBindEnd("SnowBeast_DashtoJump_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
-			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack");
+			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack_NotFirst");
 		});
 
 	Renderer->AnimationBindEnd("SnowBeast_DashtoAny_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -276,11 +331,11 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 		{
 			if (MFBossDIR::LEFT == CurMeltingDir)
 			{
-				SubRenderer00->GetTransform().SetWorldPosition({ 1250,-950,-1 });
+				SubRenderer00->GetTransform().SetWorldPosition({ 1330,-946,-1 });
 			}
 			else
 			{
-				SubRenderer00->GetTransform().SetWorldPosition({ 400,-950,-1 });
+				SubRenderer00->GetTransform().SetWorldPosition({ 315,-946,-1 });
 			}
 		});
 
@@ -294,11 +349,11 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 		{
 			if (MFBossDIR::LEFT == CurMeltingDir)
 			{
-				SubRenderer01->GetTransform().SetWorldPosition({ 1150,-850,-0.5 });
+				SubRenderer01->GetTransform().SetWorldPosition({ 1250,-850,-0.5 });
 			}
 			else
 			{
-				SubRenderer01->GetTransform().SetWorldPosition({ 500,-850,-0.5 });
+				SubRenderer01->GetTransform().SetWorldPosition({ 400,-850,-0.5 });
 			}
 		});
 
@@ -312,11 +367,11 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 		{
 			if (MFBossDIR::LEFT == CurMeltingDir)
 			{
-				SubRenderer02->GetTransform().SetWorldPosition({ 400,-950,-1 });
+				SubRenderer02->GetTransform().SetWorldPosition({ 315,-946,-1 });
 			}
 			else
 			{
-				SubRenderer02->GetTransform().SetWorldPosition({ 1250,-950,-1 });
+				SubRenderer02->GetTransform().SetWorldPosition({ 1330,-946,-1 });
 			}
 		});
 
@@ -351,11 +406,11 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 		{
 			if (MFBossDIR::LEFT == CurMeltingDir)
 			{
-				SubRenderer03->GetTransform().SetWorldPosition({ 500,-850,-0.5 });
+				SubRenderer03->GetTransform().SetWorldPosition({ 400,-850,-0.5 });
 			}
 			else
 			{
-				SubRenderer03->GetTransform().SetWorldPosition({ 1150,-850,-0.5 });
+				SubRenderer03->GetTransform().SetWorldPosition({ 1250,-850,-0.5 });
 			}
 		});
 
@@ -601,7 +656,7 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 		}
 	}
 	
-	IdleLerpRatio += _DeltaTime;
+	IdleLerpRatio += _DeltaTime * 1.3f;
 	if (1.0f <= IdleLerpRatio)
 	{
 		IdleLerpRatio = 1.0f;
@@ -609,7 +664,7 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 
 	if (true == IsJump)
 	{
-		float LerpY = GameEngineMath::LerpLimit(1300, -1300, IdleLerpRatio) * _DeltaTime;
+		float LerpY = GameEngineMath::LerpLimit(1600, -1600, IdleLerpRatio) * _DeltaTime;
 
 		YAdd += LerpY;
 		if (0 >= YAdd)
