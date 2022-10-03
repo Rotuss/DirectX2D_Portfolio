@@ -130,7 +130,7 @@ void MortimerFreezeBoss::P3IntroEnd(const StateInfo& _Info)
 	{
 		GameEngineActor* TmpActor = GetLevel()->CreateActor<GameEngineActor>();
 		TmpActor->GetTransform().SetWorldScale({ 1,1,1 });
-		TmpActor->GetTransform().SetWorldPosition({ 820, -680, 0 });
+		TmpActor->GetTransform().SetWorldPosition({ 820, -730, 0 });
 		Phase3BotCollision = TmpActor->CreateComponent<GameEngineCollision>();
 		Phase3BotCollision->GetTransform().SetLocalScale({ 1300,50,1 });
 		Phase3BotCollision->ChangeOrder(OBJECTORDER::Phase3Bot);
@@ -948,17 +948,43 @@ void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _I
 void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("Ph3Wizard_Death");
-	
-	if (false == IsReverse)
+	if (true == IsReverse)
+	{
+		Renderer->GetTransform().PixLocalPositiveY();
+	}
+
+	if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
 	{
 		SubRenderer00->ChangeFrameAnimation("SnowFlake_Death0");
-		SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+		SubRenderer00->GetTransform().PixLocalPositiveX();
+		SubRenderer00->SetPivot(PIVOTMODE::CENTER);
+		SubRenderer00->GetTransform().SetLocalPosition(float4{ -10.0f,30.0f,-1.0f });
 		SubRenderer00->On();
 	}
-	else
+	if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
 	{
 		SubRenderer00->ChangeFrameAnimation("SnowFlake_Death_Alt");
-		SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+		SubRenderer00->GetTransform().PixLocalPositiveX();
+		SubRenderer00->GetTransform().PixLocalPositiveY();
+		SubRenderer00->SetPivot(PIVOTMODE::CENTER);
+		SubRenderer00->GetTransform().SetLocalPosition(float4{ -10.0f,-30.0f,-1.0f });
+		SubRenderer00->On();
+	}
+	if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
+	{
+		SubRenderer00->ChangeFrameAnimation("SnowFlake_Death0");
+		SubRenderer00->GetTransform().PixLocalNegativeX();
+		SubRenderer00->SetPivot(PIVOTMODE::CENTER);
+		SubRenderer00->GetTransform().SetLocalPosition(float4{ 10.0f,30.0f,-1.0f });
+		SubRenderer00->On();
+	}
+	if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
+	{
+		SubRenderer00->ChangeFrameAnimation("SnowFlake_Death_Alt");
+		SubRenderer00->GetTransform().PixLocalNegativeX();
+		SubRenderer00->GetTransform().PixLocalPositiveY();
+		SubRenderer00->SetPivot(PIVOTMODE::CENTER);
+		SubRenderer00->GetTransform().SetLocalPosition(float4{ 10.0f,-30.0f,-1.0f });
 		SubRenderer00->On();
 	}
 	
@@ -968,7 +994,7 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 			{
 				SubRenderer00->CurAnimationPauseOn();
 				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();
-				KO->GetTransform().SetWorldPosition({ 830.0f,-610.0f,-15.0f });
+				KO->GetTransform().SetWorldPosition({ 830.0f,-320.0f,-1000.0f });
 				KO->GetRenderer()->AnimationBindEnd("KnockOut", [/*&*/=](const FrameAnimation_DESC& _Info)
 					{
 						SubRenderer00->CurAnimationPauseOff();
@@ -988,9 +1014,11 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 			{
 				SubRenderer00->CurAnimationPauseOn();
 				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();
+				KO->GetTransform().SetWorldPosition({ 830.0f,-320.0f,-1000.0f });
 				KO->GetRenderer()->AnimationBindEnd("KnockOut", [/*&*/=](const FrameAnimation_DESC& _Info)
 					{
 						SubRenderer00->CurAnimationPauseOff();
+						KO->Death();
 					});
 			}
 		});
@@ -1009,7 +1037,7 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 					SubRenderer01->ChangeFrameAnimation("SnowFlake_DeathBacker");
 					SubRenderer01->GetTransform().PixLocalPositiveX();
 					SubRenderer01->SetPivot(PIVOTMODE::CENTER);;
-					SubRenderer01->GetTransform().SetLocalPosition(float4{ 0,0,-0.5f });
+					SubRenderer01->GetTransform().SetLocalPosition(float4{ -10.0f,30.0f,0.0f });
 					SubRenderer01->On();
 				}
 				else
@@ -1017,7 +1045,7 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 					SubRenderer01->ChangeFrameAnimation("SnowFlake_DeathBacker");
 					SubRenderer01->GetTransform().PixLocalNegativeX();
 					SubRenderer01->SetPivot(PIVOTMODE::CENTER);;
-					SubRenderer01->GetTransform().SetLocalPosition(float4{ 0,0,-0.5f });
+					SubRenderer01->GetTransform().SetLocalPosition(float4{ 10.0f,30.0f,0.0f });
 					SubRenderer01->On();
 				}
 			}
