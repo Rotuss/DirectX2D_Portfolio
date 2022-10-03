@@ -65,6 +65,16 @@ void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		return;
 	}
 
+	if ("Smash" == PrevState && 0 <= SmashTime)
+	{
+		SmashTime -= _DeltaTime;
+		if (0 >= SmashTime)
+		{
+			PrevState = "";
+		}
+		return;
+	}
+
 	{
 		if (0.8f >= DashRandomPer && 0 >= DashTime)
 		{
@@ -110,7 +120,7 @@ void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 			{
 				return;
 			}
-			SmashTime = GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f);
+			SmashTime = 0.8f;
 			StateManager2.ChangeState("Smash");
 			PrevSkill = 3;
 			return;
@@ -810,6 +820,7 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 
 void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 {
+	PrevState = "Smash";
 	Renderer->ChangeFrameAnimation("SnowBeastSmash");
 	
 	Renderer->AnimationBindEnd("SnowBeastSmash", [/*&*/=](const FrameAnimation_DESC& _Info)
