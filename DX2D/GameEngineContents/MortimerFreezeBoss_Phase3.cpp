@@ -509,21 +509,42 @@ void MortimerFreezeBoss::AttackIceCreamStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowFlake_IceCreamBacker0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
-			if (MFBossDIR::LEFT == CurMFDir)
+			if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
 			{
 				SubRenderer00->ChangeFrameAnimation("IceCream_Ghost", true);
 				SubRenderer00->GetTransform().PixLocalPositiveX();
+				SubRenderer00->GetTransform().PixLocalPositiveY(); 
 				SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ -520.0f,-50.0f,-500.0f });
 				SubRenderer00->On();
 			}
-			if (MFBossDIR::RIGHT== CurMFDir)
+			if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
+			{
+				SubRenderer00->ChangeFrameAnimation("IceCream_Ghost", true);
+				SubRenderer00->GetTransform().PixLocalPositiveX();
+				SubRenderer00->GetTransform().PixLocalNegativeY();
+				SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ -520.0f,50.0f,-500.0f });
+				SubRenderer00->On();
+			}
+			if (MFBossDIR::RIGHT== CurMFDir && false == IsReverse)
 			{
 				SubRenderer00->ChangeFrameAnimation("IceCream_Ghost", true);
 				SubRenderer00->GetTransform().PixLocalNegativeX();
+				SubRenderer00->GetTransform().PixLocalPositiveY();
 				SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 520.0f,-50.0f,-500.0f });
 				SubRenderer00->On();
 			}
-
+			if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
+			{
+				SubRenderer00->ChangeFrameAnimation("IceCream_Ghost", true);
+				SubRenderer00->GetTransform().PixLocalNegativeX();
+				SubRenderer00->GetTransform().PixLocalNegativeY();
+				SubRenderer00->SetPivot(PIVOTMODE::CENTER);;
+				SubRenderer00->GetTransform().SetLocalPosition(float4{ 520.0f,-50.0f,-500.0f });
+				SubRenderer00->On();
+			}
 			Renderer->ChangeFrameAnimation("SnowFlake_IceCreamBacker1");
 		});
 
