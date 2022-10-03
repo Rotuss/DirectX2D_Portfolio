@@ -415,29 +415,29 @@ void MortimerFreezeBoss::AttackEyeStart(const StateInfo& _Info)
 				if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
 				{
 					Ptr->SetEyePosition(EyePos::LeftTop);
-					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -300,100,-680 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -300,100,-680 });
 				}
 				if (MFBossDIR::LEFT == CurMFDir && true == IsReverse)
 				{
 					Ptr->SetEyePosition(EyePos::LeftBot);
-					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ -300,-100,-680 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -300,-100,-680 });
 				}
 
 				if (MFBossDIR::RIGHT == CurMFDir && false == IsReverse)
 				{
 					Ptr->SetEyePosition(EyePos::RightTop);
-					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
-					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,100,0 });
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 300,100,-680 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 300,100,-680 });
 				}
 				if (MFBossDIR::RIGHT == CurMFDir && true == IsReverse)
 				{
 					Ptr->SetEyePosition(EyePos::RightBot);
-					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
-					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,-100,0 });
+					Ptr->SetStartPosition(GetTransform().GetLocalPosition() + float4{ 300,-100,-680 });
+					Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 300,-100,-680 });
 				}
-
+				
 				// 임시 확인용으로 강제 Renderer 변경(일정 시간 이후 Renderer 바뀌게 해야함)
 				Renderer->ChangeFrameAnimation("EyeBall_BodyBacker3");
 			}
@@ -445,7 +445,7 @@ void MortimerFreezeBoss::AttackEyeStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("EyeBall_BodyBacker3", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
-			EyeRepeatCount = 4;
+			EyeRepeatCount = 2;
 			Renderer->ChangeFrameAnimation("EyeBall_BodyBacker4");
 		});
 

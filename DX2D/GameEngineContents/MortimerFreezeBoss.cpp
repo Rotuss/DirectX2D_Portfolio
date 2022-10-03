@@ -208,14 +208,14 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapC", FrameAnimation_DESC("SnowFlake_SwapC_Backer", 0.08f, false));
 		Renderer->CreateFrameAnimationFolder("SnowFlake_SwapCLast", FrameAnimation_DESC("SnowFlake_SwapC_Backer", { 2,1,0 }, 0.1f, false));
 
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker0", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 0, 19, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker1", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 20, 22, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker2", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 23, 24, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker3", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 25, 33, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker4", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 34, 49, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker5", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 50, 58, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker6", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 59, 61, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker7", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 62, 69, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker0", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 0, 19, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker1", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 20, 22, 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker2", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 23, 24, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker3", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 25, 33, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker4", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 34, 49, 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker5", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 50, 58, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker6", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 59, 61, 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("EyeBall_BodyBacker7", FrameAnimation_DESC("Attack_EyeBall_BodyBacker", 62, 69, 0.06f, false));
 
 		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBacker0", FrameAnimation_DESC("SnowFlake_IceCreamBacker", 0, 5, 0.06f, false));
 		Renderer->CreateFrameAnimationFolder("SnowFlake_IceCreamBacker1", FrameAnimation_DESC("SnowFlake_IceCreamBacker", 6, 12, 0.06f, false));
