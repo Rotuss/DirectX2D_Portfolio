@@ -44,6 +44,63 @@ CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngine
 	return CollisionReturn::ContinueCheck;
 }
 
+CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	if ("ChaliceDash" != StateManager.GetCurStateStateName())
+	{
+		if (0 < NoDamageTime)
+		{
+			return CollisionReturn::Break;
+		}
+
+		if (0 < ChaliceHP)
+		{
+			ChaliceHP += -1;
+		}
+		Health->SetHealthCount(ChaliceHP);
+		StateManager.ChangeState("ChaliceHit");
+		return CollisionReturn::ContinueCheck;
+	}
+	else
+	{
+		// Dash Pasrry
+
+		return CollisionReturn::ContinueCheck;
+	}
+}
+
+CollisionReturn MsChalice::CollisionCheckMinion(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	if (0 < NoDamageTime)
+	{
+		return CollisionReturn::Break;
+	}
+
+	if (0 < ChaliceHP)
+	{
+		ChaliceHP += -1;
+	}
+	Health->SetHealthCount(ChaliceHP);
+	StateManager.ChangeState("ChaliceHit");
+	return CollisionReturn::ContinueCheck;
+}
+
+CollisionReturn MsChalice::CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	if (0 < NoDamageTime)
+	{
+		return CollisionReturn::Break;
+	}
+
+	if (0 < ChaliceHP)
+	{
+		ChaliceHP += -1;
+	}
+	Health->SetHealthCount(ChaliceHP);
+	StateManager.ChangeState("ChaliceHit");
+	return CollisionReturn::ContinueCheck;
+}
+
 // 발판 테스트
 CollisionReturn MsChalice::CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
@@ -220,6 +277,9 @@ void MsChalice::Update(float _DeltaTime)
 
 		// Collision2D
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Boss), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Parry), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckParry, this, std::placeholders::_1, std::placeholders::_2));
+	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::BossMinion), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckMinion, this, std::placeholders::_1, std::placeholders::_2));
+	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::BossWhale), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckWhale, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Phase3Bot), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckPhase3Bot, this, std::placeholders::_1, std::placeholders::_2));
 
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceShoot"))

@@ -15,6 +15,7 @@ enum class OBJECTORDER
 	BossWhale,
 	SnowPlatform,
 	Weapon,
+	Parry,
 	Phase3Bot,
 	UI = 1000,
 };

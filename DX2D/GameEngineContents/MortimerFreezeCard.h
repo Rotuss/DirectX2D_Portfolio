@@ -22,6 +22,7 @@ protected:
 
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineCollision*		Collision;
+	GameEngineCollision*		CollisionParry;
 
 private:
 	float4 CurPosition;

@@ -8,6 +8,7 @@
 MortimerFreezeCard::MortimerFreezeCard() 
 	: Renderer(nullptr)
 	, Collision(nullptr)
+	, CollisionParry(nullptr)
 	, Speed(100.0f)
 {
 }
@@ -22,6 +23,19 @@ void MortimerFreezeCard::Start()
 	int RandomItemNum = RandomValue_.RandomInt(0, 4);
 	
 	{
+		Collision = CreateComponent<GameEngineCollision>();
+		Collision->GetTransform().SetLocalScale({ 25,110,-1 });
+		Collision->ChangeOrder(OBJECTORDER::Boss);
+		Collision->Off();
+	}
+	{
+		CollisionParry = CreateComponent<GameEngineCollision>();
+		CollisionParry->GetTransform().SetLocalScale({ 25,110,-1 });
+		CollisionParry->ChangeOrder(OBJECTORDER::Parry);
+		CollisionParry->Off();
+	}
+	
+	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("CardPinkA", FrameAnimation_DESC("Peashot_Card_PinkA", 0.04f, true));
 		Renderer->CreateFrameAnimationFolder("CardPinkB", FrameAnimation_DESC("Peashot_Card_PinkB", 0.04f, true));
@@ -32,31 +46,30 @@ void MortimerFreezeCard::Start()
 		if (0 == RandomItemNum)
 		{
 			Renderer->ChangeFrameAnimation("CardPinkA");
+			CollisionParry->On();
 		}
 		if (1 == RandomItemNum)
 		{
 			Renderer->ChangeFrameAnimation("CardPinkB");
+			CollisionParry->On();
 		}
 		if (2 == RandomItemNum)
 		{
 			Renderer->ChangeFrameAnimation("CardA");
+			Collision->On();
 		}
 		if (3 == RandomItemNum)
 		{
 			Renderer->ChangeFrameAnimation("CardB");
+			Collision->On();
 		}
 		if (4 == RandomItemNum)
 		{
 			Renderer->ChangeFrameAnimation("CardC");
+			Collision->On();
 		}
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
-	}
-
-	{
-		Collision = CreateComponent<GameEngineCollision>();
-		Collision->GetTransform().SetLocalScale({ 25,110,-1 });
-		Collision->ChangeOrder(OBJECTORDER::Boss);
 	}
 
 	CurPosition = MortimerFreezeBoss::MFBoss->GetTransform().GetLocalPosition();
@@ -67,12 +80,12 @@ void MortimerFreezeCard::Update(float _DeltaTime)
 {
 	if (-10.0f > GetTransform().GetLocalPosition().x)
 	{
-		Renderer->GetActor()->Death();
+		Death();
 		return;
 	}
 	if (1650.0f < GetTransform().GetLocalPosition().x)
 	{
-		Renderer->GetActor()->Death();
+		Death();
 		return;
 	}
 	

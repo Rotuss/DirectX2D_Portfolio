@@ -93,7 +93,7 @@ void MortimerFreezeMinion::Start()
 			{
 				{
 					Collision = CreateComponent<GameEngineCollision>();
-					Collision->GetTransform().SetLocalScale({ 50,50,-1 });
+					Collision->GetTransform().SetLocalScale({ 50,100,-1 });
 					Collision->GetTransform().SetLocalPosition({ 0,50 });
 					Collision->ChangeOrder(OBJECTORDER::BossMinion);
 
@@ -154,7 +154,7 @@ void MortimerFreezeMinion::Start()
 			{
 				{
 					Collision = CreateComponent<GameEngineCollision>();
-					Collision->GetTransform().SetLocalScale({ 50,50,-1 });
+					Collision->GetTransform().SetLocalScale({ 50,100,-1 });
 					Collision->GetTransform().SetLocalPosition({ 0,50 });
 					Collision->ChangeOrder(OBJECTORDER::BossMinion);
 
@@ -283,10 +283,18 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 	if (DirType == DIR::LEFT)
 	{
 		GetTransform().SetWorldLeftMove(Speed, _DeltaTime);
+		if (500.0f <= Speed)
+		{
+			GetTransform().SetWorldDownMove(100.0f, _DeltaTime);
+		}
 	}
 	if (DirType == DIR::RIGHT)
 	{
 		GetTransform().SetWorldRightMove(Speed, _DeltaTime);
+		if (500.0f <= Speed)
+		{
+			GetTransform().SetWorldDownMove(100.0f, _DeltaTime);
+		}
 	}
 }
 
