@@ -40,8 +40,9 @@ protected:
 	void Update(float _DeltaTime);
 	void End() {}
 
-	GameEngineTextureRenderer* Renderer;
-	//GameEngineCollision* Collision;
+	GameEngineTextureRenderer*	Renderer;
+	GameEngineCollision*		Collision;
+	GameEngineCollision*		CollisionParry;
 
 private:
 	BucketDirType BucketDir;

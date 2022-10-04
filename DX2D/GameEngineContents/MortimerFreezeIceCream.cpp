@@ -4,6 +4,7 @@
 MortimerFreezeIceCream::MortimerFreezeIceCream() 
 	: Renderer(nullptr)
 	, EffectRenderer(nullptr)
+	, Collision(nullptr)
 	, LerpPos()
 	, StartPosition()
 	, CurNumType()
@@ -128,6 +129,11 @@ void MortimerFreezeIceCream::Start()
 	EffectRenderer->ScaleToTexture();
 	EffectRenderer->SetPivot(PIVOTMODE::CENTER);
 
+	Collision = CreateComponent<GameEngineCollision>();
+	Collision->GetTransform().SetLocalScale({ 60,120,-1 });
+	Collision->ChangeOrder(OBJECTORDER::Boss);
+	Collision->Off();
+
 	EffectRenderer->AnimationBindEnd("IceCream_Spawn_FX_Start", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			EffectRenderer->ChangeFrameAnimation("IceCream_Spawn_FX");
@@ -141,6 +147,7 @@ void MortimerFreezeIceCream::Start()
 				
 				Renderer->ChangeFrameAnimation("IceCream");
 				Renderer->On();
+				Collision->On();
 			}
 		});
 }

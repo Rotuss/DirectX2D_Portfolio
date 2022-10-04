@@ -6,6 +6,8 @@
 
 MortimerFreezeBucket::MortimerFreezeBucket() 
 	: Renderer(nullptr)
+	, Collision(nullptr)
+	, CollisionParry(nullptr)
 	, BucketDir()
 	, BucketMove()
 	, LerpPos()
@@ -59,6 +61,19 @@ void MortimerFreezeBucket::Start()
 	int RandomIntNum = RandomValue_.RandomInt(0, 1);
 	
 	{
+		Collision = CreateComponent<GameEngineCollision>();
+		Collision->GetTransform().SetLocalScale({ 60,80,-1 });
+		Collision->ChangeOrder(OBJECTORDER::Boss);
+		Collision->Off();
+	}
+	{
+		CollisionParry = CreateComponent<GameEngineCollision>();
+		CollisionParry->GetTransform().SetLocalScale({ 60,80,-1 });
+		CollisionParry->ChangeOrder(OBJECTORDER::Parry);
+		CollisionParry->Off();
+	}
+
+	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("Bucket_Normal_Start", FrameAnimation_DESC("Bucket_Normal", 0, 11, 0.1f, false));
 		Renderer->CreateFrameAnimationFolder("Bucket_Normal", FrameAnimation_DESC("Bucket_Normal", 12, 20, 0.1f, true));
@@ -68,10 +83,12 @@ void MortimerFreezeBucket::Start()
 		if (0 == RandomIntNum)
 		{
 			Renderer->ChangeFrameAnimation("Bucket_Normal_Start");
+			Collision->On();
 		}
 		if (1 == RandomIntNum)
 		{
 			Renderer->ChangeFrameAnimation("Bucket_Pink_Start");
+			CollisionParry->On();
 		}
 
 		Renderer->SetScaleModeImage();

@@ -41,7 +41,7 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer* Renderer;
-	//GameEngineCollision* Collision;
+	GameEngineCollision* Collision;
 
 private:
 	MoonDirType		MoonDir;

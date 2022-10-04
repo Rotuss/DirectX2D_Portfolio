@@ -19,7 +19,7 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 	PrevState = "";
 	// 수치 조정 필요
 	Renderer->SetPivot(PIVOTMODE::CENTER);
-	Collision->GetTransform().SetLocalScale(float4{ 300.0f,600.0f,0.0f });
+	Collision->GetTransform().SetLocalScale(float4{ 250.0f,550.0f,0.0f });
 	Collision->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,0.0f });
 	Collision->Off();
 	GetTransform().SetLocalPosition(float4{ 800.0f, -200.0f, 250.0f });

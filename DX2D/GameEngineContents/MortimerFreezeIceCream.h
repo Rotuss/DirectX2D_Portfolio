@@ -47,9 +47,9 @@ protected:
 	void Update(float _DeltaTime);
 	void End() {}
 
-	GameEngineTextureRenderer* Renderer;
-	GameEngineTextureRenderer* EffectRenderer;
-	//GameEngineCollision* Collision;
+	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	EffectRenderer;
+	GameEngineCollision*		Collision;
 
 private:
 	NumType CurNumType;

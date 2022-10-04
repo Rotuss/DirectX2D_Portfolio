@@ -5,6 +5,7 @@
 
 MortimerFreezeEye::MortimerFreezeEye() 
 	: Renderer(nullptr)
+	, Collision(nullptr)
 	, EyePosition()
 	, LerpPos()
 	, StartPosition()
@@ -29,6 +30,10 @@ void MortimerFreezeEye::Start()
 	Renderer->SetScaleModeImage();
 	Renderer->ScaleToTexture();
 	Renderer->SetPivot(PIVOTMODE::CENTER);
+
+	Collision = CreateComponent<GameEngineCollision>();
+	Collision->GetTransform().SetLocalScale({ 120,120,-1 });
+	Collision->ChangeOrder(OBJECTORDER::Boss);
 }
 
 void MortimerFreezeEye::Update(float _DeltaTime)

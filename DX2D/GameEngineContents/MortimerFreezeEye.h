@@ -39,7 +39,7 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer* Renderer;
-	//GameEngineCollision* Collision;
+	GameEngineCollision* Collision;
 
 private:
 	EyePos EyePosition;

@@ -4,6 +4,7 @@
 
 MortimerFreezeMoon::MortimerFreezeMoon() 
 	: Renderer(nullptr)
+	, Collision(nullptr)
 	, MoonDir()
 	, MoonMove()
 	, LerpPos()
@@ -38,7 +39,7 @@ void MortimerFreezeMoon::MoonSetting(MoonDirType _DirType, MoonMoveType _MoveTyp
 	{
 	case MoonMoveType::TOP:
 		GetTransform().SetLocalRotation({ 0.0f,0.0f,45.0f });
-		EndPosition.y = StartPosition.y + GameEngineRandom::MainRandom.RandomFloat(80.0f, 100.0f);
+		EndPosition.y = StartPosition.y + GameEngineRandom::MainRandom.RandomFloat(250.0f, 280.0f);
 		break;
 	case MoonMoveType::MID:
 		GetTransform().SetLocalRotation({ 0.0f,0.0f,0.0f });
@@ -46,7 +47,7 @@ void MortimerFreezeMoon::MoonSetting(MoonDirType _DirType, MoonMoveType _MoveTyp
 		break;
 	case MoonMoveType::BOT:
 		GetTransform().SetLocalRotation({ 0.0f,0.0f,-45.0f });
-		EndPosition.y = StartPosition.y + -GameEngineRandom::MainRandom.RandomFloat(80.0f, 100.0f);
+		EndPosition.y = StartPosition.y + -GameEngineRandom::MainRandom.RandomFloat(250.0f, 280.0f);
 		break;
 	default:
 		break;
@@ -75,6 +76,12 @@ void MortimerFreezeMoon::Start()
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
+	}
+
+	{
+		Collision = CreateComponent<GameEngineCollision>();
+		Collision->GetTransform().SetLocalScale({ 40,60,-1 });
+		Collision->ChangeOrder(OBJECTORDER::Boss);
 	}
 }
 
