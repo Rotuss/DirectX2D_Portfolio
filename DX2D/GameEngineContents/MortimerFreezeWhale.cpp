@@ -14,7 +14,7 @@ void MortimerFreezeWhale::Start()
 {
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->CreateFrameAnimationFolder("WhaleOutro", FrameAnimation_DESC("Wizard_Whale_Outro", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("WhaleOutro", FrameAnimation_DESC("Wizard_Whale_Outro", 0.06f, false));
 		
 		Renderer->ChangeFrameAnimation("WhaleOutro");
 		Renderer->SetScaleModeImage();

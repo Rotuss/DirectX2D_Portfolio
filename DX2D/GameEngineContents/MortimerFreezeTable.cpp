@@ -15,9 +15,9 @@ void MortimerFreezeTable::Start()
 {
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->CreateFrameAnimationFolder("PeashotTableAppear", FrameAnimation_DESC("Peashot_Table_Appear", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("PeashotTableIdle", FrameAnimation_DESC("Peashot_Table_Idle", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("PeashotTableOutro", FrameAnimation_DESC("Peashot_Table_Outro", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("PeashotTableAppear", FrameAnimation_DESC("Peashot_Table_Appear", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("PeashotTableIdle", FrameAnimation_DESC("Peashot_Table_Idle", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("PeashotTableOutro", FrameAnimation_DESC("Peashot_Table_Outro", 0.05f, true));
 		Renderer->AnimationBindEnd("PeashotTableAppear", [/*&*/=](const FrameAnimation_DESC& _Info)
 			{
 				Renderer->ChangeFrameAnimation("PeashotTableIdle");

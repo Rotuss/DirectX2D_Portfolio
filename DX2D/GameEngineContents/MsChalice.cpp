@@ -498,7 +498,7 @@ void MsChalice::DashUpdate(float _DeltaTime, const StateInfo& _Info)
 void MsChalice::HitStart(const StateInfo& _Info)
 {
 	CurStateName = "Chalice_Hit";
-	NoDamageTime = 1.8f;
+	NoDamageTime = 1.5f;
 }
 
 void MsChalice::HitUpdate(float _DeltaTime, const StateInfo& _Info)

@@ -23,11 +23,11 @@ void MortimerFreezeCard::Start()
 	
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
-		Renderer->CreateFrameAnimationFolder("CardPinkA", FrameAnimation_DESC("Peashot_Card_PinkA", 0.3f, true));
-		Renderer->CreateFrameAnimationFolder("CardPinkB", FrameAnimation_DESC("Peashot_Card_PinkB", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("CardA", FrameAnimation_DESC("Peashot_CardA", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("CardB", FrameAnimation_DESC("Peashot_CardB", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("CardC", FrameAnimation_DESC("Peashot_CardC", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("CardPinkA", FrameAnimation_DESC("Peashot_Card_PinkA", 0.04f, true));
+		Renderer->CreateFrameAnimationFolder("CardPinkB", FrameAnimation_DESC("Peashot_Card_PinkB", 0.04f, true));
+		Renderer->CreateFrameAnimationFolder("CardA", FrameAnimation_DESC("Peashot_CardA", 0.04f, true));
+		Renderer->CreateFrameAnimationFolder("CardB", FrameAnimation_DESC("Peashot_CardB", 0.04f, true));
+		Renderer->CreateFrameAnimationFolder("CardC", FrameAnimation_DESC("Peashot_CardC", 0.04f, true));
 		
 		if (0 == RandomItemNum)
 		{

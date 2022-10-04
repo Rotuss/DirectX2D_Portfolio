@@ -105,13 +105,6 @@ CollisionReturn MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, G
 {
 	_Other->GetActor()->Death();
 	
-	if ("Peashot" == StateManager.GetCurStateStateName()
-		|| "Quadshot" == StateManager.GetCurStateStateName()
-		|| "Whale" == StateManager.GetCurStateStateName())
-	{
-		return CollisionReturn::Break;
-	}
-
 	HP -= 1;
 	
 	if (0 >= HP)
@@ -134,24 +127,24 @@ void MortimerFreezeBoss::Start()
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("MFIntro_Top", FrameAnimation_DESC("MFIntro_Top", 0, 43, 0.05f, false));
 		Renderer->CreateFrameAnimationFolder("MFIntro_TopLast", FrameAnimation_DESC("MFIntro_Top", 44, 64, 0.04f, false));
-		Renderer->CreateFrameAnimationFolder("MFIdle", FrameAnimation_DESC("MFIdle", 0, 23, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("MFIdleTrans", FrameAnimation_DESC("MFIdle", 24, 32, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFIdle", FrameAnimation_DESC("MFIdle", 0, 23, 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("MFIdleTrans", FrameAnimation_DESC("MFIdle", 24, 32, 0.06f, false));
 		
-		Renderer->CreateFrameAnimationFolder("PeashotIntro", FrameAnimation_DESC("Peashot_Intro", 0.2f, false));
-		Renderer->CreateFrameAnimationFolder("PeashotIdle", FrameAnimation_DESC("Peashot_Idle", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.1f, false));	
-		Renderer->CreateFrameAnimationFolder("PeashotOutro", FrameAnimation_DESC("Peashot_Outro", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("PeashotIntro", FrameAnimation_DESC("Peashot_Intro", 0.08f, false));
+		Renderer->CreateFrameAnimationFolder("PeashotIdle", FrameAnimation_DESC("Peashot_Idle", 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.05f, false));	
+		Renderer->CreateFrameAnimationFolder("PeashotOutro", FrameAnimation_DESC("Peashot_Outro", 0.05f, true));
 
-		Renderer->CreateFrameAnimationFolder("QuadshotStart", FrameAnimation_DESC("MF_Attack_Quadshot", 0, 15, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("QuadshotMinionAppear", FrameAnimation_DESC("MF_Attack_Quadshot", 15, 18, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("QuadshotMinionAfter", FrameAnimation_DESC("MF_Attack_Quadshot", 19, 30, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("QuadshotStart", FrameAnimation_DESC("MF_Attack_Quadshot", 0, 15, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("QuadshotMinionAppear", FrameAnimation_DESC("MF_Attack_Quadshot", 15, 18, 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("QuadshotMinionAfter", FrameAnimation_DESC("MF_Attack_Quadshot", 19, 30, 0.06f, false));
 		
-		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("WhaleDropAttackOutro", FrameAnimation_DESC("Wizard_Drop_Attack_Outro", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("WhaleDropAttackOutro", FrameAnimation_DESC("Wizard_Drop_Attack_Outro", 0.06f, false));
 		
-		Renderer->CreateFrameAnimationFolder("MFPhase2Transition0", FrameAnimation_DESC("MFPhase2_Transition", 0, 10, 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("MFPhase2Transition1", FrameAnimation_DESC("MFPhase2_Transition", 11, 15, 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("MFPhase2Transition2", FrameAnimation_DESC("MFPhase2_Transition", 16, 27, 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition0", FrameAnimation_DESC("MFPhase2_Transition", 0, 10, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition1", FrameAnimation_DESC("MFPhase2_Transition", 11, 15, 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition2", FrameAnimation_DESC("MFPhase2_Transition", 16, 27, 0.06f, false));
 		
 		// Phase2
 		Renderer->CreateFrameAnimationFolder("MF2Idle", FrameAnimation_DESC("MF2Idle", 0.06f, true));
@@ -246,7 +239,7 @@ void MortimerFreezeBoss::Start()
 	{
 		// AddRenderer 을 Renderer의 자식으로?-?
 		AddRenderer = CreateComponent<GameEngineTextureRenderer>();
-		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.1f, true));
+		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.06f, true));
 		AddRenderer->CreateFrameAnimationFolder("SnowBeastFridgeFreezer_Top", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Top", 0.1f, false));
 		AddRenderer->CreateFrameAnimationFolder("SnowBeast_Limbs_ReformingA", FrameAnimation_DESC("SnowBeast_Limbs_ReformingA", 0.1f, false));
 
@@ -466,7 +459,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 	if (true == GameEngineInput::GetInst()->IsDown("Num1_Peashot"))
 	{
-		PeashotRandomPer = 0.5f;
+		PeashotRandomPer = 0.7f;
 		PeashotStateCount = 0;
 	}
 
@@ -483,9 +476,9 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	}
 
 	// 보스의 x값이 300 혹은 1350일 때 랜덤한 확률로 Peashot 상태
-	if (300.0f >= MFCurXPos || 1350.0f <= MFCurXPos)
+	if (0 < HP && (300.0f >= MFCurXPos || 1350.0f <= MFCurXPos))
 	{
-		if (0.5f >= PeashotRandomPer && 0 == PeashotStateCount)
+		if (0.7f >= PeashotRandomPer && 0 == PeashotStateCount)
 		{
 			PeashotStateCount = GameEngineRandom::MainRandom.RandomInt(3, 5);
 			StateManager.ChangeState("Peashot");
@@ -499,7 +492,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	}
 
 	// x값이 650 ~ 950일 때 랜덤한 확률 Quadshot 상태
-	if (650.0f <= MFCurXPos && 950.0f >= MFCurXPos)
+	if (0 < HP && (650.0f <= MFCurXPos && 950.0f >= MFCurXPos))
 	{
 		if (0.8f >= QuadshotRandomPer && 0 == QuadshotStateCount)
 		{
@@ -515,8 +508,8 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 	}
 
 	// 보스와 플레이어의 x값이 일치할 때 랜덤한 확률로 Whale 상태
-	if (MsChalice::Chalice->GetTransform().GetLocalPosition().x + 10.0f >= MFCurXPos
-		&& MsChalice::Chalice->GetTransform().GetLocalPosition().x - 10.0f <= MFCurXPos)
+	if (0 < HP && (MsChalice::Chalice->GetTransform().GetLocalPosition().x + 10.0f >= MFCurXPos
+		&& MsChalice::Chalice->GetTransform().GetLocalPosition().x - 10.0f <= MFCurXPos))
 	{
 		if (0.9f >= WhaleRandomPer && 0 == WhaleStateCount)
 		{
@@ -629,7 +622,7 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 	LerpPos = float4::LerpLimit(StartPos[Num], EndPos[Num], IdleLerpRatio);
 	float LerpY = GameEngineMath::LerpLimit(-200, 200, IdleLerpRatio) * _DeltaTime;
-	if (0 == HP)
+	if (true == IsEndPhase1)
 	{
 		LerpY = GameEngineMath::LerpLimit(-500, 500, IdleLerpRatio) * _DeltaTime;
 	}
@@ -798,28 +791,28 @@ void MortimerFreezeBoss::AttackQuadshotStart(const StateInfo& _Info)
 				Minion0->SetDir(DIR::LEFT);
 				Minion0->SetMoveDir(RandomItemNum);
 				Minion0->SetGender(GENDER::BOY);
-				Minion0->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-340.0f, 20.0f));
+				Minion0->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-340.0f, 20.0f, -1.0f));
 				Minion0->SetColMap(MsChalice::Chalice->GetColMap());
 
 				Minion1 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
 				Minion1->SetDir(DIR::LEFT);
 				Minion1->SetMoveDir(RandomItemNum);
 				Minion1->SetGender(GENDER::GIRL);
-				Minion1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-110.0f, -30.0f));
+				Minion1->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(-110.0f, -30.0f, -1.0f));
 				Minion1->SetColMap(MsChalice::Chalice->GetColMap());
 
 				Minion2 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
 				Minion2->SetDir(DIR::RIGHT);
 				Minion2->SetMoveDir(RandomItemNum);
 				Minion2->SetGender(GENDER::BOY);
-				Minion2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(110.0f, -40.0f));
+				Minion2->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(110.0f, -40.0f, -1.0f));
 				Minion2->SetColMap(MsChalice::Chalice->GetColMap());
 
 				Minion3 = GetLevel()->CreateActor<MortimerFreezeMinion>(OBJECTORDER::Boss);
 				Minion3->SetDir(DIR::RIGHT);
 				Minion3->SetMoveDir(RandomItemNum);
 				Minion3->SetGender(GENDER::GIRL);
-				Minion3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(340.0f, 30.0f));
+				Minion3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4(340.0f, 30.0f, -1.0f));
 				Minion3->SetColMap(MsChalice::Chalice->GetColMap());
 			}
 		});
@@ -903,13 +896,13 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 			if (MFBossDIR::LEFT == CurMFDir)
 			{
 				AddRenderer->GetTransform().PixLocalPositiveX();
-				AddRenderer->GetTransform().SetLocalPosition(float4{ -150.0f, 145.0f, 0.5f });
+				AddRenderer->GetTransform().SetLocalPosition(float4{ -150.0f, 140.0f, 0.5f });
 				AddRenderer->On();
 			}
 			if (MFBossDIR::RIGHT== CurMFDir)
 			{
 				AddRenderer->GetTransform().PixLocalNegativeX();
-				AddRenderer->GetTransform().SetLocalPosition(float4{ 150.0f, 145.0f, 0.5f });
+				AddRenderer->GetTransform().SetLocalPosition(float4{ 150.0f, 140.0f, 0.5f });
 				AddRenderer->On();
 			}
 		});
