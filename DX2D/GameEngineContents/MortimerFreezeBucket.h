@@ -41,6 +41,7 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	RendererEffect;
 	GameEngineCollision*		Collision;
 	GameEngineCollision*		CollisionParry;
 
@@ -54,5 +55,6 @@ private:
 
 	float BucketLerpRatio;
 	bool IsBucketMove;
+	bool IsDeath;
 };
 

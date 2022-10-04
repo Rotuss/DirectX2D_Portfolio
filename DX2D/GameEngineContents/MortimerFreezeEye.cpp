@@ -5,7 +5,10 @@
 
 MortimerFreezeEye::MortimerFreezeEye() 
 	: Renderer(nullptr)
+	, EffectRenderer00(nullptr)
+	, EffectRenderer01(nullptr)
 	, Collision(nullptr)
+	, LineCollision(nullptr)
 	, EyePosition()
 	, LerpPos()
 	, StartPosition()
@@ -13,6 +16,7 @@ MortimerFreezeEye::MortimerFreezeEye()
 	, EyeLerpRatio(1.0f)
 	, XValue(0.0f)
 	, XAdd(0.0f)
+	, LineTime(0.5f)
 	, EyeMoveCount(4)
 {
 }
@@ -31,9 +35,47 @@ void MortimerFreezeEye::Start()
 	Renderer->ScaleToTexture();
 	Renderer->SetPivot(PIVOTMODE::CENTER);
 
+	EffectRenderer00 = CreateComponent<GameEngineTextureRenderer>();
+	EffectRenderer00->CreateFrameAnimationFolder("Eyeball_VFX_Line", FrameAnimation_DESC("Eyeball_VFX", 0, 6, 0.08f, false));
+	EffectRenderer00->CreateFrameAnimationFolder("Eyeball_VFX", FrameAnimation_DESC("Eyeball_VFX", 7, 13, 0.06f, true));
+
+	EffectRenderer00->ChangeFrameAnimation("Eyeball_VFX");
+	EffectRenderer00->SetScaleModeImage();
+	EffectRenderer00->ScaleToTexture();
+	EffectRenderer00->SetPivot(PIVOTMODE::CENTER);
+
+	EffectRenderer01 = CreateComponent<GameEngineTextureRenderer>();
+	EffectRenderer01->CreateFrameAnimationFolder("Eyeball_VFX_LineOut", FrameAnimation_DESC("Eyeball_VFX", 14, 15, 0.08f, false));
+
+	EffectRenderer01->ChangeFrameAnimation("Eyeball_VFX_LineOut");
+	EffectRenderer01->SetScaleModeImage();
+	EffectRenderer01->ScaleToTexture();
+	EffectRenderer01->SetPivot(PIVOTMODE::CENTER);
+	EffectRenderer01->Off();
+
+	EffectRenderer00->AnimationBindEnd("Eyeball_VFX_Line", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			EffectRenderer00->ChangeFrameAnimation("Eyeball_VFX");
+			EffectRenderer01->ChangeFrameAnimation("Eyeball_VFX_LineOut", true);
+			EffectRenderer01->On();
+
+			LineCollision->Off();
+		});
+
+	EffectRenderer01->AnimationBindEnd("Eyeball_VFX_LineOut", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			LineTime = GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f);
+			EffectRenderer01->Off();
+		});
+
 	Collision = CreateComponent<GameEngineCollision>();
 	Collision->GetTransform().SetLocalScale({ 120,120,-1 });
 	Collision->ChangeOrder(OBJECTORDER::Boss);
+
+	LineCollision = CreateComponent<GameEngineCollision>();
+	LineCollision->GetTransform().SetLocalScale({ 30,1500,-1 });
+	LineCollision->ChangeOrder(OBJECTORDER::Boss);
+	LineCollision->Off();
 }
 
 void MortimerFreezeEye::Update(float _DeltaTime)
@@ -67,6 +109,7 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 				StartPosition = EndPosition;
 				EndPosition = StartPosition + float4{ 0,200.0f,0 };
 				XValue = 0.0f;
+				EffectRenderer00->Off();
 			}
 		}
 		if (EyePos::LeftBot == EyePosition)
@@ -93,6 +136,7 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 				StartPosition = EndPosition;
 				EndPosition = StartPosition + float4{ 0,-200.0f,0 };
 				XValue = 0.0f;
+				EffectRenderer00->Off();
 			}
 		}
 		if (EyePos::RightTop == EyePosition)
@@ -119,6 +163,7 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 				StartPosition = EndPosition;
 				EndPosition = StartPosition + float4{ 0,200.0f,0 };
 				XValue = 0.0f;
+				EffectRenderer00->Off();
 			}
 		}
 		if (EyePos::RightBot == EyePosition)
@@ -145,10 +190,20 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 				StartPosition = EndPosition;
 				EndPosition = StartPosition + float4{ 0,-200.0f,0 };
 				XValue = 0.0f;
+				EffectRenderer00->Off();
 			}
 		}
 	}
 	
+	LineTime -= _DeltaTime;
+	if (0 >= LineTime)
+	{
+		EffectRenderer00->ChangeFrameAnimation("Eyeball_VFX_Line");
+		LineCollision->On();
+		
+		LineTime = 5.0f;
+	}
+
 	EyeLerpRatio += _DeltaTime;
 	if (1.0f <= EyeLerpRatio)
 	{

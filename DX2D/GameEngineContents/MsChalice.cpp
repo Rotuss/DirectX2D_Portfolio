@@ -3,6 +3,7 @@
 #include "Weapon.h"
 #include "UIHealth.h"
 #include "GlobalContents.h"
+#include "MortimerFreezeLevel.h"
 #include "MortimerFreezeSnowPlatform.h"
 #include <iostream>
 
@@ -104,7 +105,7 @@ CollisionReturn MsChalice::CollisionCheckWhale(GameEngineCollision* _This, GameE
 // 발판 테스트
 CollisionReturn MsChalice::CollisionCheckPlatform(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
-	AddDir.x = _Other->GetActor<MortimerFreezeSnowPlatform>()->GetMovePos().x;
+	AddDir.x = _Other->GetActor<MortimerFreezeSnowPlatform>()->GetMovePos().x/* * 1.8f*/;
 	PlatformCount = _Other->GetActor<MortimerFreezeSnowPlatform>()->Index;
 
 	return CollisionReturn::Break;
@@ -181,7 +182,8 @@ void MsChalice::Start()
 
 		// Collision2D
 		Collision->SetCollisionMode(CollisionMode::Ex);
-		Collision->GetTransform().SetLocalScale({ 100.0f, 50.0f, 1.0f });
+		Collision->GetTransform().SetLocalScale({ 50.0f, 80.0f, 1.0f });
+		Collision->GetTransform().SetLocalPosition({ 0.0f,50.0f });
 		Collision->ChangeOrder(OBJECTORDER::Player);
 	}
 
@@ -199,6 +201,11 @@ void MsChalice::Start()
 void MsChalice::Update(float _DeltaTime)
 {
 	StateManager.Update(_DeltaTime);
+
+	if (true == GetLevel<MortimerFreezeLevel>()->GetIsMove())
+	{
+		Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,-700.0f });
+	}
 
 	float4 Gravity = GetTransform().GetDownVector() * _DeltaTime * 2500.0f * 2.0f;
 

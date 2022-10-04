@@ -4,8 +4,9 @@
 #include "MortimerFreezeMoon.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
-MortimerFreezeBucket::MortimerFreezeBucket() 
+MortimerFreezeBucket::MortimerFreezeBucket()
 	: Renderer(nullptr)
+	, RendererEffect(nullptr)
 	, Collision(nullptr)
 	, CollisionParry(nullptr)
 	, BucketDir()
@@ -15,6 +16,7 @@ MortimerFreezeBucket::MortimerFreezeBucket()
 	, EndPosition({ 0.0f,0.0f,-560.0f })
 	, BucketLerpRatio(0.0f)
 	, IsBucketMove(false)
+	, IsDeath(false)
 {
 }
 
@@ -96,6 +98,17 @@ void MortimerFreezeBucket::Start()
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 	}
 
+	{
+		RendererEffect = CreateComponent<GameEngineTextureRenderer>();
+		RendererEffect->CreateFrameAnimationFolder("Bucket_Explode_VFX", FrameAnimation_DESC("Bucket_Explode_VFX", 0.1f, false));
+		
+		RendererEffect->ChangeFrameAnimation("Bucket_Explode_VFX");
+		RendererEffect->SetScaleModeImage();
+		RendererEffect->ScaleToTexture();
+		RendererEffect->SetPivot(PIVOTMODE::CENTER);
+		RendererEffect->Off();
+	}
+
 	Renderer->AnimationBindEnd("Bucket_Normal_Start", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			IsBucketMove = true;
@@ -109,13 +122,25 @@ void MortimerFreezeBucket::Start()
 			MortimerFreezeBoss::MFBoss->SetBucketMove(IsBucketMove);
 			Renderer->ChangeFrameAnimation("Bucket_Pink");
 		});
+
+	RendererEffect->AnimationBindEnd("Bucket_Explode_VFX", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			if (true == IsDeath)
+			{
+				Death();
+			}
+		});
 }
 
 void MortimerFreezeBucket::Update(float _DeltaTime)
 {
 	// 오->왼
-	if (200.0f >= GetTransform().GetLocalPosition().x)
+	if (200.0f >= GetTransform().GetLocalPosition().x && false == IsDeath)
 	{
+		RendererEffect->ChangeFrameAnimation("Bucket_Explode_VFX", true);
+		RendererEffect->GetTransform().PixLocalPositiveX();
+		RendererEffect->On();
+
 		{
 			// 달 3개 생성
 			MortimerFreezeMoon* Ptr1 = GetLevel()->CreateActor<MortimerFreezeMoon>(OBJECTORDER::Boss);
@@ -135,11 +160,16 @@ void MortimerFreezeBucket::Update(float _DeltaTime)
 			Ptr3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 		}
 		
-		Death();
+		Renderer->Off();
+		IsDeath = true;
 	}
 	// 왼->오
-	if (1450.0f <= GetTransform().GetLocalPosition().x)
+	if (1450.0f <= GetTransform().GetLocalPosition().x && false == IsDeath)
 	{
+		RendererEffect->ChangeFrameAnimation("Bucket_Explode_VFX", true);
+		RendererEffect->GetTransform().PixLocalNegativeX();
+		RendererEffect->On();
+
 		{
 			// 달 3개 생성
 			MortimerFreezeMoon* Ptr1 = GetLevel()->CreateActor<MortimerFreezeMoon>(OBJECTORDER::Boss);
@@ -159,7 +189,8 @@ void MortimerFreezeBucket::Update(float _DeltaTime)
 			Ptr3->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 		}
 
-		Death();
+		Renderer->Off();
+		IsDeath = true;
 	}
 
 	if (true == IsBucketMove)

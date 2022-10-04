@@ -39,7 +39,10 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer* Renderer;
+	GameEngineTextureRenderer* EffectRenderer00;
+	GameEngineTextureRenderer* EffectRenderer01;
 	GameEngineCollision* Collision;
+	GameEngineCollision* LineCollision;
 
 private:
 	EyePos EyePosition;
@@ -50,6 +53,7 @@ private:
 	float EyeLerpRatio;
 	float XValue;
 	float XAdd;
+	float LineTime;
 	int EyeMoveCount;
 };
 
