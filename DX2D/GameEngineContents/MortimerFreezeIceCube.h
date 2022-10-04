@@ -63,6 +63,7 @@ protected:
 	GameEngineTexture*			ColorCheck;
 	GameEngineTextureRenderer*	ColRenderer;
 	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	EffectRenderer;
 	GameEngineCollision*		Collision;
 
 private:
@@ -74,5 +75,6 @@ private:
 	float4 LerpPos;
 	float CubeLerpRatio;
 	float YAdd;
+	bool IsDeath;
 };
 

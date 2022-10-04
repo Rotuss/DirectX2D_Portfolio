@@ -28,6 +28,8 @@ public:
 	MortimerFreezeIceBat& operator=(const MortimerFreezeIceBat& _Other) = delete;
 	MortimerFreezeIceBat& operator=(MortimerFreezeIceBat&& _Other) noexcept = delete;
 
+	CollisionReturn CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+
 	inline void SetMovePos(float4 _Start, float4 _End)
 	{
 		StartPosition = _Start;
@@ -56,8 +58,10 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	DeathRenderer;
 	GameEngineCollision*		Collision;
 	GameEngineCollision*		CollisionParry;
+
 private:
 	ColorType BatColor;
 	BatDIR CurBatDir;

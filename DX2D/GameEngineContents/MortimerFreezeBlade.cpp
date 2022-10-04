@@ -5,6 +5,7 @@
 MortimerFreezeBlade::MortimerFreezeBlade()
 	: Renderer(nullptr)
 	, BubbleRenderer(nullptr)
+	, SmokeRenderer(nullptr)
 	, Collision(nullptr)
 {
 }
@@ -61,6 +62,30 @@ void MortimerFreezeBlade::Start()
 		BubbleRenderer->SetPivot(PIVOTMODE::BOT);
 		BubbleRenderer->GetTransform().SetLocalPosition(float4{ 0,-10,0 });
 	}
+
+	{
+		SmokeRenderer = CreateComponent<GameEngineTextureRenderer>();
+		SmokeRenderer->CreateFrameAnimationFolder("IceBlade_Warning_SmokeA_Appear", FrameAnimation_DESC("IceBlade_Warning_SmokeA", 0, 2, 0.08f, false));
+		SmokeRenderer->CreateFrameAnimationFolder("IceBlade_Warning_SmokeA", FrameAnimation_DESC("IceBlade_Warning_SmokeA", 3, 15, 0.08f, false));
+
+		SmokeRenderer->ChangeFrameAnimation("IceBlade_Warning_SmokeA_Appear");
+		SmokeRenderer->SetScaleModeImage();
+		SmokeRenderer->ScaleToTexture();
+		SmokeRenderer->SetPivot(PIVOTMODE::BOT);
+		SmokeRenderer->GetTransform().SetLocalPosition(float4{ 0,30,0 });
+	}
+
+	SmokeRenderer->AnimationBindEnd("IceBlade_Warning_SmokeA_Appear", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SmokeRenderer->ChangeFrameAnimation("IceBlade_Warning_SmokeA");
+			SmokeRenderer->SetPivot(PIVOTMODE::CENTER);
+			SmokeRenderer->GetTransform().SetLocalPosition(float4{ 0,80,0 });
+		});
+
+	SmokeRenderer->AnimationBindEnd("IceBlade_Warning_SmokeA", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			SmokeRenderer->Off();
+		});
 
 	BubbleRenderer->AnimationBindEnd("IceBlade_BubbleA_Start", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{

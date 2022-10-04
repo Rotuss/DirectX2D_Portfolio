@@ -23,6 +23,7 @@ protected:
 private:
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineTextureRenderer*	BubbleRenderer;
+	GameEngineTextureRenderer*	SmokeRenderer;
 	GameEngineCollision*		Collision;
 };
 

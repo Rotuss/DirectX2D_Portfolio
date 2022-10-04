@@ -80,6 +80,9 @@ protected:
 	GameEngineTextureRenderer*	SubRenderer01;
 	GameEngineTextureRenderer*	SubRenderer02;
 	GameEngineTextureRenderer*	SubRenderer03;
+	GameEngineTextureRenderer*	EffectRenderer00;
+	GameEngineTextureRenderer*	EffectRenderer01;
+	GameEngineTextureRenderer*	EffectRenderer02;
 	GameEngineCollision*		Collision;
 	GameEngineCollision*		WhaleCollision;
 	GameEngineCollision*		Phase3BotCollision;

@@ -4,7 +4,8 @@
 #include <GameEngineBase/GameEngineRandom.h>
 
 MortimerFreezeIceBat::MortimerFreezeIceBat()
-	: Collision(nullptr)
+	: DeathRenderer(nullptr)
+	, Collision(nullptr)
 	, CollisionParry(nullptr)
 	, BatColor()
 	, CurBatDir()
@@ -21,6 +22,33 @@ MortimerFreezeIceBat::MortimerFreezeIceBat()
 
 MortimerFreezeIceBat::~MortimerFreezeIceBat()
 {
+}
+
+CollisionReturn MortimerFreezeIceBat::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	
+	_This->Death();
+
+	if (BatColor == ColorType::Green)
+	{
+		Renderer->ChangeFrameAnimation("IceBatDeath_Green");
+	}
+	if (BatColor == ColorType::Pink)
+	{
+		Renderer->ChangeFrameAnimation("IceBatDeath_Pink");
+	}
+	if (BatColor == ColorType::Yellow)
+	{
+		Renderer->ChangeFrameAnimation("IceBatDeath_Yellow");
+	}
+
+	DeathRenderer->ChangeFrameAnimation("IceBat_DeathB", true);
+	DeathRenderer->GetTransform().SetLocalPosition(float4{ 0.0f,-20.0f });
+	DeathRenderer->On();
+
+	_Other->GetActor()->Death();
+	
+	return CollisionReturn::ContinueCheck;
 }
 
 void MortimerFreezeIceBat::SetColorType(ColorType _Type)
@@ -94,7 +122,18 @@ void MortimerFreezeIceBat::Start()
 		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Yellow", FrameAnimation_DESC("IceBat_Swoop_Yellow", 0.06f, true));
 		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Yellow", FrameAnimation_DESC("IceBat_Outro_Trans_Yellow", 0.06f, false));
 		Renderer->CreateFrameAnimationFolder("IceBatOutro_Yellow", FrameAnimation_DESC("IceBat_Outro_Yellow", 0.06f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatDeathA_Yellow", FrameAnimation_DESC("IceBat_DeathA_Yellow", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatDeath_Yellow", FrameAnimation_DESC("IceBat_DeathA_Yellow", 0.06f, false));
+	}
+
+	{
+		DeathRenderer = CreateComponent<GameEngineTextureRenderer>();
+		DeathRenderer->CreateFrameAnimationFolder("IceBat_DeathB", FrameAnimation_DESC("IceBat_DeathB", 0.06f, false));
+
+		DeathRenderer->ChangeFrameAnimation("IceBat_DeathB");
+		DeathRenderer->SetScaleModeImage();
+		DeathRenderer->ScaleToTexture();
+		DeathRenderer->SetPivot(PIVOTMODE::CENTER);
+		DeathRenderer->Off();
 	}
 
 	{
@@ -124,11 +163,30 @@ void MortimerFreezeIceBat::Start()
 		{
 			Renderer->ChangeFrameAnimation("IceBatFlap_Yellow");
 		});
+
+	Renderer->AnimationBindEnd("IceBatDeath_Green", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Death();
+		});
+
+	Renderer->AnimationBindEnd("IceBatDeath_Pink", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Death();
+		});
+
+	Renderer->AnimationBindEnd("IceBatDeath_Yellow", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Death();
+		});
 }
 
 void MortimerFreezeIceBat::Update(float _DeltaTime)
 {
 	ReAppearTime -= _DeltaTime;
+
+	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Weapon, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeIceBat::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+	CollisionParry->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Weapon, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeIceBat::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+
 
 	if (-400.0f <= GetTransform().GetLocalPosition().y && false == IsYOut && 0.0f >= ReAppearTime)
 	{

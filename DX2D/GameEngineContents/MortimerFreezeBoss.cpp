@@ -20,6 +20,9 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, SubRenderer01(nullptr)
 	, SubRenderer02(nullptr)
 	, SubRenderer03(nullptr)
+	, EffectRenderer00(nullptr)
+	, EffectRenderer01(nullptr)
+	, EffectRenderer02(nullptr)
 	, Collision(nullptr)
 	, WhaleCollision(nullptr)
 	, Phase3BotCollision(nullptr)
@@ -331,6 +334,41 @@ void MortimerFreezeBoss::Start()
 		SubRenderer03->ScaleToTexture();
 		SubRenderer03->SetPivot(PIVOTMODE::BOT);
 		SubRenderer03->Off();
+	}
+
+	{
+		EffectRenderer00 = CreateComponent<GameEngineTextureRenderer>();
+		EffectRenderer00->CreateFrameAnimationFolder("SnowBeast_Jump_FXA", FrameAnimation_DESC("SnowBeast_Jump_FXA", 0.04f, false));
+		EffectRenderer00->CreateFrameAnimationFolder("SnowBeast_Dash_FXA", FrameAnimation_DESC("SnowBeast_Dash_FXA", 0.04f, false));
+
+		EffectRenderer00->ChangeFrameAnimation("SnowBeast_Jump_FXA");
+		EffectRenderer00->SetScaleModeImage();
+		EffectRenderer00->ScaleToTexture();
+		EffectRenderer00->SetPivot(PIVOTMODE::BOT);
+		EffectRenderer00->Off();
+	}
+
+	{
+		EffectRenderer01 = CreateComponent<GameEngineTextureRenderer>();
+		EffectRenderer01->CreateFrameAnimationFolder("SnowBeast_Jump_FXB", FrameAnimation_DESC("SnowBeast_Jump_FXB", 0.04f, false));
+		EffectRenderer01->CreateFrameAnimationFolder("SnowBeast_Dash_FXB", FrameAnimation_DESC("SnowBeast_Dash_FXB", 0.04f, false));
+
+		EffectRenderer01->ChangeFrameAnimation("SnowBeast_Jump_FXB");
+		EffectRenderer01->SetScaleModeImage();
+		EffectRenderer01->ScaleToTexture();
+		EffectRenderer01->SetPivot(PIVOTMODE::BOT);
+		EffectRenderer01->Off();
+	}
+
+	{
+		EffectRenderer02 = CreateComponent<GameEngineTextureRenderer>();
+		EffectRenderer02->CreateFrameAnimationFolder("SnowBeastBall_GroundFXA", FrameAnimation_DESC("SnowBeastBall_GroundFXA", 0.04f, true));
+		
+		EffectRenderer02->ChangeFrameAnimation("SnowBeastBall_GroundFXA");
+		EffectRenderer02->SetScaleModeImage();
+		EffectRenderer02->ScaleToTexture();
+		EffectRenderer02->SetPivot(PIVOTMODE::BOT);
+		EffectRenderer02->Off();
 	}
 
 	{
