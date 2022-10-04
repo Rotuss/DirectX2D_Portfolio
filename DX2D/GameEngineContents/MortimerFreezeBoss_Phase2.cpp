@@ -844,7 +844,7 @@ void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 		});
 
 	// 스매시 애니메이션바인드엔드에 BladeTime 시간설정 + BladeCount 4 설정, StateManager2.ChangeState("MF2Idle");
-	BladeTime = 2.0f;
+	BladeTime = 1.0f;
 	BladeCount = 4;
 	SmashRepeatCount = 3;
 }
@@ -867,12 +867,12 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 265.0f * (4 - BladeCount),-45,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 330.0f + (250.0f * (3 - BladeCount)),-45,0});
 		}
 		if (MFBossDIR::RIGHT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 265.0f * (4 - BladeCount),45,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 340.0f + (250.0f * (3 - BladeCount)),45,0});
 		}
 	}
 }
@@ -936,12 +936,17 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 	{
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
-			GetTransform().SetWorldLeftMove(500.0f, _DeltaTime);
+			GetTransform().SetWorldLeftMove(800.0f, _DeltaTime);
 		}
 		else
 		{
-			GetTransform().SetWorldRightMove(500.0f, _DeltaTime);
+			GetTransform().SetWorldRightMove(800.0f, _DeltaTime);
 		}
+	}
+
+	if (true == GetLevel<MortimerFreezeLevel>()->GetIsMove())
+	{
+		GetTransform().SetWorldDownMove(500.0f, _DeltaTime);
 	}
 
 	if (true == IsPlatformOn)

@@ -65,28 +65,28 @@ void MortimerFreezeIceBat::Start()
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		// Green
-		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Green", FrameAnimation_DESC("IceBat_Flap_Antic", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("IceBatFlap_Green", FrameAnimation_DESC("IceBat_Flap_Green", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Green", FrameAnimation_DESC("IceBat_Swoop_Green", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Green", FrameAnimation_DESC("IceBat_Outro_Trans_Green", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("IceBatOutro_Green", FrameAnimation_DESC("IceBat_Outro_Green", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatDeath_Green", FrameAnimation_DESC("IceBat_DeathA_Green", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Green", FrameAnimation_DESC("IceBat_Flap_Antic", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Green", FrameAnimation_DESC("IceBat_Flap_Green", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Green", FrameAnimation_DESC("IceBat_Swoop_Green", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Green", FrameAnimation_DESC("IceBat_Outro_Trans_Green", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Green", FrameAnimation_DESC("IceBat_Outro_Green", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatDeath_Green", FrameAnimation_DESC("IceBat_DeathA_Green", 0.06f, false));
 
 		// Pink
-		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Pink", FrameAnimation_DESC("IceBat_Flap_Antic_Pink", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("IceBatFlap_Pink", FrameAnimation_DESC("IceBat_Flap_Pink", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Pink", FrameAnimation_DESC("IceBat_Swoop_Pink", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Pink", FrameAnimation_DESC("IceBat_Outro_Trans_Pink", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("IceBatOutro_Pink", FrameAnimation_DESC("IceBat_Outro_Pink", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatDeath_Pink", FrameAnimation_DESC("IceBat_DeathA_Pink", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Pink", FrameAnimation_DESC("IceBat_Flap_Antic_Pink", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Pink", FrameAnimation_DESC("IceBat_Flap_Pink", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Pink", FrameAnimation_DESC("IceBat_Swoop_Pink", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Pink", FrameAnimation_DESC("IceBat_Outro_Trans_Pink", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Pink", FrameAnimation_DESC("IceBat_Outro_Pink", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatDeath_Pink", FrameAnimation_DESC("IceBat_DeathA_Pink", 0.06f, false));
 		
 		// Yellow
-		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Yellow", FrameAnimation_DESC("IceBat_Flap_Antic_Yellow", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("IceBatFlap_Yellow", FrameAnimation_DESC("IceBat_Flap_Yellow", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Yellow", FrameAnimation_DESC("IceBat_Swoop_Yellow", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Yellow", FrameAnimation_DESC("IceBat_Outro_Trans_Yellow", 0.1f, false));
-		Renderer->CreateFrameAnimationFolder("IceBatOutro_Yellow", FrameAnimation_DESC("IceBat_Outro_Yellow", 0.1f, true));
-		Renderer->CreateFrameAnimationFolder("IceBatDeathA_Yellow", FrameAnimation_DESC("IceBat_DeathA_Yellow", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Antic_Yellow", FrameAnimation_DESC("IceBat_Flap_Antic_Yellow", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatFlap_Yellow", FrameAnimation_DESC("IceBat_Flap_Yellow", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatSwoop_Yellow", FrameAnimation_DESC("IceBat_Swoop_Yellow", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Yellow", FrameAnimation_DESC("IceBat_Outro_Trans_Yellow", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("IceBatOutro_Yellow", FrameAnimation_DESC("IceBat_Outro_Yellow", 0.06f, true));
+		Renderer->CreateFrameAnimationFolder("IceBatDeathA_Yellow", FrameAnimation_DESC("IceBat_DeathA_Yellow", 0.06f, false));
 	}
 
 	Renderer->AnimationBindEnd("IceBatFlap_Antic_Green", [/*&*/=](const FrameAnimation_DESC& _Info)
