@@ -33,6 +33,11 @@ public:
 		ColRenderer = _Collision;
 	}
 
+	inline void NoDamageStateSwitch()
+	{
+		IsNoDamageState = !IsNoDamageState;
+	}
+
 	inline void SetPlatformCount(int _Value)
 	{
 		PlatformCount = _Value;
@@ -59,11 +64,17 @@ protected:
 	GameEngineCollision*		Collision;
 	Weapon*						WeaponPtr;
 
+	void IntroStart(const StateInfo& _Info);
+	void IntroUpdate(float _DeltaTime, const StateInfo& _Info);
+
 	void IdleStart(const StateInfo& _Info);
 	void IdleUpdate(float _DeltaTime, const StateInfo& _Info);
 
 	void DuckStart(const StateInfo& _Info);
 	void DuckUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void AimStart(const StateInfo& _Info);
+	void AimUpdate(float _DeltaTime, const StateInfo& _Info);
 
 	void RunStart(const StateInfo& _Info);
 	void RunUpdate(float _DeltaTime, const StateInfo& _Info);
@@ -92,5 +103,8 @@ private:
 	float					NoDamageTime;
 	int						ChaliceHP;
 	int						PlatformCount;
+	bool					IsNoDamageState;
+	bool					IsAimState;
+	bool					IsDoubleJump;
 };
 

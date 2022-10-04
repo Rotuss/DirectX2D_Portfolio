@@ -20,6 +20,9 @@ MsChalice::MsChalice()
 	, NoDamageTime(0.0f)
 	, ChaliceHP(4)
 	, PlatformCount(-1)
+	, IsNoDamageState(false)
+	, IsAimState(false)
+	, IsDoubleJump(false)
 {
 	Chalice = this;
 }
@@ -30,6 +33,11 @@ MsChalice::~MsChalice()
 
 CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	if (true == IsNoDamageState)
+	{
+		return CollisionReturn::Break;
+	}
+
 	if (0 < NoDamageTime)
 	{
 		return CollisionReturn::Break;
@@ -49,6 +57,11 @@ CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameE
 {
 	if ("ChaliceDash" != StateManager.GetCurStateStateName())
 	{
+		if (true == IsNoDamageState)
+		{
+			return CollisionReturn::Break;
+		}
+
 		if (0 < NoDamageTime)
 		{
 			return CollisionReturn::Break;
@@ -65,6 +78,7 @@ CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameE
 	else
 	{
 		// Dash Pasrry
+		MoveDir = GetTransform().GetUpVector() * 1000.0f;
 
 		return CollisionReturn::ContinueCheck;
 	}
@@ -72,6 +86,11 @@ CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameE
 
 CollisionReturn MsChalice::CollisionCheckMinion(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	if (true == IsNoDamageState)
+	{
+		return CollisionReturn::Break;
+	}
+	
 	if (0 < NoDamageTime)
 	{
 		return CollisionReturn::Break;
@@ -88,6 +107,11 @@ CollisionReturn MsChalice::CollisionCheckMinion(GameEngineCollision* _This, Game
 
 CollisionReturn MsChalice::CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	if (true == IsNoDamageState)
+	{
+		return CollisionReturn::Break;
+	}
+	
 	if (0 < NoDamageTime)
 	{
 		return CollisionReturn::Break;
@@ -141,11 +165,14 @@ void MsChalice::Start()
 		GameEngineInput::GetInst()->CreateKey("ChaliceShoot", 'X');
 		GameEngineInput::GetInst()->CreateKey("ChaliceAim", 'C');
 		GameEngineInput::GetInst()->CreateKey("ChaliceDash", VK_SHIFT);
+
+		GameEngineInput::GetInst()->CreateKey("ChaliceNoDamage", 'M');
 	}
 
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 
+		Renderer->CreateFrameAnimationFolder("Chalice_Intro", FrameAnimation_DESC("Intros_Regular", 0.08f, false));
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle", FrameAnimation_DESC("Idle", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle_Shoot", FrameAnimation_DESC("Shoot_Straight_Shoot", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Idle_Up", FrameAnimation_DESC("Aim_Up", 0.1f, true));
@@ -154,18 +181,31 @@ void MsChalice::Start()
 		Renderer->CreateFrameAnimationFolder("Chalice_Duck_Idle", FrameAnimation_DESC("Duck_Idle", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Duck_Idle_Shoot", FrameAnimation_DESC("Duck_Shoot_Shoot", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Duck_StandUp", FrameAnimation_DESC("Duck_StandUp", 0.1f, false));
+		Renderer->CreateFrameAnimationFolder("Chalice_Aim", FrameAnimation_DESC("Aim_Straight", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Aim_Shoot", FrameAnimation_DESC("Shoot_Straight_Shoot", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Aim_Up", FrameAnimation_DESC("Aim_Up", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Aim_Up_Shoot", FrameAnimation_DESC("Shoot_Up_Shoot", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Aim_Diagonal", FrameAnimation_DESC("Aim_Diagonal_Up", 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Aim_Diagonal_Shoot", FrameAnimation_DESC("Shoot_Diagonal_Up_Shoot", 0.1f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Run", FrameAnimation_DESC("Run_Regular_Regular", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Run_Shoot", FrameAnimation_DESC("Run_Shoot_Straight_Straight", 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("Chalice_Run_Diagonal_Shoot", FrameAnimation_DESC("Run_Shoot_DiagonalUp_DiagonalUp", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Regular", FrameAnimation_DESC("Jump_Regular_Jump", 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("Chalice_Jump_Double", FrameAnimation_DESC("Jump_DoubleJump_Jump", 0.05f, true));
 		Renderer->CreateFrameAnimationFolder("Chalice_Dash", FrameAnimation_DESC("Dash_Air", 0.05f, false));
 		Renderer->CreateFrameAnimationFolder("Chalice_Hit", FrameAnimation_DESC("Hit_Ground", 0.05f, true));
-		Renderer->ChangeFrameAnimation("Chalice_Idle");
+		Renderer->ChangeFrameAnimation("Chalice_Intro");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::BOT);
 
-		GetTransform().SetLocalPosition({ 550, -900 , -3 });
+		GetTransform().SetLocalPosition({ 550, -850 , -3 });
 
+		Renderer->AnimationBindEnd("Chalice_Intro", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				StateManager.ChangeState("ChaliceIdle");
+			});
+		
 		Renderer->AnimationBindEnd("Chalice_Idle_Shoot", [/*&*/=](const FrameAnimation_DESC& _Info)
 			{
 				StateManager.ChangeState("ChaliceIdle");
@@ -187,13 +227,15 @@ void MsChalice::Start()
 		Collision->ChangeOrder(OBJECTORDER::Player);
 	}
 
+	StateManager.CreateStateMember("ChaliceIntro", std::bind(&MsChalice::IntroUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::IntroStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceIdle", std::bind(&MsChalice::IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::IdleStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceDuck", std::bind(&MsChalice::DuckUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::DuckStart, this, std::placeholders::_1));
+	StateManager.CreateStateMember("ChaliceAim", std::bind(&MsChalice::AimUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::AimStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceRun", std::bind(&MsChalice::RunUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::RunStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceJump", std::bind(&MsChalice::JumpUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::JumpStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceDash", std::bind(&MsChalice::DashUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::DashStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceHit", std::bind(&MsChalice::HitUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::HitStart, this, std::placeholders::_1));
-	StateManager.ChangeState("ChaliceIdle");
+	StateManager.ChangeState("ChaliceIntro");
 
 	Health = GetLevel()->CreateActor<UIHealth>(OBJECTORDER::UI);
 }
@@ -201,6 +243,11 @@ void MsChalice::Start()
 void MsChalice::Update(float _DeltaTime)
 {
 	StateManager.Update(_DeltaTime);
+
+	if (true == GameEngineInput::GetInst()->IsDown("ChaliceNoDamage"))
+	{
+		NoDamageStateSwitch();
+	}
 
 	if (true == GetLevel<MortimerFreezeLevel>()->GetIsMove())
 	{
@@ -289,7 +336,18 @@ void MsChalice::Update(float _DeltaTime)
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::BossWhale), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckWhale, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Phase3Bot), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckPhase3Bot, this, std::placeholders::_1, std::placeholders::_2));
 
-	if (true == GameEngineInput::GetInst()->IsPress("ChaliceShoot"))
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceAim"))
+	{
+		if (false == IsAimState)
+		{
+			IsAimState = true;
+			StateManager.ChangeState("ChaliceAim");
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceShoot")
+		&& "ChaliceJump" != StateManager.GetCurStateStateName()
+		&& "ChaliceHit" != StateManager.GetCurStateStateName())
 	{
 		CurShootName = "_Shoot";
 
@@ -317,10 +375,26 @@ void MsChalice::Update(float _DeltaTime)
 			}
 			if ("RightUp" == ChaliceDir)
 			{
+				if ("ChaliceAim" == StateManager.GetCurStateStateName())
+				{
+					CurStateName = "Chalice_Aim_Diagonal";
+				}
+				if ("ChaliceRun" == StateManager.GetCurStateStateName())
+				{
+					CurStateName = "Chalice_Run_Diagonal";
+				}
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 100.0f,200.0f });
 			}
 			if ("LeftUp" == ChaliceDir)
 			{
+				if ("ChaliceAim" == StateManager.GetCurStateStateName())
+				{
+					CurStateName = "Chalice_Aim_Diagonal";
+				}
+				if ("ChaliceRun" == StateManager.GetCurStateStateName())
+				{
+					CurStateName = "Chalice_Run_Diagonal";
+				}
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -100.0f,200.0f });
 			}
 
@@ -330,6 +404,17 @@ void MsChalice::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::GetInst()->IsUp("ChaliceShoot"))
 	{
+		if ("RightUp" == ChaliceDir || "LeftUp" == ChaliceDir)
+		{
+			if ("ChaliceAim" == StateManager.GetCurStateStateName())
+			{
+				CurStateName = "Chalice_Aim";
+			}
+			if ("ChaliceRun" == StateManager.GetCurStateStateName())
+			{
+				CurStateName = "Chalice_Run";
+			}
+		}
 		CurShootName = "";
 		WeaponTime = 0.0f;
 	}
@@ -343,6 +428,16 @@ void MsChalice::Update(float _DeltaTime)
 	}
 
 	Renderer->ChangeFrameAnimation(CurStateName + CurShootName);
+}
+
+void MsChalice::IntroStart(const StateInfo& _Info)
+{
+	CurStateName = "Chalice_Intro";
+	MoveDir = float4::ZERO;
+}
+
+void MsChalice::IntroUpdate(float _DeltaTime, const StateInfo& _Info)
+{
 }
 
 void MsChalice::IdleStart(const StateInfo& _Info)
@@ -454,6 +549,68 @@ void MsChalice::DuckUpdate(float _DeltaTime, const StateInfo& _Info)
 	}
 }
 
+void MsChalice::AimStart(const StateInfo& _Info)
+{
+	CurStateName = "Chalice_Aim";
+	MoveDir = float4::ZERO;
+}
+
+void MsChalice::AimUpdate(float _DeltaTime, const StateInfo& _Info)
+{
+	if (true == GameEngineInput::GetInst()->IsUp("ChaliceAim"))
+	{
+		IsAimState = false;
+		StateManager.ChangeState("ChaliceIdle");
+		return;
+	}
+	
+	if (false == GameEngineInput::GetInst()->IsPress("ChaliceLeft")
+		|| false == GameEngineInput::GetInst()->IsPress("ChaliceRight")
+		|| false == GameEngineInput::GetInst()->IsPress("ChaliceUp"))
+	{
+		StateManager.ChangeState("ChaliceIdle");
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
+	{
+		Renderer->GetTransform().PixLocalNegativeX();
+		ChaliceDir = "Left";
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
+	{
+		Renderer->GetTransform().PixLocalPositiveX();
+		ChaliceDir = "Right";
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceUp"))
+	{
+		CurStateName = "Chalice_Aim_Up";
+		if ("Up" != ChaliceDir)
+		{
+			ChalicePrevDir = ChaliceDir;
+			ChaliceDir = "Up";
+		}
+	}
+
+	if (true == GameEngineInput::GetInst()->IsUp("ChaliceUp"))
+	{
+		CurStateName = "Chalice_Aim";
+		ChaliceDir = ChalicePrevDir;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceUp") && true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
+	{
+		ChaliceDir = "LeftUp";
+		return;
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("ChaliceUp") && true == GameEngineInput::GetInst()->IsPress("ChaliceRight"))
+	{
+		ChaliceDir = "RightUp";
+		return;
+	}
+}
+
 void MsChalice::RunStart(const StateInfo& _Info)
 {
 	CurStateName = "Chalice_Run";
@@ -493,6 +650,12 @@ void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 		Renderer->GetTransform().PixLocalPositiveX();
 		ChaliceDir = "Right";
 	}
+
+	if (true == GameEngineInput::GetInst()->IsUp("ChaliceUp"))
+	{
+		CurStateName = "Chalice_Run";
+	}
+
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceUp") && true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
 	{
 		ChaliceDir = "LeftUp";
@@ -508,12 +671,21 @@ void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 void MsChalice::JumpStart(const StateInfo& _Info)
 {
 	CurStateName = "Chalice_Jump_Regular";
+	IsDoubleJump = false;
 
 	MoveDir = GetTransform().GetUpVector() * 1500.0f;
 }
 
 void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	if (true == GameEngineInput::GetInst()->IsDown("ChaliceJump") && false == IsDoubleJump)
+	{
+		CurStateName = "Chalice_Jump_Double";
+		IsDoubleJump = true;
+
+		MoveDir = GetTransform().GetUpVector() * 1500.0f;
+	}
+
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceLeft"))
 	{
 		MoveDir = float4{ -Speed,MoveDir.y };
@@ -554,11 +726,11 @@ void MsChalice::DashUpdate(float _DeltaTime, const StateInfo& _Info)
 {
 	if ("Left" == ChaliceDir)
 	{
-		MoveDir = GetTransform().GetLeftVector() * (Speed / 2.0f);
+		MoveDir = GetTransform().GetLeftVector() * (Speed * 1.2f);
 	}
 	if ("Right" == ChaliceDir)
 	{
-		MoveDir = GetTransform().GetRightVector() * (Speed / 2.0f);
+		MoveDir = GetTransform().GetRightVector() * (Speed * 1.2f);
 	}
 }
 
