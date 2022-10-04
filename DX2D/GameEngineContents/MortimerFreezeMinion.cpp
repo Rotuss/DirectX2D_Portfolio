@@ -5,6 +5,7 @@
 MortimerFreezeMinion::MortimerFreezeMinion() 
 	: Renderer(nullptr)
 	, EffectRenderer(nullptr)
+	, EffectRenderer1(nullptr)
 	, Collision(nullptr)
 	, GenderType(GENDER::BOY)
 	, DirType(DIR::LEFT)
@@ -12,6 +13,7 @@ MortimerFreezeMinion::MortimerFreezeMinion()
 	, MinionMoveStart(false)
 	, MinionFollowStart(false)
 	, IsRanding(false)
+	, IsDeath(false)
 	, MoveDir(0)
 {
 }
@@ -24,7 +26,14 @@ CollisionReturn MortimerFreezeMinion::CollisionCheck(GameEngineCollision* _This,
 {
 	if (true == IsRanding)
 	{
-		_This->GetActor()->Death();
+		_This->Death();
+		IsDeath = true;
+		Renderer->Off();
+		EffectRenderer->ChangeFrameAnimation("Minion_Death_Smoke");
+		EffectRenderer->On();
+		EffectRenderer1->ChangeFrameAnimation("Minion_Death_Chips", true);
+		EffectRenderer1->On();
+
 		_Other->GetActor()->Death();
 	}
 	return CollisionReturn::ContinueCheck;
@@ -70,6 +79,25 @@ void MortimerFreezeMinion::Start()
 	{
 		EffectRenderer = CreateComponent<GameEngineTextureRenderer>();
 		EffectRenderer->CreateFrameAnimationFolder("MinionSparkB", FrameAnimation_DESC("Minion_SparkB", 0.05f, false));
+		EffectRenderer->CreateFrameAnimationFolder("Minion_Spawn_SnowB", FrameAnimation_DESC("Minion_Spawn_SnowB", 0.05f, false));
+		EffectRenderer->CreateFrameAnimationFolder("Minion_Death_Smoke", FrameAnimation_DESC("Minion_Death_Smoke", 0.05f, false));
+
+		EffectRenderer->ChangeFrameAnimation("Minion_Spawn_SnowB");
+		EffectRenderer->SetScaleModeImage();
+		EffectRenderer->ScaleToTexture();
+		EffectRenderer->SetPivot(PIVOTMODE::CENTER);
+		EffectRenderer->Off();
+	}
+
+	{
+		EffectRenderer1 = CreateComponent<GameEngineTextureRenderer>();
+		EffectRenderer1->CreateFrameAnimationFolder("Minion_Death_Chips", FrameAnimation_DESC("Minion_Death_Chips", 0.05f, false));
+
+		EffectRenderer1->ChangeFrameAnimation("Minion_Death_Chips");
+		EffectRenderer1->SetScaleModeImage();
+		EffectRenderer1->ScaleToTexture();
+		EffectRenderer1->SetPivot(PIVOTMODE::CENTER);
+		EffectRenderer1->Off();
 	}
 
 	Renderer->AnimationBindFrame("SpawnBoyAppear", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -194,9 +222,24 @@ void MortimerFreezeMinion::Start()
 
 	EffectRenderer->AnimationBindEnd("MinionSparkB", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
-			EffectRenderer->Off();
-
 			MinionMoveStart = true;
+			EffectRenderer->Off();
+		});
+
+	EffectRenderer->AnimationBindEnd("Minion_Spawn_SnowB", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			EffectRenderer->Off();
+		});
+
+	EffectRenderer->AnimationBindEnd("Minion_Death_Smoke", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			EffectRenderer->Off();
+			Death();
+		});
+
+	EffectRenderer1->AnimationBindEnd("Minion_Death_Chips", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			EffectRenderer1->Off();
 		});
 }
 
@@ -222,9 +265,7 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 		Renderer->CurAnimationPauseSwitch();
 
 		EffectRenderer->ChangeFrameAnimation("MinionSparkB");
-		EffectRenderer->SetScaleModeImage();
-		EffectRenderer->ScaleToTexture();
-		EffectRenderer->SetPivot(PIVOTMODE::CENTER);
+		EffectRenderer->On();
 	}
 
 	if (true == MinionMoveStart)
@@ -257,6 +298,9 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 			MortimerFreezeBoss::MFBoss->MinionPixRemoveSetting(false);
 			Renderer->ChangeFrameAnimation("SpawnBoyGroundCol");
 			Renderer->SetPivot(PIVOTMODE::BOT);
+
+			EffectRenderer->ChangeFrameAnimation("Minion_Spawn_SnowB");
+			EffectRenderer->On();
 		}
 
 		if (GENDER::GIRL == GenderType)
@@ -264,6 +308,9 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 			MortimerFreezeBoss::MFBoss->MinionPixRemoveSetting(false);
 			Renderer->ChangeFrameAnimation("SpawnGirlGroundCol");
 			Renderer->SetPivot(PIVOTMODE::BOT);
+		
+			EffectRenderer->ChangeFrameAnimation("Minion_Spawn_SnowB");
+			EffectRenderer->On();
 		}
 	}
 
@@ -280,7 +327,7 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 		return;
 	}
 
-	if (DirType == DIR::LEFT)
+	if (DirType == DIR::LEFT && false == IsDeath)
 	{
 		GetTransform().SetWorldLeftMove(Speed, _DeltaTime);
 		if (500.0f <= Speed)
@@ -288,7 +335,7 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 			GetTransform().SetWorldDownMove(100.0f, _DeltaTime);
 		}
 	}
-	if (DirType == DIR::RIGHT)
+	if (DirType == DIR::RIGHT && false == IsDeath)
 	{
 		GetTransform().SetWorldRightMove(Speed, _DeltaTime);
 		if (500.0f <= Speed)

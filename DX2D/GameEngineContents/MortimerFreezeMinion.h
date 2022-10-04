@@ -87,6 +87,7 @@ protected:
 	GameEngineTextureRenderer*	ColRenderer;
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineTextureRenderer*	EffectRenderer;
+	GameEngineTextureRenderer*	EffectRenderer1;
 	GameEngineCollision*		Collision;
 
 private:
@@ -97,6 +98,7 @@ private:
 	bool	MinionMoveStart;
 	bool	MinionFollowStart;
 	bool	IsRanding;
+	bool	IsDeath;
 	int		MoveDir;
 };
 

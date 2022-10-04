@@ -21,8 +21,9 @@ protected:
 	void End() {}
 
 	GameEngineTextureRenderer* Renderer;
+	GameEngineTextureRenderer* RendererEffect;
 
 private:
-
+	bool IsShoot;
 };
 

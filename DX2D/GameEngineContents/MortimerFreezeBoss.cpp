@@ -728,6 +728,7 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 
 			MortimerFreezeCard* Ptr = GetLevel()->CreateActor<MortimerFreezeCard>(OBJECTORDER::Boss);
 			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+			Ptr->SetColMap(MsChalice::Chalice->GetColMap());
 		}
 	}
 	else
@@ -754,6 +755,7 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 
 			MortimerFreezeCard* Ptr = GetLevel()->CreateActor<MortimerFreezeCard>(OBJECTORDER::Boss);
 			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
+			Ptr->SetColMap(MsChalice::Chalice->GetColMap());
 		}
 	}
 

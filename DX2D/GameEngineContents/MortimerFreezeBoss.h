@@ -48,6 +48,11 @@ public:
 		return MinionPixRemove;
 	}
 
+	inline bool GetIsCurPeashotStartAttack()
+	{
+		return IsCurPeashotStartAttack;
+	}
+
 	inline bool GetIsCurPeashotEnd()
 	{
 		return IsCurPeashotEnd;

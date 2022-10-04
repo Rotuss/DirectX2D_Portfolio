@@ -5,11 +5,15 @@
 #include "MortimerFreezeBoss.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
-MortimerFreezeCard::MortimerFreezeCard() 
-	: Renderer(nullptr)
+MortimerFreezeCard::MortimerFreezeCard()
+	: ColorCheck(nullptr)
+	, ColRenderer(nullptr)
+	, Renderer(nullptr)
+	, RendererEffect(nullptr)
 	, Collision(nullptr)
 	, CollisionParry(nullptr)
 	, Speed(100.0f)
+	, IsRanding(false)
 {
 }
 
@@ -68,8 +72,43 @@ void MortimerFreezeCard::Start()
 			Renderer->ChangeFrameAnimation("CardC");
 			Collision->On();
 		}
+		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
+	}
+
+	{
+		RendererEffect = CreateComponent<GameEngineTextureRenderer>();
+		RendererEffect->CreateFrameAnimationFolder("Peashot_Card_SparklesB", FrameAnimation_DESC("Peashot_Card_SparklesB", 0.04f, false));
+		
+		RendererEffect->CreateFrameAnimationFolder("Peashot_CardDeath_AngleA", FrameAnimation_DESC("Peashot_CardDeath_AngleA", 0.04f, false));
+		RendererEffect->CreateFrameAnimationFolder("Peashot_CardDeath_AngleB", FrameAnimation_DESC("Peashot_CardDeath_AngleB", 0.04f, false));
+		RendererEffect->CreateFrameAnimationFolder("Peashot_CardDeath_Flat", FrameAnimation_DESC("Peashot_CardDeath_Flat", 0.04f, false));
+	
+		RendererEffect->ChangeFrameAnimation("Peashot_Card_SparklesB");
+		RendererEffect->SetScaleModeImage();
+		RendererEffect->ScaleToTexture();
+		RendererEffect->SetPivot(PIVOTMODE::CENTER);
+
+		RendererEffect->AnimationBindEnd("Peashot_Card_SparklesB", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				RendererEffect->Off();
+			});
+
+		RendererEffect->AnimationBindEnd("Peashot_CardDeath_AngleA", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				Death();
+			});
+
+		RendererEffect->AnimationBindEnd("Peashot_CardDeath_AngleB", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				Death();
+			});
+
+		RendererEffect->AnimationBindEnd("Peashot_CardDeath_Flat", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				Death();
+			});
 	}
 
 	CurPosition = MortimerFreezeBoss::MFBoss->GetTransform().GetLocalPosition();
@@ -78,6 +117,38 @@ void MortimerFreezeCard::Start()
 
 void MortimerFreezeCard::Update(float _DeltaTime)
 {
+	ColorCheck = ColRenderer->GetCurTexture();
+	if (nullptr == ColorCheck)
+	{
+		return;
+	}
+	if (true == ColorCheck->GetPixelToFloat4(GetTransform().GetLocalPosition().ix(), -GetTransform().GetLocalPosition().iy()).CompareInt4D(float4::BLACK) && false == IsRanding)
+	{
+		IsRanding = true;
+		/*Renderer->Off();
+		Collision->Off();
+		CollisionParry->Off();
+		PlayerPosition = GetTransform().GetLocalPosition();
+
+		int RandomDeathNum = GameEngineRandom::MainRandom.RandomInt(1, 3);
+
+		if (1 == RandomDeathNum)
+		{
+			RendererEffect->ChangeFrameAnimation("Peashot_CardDeath_AngleA");
+			RendererEffect->On();
+		}
+		if (2 == RandomDeathNum)
+		{
+			RendererEffect->ChangeFrameAnimation("Peashot_CardDeath_AngleB");
+			RendererEffect->On();
+		}
+		if (3 == RandomDeathNum)
+		{
+			RendererEffect->ChangeFrameAnimation("Peashot_CardDeath_Flat");
+			RendererEffect->On();
+		}*/
+	}
+	
 	if (-10.0f > GetTransform().GetLocalPosition().x)
 	{
 		Death();
