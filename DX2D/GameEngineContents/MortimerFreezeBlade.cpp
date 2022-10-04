@@ -2,9 +2,10 @@
 #include "MortimerFreezeBlade.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
-MortimerFreezeBlade::MortimerFreezeBlade() 
+MortimerFreezeBlade::MortimerFreezeBlade()
 	: Renderer(nullptr)
 	, BubbleRenderer(nullptr)
+	, Collision(nullptr)
 {
 }
 
@@ -23,6 +24,13 @@ void MortimerFreezeBlade::Start()
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::BOT);
 		Renderer->Off();
+	}
+
+	{
+		Collision = CreateComponent<GameEngineCollision>();
+		Collision->GetTransform().SetLocalScale({ 50,250,-1 });
+		Collision->GetTransform().SetLocalPosition({ 0,150,-1 });
+		Collision->ChangeOrder(OBJECTORDER::Boss);
 	}
 
 	int BubbleRandom = GameEngineRandom::MainRandom.RandomInt(0, 1);

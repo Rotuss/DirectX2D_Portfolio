@@ -1033,7 +1033,7 @@ void MortimerFreezeBoss::Phase1to2Update(float _DeltaTime, const StateInfo& _Inf
 			SubRenderer00->GetTransform().SetLocalPosition(float4{ 0.0f,-130.0f,0.0f });
 			SubRenderer00->SetPivot(PIVOTMODE::BOT);
 			
-			Collision->GetTransform().SetLocalPosition(float4{ 0.0f,150.0f,0.0f });
+			//Collision->GetTransform().SetLocalPosition(float4{ 0.0f,150.0f,0.0f });
 
 			return;
 		}

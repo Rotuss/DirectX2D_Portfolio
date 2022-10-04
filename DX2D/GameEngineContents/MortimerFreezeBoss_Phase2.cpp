@@ -18,6 +18,8 @@ void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
 
 	HP = 1;
 	Renderer->SetPivot(PIVOTMODE::BOT);
+	Collision->GetTransform().SetLocalScale(float4{ 300.0f,400.0f,0.0f });
+	Collision->GetTransform().SetLocalPosition(float4{ 0.0f,200.0f,0.0f });
 	GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0.0f,-130.0f,0.0f });
 	
 	StateManager2.CreateStateMember("MF2Idle", std::bind(&MortimerFreezeBoss::P2IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P2IdleStart, this, std::placeholders::_1));

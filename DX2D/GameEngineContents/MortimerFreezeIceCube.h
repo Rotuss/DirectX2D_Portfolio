@@ -60,9 +60,10 @@ protected:
 	void Update(float _DeltaTime);
 	void End() {}
 
-	GameEngineTexture* ColorCheck;
-	GameEngineTextureRenderer* ColRenderer;
-	GameEngineTextureRenderer* Renderer;
+	GameEngineTexture*			ColorCheck;
+	GameEngineTextureRenderer*	ColRenderer;
+	GameEngineTextureRenderer*	Renderer;
+	GameEngineCollision*		Collision;
 
 private:
 	SizeType CubeSize;

@@ -21,7 +21,8 @@ protected:
 	void End() {}
 
 private:
-	GameEngineTextureRenderer* Renderer;
-	GameEngineTextureRenderer* BubbleRenderer;
+	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	BubbleRenderer;
+	GameEngineCollision*		Collision;
 };
 

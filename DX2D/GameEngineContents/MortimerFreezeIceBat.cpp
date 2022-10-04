@@ -4,7 +4,9 @@
 #include <GameEngineBase/GameEngineRandom.h>
 
 MortimerFreezeIceBat::MortimerFreezeIceBat()
-	: BatColor()
+	: Collision(nullptr)
+	, CollisionParry(nullptr)
+	, BatColor()
 	, CurBatDir()
 	, StartPosition(float4::ZERO)
 	, EndPosition(float4::ZERO)
@@ -28,31 +30,37 @@ void MortimerFreezeIceBat::SetColorType(ColorType _Type)
 	if (BatColor == ColorType::Green && CurBatDir == BatDIR::LEFT)
 	{
 		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Green");
+		Collision->On();
 	}
 	if (BatColor == ColorType::Green && CurBatDir == BatDIR::RIGHT)
 	{
 		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Green");
 		Renderer->GetTransform().PixLocalNegativeX();
+		Collision->On();
 	}
 
 	if (BatColor == ColorType::Pink && CurBatDir == BatDIR::LEFT)
 	{
 		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Pink");
+		CollisionParry->On();
 	}
 	if (BatColor == ColorType::Pink && CurBatDir == BatDIR::RIGHT)
 	{
 		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Pink");
 		Renderer->GetTransform().PixLocalNegativeX();
+		CollisionParry->On();
 	}
 
 	if (BatColor == ColorType::Yellow && CurBatDir == BatDIR::LEFT)
 	{
 		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Yellow");
+		Collision->On();
 	}
 	if (BatColor == ColorType::Yellow && CurBatDir == BatDIR::RIGHT)
 	{
 		Renderer->ChangeFrameAnimation("IceBatFlap_Antic_Yellow");
 		Renderer->GetTransform().PixLocalNegativeX();
+		Collision->On();
 	}
 
 	Renderer->SetScaleModeImage();
@@ -87,6 +95,19 @@ void MortimerFreezeIceBat::Start()
 		Renderer->CreateFrameAnimationFolder("IceBatOutro_Trans_Yellow", FrameAnimation_DESC("IceBat_Outro_Trans_Yellow", 0.06f, false));
 		Renderer->CreateFrameAnimationFolder("IceBatOutro_Yellow", FrameAnimation_DESC("IceBat_Outro_Yellow", 0.06f, true));
 		Renderer->CreateFrameAnimationFolder("IceBatDeathA_Yellow", FrameAnimation_DESC("IceBat_DeathA_Yellow", 0.06f, false));
+	}
+
+	{
+		Collision = CreateComponent<GameEngineCollision>();
+		Collision->GetTransform().SetLocalScale({ 50,80,-1 });
+		Collision->ChangeOrder(OBJECTORDER::Boss);
+		Collision->Off();
+	}
+	{
+		CollisionParry = CreateComponent<GameEngineCollision>();
+		CollisionParry->GetTransform().SetLocalScale({ 50,80,-1 });
+		CollisionParry->ChangeOrder(OBJECTORDER::Parry);
+		CollisionParry->Off();
 	}
 
 	Renderer->AnimationBindEnd("IceBatFlap_Antic_Green", [/*&*/=](const FrameAnimation_DESC& _Info)

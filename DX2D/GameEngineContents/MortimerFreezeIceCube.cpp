@@ -5,7 +5,8 @@
 #include <GameEngineBase/GameEngineRandom.h>
 
 MortimerFreezeIceCube::MortimerFreezeIceCube()
-	: CubeSize()
+	: Collision(nullptr)
+	, CubeSize()
 	, StartPosition(float4::ZERO)
 	, EndPosition(float4::ZERO)
 	, LerpPos(float4::ZERO)
@@ -25,31 +26,37 @@ void MortimerFreezeIceCube::SetSizeType(SizeType _Type)
 	if (CubeSize == SizeType::Large && DirType == CubeDIR::LEFT)
 	{
 		Renderer->ChangeFrameAnimation("IceCube_Large");
+		Collision->GetTransform().SetLocalScale({ 100,100,-1 });
 	}
 	if (CubeSize == SizeType::Large && DirType == CubeDIR::RIGHT)
 	{
 		Renderer->ChangeFrameAnimation("IceCube_Large");
 		Renderer->GetTransform().PixLocalNegativeX();
+		Collision->GetTransform().SetLocalScale({ 100,100,-1 });
 	}
 	
 	if (CubeSize == SizeType::Medium && DirType == CubeDIR::LEFT)
 	{
 		Renderer->ChangeFrameAnimation("IceCube_Medium");
+		Collision->GetTransform().SetLocalScale({ 70,70,-1 });
 	}
 	if (CubeSize == SizeType::Medium && DirType == CubeDIR::RIGHT)
 	{
 		Renderer->ChangeFrameAnimation("IceCube_Medium");
 		Renderer->GetTransform().PixLocalNegativeX();
+		Collision->GetTransform().SetLocalScale({ 70,70,-1 });
 	}
 
 	if (CubeSize == SizeType::Small && DirType == CubeDIR::LEFT)
 	{
 		Renderer->ChangeFrameAnimation("IceCube_Small");
+		Collision->GetTransform().SetLocalScale({ 40,40,-1 });
 	}
 	if (CubeSize == SizeType::Small && DirType == CubeDIR::RIGHT)
 	{
 		Renderer->ChangeFrameAnimation("IceCube_Small");
 		Renderer->GetTransform().PixLocalNegativeX();
+		Collision->GetTransform().SetLocalScale({ 40,40,-1 });
 	}
 
 	Renderer->SetScaleModeImage();
@@ -69,6 +76,11 @@ void MortimerFreezeIceCube::Start()
 
 		// Small
 		Renderer->CreateFrameAnimationFolder("IceCube_Small", FrameAnimation_DESC("IceCube_Small", 0.05f, true));
+	}
+
+	{
+		Collision = CreateComponent<GameEngineCollision>();
+		Collision->ChangeOrder(OBJECTORDER::Boss);
 	}
 }
 

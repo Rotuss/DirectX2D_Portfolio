@@ -55,8 +55,9 @@ protected:
 	void Update(float _DeltaTime);
 	void End() {}
 
-	GameEngineTextureRenderer* Renderer;
-
+	GameEngineTextureRenderer*	Renderer;
+	GameEngineCollision*		Collision;
+	GameEngineCollision*		CollisionParry;
 private:
 	ColorType BatColor;
 	BatDIR CurBatDir;
