@@ -8,6 +8,7 @@ enum class OBJECTORDER
 	Title,
 	World,
 	Tutorial,
+	WorldSnow,
 	Player,
 	Monster,
 	Boss,

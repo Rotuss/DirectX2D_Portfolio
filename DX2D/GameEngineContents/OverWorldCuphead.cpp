@@ -13,6 +13,7 @@ OverWorldCuphead::OverWorldCuphead()
 	, CurUpDownName("")
 	, CurDir(OWCupheadDir::Down)
 	, Speed(300.0f)
+	, IsUIOn(false)
 {
 	OWCuphead = this;
 }
@@ -21,6 +22,46 @@ OverWorldCuphead::~OverWorldCuphead()
 {
 }
 
+CollisionReturn OverWorldCuphead::SnowUpdateCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	if (true == GameEngineInput::GetInst()->IsDown("OWCHSelect")
+		&& true == IsUIOn)
+	{
+		GEngine::ChangeLevel("MortimerFreeze");
+	}
+	
+	if (true == GameEngineInput::GetInst()->IsDown("OWCHSelect")
+		&& false == IsUIOn)
+	{
+		IsUIOn = true;
+		SnowTextureBG0->On();
+		SnowTextureBG1->On();
+		SnowTexture->On();
+		SnowTextureCorp->On();
+	}
+	if (true == GameEngineInput::GetInst()->IsDown("OWCHOut"))
+	{
+		IsUIOn = false;
+		SnowTextureBG0->Off();
+		SnowTextureBG1->Off();
+		SnowTexture->Off();
+		SnowTextureCorp->Off();
+	}
+
+	return CollisionReturn::ContinueCheck;
+}
+
+CollisionReturn OverWorldCuphead::SnowEnterCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	// Z 상호작용 키기
+	return CollisionReturn::ContinueCheck;
+}
+
+CollisionReturn OverWorldCuphead::SnowExitCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	// Z 상호작용 끄기
+	return CollisionReturn::ContinueCheck;
+}
 void OverWorldCuphead::Start()
 {
 	if (false == GameEngineInput::GetInst()->IsKey("PlayerLeft"))
@@ -31,6 +72,7 @@ void OverWorldCuphead::Start()
 		GameEngineInput::GetInst()->CreateKey("OWCHDown", VK_DOWN);
 
 		GameEngineInput::GetInst()->CreateKey("OWCHSelect", 'Z');
+		GameEngineInput::GetInst()->CreateKey("OWCHOut", VK_ESCAPE);
 	}
 
 	{
@@ -65,8 +107,39 @@ void OverWorldCuphead::Start()
 		// Collision3D
 		//Collision->GetTransform().SetLocalScale({ 100.0f, 100.0f, 10000.0f });
 		// Collision2D
-		Collision->GetTransform().SetLocalScale({ 100.0f, 100.0f, 1.0f });
+		Collision->SetCollisionMode(CollisionMode::Ex);
+		Collision->GetTransform().SetLocalScale({ 50.0f, 80.0f, 1.0f });
 		Collision->ChangeOrder(OBJECTORDER::Player);
+	}
+
+	{
+		SnowTextureBG0 = CreateComponent<GameEngineTextureRenderer>();
+		SnowTextureBG0->SetTexture("title_card_fader.png");
+		SnowTextureBG0->ScaleToTexture();
+		SnowTextureBG0->SetPivot(PIVOTMODE::CENTER);
+		SnowTextureBG0->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,-15.0f });
+		SnowTextureBG0->Off();
+
+		SnowTextureBG1 = CreateComponent<GameEngineTextureRenderer>();
+		SnowTextureBG1->SetTexture("title_card_background.png");
+		SnowTextureBG1->ScaleToTexture();
+		SnowTextureBG1->SetPivot(PIVOTMODE::CENTER);
+		SnowTextureBG1->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,-15.0f });
+		SnowTextureBG1->Off();
+
+		SnowTexture = CreateComponent<GameEngineTextureRenderer>();
+		SnowTexture->SetTexture("title_card_mortimer_freeze_ko.png");
+		SnowTexture->ScaleToTexture();
+		SnowTexture->SetPivot(PIVOTMODE::CENTER);
+		SnowTexture->GetTransform().SetLocalPosition(float4{ 0.0f,80.0f,-15.0f });
+		SnowTexture->Off();
+
+		SnowTextureCorp = CreateComponent<GameEngineTextureRenderer>();
+		SnowTextureCorp->SetTexture("credits_MDHR_logo.png");
+		SnowTextureCorp->ScaleToTexture();
+		SnowTextureCorp->SetPivot(PIVOTMODE::CENTER);
+		SnowTextureCorp->GetTransform().SetLocalPosition(float4{ 0.0f,-150.0f,-15.0f });
+		SnowTextureCorp->Off();
 	}
 
 	StateManager.CreateStateMember("Idle", std::bind(&OverWorldCuphead::IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&OverWorldCuphead::IdleStart, this, std::placeholders::_1));
@@ -78,6 +151,16 @@ void OverWorldCuphead::Start()
 void OverWorldCuphead::Update(float _DeltaTime)
 {
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+	{
+		return;
+	}
+
+	Collision->IsCollision(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::WorldSnow), CollisionType::CT_OBB2D,
+		/*Update*/std::bind(&OverWorldCuphead::SnowUpdateCollisionCheck, this, std::placeholders::_1, std::placeholders::_2),
+		/*Enter*/std::bind(&OverWorldCuphead::SnowEnterCollisionCheck, this, std::placeholders::_1, std::placeholders::_2),
+		/*Exit*/std::bind(&OverWorldCuphead::SnowExitCollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+
+	if (true == IsUIOn)
 	{
 		return;
 	}

@@ -22,6 +22,7 @@ MsChalice::MsChalice()
 	, PlatformCount(-1)
 	, IsNoDamageState(false)
 	, IsAimState(false)
+	, IsParry(false)
 	, IsDoubleJump(false)
 {
 	Chalice = this;
@@ -78,7 +79,8 @@ CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameE
 	else
 	{
 		// Dash Pasrry
-		MoveDir = GetTransform().GetUpVector() * 1000.0f;
+		IsParry = true;
+		StateManager.ChangeState("ChaliceJump");
 
 		return CollisionReturn::ContinueCheck;
 	}
@@ -331,7 +333,7 @@ void MsChalice::Update(float _DeltaTime)
 
 		// Collision2D
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Boss), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
-	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Parry), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Parry), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckParry, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::BossMinion), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckMinion, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::BossWhale), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckWhale, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Phase3Bot), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckPhase3Bot, this, std::placeholders::_1, std::placeholders::_2));
@@ -492,7 +494,7 @@ void MsChalice::IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("ChaliceDash"))
+	if (true == GameEngineInput::GetInst()->IsDown("ChaliceDash"))
 	{
 		StateManager.ChangeState("ChaliceDash");
 		return;
@@ -643,7 +645,7 @@ void MsChalice::RunUpdate(float _DeltaTime, const StateInfo& _Info)
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("ChaliceDash"))
+	if (true == GameEngineInput::GetInst()->IsDown("ChaliceDash"))
 	{
 		StateManager.ChangeState("ChaliceDash");
 		return;
@@ -685,6 +687,13 @@ void MsChalice::JumpStart(const StateInfo& _Info)
 	IsDoubleJump = false;
 
 	MoveDir = GetTransform().GetUpVector() * 1500.0f;
+	
+	if (true == IsParry)
+	{
+		IsParry = false;
+		NoDamageTime = 1.5f;
+		MoveDir = GetTransform().GetUpVector() * 1000.0f;
+	}
 }
 
 void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
@@ -710,7 +719,7 @@ void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
 		ChaliceDir = "Right";
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("ChaliceDash"))
+	if (true == GameEngineInput::GetInst()->IsDown("ChaliceDash"))
 	{
 		StateManager.ChangeState("ChaliceDash");
 		return;

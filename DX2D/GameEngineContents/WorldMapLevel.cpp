@@ -124,6 +124,11 @@ void WorldMapLevel::Start()
 		Renderer->ChangeFrameAnimation("WorldSnow");
 		Renderer->ScaleToTexture();
 		Renderer->GetTransform().SetLocalPosition({ 3280, -650 });
+
+		GameEngineCollision* SnowCollision = WorldBackGround->CreateComponent<GameEngineCollision>();
+		SnowCollision->GetTransform().SetLocalScale({ 350.0f, 350.0f, 1.0f });
+		SnowCollision->GetTransform().SetLocalPosition({ 3280, -650 });
+		SnowCollision->ChangeOrder(OBJECTORDER::WorldSnow);
 	}
 
 	// 기타 구조물

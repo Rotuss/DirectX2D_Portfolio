@@ -106,6 +106,7 @@ private:
 	int						PlatformCount;
 	bool					IsNoDamageState;
 	bool					IsAimState;
+	bool					IsParry;
 	bool					IsDoubleJump;
 };
 

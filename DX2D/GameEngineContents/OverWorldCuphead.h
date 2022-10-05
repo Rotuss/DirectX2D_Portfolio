@@ -29,6 +29,10 @@ public:
 
 	static OverWorldCuphead* OWCuphead;
 
+	CollisionReturn SnowUpdateCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn SnowEnterCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+	CollisionReturn SnowExitCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+
 	void SetColMap(GameEngineTextureRenderer* _Collision)
 	{
 		ColRenderer = _Collision;
@@ -49,6 +53,11 @@ protected:
 	GameEngineTexture*			ColorCheck;
 	GameEngineCollision*		Collision;
 
+	GameEngineTextureRenderer* SnowTextureBG0;
+	GameEngineTextureRenderer* SnowTextureBG1;
+	GameEngineTextureRenderer* SnowTexture;
+	GameEngineTextureRenderer* SnowTextureCorp;
+
 	void IdleStart(const StateInfo& _Info);
 	void IdleUpdate(float _DeltaTime, const StateInfo& _Info);
 
@@ -62,5 +71,6 @@ private:
 	OWCupheadDir			CurDir;
 	
 	float					Speed;
+	bool					IsUIOn;
 };
 
