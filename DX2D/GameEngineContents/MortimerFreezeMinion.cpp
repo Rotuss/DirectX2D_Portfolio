@@ -34,7 +34,7 @@ CollisionReturn MortimerFreezeMinion::CollisionCheck(GameEngineCollision* _This,
 		EffectRenderer1->ChangeFrameAnimation("Minion_Death_Chips", true);
 		EffectRenderer1->On();
 
-		_Other->GetActor()->Death();
+		_Other->GetActor<Weapon>()->Attacked();
 	}
 	return CollisionReturn::ContinueCheck;
 }

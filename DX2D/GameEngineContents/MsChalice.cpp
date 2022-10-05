@@ -362,18 +362,22 @@ void MsChalice::Update(float _DeltaTime)
 			if ("Right" == ChaliceDir)
 			{
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 100.0f,50.0f });
+				WeaponPtr->SetStartPos(GetTransform().GetLocalPosition() + float4{ 100.0f,50.0f });
 			}
 			if ("Left" == ChaliceDir)
 			{
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -100.0f,50.0f });
+				WeaponPtr->SetStartPos(GetTransform().GetLocalPosition() + float4{ -100.0f,50.0f });
 			}
 			if ("Right" == ChalicePrevDir && "Up" == ChaliceDir)
 			{
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 20.0f,200.0f });
+				WeaponPtr->SetStartPos(GetTransform().GetLocalPosition() + float4{ 20.0f,200.0f });
 			}
 			if ("Left" == ChalicePrevDir && "Up" == ChaliceDir)
 			{
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -20.0f,200.0f });
+				WeaponPtr->SetStartPos(GetTransform().GetLocalPosition() + float4{ -20.0f,200.0f });
 			}
 			if ("RightUp" == ChaliceDir)
 			{
@@ -382,6 +386,7 @@ void MsChalice::Update(float _DeltaTime)
 					CurStateName = "Chalice_Run_Diagonal";
 				}
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 100.0f,200.0f });
+				WeaponPtr->SetStartPos(GetTransform().GetLocalPosition() + float4{ 100.0f,200.0f });
 			}
 			if ("LeftUp" == ChaliceDir)
 			{
@@ -390,6 +395,7 @@ void MsChalice::Update(float _DeltaTime)
 					CurStateName = "Chalice_Run_Diagonal";
 				}
 				WeaponPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ -100.0f,200.0f });
+				WeaponPtr->SetStartPos(GetTransform().GetLocalPosition() + float4{ -100.0f,200.0f });
 			}
 
 			WeaponTime = 0.2f;

@@ -23,7 +23,7 @@ MortimerFreezeIceBat::MortimerFreezeIceBat()
 MortimerFreezeIceBat::~MortimerFreezeIceBat()
 {
 }
-
+	
 CollisionReturn MortimerFreezeIceBat::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	
@@ -46,7 +46,7 @@ CollisionReturn MortimerFreezeIceBat::CollisionCheck(GameEngineCollision* _This,
 	DeathRenderer->GetTransform().SetLocalPosition(float4{ 0.0f,-20.0f });
 	DeathRenderer->On();
 
-	_Other->GetActor()->Death();
+	_Other->GetActor<Weapon>()->Attacked();
 	
 	return CollisionReturn::ContinueCheck;
 }

@@ -3,7 +3,11 @@
 #include "Player.h"
 
 Weapon::Weapon() 
-	: WeaponDir("Right")
+	: StartRenderer(nullptr)
+	, Renderer(nullptr)
+	, Collision(nullptr)
+	, WeaponDir("Right")
+	, StartPos(float4::ZERO)
 {
 }
 
@@ -11,16 +15,49 @@ Weapon::~Weapon()
 {
 }
 
+CollisionReturn Weapon::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
+{
+	Attacked();
+	return CollisionReturn::ContinueCheck;
+}
+
+void Weapon::Attacked()
+{
+	Collision->Off();
+	Renderer->ChangeFrameAnimation("Peashooter_Death");
+	Renderer->SetPivot(PIVOTMODE::CENTER);
+}
+
 void Weapon::Start()
 {
 	{
+		StartRenderer = CreateComponent<GameEngineTextureRenderer>();
+		StartRenderer->CreateFrameAnimationFolder("Peashooter_Spark", FrameAnimation_DESC("Peashooter_Spark", 0.05f, false));
+		StartRenderer->ChangeFrameAnimation("Peashooter_Spark");
+		StartRenderer->SetScaleModeImage();
+		StartRenderer->ScaleToTexture();
+		StartRenderer->SetPivot(PIVOTMODE::CENTER);
+	}
+	
+	StartRenderer->AnimationBindEnd("Peashooter_Spark", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			StartRenderer->Off();
+		});
+
+	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("Peashooter_Loop", FrameAnimation_DESC("Peashooter_Loop", 0.03f, false));
+		Renderer->CreateFrameAnimationFolder("Peashooter_Death", FrameAnimation_DESC("Peashooter_Death", 0.05f, false));
 		Renderer->ChangeFrameAnimation("Peashooter_Loop");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::RIGHT);
 	}
+
+	Renderer->AnimationBindEnd("Peashooter_Death", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			Death();
+		});
 
 	{
 		Collision = CreateComponent<GameEngineCollision>();
@@ -31,17 +68,29 @@ void Weapon::Start()
 
 void Weapon::Update(float _DeltaTime)
 {
+	if (true == StartRenderer->IsUpdate())
+	{
+		StartRenderer->GetTransform().SetWorldPosition(StartPos);
+	}
+
 	if (-10.0f > GetTransform().GetLocalPosition().x)
 	{
-		Renderer->GetActor()->Death();
+		Death();
 		return;
 	}
 	if (1650.0f < GetTransform().GetLocalPosition().x)
 	{
-		Renderer->GetActor()->Death();
+		Death();
 		return;
 	}
-	
+
+	if (false == Collision->IsUpdate())
+	{
+		return;
+	}
+
+	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::BossWhale, CollisionType::CT_OBB2D, std::bind(&Weapon::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+
 	if ("Right" == WeaponDir)
 	{
 		Renderer->GetTransform().PixLocalPositiveX();

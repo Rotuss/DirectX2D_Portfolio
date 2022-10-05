@@ -14,6 +14,14 @@ public:
 	Weapon& operator=(const Weapon& _Other) = delete;
 	Weapon& operator=(Weapon&& _Other) noexcept = delete;
 
+	CollisionReturn CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
+
+	void Attacked();
+
+	inline void SetStartPos(float4 _Pos)
+	{
+		StartPos = _Pos;
+	}
 	void SetWeaponDir(const std::string& _Dir)
 	{
 		WeaponDir = _Dir;
@@ -25,9 +33,11 @@ protected:
 	void End() {}
 
 private:
+	GameEngineTextureRenderer*	StartRenderer;
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineCollision*		Collision;
 
 	std::string					WeaponDir;
+	float4						StartPos;
 };
 

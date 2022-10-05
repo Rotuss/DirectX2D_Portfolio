@@ -21,7 +21,7 @@ void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
 	Collision->GetTransform().SetLocalScale(float4{ 300.0f,400.0f,0.0f });
 	Collision->GetTransform().SetLocalPosition(float4{ 0.0f,200.0f,0.0f });
 	GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0.0f,-130.0f,0.0f });
-	
+
 	StateManager2.CreateStateMember("MF2Idle", std::bind(&MortimerFreezeBoss::P2IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::P2IdleStart, this, std::placeholders::_1));
 
 	StateManager2.CreateStateMember("Dash", std::bind(&MortimerFreezeBoss::AttackDashUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MortimerFreezeBoss::AttackDashStart, this, std::placeholders::_1));
@@ -50,13 +50,21 @@ void MortimerFreezeBoss::P2IdleStart(const StateInfo& _Info)
 		{
 			Renderer->GetTransform().SetLocalPosition(float4{ -21.5f,0.0f,0.0f });
 		}
-		
+
 		Renderer->On();
 	}
 }
 
 void MortimerFreezeBoss::P2IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	if (true == IsPhase2Start)
+	{
+		IsPhase2Start = false;
+		StateManager2.ChangeState("Fridge");
+		PrevSkill = 2;
+		return;
+	}
+	
 	float DashRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
 	float FridgeRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
 	float SmashRandomPer = GameEngineRandom::MainRandom.RandomFloat(0.0f, 1.0f);
@@ -217,7 +225,7 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 				SubRenderer03->On();
 			}
 		});
-	
+
 	Renderer->AnimationBindEnd("SnowBeast_Jump_Attack_NotFirst", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			IsPreparing = false;
@@ -301,7 +309,7 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 			if (MFBossDIR::LEFT == CurMFDir)
 			{
 				EffectRenderer02->GetTransform().PixLocalPositiveX();
-				EffectRenderer02->GetTransform().SetLocalPosition(float4{ 35.0f,28.0f });
+				EffectRenderer02->GetTransform().SetLocalPosition(float4{ 35.0f, 28.0f });
 				EffectRenderer02->On();
 
 				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA", true);
@@ -337,9 +345,9 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 			else
 			{
 				EffectRenderer02->GetTransform().PixLocalNegativeX();
-				EffectRenderer02->GetTransform().SetLocalPosition(float4{ -35.0f,28.0f });
+				EffectRenderer02->GetTransform().SetLocalPosition(float4{ -35.0f, 28.0f });
 				EffectRenderer02->On();
-				
+
 				SubRenderer00->ChangeFrameAnimation("SnowBeast_Limbs_MeltingA", true);
 				SubRenderer00->GetTransform().PixLocalNegativeX();
 				SubRenderer00->SetPivot(PIVOTMODE::BOT);;
@@ -460,7 +468,7 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 			SubRenderer01->CurAnimationReset();
 			SubRenderer01->Off();
 		});
-	
+
 	EffectRenderer01->AnimationBindTime("SnowBeast_Dash_FXB", [/*&*/=](const FrameAnimation_DESC& _Info, float _Delta)
 		{
 			if (MFBossDIR::LEFT == CurMFDir)
@@ -630,7 +638,7 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 		return;
 	}
 
-	if(MFBossDIR::LEFT == CurMFDir)
+	if (MFBossDIR::LEFT == CurMFDir)
 	{
 		if (true == IsDashPatternBegin)
 		{
@@ -657,7 +665,7 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 			IsPreparing = true;
 			return;
 		}
-		
+
 		// 왼쪽 방향으로 가다가 분기점 도달했을 때, 오른쪽 방향으로 이동할 수 있게 전환
 		if (StartPos[2].x >= MFCurXPos && IdleLerpRatio >= 1.0f)
 		{
@@ -730,7 +738,7 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 			IsPreparing = true;
 			return;
 		}
-		
+
 		if (StartPos[3].x <= MFCurXPos && IdleLerpRatio >= 1.0f)
 		{
 			CurMFDir = MFBossDIR::LEFT;
@@ -775,7 +783,7 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 			return;
 		}
 	}
-	
+
 	IdleLerpRatio += _DeltaTime * 1.3f;
 	if (1.0f <= IdleLerpRatio)
 	{
@@ -819,7 +827,7 @@ void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 	Renderer->AnimationBindEnd("SnowBeastFridge_Shoot", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			//--IceCubeCount;
-			
+
 			if (0 == IceCubeCount)
 			{
 				Renderer->ChangeFrameAnimation("SnowBeastFridge_Freezer");
@@ -850,7 +858,7 @@ void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 			IsBatOpen = true;
 			Renderer->ChangeFrameAnimation("SnowBeastFridge_Freezer_Repeat");
 		});
-	
+
 	Renderer->AnimationBindTime("SnowBeastFridge_Freezer_Repeat", [/*&*/=](const FrameAnimation_DESC& _Info, float _Delta)
 		{
 			if (false == IsBatOpen)
@@ -892,14 +900,14 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 			{
 				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ -50.0f,480,0 }, GetTransform().GetLocalPosition() + float4{ -BatRandomMove, 1000 });
 			}
-			if (MFBossDIR::RIGHT== CurMFDir)
+			if (MFBossDIR::RIGHT == CurMFDir)
 			{
 				BPtr->SetMovePos(GetTransform().GetLocalPosition() + float4{ 50.0f,480,0 }, GetTransform().GetLocalPosition() + float4{ BatRandomMove, 1000 });
 			}
 			BPtr->SetColorType(static_cast<ColorType>(GameEngineRandom::MainRandom.RandomInt(0, 2)));
 			BPtr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 0,450,0 });
 			BPtr->SetReAppearTime(GameEngineRandom::MainRandom.RandomFloat(2.0f, 5.0f) * (4 - IceBatCount));
-			
+
 			if (0 == IceBatCount)
 			{
 				IceBatCount = -1;
@@ -932,7 +940,7 @@ void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 {
 	PrevState = "Smash";
 	Renderer->ChangeFrameAnimation("SnowBeastSmash");
-	
+
 	Renderer->AnimationBindEnd("SnowBeastSmash", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("SnowBeastSmashRepeat");
@@ -977,12 +985,12 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 		if (MFBossDIR::LEFT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 330.0f + (250.0f * (3 - BladeCount)),-45,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() - float4{ 330.0f + (250.0f * (3 - BladeCount)),-45,0 });
 		}
 		if (MFBossDIR::RIGHT == CurMFDir)
 		{
 			MortimerFreezeBlade* Ptr = GetLevel()->CreateActor<MortimerFreezeBlade>(OBJECTORDER::Boss);
-			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 340.0f + (250.0f * (3 - BladeCount)),45,0});
+			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4{ 340.0f + (250.0f * (3 - BladeCount)),45,0 });
 		}
 	}
 }
@@ -1018,7 +1026,7 @@ void MortimerFreezeBoss::Phase2to3Start(const StateInfo& _Info)
 			//if (0 == Phase3TransitionMotionCount)
 			{
 				Renderer->ChangeFrameAnimation("MFPhase3Transition_Legs");
-				
+
 				// 터지는 효과
 				EffectRenderer00->ChangeFrameAnimation("SnowBeast_Death_VFX_Front");
 				EffectRenderer00->SetPivot(PIVOTMODE::CENTER);
@@ -1097,7 +1105,7 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
 				Ptr->SetPlatformType(PlatformType::Intro);
 				Ptr->GetTransform().SetLocalPosition({ 700.0f, -600.0f, -1.0f });
-				Ptr->GetLevel<MortimerFreezeLevel>()->SetPh3MoveValue( &Ptr->GetTransform(), {0,-700,0});
+				Ptr->GetLevel<MortimerFreezeLevel>()->SetPh3MoveValue(&Ptr->GetTransform(), { 0,-700,0 });
 				Ptr->Index = 2;
 
 				PlatformTime = 0.3f;

@@ -213,6 +213,7 @@ private:
 	int		Phase3TransitionMotionCount;
 	int		PlatformCount;
 	int		LegCount;
+	bool	IsPhase2Start;
 	bool	IsDashPatternBegin;
 	bool	IsPreparing;
 	bool	IsPrevDash;

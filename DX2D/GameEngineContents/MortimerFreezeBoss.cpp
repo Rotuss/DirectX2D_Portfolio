@@ -70,6 +70,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, Phase3TransitionMotionCount(2)
 	, PlatformCount(5)
 	, LegCount(2)
+	, IsPhase2Start(true)
 	, IsDashPatternBegin(true)
 	, IsPreparing(false)
 	, IsPrevDash(false)
@@ -107,7 +108,7 @@ MortimerFreezeBoss::~MortimerFreezeBoss()
 
 CollisionReturn MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
-	_Other->GetActor()->Death();
+	_Other->GetActor<Weapon>()->Attacked();
 	
 	HP -= 1;
 	
