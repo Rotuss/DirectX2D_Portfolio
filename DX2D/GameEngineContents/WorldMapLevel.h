@@ -15,6 +15,8 @@ public:
 	WorldMapLevel& operator=(const WorldMapLevel& _Other) = delete;
 	WorldMapLevel& operator=(WorldMapLevel&& _Other) noexcept = delete;
 
+	void LevelStartEvent() override;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

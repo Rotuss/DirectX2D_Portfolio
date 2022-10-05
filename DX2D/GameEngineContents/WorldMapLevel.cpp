@@ -3,6 +3,7 @@
 #include "WorldMapBackGround.h"
 #include "Player.h"
 #include "OverWorldCuphead.h"
+#include "GlobalContents.h"
 #include <GameEngineCore/GEngine.h>
 #include <GameEngineCore/GameEngineBlur.h>
 
@@ -14,6 +15,16 @@ WorldMapLevel::WorldMapLevel()
 
 WorldMapLevel::~WorldMapLevel() 
 {
+}
+
+void WorldMapLevel::LevelStartEvent()
+{
+	if (true == GlobalContents::Actors::IsClear)
+	{
+		GlobalContents::Actors::IsClear = false;
+		
+		// OverWorldCuphead 상태 변경
+	}
 }
 
 void WorldMapLevel::Start()

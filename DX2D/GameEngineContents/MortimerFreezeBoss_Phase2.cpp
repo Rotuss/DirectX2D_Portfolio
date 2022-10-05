@@ -1017,12 +1017,17 @@ void MortimerFreezeBoss::Phase2to3Start(const StateInfo& _Info)
 		{
 			//if (0 == Phase3TransitionMotionCount)
 			{
-				// 터지는 효과
-
 				Renderer->ChangeFrameAnimation("MFPhase3Transition_Legs");
+				
+				// 터지는 효과
+				EffectRenderer00->ChangeFrameAnimation("SnowBeast_Death_VFX_Front");
+				EffectRenderer00->SetPivot(PIVOTMODE::CENTER);
+				EffectRenderer00->On();
 
 				// 얼음결정 올라가는 모션
-
+				SubRenderer00->GetTransform().SetLocalPosition(float4::ZERO);
+				SubRenderer00->ChangeFrameAnimation("SnowFlake_Ph2_ShootUp");
+				SubRenderer00->On();
 			}
 
 			//--Phase3TransitionMotionCount;
@@ -1038,6 +1043,11 @@ void MortimerFreezeBoss::Phase2to3Start(const StateInfo& _Info)
 
 			--LegCount;
 		});
+
+	EffectRenderer00->AnimationBindEnd("SnowBeast_Death_VFX_Front", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			EffectRenderer00->Off();
+		});
 }
 
 void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Info)
@@ -1052,6 +1062,11 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 		{
 			GetTransform().SetWorldRightMove(800.0f, _DeltaTime);
 		}
+	}
+
+	if (true == SubRenderer00->IsUpdate())
+	{
+		SubRenderer00->GetTransform().SetWorldUpMove(Speed * 5, _DeltaTime);
 	}
 
 	if (true == GetLevel<MortimerFreezeLevel>()->GetIsMove())

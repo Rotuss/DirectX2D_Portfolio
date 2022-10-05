@@ -84,6 +84,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, SplitTime(GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f))
 	, IceCreamAppearTime(0.0f)
 	, BucketAppearTime(0.0f)
+	, KnockOutTime(500.0f)
 	, SwapCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
 	, EyeRepeatCount(4)
 	, IceCreamRandom(GameEngineRandom::MainRandom.RandomInt(0, 2))
@@ -280,7 +281,8 @@ void MortimerFreezeBoss::Start()
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Fall", FrameAnimation_DESC("SnowBeast_Intro", 45, 48, 0.09f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Land", FrameAnimation_DESC("SnowBeast_Intro", 49, 56, 0.08f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", 0.06f, false));
-		
+		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Ph2_ShootUp", FrameAnimation_DESC("SnowFlake_Ph2_ShootUp", 0.06f, false));
+
 		SubRenderer00->CreateFrameAnimationFolder("IceCream_Ghost", FrameAnimation_DESC("IceCream_Ghost", 0.07f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms0", FrameAnimation_DESC("SplitShot_Arms", 0, 3, 0.1f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SplitShot_Arms1", FrameAnimation_DESC("SplitShot_Arms", 4, 11, 0.06f, true));
@@ -340,6 +342,7 @@ void MortimerFreezeBoss::Start()
 		EffectRenderer00 = CreateComponent<GameEngineTextureRenderer>();
 		EffectRenderer00->CreateFrameAnimationFolder("SnowBeast_Jump_FXA", FrameAnimation_DESC("SnowBeast_Jump_FXA", 0.04f, false));
 		EffectRenderer00->CreateFrameAnimationFolder("SnowBeast_Dash_FXA", FrameAnimation_DESC("SnowBeast_Dash_FXA", 0.04f, false));
+		EffectRenderer00->CreateFrameAnimationFolder("SnowBeast_Death_VFX_Front", FrameAnimation_DESC("SnowBeast_Death_VFX_Front", 0.04f, false));
 
 		EffectRenderer00->ChangeFrameAnimation("SnowBeast_Jump_FXA");
 		EffectRenderer00->SetScaleModeImage();

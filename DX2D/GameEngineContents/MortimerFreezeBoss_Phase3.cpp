@@ -4,6 +4,7 @@
 #include "MortimerFreezeIceCream.h"
 #include "MortimerFreezeBucket.h"
 #include "KnockOut.h"
+#include "GlobalContents.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
 void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
@@ -19,6 +20,7 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 	PrevState = "";
 	// 수치 조정 필요
 	Renderer->SetPivot(PIVOTMODE::CENTER);
+	SubRenderer00->Off();
 	Collision->GetTransform().SetLocalScale(float4{ 250.0f,550.0f,0.0f });
 	Collision->GetTransform().SetLocalPosition(float4{ 0.0f,0.0f,0.0f });
 	Collision->Off();
@@ -1036,22 +1038,34 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 				{
 					SubRenderer01->ChangeFrameAnimation("SnowFlake_DeathBacker");
 					SubRenderer01->GetTransform().PixLocalPositiveX();
-					SubRenderer01->SetPivot(PIVOTMODE::CENTER);;
-					SubRenderer01->GetTransform().SetLocalPosition(float4{ -10.0f,30.0f,0.0f });
+					SubRenderer01->SetPivot(PIVOTMODE::CENTER);
+					SubRenderer01->GetTransform().SetWorldPosition(SubRenderer00->GetTransform().GetWorldPosition() + float4{ 0.0f,0.0f,5.0f });
 					SubRenderer01->On();
 				}
 				else
 				{
 					SubRenderer01->ChangeFrameAnimation("SnowFlake_DeathBacker");
 					SubRenderer01->GetTransform().PixLocalNegativeX();
-					SubRenderer01->SetPivot(PIVOTMODE::CENTER);;
-					SubRenderer01->GetTransform().SetLocalPosition(float4{ 10.0f,30.0f,0.0f });
+					SubRenderer01->SetPivot(PIVOTMODE::CENTER);
+					SubRenderer01->GetTransform().SetWorldPosition(SubRenderer00->GetTransform().GetWorldPosition() + float4{ 0.0f,0.0f,5.0f });
 					SubRenderer01->On();
 				}
 			}
+		});
+
+	SubRenderer00->AnimationBindEnd("SnowFlake_Death1", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			KnockOutTime = 2.0f;
 		});
 }
 
 void MortimerFreezeBoss::Phase3KnockOutUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	KnockOutTime -= _DeltaTime;
+
+	if (0 >= KnockOutTime)
+	{
+		GlobalContents::Actors::IsClear = true;
+		GEngine::ChangeLevel("World");
+	}
 }

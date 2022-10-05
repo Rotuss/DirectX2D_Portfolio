@@ -29,6 +29,7 @@ public:
 	{
 	public:
 		static Monster* TestMonster;
+		static bool IsClear;
 
 	private:
 		Actors() {		}

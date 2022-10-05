@@ -229,6 +229,7 @@ private:
 	float	SplitTime;
 	float	IceCreamAppearTime;
 	float	BucketAppearTime;
+	float	KnockOutTime;
 	int		SwapCount;
 	int		EyeRepeatCount;
 	int		IceCreamRandom;
