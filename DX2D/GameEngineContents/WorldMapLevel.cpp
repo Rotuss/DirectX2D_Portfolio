@@ -2,6 +2,7 @@
 #include "WorldMapLevel.h"
 #include "WorldMapBackGround.h"
 #include "Player.h"
+#include "OverWorldCuphead.h"
 #include <GameEngineCore/GEngine.h>
 #include <GameEngineCore/GameEngineBlur.h>
 
@@ -41,9 +42,17 @@ void WorldMapLevel::Start()
 	}
 
 	WorldMapBackGround* WorldBackGround = CreateActor<WorldMapBackGround>(OBJECTORDER::World);
-	// Test
-	Player* NewPlayer = CreateActor<Player>(OBJECTORDER::Player);
-	NewPlayer->GetTransform().SetLocalPosition({ 300, -1430, -3 });
+	
+	{
+		OverWorldCuphead* NewCH = CreateActor<OverWorldCuphead>(OBJECTORDER::Player);
+
+		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
+		Renderer->SetTexture("dlc_main_land_Col.png");
+		Renderer->ScaleToTexture();
+		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
+		Renderer->Off();
+		NewCH->SetColMap(Renderer);
+	}
 
 	{
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
@@ -258,7 +267,7 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("dlc_main_top.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
-		Renderer->GetTransform().SetLocalPosition({ 1860, -1085, -10 });
+		Renderer->GetTransform().SetLocalPosition({ 10, 0, -10 });
 	}
 
 

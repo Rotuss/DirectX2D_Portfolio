@@ -130,6 +130,9 @@
     <ClInclude Include="ReadyWALLOP.h">
       <Filter>Actor\Common</Filter>
     </ClInclude>
+    <ClInclude Include="OverWorldCuphead.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -265,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="ReadyWALLOP.cpp">
       <Filter>Actor\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="OverWorldCuphead.cpp">
+      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
