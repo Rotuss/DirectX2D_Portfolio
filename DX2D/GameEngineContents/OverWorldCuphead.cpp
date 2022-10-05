@@ -84,37 +84,6 @@ void OverWorldCuphead::Update(float _DeltaTime)
 
 	StateManager.Update(_DeltaTime);
 
-	ColorCheck = ColRenderer->GetCurTexture();
-	if (nullptr == ColorCheck)
-	{
-		return;
-	}
-	while (true == ColorCheck->GetPixelToFloat4(static_cast<int>(GetTransform().GetLocalPosition().x), static_cast<int>(-(GetTransform().GetLocalPosition().y - 50.0f))).CompareInt4D(float4::BLACK))
-	{
-		// 수정 필요
-		switch (CurDir)
-		{
-		case OWCupheadDir::Left:
-		case OWCupheadDir::LeftUp:
-		case OWCupheadDir::LeftDown:
-			GetTransform().SetLocalMove(GetTransform().GetRightVector());
-			break;
-		case OWCupheadDir::Right:
-		case OWCupheadDir::RightUp:
-		case OWCupheadDir::RightDown:
-			GetTransform().SetLocalMove(GetTransform().GetLeftVector());
-			break;
-		case OWCupheadDir::Up:
-			GetTransform().SetLocalMove(GetTransform().GetDownVector());
-			break;
-		case OWCupheadDir::Down:
-			GetTransform().SetLocalMove(GetTransform().GetUpVector());
-			break;
-		default:
-			break;
-		}
-	}
-
 	GetLevel()->GetMainCameraActorTransform().SetLocalPosition(GetTransform().GetLocalPosition() + float4::BACK * 100.0f);
 
 	Renderer->ChangeFrameAnimation(CurStateName + CurUpDownName);
@@ -190,53 +159,97 @@ void OverWorldCuphead::WalkUpdate(float _DeltaTime, const StateInfo& _Info)
 	
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHLeft"))
 	{
-		GetTransform().SetWorldLeftMove(Speed, _DeltaTime);
 		Renderer->GetTransform().PixLocalNegativeX();
 		CurStateName = "OW_Walk_Side";
 		CurDir = OWCupheadDir::Left;
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHRight"))
 	{
-		GetTransform().SetWorldRightMove(Speed, _DeltaTime);
 		Renderer->GetTransform().PixLocalPositiveX();
 		CurStateName = "OW_Walk_Side";
 		CurDir = OWCupheadDir::Right;
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHUp"))
 	{
-		GetTransform().SetWorldUpMove(Speed, _DeltaTime);
 		CurStateName = "OW_Walk_Up";
 		CurDir = OWCupheadDir::Up;
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHDown"))
 	{
-		GetTransform().SetWorldDownMove(Speed, _DeltaTime);
 		CurStateName = "OW_Walk_Down";
 		CurDir = OWCupheadDir::Down;
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHUp") && true == GameEngineInput::GetInst()->IsPress("OWCHLeft"))
 	{
-		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetLeftVector() + GetTransform().GetUpVector()) * _DeltaTime));
 		CurUpDownName = "_Up";
 		CurDir = OWCupheadDir::LeftUp;
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHUp") && true == GameEngineInput::GetInst()->IsPress("OWCHRight"))
 	{
-		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetRightVector() + GetTransform().GetUpVector()) * _DeltaTime));
 		CurUpDownName = "_Up";
 		CurDir = OWCupheadDir::RightUp;
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHDown") && true == GameEngineInput::GetInst()->IsPress("OWCHLeft"))
 	{
-		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetLeftVector() + GetTransform().GetDownVector()) * _DeltaTime));
 		CurUpDownName = "_Down";
 		CurDir = OWCupheadDir::LeftDown;
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("OWCHDown") && true == GameEngineInput::GetInst()->IsPress("OWCHRight"))
 	{
-		GetTransform().SetWorldPosition(GetTransform().GetWorldPosition() + ((GetTransform().GetRightVector() + GetTransform().GetDownVector()) * _DeltaTime));
 		CurUpDownName = "_Down";
 		CurDir = OWCupheadDir::RightDown;
+	}
+
+	float4 NextPos = GetTransform().GetLocalPosition();
+	switch (CurDir)
+	{
+	case OWCupheadDir::Left:
+		NextPos += float4(-1, 0, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	case OWCupheadDir::LeftUp:
+		NextPos += float4(-1, 1, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	case OWCupheadDir::LeftDown:
+		NextPos += float4(-1, -1, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	case OWCupheadDir::Right:
+		NextPos += float4(1, 0, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	case OWCupheadDir::RightUp:
+		NextPos += float4(1, 1, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	case OWCupheadDir::RightDown:
+		NextPos += float4(1, -1, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	case OWCupheadDir::Up:
+		NextPos += float4(0, 1, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	case OWCupheadDir::Down:
+		NextPos += float4(0, -1, 0).NormalizeReturn() * Speed * _DeltaTime;
+		break;
+	default:
+		break;
+	}
+
+	ColorCheck = ColRenderer->GetCurTexture();
+	if (nullptr == ColorCheck)
+	{
+		return;
+	}
+	if (false == ColorCheck->GetPixelToFloat4(NextPos.ix(), -NextPos.iy()).CompareInt4D(float4::BLACK))
+	{
+		GetTransform().SetLocalPosition(NextPos);
+	}
+	else
+	{
+		if (false == ColorCheck->GetPixelToFloat4(NextPos.ix(), -GetTransform().GetLocalPosition().iy()).CompareInt4D(float4::BLACK))
+		{
+			GetTransform().SetLocalPosition(float4(NextPos.x, GetTransform().GetLocalPosition().y));
+		}
+		else if (false == ColorCheck->GetPixelToFloat4(GetTransform().GetLocalPosition().ix(), -NextPos.iy()).CompareInt4D(float4::BLACK))
+		{
+			GetTransform().SetLocalPosition(float4(GetTransform().GetLocalPosition().x, NextPos.y));
+		}
 	}
 }

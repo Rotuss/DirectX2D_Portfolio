@@ -50,6 +50,8 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("dlc_main_land_Col.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
+		//Renderer->GetTransform().SetWorldPosition({0, 0, -100});
+		//Renderer->GetPixelData().MulColor.a = 0.3f;
 		Renderer->Off();
 		NewCH->SetColMap(Renderer);
 	}
