@@ -230,7 +230,7 @@ void MsChalice::Start()
 	StateManager.CreateStateMember("ChaliceIntro", std::bind(&MsChalice::IntroUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::IntroStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceIdle", std::bind(&MsChalice::IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::IdleStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceDuck", std::bind(&MsChalice::DuckUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::DuckStart, this, std::placeholders::_1));
-	StateManager.CreateStateMember("ChaliceAim", std::bind(&MsChalice::AimUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::AimStart, this, std::placeholders::_1));
+	StateManager.CreateStateMember("ChaliceAim", std::bind(&MsChalice::AimUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::AimStart, this, std::placeholders::_1), std::bind(&MsChalice::AimEnd, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceRun", std::bind(&MsChalice::RunUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::RunStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceJump", std::bind(&MsChalice::JumpUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::JumpStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("ChaliceDash", std::bind(&MsChalice::DashUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&MsChalice::DashStart, this, std::placeholders::_1));
@@ -331,7 +331,7 @@ void MsChalice::Update(float _DeltaTime)
 
 		// Collision2D
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Boss), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
-	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Parry), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckParry, this, std::placeholders::_1, std::placeholders::_2));
+	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Parry), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::BossMinion), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckMinion, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::BossWhale), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckWhale, this, std::placeholders::_1, std::placeholders::_2));
 	Collision->IsCollisionEnterBase(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::Phase3Bot), CollisionType::CT_OBB2D, std::bind(&MsChalice::CollisionCheckPhase3Bot, this, std::placeholders::_1, std::placeholders::_2));
@@ -375,10 +375,6 @@ void MsChalice::Update(float _DeltaTime)
 			}
 			if ("RightUp" == ChaliceDir)
 			{
-				if ("ChaliceAim" == StateManager.GetCurStateStateName())
-				{
-					CurStateName = "Chalice_Aim_Diagonal";
-				}
 				if ("ChaliceRun" == StateManager.GetCurStateStateName())
 				{
 					CurStateName = "Chalice_Run_Diagonal";
@@ -387,10 +383,6 @@ void MsChalice::Update(float _DeltaTime)
 			}
 			if ("LeftUp" == ChaliceDir)
 			{
-				if ("ChaliceAim" == StateManager.GetCurStateStateName())
-				{
-					CurStateName = "Chalice_Aim_Diagonal";
-				}
 				if ("ChaliceRun" == StateManager.GetCurStateStateName())
 				{
 					CurStateName = "Chalice_Run_Diagonal";
@@ -399,6 +391,18 @@ void MsChalice::Update(float _DeltaTime)
 			}
 
 			WeaponTime = 0.2f;
+		}
+	}
+	else
+	{
+		CurShootName = "";
+	}
+	
+	if ("LeftUp" == ChaliceDir || "RightUp" == ChaliceDir)
+	{
+		if ("ChaliceAim" == StateManager.GetCurStateStateName())
+		{
+			CurStateName = "Chalice_Aim_Diagonal";
 		}
 	}
 
@@ -421,7 +425,9 @@ void MsChalice::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceDown"))
 	{
-		if ("ChaliceJump" != StateManager.GetCurStateStateName())
+		if ("ChaliceJump" != StateManager.GetCurStateStateName()
+			&& "ChaliceHit" != StateManager.GetCurStateStateName()
+			&& "ChaliceDuck" != StateManager.GetCurStateStateName())
 		{
 			StateManager.ChangeState("ChaliceDuck");
 		}
@@ -565,8 +571,8 @@ void MsChalice::AimUpdate(float _DeltaTime, const StateInfo& _Info)
 	}
 	
 	if (false == GameEngineInput::GetInst()->IsPress("ChaliceLeft")
-		|| false == GameEngineInput::GetInst()->IsPress("ChaliceRight")
-		|| false == GameEngineInput::GetInst()->IsPress("ChaliceUp"))
+		&& false == GameEngineInput::GetInst()->IsPress("ChaliceRight")
+		&& false == GameEngineInput::GetInst()->IsPress("ChaliceUp"))
 	{
 		StateManager.ChangeState("ChaliceIdle");
 		return;
@@ -609,6 +615,11 @@ void MsChalice::AimUpdate(float _DeltaTime, const StateInfo& _Info)
 		ChaliceDir = "RightUp";
 		return;
 	}
+}
+
+void MsChalice::AimEnd(const StateInfo& _Info)
+{
+	IsAimState = false;
 }
 
 void MsChalice::RunStart(const StateInfo& _Info)

@@ -75,6 +75,7 @@ protected:
 
 	void AimStart(const StateInfo& _Info);
 	void AimUpdate(float _DeltaTime, const StateInfo& _Info);
+	void AimEnd(const StateInfo& _Info);
 
 	void RunStart(const StateInfo& _Info);
 	void RunUpdate(float _DeltaTime, const StateInfo& _Info);
