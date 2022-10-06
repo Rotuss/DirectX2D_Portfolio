@@ -26,7 +26,9 @@ MortimerFreezeIceBat::~MortimerFreezeIceBat()
 	
 CollisionReturn MortimerFreezeIceBat::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
-	
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_Popsicle_Bat_Death_01.wav");
+	Tmp.Volume(0.3f);
+
 	_This->Death();
 
 	if (BatColor == ColorType::Green)

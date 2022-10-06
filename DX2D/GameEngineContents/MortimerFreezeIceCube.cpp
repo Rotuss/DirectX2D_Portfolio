@@ -27,11 +27,17 @@ void MortimerFreezeIceCube::SetSizeType(SizeType _Type)
 
 	if (CubeSize == SizeType::Large && DirType == CubeDIR::LEFT)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_IceCube_Impact_Large.wav");
+		Tmp.Volume(0.1f);
+		
 		Renderer->ChangeFrameAnimation("IceCube_Large");
 		Collision->GetTransform().SetLocalScale({ 100,100,-1 });
 	}
 	if (CubeSize == SizeType::Large && DirType == CubeDIR::RIGHT)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_IceCube_Impact_Large.wav");
+		Tmp.Volume(0.1f);
+		
 		Renderer->ChangeFrameAnimation("IceCube_Large");
 		Renderer->GetTransform().PixLocalNegativeX();
 		Collision->GetTransform().SetLocalScale({ 100,100,-1 });
@@ -39,11 +45,17 @@ void MortimerFreezeIceCube::SetSizeType(SizeType _Type)
 	
 	if (CubeSize == SizeType::Medium && DirType == CubeDIR::LEFT)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_IceCube_Impact_Medium.wav");
+		Tmp.Volume(0.1f);
+		
 		Renderer->ChangeFrameAnimation("IceCube_Medium");
 		Collision->GetTransform().SetLocalScale({ 70,70,-1 });
 	}
 	if (CubeSize == SizeType::Medium && DirType == CubeDIR::RIGHT)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_IceCube_Impact_Medium.wav");
+		Tmp.Volume(0.1f);
+		
 		Renderer->ChangeFrameAnimation("IceCube_Medium");
 		Renderer->GetTransform().PixLocalNegativeX();
 		Collision->GetTransform().SetLocalScale({ 70,70,-1 });
@@ -51,11 +63,17 @@ void MortimerFreezeIceCube::SetSizeType(SizeType _Type)
 
 	if (CubeSize == SizeType::Small && DirType == CubeDIR::LEFT)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_IceCube_Impact_Small.wav");
+		Tmp.Volume(0.1f);
+		
 		Renderer->ChangeFrameAnimation("IceCube_Small");
 		Collision->GetTransform().SetLocalScale({ 40,40,-1 });
 	}
 	if (CubeSize == SizeType::Small && DirType == CubeDIR::RIGHT)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_IceCube_Impact_Small.wav");
+		Tmp.Volume(0.1f);
+		
 		Renderer->ChangeFrameAnimation("IceCube_Small");
 		Renderer->GetTransform().PixLocalNegativeX();
 		Collision->GetTransform().SetLocalScale({ 40,40,-1 });

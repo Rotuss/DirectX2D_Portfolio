@@ -153,6 +153,9 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowBeast_Jump_Attack", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyToss.wav");
+			Tmp.Volume(0.5f);
+			
 			IsPreparing = false;
 			CurMeltingDir = CurMFDir;
 			Renderer->ChangeFrameAnimation("SnowBeast_DashSnowBeastBall");
@@ -228,6 +231,9 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowBeast_Jump_Attack_NotFirst", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyToss.wav");
+			Tmp.Volume(0.5f);
+			
 			IsPreparing = false;
 			CurMeltingDir = CurMFDir;
 			Renderer->ChangeFrameAnimation("SnowBeast_DashSnowBeastBall");
@@ -303,6 +309,9 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowBeast_Dash_Attack", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyRoll.wav");
+			Tmp.Volume(0.5f);
+			
 			IsPreparing = false;
 			CurMeltingDir = CurMFDir;
 			Renderer->ChangeFrameAnimation("SnowBeast_DashSnowBeastBall");
@@ -382,21 +391,33 @@ void MortimerFreezeBoss::AttackDashStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowBeast_JumptoJump_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyTossPre.wav");
+			Tmp.Volume(0.5f);
+			
 			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack_NotFirst");
 		});
 
 	Renderer->AnimationBindEnd("SnowBeast_DashtoJump_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyTossPre.wav");
+			Tmp.Volume(0.5f);
+			
 			Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack_NotFirst");
 		});
 
 	Renderer->AnimationBindEnd("SnowBeast_DashtoAny_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyRollPre.wav");
+			Tmp.Volume(0.5f);
+			
 			Renderer->ChangeFrameAnimation("SnowBeast_Dash_Attack");
 		});
 
 	Renderer->AnimationBindEnd("SnowBeast_JumptoDash_Trans", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyRollPre.wav");
+			Tmp.Volume(0.5f);
+			
 			Renderer->ChangeFrameAnimation("SnowBeast_Dash_Attack");
 		});
 
@@ -650,6 +671,9 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 			{
 				if (false == IsPrevDash && false == IsPrevJump)
 				{
+					GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyTossPre.wav");
+					Tmp.Volume(0.5f);
+					
 					IsPrevJump = true;
 					Renderer->ChangeFrameAnimation("SnowBeast_Jump_Attack");
 				}
@@ -658,6 +682,9 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 			{
 				if (false == IsPrevDash && false == IsPrevJump)
 				{
+					GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_BodyRollPre.wav");
+					Tmp.Volume(0.5f);
+					
 					IsPrevDash = true;
 					Renderer->ChangeFrameAnimation("SnowBeast_Dash_Attack");
 				}
@@ -813,6 +840,9 @@ void MortimerFreezeBoss::AttackDashUpdate(float _DeltaTime, const StateInfo& _In
 
 void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_Transform_From_SnowMonster_to_Fridge.wav");
+	Tmp.Volume(0.6f);
+	
 	Renderer->ChangeFrameAnimation("SnowBeastFridge_Morph");
 	Renderer->GetTransform().SetLocalPosition(float4{ 0.0f,-20.0f,0.0f });
 
@@ -855,6 +885,9 @@ void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowBeastFridge_Freezer", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_FreezerScream_Long.wav");
+			Tmp.Volume(0.5f);
+			
 			IsBatOpen = true;
 			Renderer->ChangeFrameAnimation("SnowBeastFridge_Freezer_Repeat");
 		});
@@ -863,6 +896,9 @@ void MortimerFreezeBoss::AttackFridgeStart(const StateInfo& _Info)
 		{
 			if (false == IsBatOpen)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_Transform_From_Fridge_to_SnowMonster.wav");
+				Tmp.Volume(0.6f);
+				
 				Renderer->ChangeFrameAnimation("SnowBeastFridge_Freezer_Outro");
 			}
 		});
@@ -918,6 +954,9 @@ void MortimerFreezeBoss::AttackFridgeUpdate(float _DeltaTime, const StateInfo& _
 
 		if (true == IsShoot)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Fridge_IceCube_Launch_01.wav");
+			Tmp.Volume(0.5f);
+			
 			IceTime = 1.3f;
 			//--IceCubeCount;
 			// 큐브 생성
@@ -943,6 +982,9 @@ void MortimerFreezeBoss::AttackSmashStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowBeastSmash", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_GroundSmash_withHands.wav");
+			Tmp.Volume(0.6f);
+			
 			Renderer->ChangeFrameAnimation("SnowBeastSmashRepeat");
 		});
 
@@ -978,6 +1020,9 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 
 	if (0 < BladeCount)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Blade_StabfromGround_01.wav");
+		Tmp.Volume(0.3f);
+
 		BladeTime = 0.3f;
 		--BladeCount;
 
@@ -997,6 +1042,9 @@ void MortimerFreezeBoss::AttackSmashUpdate(float _DeltaTime, const StateInfo& _I
 
 void MortimerFreezeBoss::Phase2to3Start(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Death_Explode.wav");
+	Tmp.Volume(0.7f);
+	
 	Renderer->ChangeFrameAnimation("MFPhase3Transition0");
 
 	Renderer->AnimationBindEnd("MFPhase3Transition0", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -1045,6 +1093,9 @@ void MortimerFreezeBoss::Phase2to3Start(const StateInfo& _Info)
 		{
 			if (0 == LegCount)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Death_StompOffScreen.wav");
+				Tmp.Volume(0.5f);
+				
 				Renderer->ChangeFrameAnimation("MFPhase3Transition_LegsMove");
 				IsLegMove = true;
 			}
@@ -1074,7 +1125,7 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 
 	if (true == SubRenderer00->IsUpdate())
 	{
-		SubRenderer00->GetTransform().SetWorldUpMove(Speed * 5, _DeltaTime);
+		SubRenderer00->GetTransform().SetWorldUpMove(Speed * 10, _DeltaTime);
 	}
 
 	if (true == GetLevel<MortimerFreezeLevel>()->GetIsMove())
@@ -1093,6 +1144,9 @@ void MortimerFreezeBoss::Phase2to3Update(float _DeltaTime, const StateInfo& _Inf
 			// MortimerFreezeLevel의 SetPh3MoveValue 작업 필요
 			if (4 == PlatformCount)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_IcePlatform_Appear.wav");
+				Tmp.Volume(0.5f);
+
 				MortimerFreezeSnowPlatform* Ptr = GetLevel()->CreateActor<MortimerFreezeSnowPlatform>(OBJECTORDER::SnowPlatform);
 				Ptr->SetPlatformType(PlatformType::Intro);
 				Ptr->GetTransform().SetLocalPosition({ 890.0f, -735.0f, -1.0f });

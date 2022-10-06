@@ -189,10 +189,10 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("SnowBeastSmashOutro", FrameAnimation_DESC("SnowBeast_Smash_Outro", 0.06f, false));
 
 		// 애니메이션 조정 필요
-		Renderer->CreateFrameAnimationFolder("MFPhase3Transition0", FrameAnimation_DESC("SnowBeast_Death", 0, 14, 0.06f, false));
-		Renderer->CreateFrameAnimationFolder("MFPhase3Transition1", FrameAnimation_DESC("SnowBeast_Death", 15, 19, 0.06f, true));
-		Renderer->CreateFrameAnimationFolder("MFPhase3Transition2", FrameAnimation_DESC("SnowBeast_Death", 20, 26, 0.06f, false));
-		Renderer->CreateFrameAnimationFolder("MFPhase3Transition3", FrameAnimation_DESC("SnowBeast_Death", 27, 33, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition0", FrameAnimation_DESC("SnowBeast_Death", 0, 14, 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition1", FrameAnimation_DESC("SnowBeast_Death", 15, 19, 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition2", FrameAnimation_DESC("SnowBeast_Death", 20, 26, 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase3Transition3", FrameAnimation_DESC("SnowBeast_Death", 27, 33, 0.05f, false));
 		Renderer->CreateFrameAnimationFolder("MFPhase3Transition_Legs", FrameAnimation_DESC("SnowBeast_Death_Legs", 0, 4, 0.08f, true));
 		Renderer->CreateFrameAnimationFolder("MFPhase3Transition_LegsMove", FrameAnimation_DESC("SnowBeast_Death_Legs", 5, 15, 0.05f, true));
 
