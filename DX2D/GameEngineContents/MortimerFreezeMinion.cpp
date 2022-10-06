@@ -10,6 +10,7 @@ MortimerFreezeMinion::MortimerFreezeMinion()
 	, GenderType(GENDER::BOY)
 	, DirType(DIR::LEFT)
 	, Speed(330.0f)
+	, SoundRepeatTime(0.0f)
 	, MinionMoveStart(false)
 	, MinionFollowStart(false)
 	, IsRanding(false)
@@ -24,6 +25,8 @@ MortimerFreezeMinion::~MortimerFreezeMinion()
 
 CollisionReturn MortimerFreezeMinion::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	MinionSound = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Minion_Death_Explode_01.wav");
+	MinionSound.Volume(0.3f);
 	if (true == IsRanding)
 	{
 		_This->Death();
@@ -112,6 +115,9 @@ void MortimerFreezeMinion::Start()
 
 	Renderer->AnimationBindEnd("SpawnBoyAppear", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			MinionSound = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Minion_Flipup.wav");
+			MinionSound.Volume(0.1f);
+
 			Renderer->ChangeFrameAnimation("SpawnBoyRolling");
 		});
 
@@ -173,6 +179,9 @@ void MortimerFreezeMinion::Start()
 
 	Renderer->AnimationBindEnd("SpawnGirlAppear", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			MinionSound = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Minion_Flipup.wav");
+			MinionSound.Volume(0.1f);
+
 			Renderer->ChangeFrameAnimation("SpawnGirlRolling");
 		});
 
@@ -289,6 +298,9 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 	}
 	if (true == ColorCheck->GetPixelToFloat4(GetTransform().GetLocalPosition().ix(), -GetTransform().GetLocalPosition().iy()).CompareInt4D(float4::BLACK) && true == MinionMoveStart)
 	{
+		MinionSound = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Minion_StuckinGround.wav");
+		MinionSound.Volume(0.3f);
+
 		MinionMoveStart = false;
 		IsRanding = true;
 		GetTransform().SetWorldMove(float4::ZERO);
@@ -325,6 +337,15 @@ void MortimerFreezeMinion::Update(float _DeltaTime)
 	if (false == MinionFollowStart)
 	{
 		return;
+	}
+
+	SoundRepeatTime -= _DeltaTime;
+	if (0 >= SoundRepeatTime)
+	{
+		SoundRepeatTime = 3.0f;
+
+		MinionSound = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Minion_Flipup.wav");
+		MinionSound.Volume(0.3f);
 	}
 
 	if (DirType == DIR::LEFT && false == IsDeath)

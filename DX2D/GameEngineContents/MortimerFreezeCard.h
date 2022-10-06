@@ -38,9 +38,12 @@ protected:
 	GameEngineCollision*		CollisionParry;
 
 private:
+	GameEngineSoundPlayer RepeatSound;
+	
 	float4 CurPosition;
 	float4 PlayerPosition;
 	float Speed;
+	float SoundRepeatTime;
 	bool IsRanding;
 };
 

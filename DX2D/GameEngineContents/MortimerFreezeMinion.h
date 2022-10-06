@@ -91,10 +91,13 @@ protected:
 	GameEngineCollision*		Collision;
 
 private:
+	GameEngineSoundPlayer MinionSound;
+	
 	GENDER	GenderType;
 	DIR		DirType;
 
 	float	Speed;
+	float	SoundRepeatTime;
 	bool	MinionMoveStart;
 	bool	MinionFollowStart;
 	bool	IsRanding;

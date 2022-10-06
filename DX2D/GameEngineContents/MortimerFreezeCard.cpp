@@ -13,6 +13,7 @@ MortimerFreezeCard::MortimerFreezeCard()
 	, Collision(nullptr)
 	, CollisionParry(nullptr)
 	, Speed(100.0f)
+	, SoundRepeatTime(0.0f)
 	, IsRanding(false)
 {
 }
@@ -117,6 +118,14 @@ void MortimerFreezeCard::Start()
 
 void MortimerFreezeCard::Update(float _DeltaTime)
 {
+	SoundRepeatTime -= _DeltaTime;
+	if (0 >= SoundRepeatTime)
+	{
+		SoundRepeatTime = 1.0f;
+		RepeatSound = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Wizard_TarotCardAttack_Travel_Loop.wav");
+		RepeatSound.Volume(0.3f);
+	}
+	
 	ColorCheck = ColRenderer->GetCurTexture();
 	if (nullptr == ColorCheck)
 	{
@@ -151,11 +160,13 @@ void MortimerFreezeCard::Update(float _DeltaTime)
 	
 	if (-10.0f > GetTransform().GetLocalPosition().x)
 	{
+		RepeatSound.Stop();
 		Death();
 		return;
 	}
 	if (1650.0f < GetTransform().GetLocalPosition().x)
 	{
+		RepeatSound.Stop();
 		Death();
 		return;
 	}

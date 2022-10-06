@@ -140,16 +140,16 @@ void MortimerFreezeBoss::Start()
 		Renderer->CreateFrameAnimationFolder("PeashotShoot", FrameAnimation_DESC("Peashot_Shoot", 0.05f, false));	
 		Renderer->CreateFrameAnimationFolder("PeashotOutro", FrameAnimation_DESC("Peashot_Outro", 0.05f, true));
 
-		Renderer->CreateFrameAnimationFolder("QuadshotStart", FrameAnimation_DESC("MF_Attack_Quadshot", 0, 15, 0.06f, false));
-		Renderer->CreateFrameAnimationFolder("QuadshotMinionAppear", FrameAnimation_DESC("MF_Attack_Quadshot", 15, 18, 0.05f, true));
-		Renderer->CreateFrameAnimationFolder("QuadshotMinionAfter", FrameAnimation_DESC("MF_Attack_Quadshot", 19, 30, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("QuadshotStart", FrameAnimation_DESC("MF_Attack_Quadshot", 0, 15, 0.04f, false));
+		Renderer->CreateFrameAnimationFolder("QuadshotMinionAppear", FrameAnimation_DESC("MF_Attack_Quadshot", 15, 18, 0.04f, true));
+		Renderer->CreateFrameAnimationFolder("QuadshotMinionAfter", FrameAnimation_DESC("MF_Attack_Quadshot", 19, 30, 0.04f, false));
 		
-		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("WhaleDrop", FrameAnimation_DESC("Wizard_Whale_Drop", 0.04f, false));
 		Renderer->CreateFrameAnimationFolder("WhaleDropAttackOutro", FrameAnimation_DESC("Wizard_Drop_Attack_Outro", 0.06f, false));
 		
-		Renderer->CreateFrameAnimationFolder("MFPhase2Transition0", FrameAnimation_DESC("MFPhase2_Transition", 0, 10, 0.06f, false));
-		Renderer->CreateFrameAnimationFolder("MFPhase2Transition1", FrameAnimation_DESC("MFPhase2_Transition", 11, 15, 0.06f, true));
-		Renderer->CreateFrameAnimationFolder("MFPhase2Transition2", FrameAnimation_DESC("MFPhase2_Transition", 16, 27, 0.06f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition0", FrameAnimation_DESC("MFPhase2_Transition", 0, 10, 0.05f, false));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition1", FrameAnimation_DESC("MFPhase2_Transition", 11, 15, 0.05f, true));
+		Renderer->CreateFrameAnimationFolder("MFPhase2Transition2", FrameAnimation_DESC("MFPhase2_Transition", 16, 27, 0.05f, false));
 		
 		// Phase2
 		Renderer->CreateFrameAnimationFolder("MF2Idle", FrameAnimation_DESC("MF2Idle", 0.06f, true));
@@ -244,7 +244,7 @@ void MortimerFreezeBoss::Start()
 	{
 		// AddRenderer 을 Renderer의 자식으로?-?
 		AddRenderer = CreateComponent<GameEngineTextureRenderer>();
-		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.06f, true));
+		AddRenderer->CreateFrameAnimationFolder("MFPhase2Transition1_Arm", FrameAnimation_DESC("MFPhase2_Transition", 28, 35, 0.05f, true));
 		AddRenderer->CreateFrameAnimationFolder("SnowBeastFridgeFreezer_Top", FrameAnimation_DESC("SnowBeast_Fridge_Freezer_Top", 0.1f, false));
 		AddRenderer->CreateFrameAnimationFolder("SnowBeast_Limbs_ReformingA", FrameAnimation_DESC("SnowBeast_Limbs_ReformingA", 0.1f, false));
 
@@ -276,11 +276,11 @@ void MortimerFreezeBoss::Start()
 		SubRenderer00 = CreateComponent<GameEngineTextureRenderer>();
 		SubRenderer00->CreateFrameAnimationFolder("MFIntro", FrameAnimation_DESC("MFIntro", 0.05f, false));
 		
-		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Start", FrameAnimation_DESC("SnowBeast_Intro", 0, 2, 0.08f, true));
+		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Start", FrameAnimation_DESC("SnowBeast_Intro", 0, 2, 0.06f, true));
 		//SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 56, 0.1f, false));
-		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 44, 0.08f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro", FrameAnimation_DESC("SnowBeast_Intro", 3, 44, 0.06f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Fall", FrameAnimation_DESC("SnowBeast_Intro", 45, 48, 0.09f, false));
-		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Land", FrameAnimation_DESC("SnowBeast_Intro", 49, 56, 0.08f, false));
+		SubRenderer00->CreateFrameAnimationFolder("SnowBeastIntro_Land", FrameAnimation_DESC("SnowBeast_Intro", 49, 56, 0.06f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingA", FrameAnimation_DESC("SnowBeast_Limbs_MeltingA", 0.06f, false));
 		SubRenderer00->CreateFrameAnimationFolder("SnowFlake_Ph2_ShootUp", FrameAnimation_DESC("SnowFlake_Ph2_ShootUp", 0.06f, false));
 
@@ -304,8 +304,8 @@ void MortimerFreezeBoss::Start()
 
 	{
 		SubRenderer01 = CreateComponent<GameEngineTextureRenderer>();
-		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer_Start", FrameAnimation_DESC("SnowBeast_Intro_Backer", 0, 2, 0.08f, true));
-		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer", FrameAnimation_DESC("SnowBeast_Intro_Backer", 3, 11, 0.08f, false));
+		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer_Start", FrameAnimation_DESC("SnowBeast_Intro_Backer", 0, 2, 0.06f, true));
+		SubRenderer01->CreateFrameAnimationFolder("SnowBeastIntro_Backer", FrameAnimation_DESC("SnowBeast_Intro_Backer", 3, 11, 0.06f, false));
 		SubRenderer01->CreateFrameAnimationFolder("SnowBeast_Limbs_MeltingB", FrameAnimation_DESC("SnowBeast_Limbs_MeltingB", 0.06f, false));
 		
 		SubRenderer01->CreateFrameAnimationFolder("SnowFlake_DeathBacker", FrameAnimation_DESC("SnowFlake_DeathBacker", 0.1f, false));
@@ -439,6 +439,7 @@ void MortimerFreezeBoss::Phase1Update(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::P1IntroStart(const StateInfo& _Info)
 {
+	//GameEngineSound::SoundPlayOneShot("sfx_DLC_SnowCult_P1_Wizard_Intro.wav");
 	Renderer->ChangeFrameAnimation("MFIntro_Top");
 	SubRenderer00->ChangeFrameAnimation("MFIntro");
 
@@ -681,6 +682,8 @@ void MortimerFreezeBoss::P1IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::AttackPeashotStart(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Wizard_CrystalBall_Appear.wav");
+	Tmp.Volume(0.3f);
 	PeashotAttackMoveTime = 0.0f;
 	PeashotAttackCount = GameEngineRandom::MainRandom.RandomInt(1, 2);
 	IsCurPeashotStartAttack = false;
@@ -709,6 +712,12 @@ void MortimerFreezeBoss::AttackPeashotStart(const StateInfo& _Info)
 	Renderer->AnimationBindEnd("PeashotIntro", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			Renderer->ChangeFrameAnimation("PeashotIdle");
+		});
+
+	Renderer->AnimationBindEnd("PeashotIdle", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Wizard_CrystalBall_Loop.wav");
+			Tmp.Volume(0.3f);
 		});
 
 	Renderer->AnimationBindStart("PeashotShoot", [/*&*/=](const FrameAnimation_DESC& _Info)
@@ -755,6 +764,8 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 
 			if (0 == PeashotAttackCount)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Wizard_CrystalBall_Disappear.wav");
+				Tmp.Volume(0.3f);
 				Renderer->ChangeFrameAnimation("PeashotOutro");
 				Renderer->GetTransform().PixLocalPositiveX();
 				IsCurRStartPos = true;
@@ -768,6 +779,8 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 			--PeashotAttackCount;
 			IdleLerpRatio = 0.0f;
 
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Wizard_TarotCardAttack_Launch.wav");
+			Tmp.Volume(0.3f);
 			MortimerFreezeCard* Ptr = GetLevel()->CreateActor<MortimerFreezeCard>(OBJECTORDER::Boss);
 			Ptr->GetTransform().SetLocalPosition(GetTransform().GetLocalPosition());
 			Ptr->SetColMap(MsChalice::Chalice->GetColMap());
@@ -822,6 +835,8 @@ void MortimerFreezeBoss::AttackPeashotUpdate(float _DeltaTime, const StateInfo& 
 
 void MortimerFreezeBoss::AttackQuadshotStart(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Wizard_QuadShot_Attack.wav");
+	Tmp.Volume(0.3f);
 	int RandomItemNum = GameEngineRandom::MainRandom.RandomInt(0, 1);
 	
 	Renderer->ChangeFrameAnimation("QuadshotStart");
@@ -888,6 +903,8 @@ void MortimerFreezeBoss::AttackQuadshotUpdate(float _DeltaTime, const StateInfo&
 
 void MortimerFreezeBoss::AttackWhaleStart(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Wizard_WhaleSmash_Attack.wav");
+	Tmp.Volume(0.3f);
 	Renderer->ChangeFrameAnimation("WhaleDrop");
 	Renderer->SetPivot(PIVOTMODE::TOP);
 	Renderer->SetPivotToVector(float4{ 0, 250.0f });
@@ -935,6 +952,9 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 	
 	Renderer->AnimationBindEnd("MFPhase2Transition0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Intro_01_Bell_ComestoLife.wav");
+			Tmp.Volume(0.4f);
+			
 			Renderer->ChangeFrameAnimation("MFPhase2Transition1");
 			
 			if (MFBossDIR::LEFT == CurMFDir)
@@ -1016,6 +1036,9 @@ void MortimerFreezeBoss::Phase1to2Start(const StateInfo& _Info)
 		{
 			if (true == IsSnowBeastIntroLand)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_SnowMonster_Intro_02_DroptoGround.wav");
+				Tmp.Volume(0.5f);
+				
 				SubRenderer00->ChangeFrameAnimation("SnowBeastIntro_Land");
 			}
 		});
