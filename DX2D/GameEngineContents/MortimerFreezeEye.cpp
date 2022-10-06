@@ -3,7 +3,7 @@
 #include "MortimerFreezeBoss.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
-MortimerFreezeEye::MortimerFreezeEye() 
+MortimerFreezeEye::MortimerFreezeEye()
 	: Renderer(nullptr)
 	, EffectRenderer00(nullptr)
 	, EffectRenderer01(nullptr)
@@ -13,6 +13,7 @@ MortimerFreezeEye::MortimerFreezeEye()
 	, LerpPos()
 	, StartPosition()
 	, EndPosition()
+	, SoundRepeatTime(0.0f)
 	, EyeLerpRatio(1.0f)
 	, XValue(0.0f)
 	, XAdd(0.0f)
@@ -80,6 +81,15 @@ void MortimerFreezeEye::Start()
 
 void MortimerFreezeEye::Update(float _DeltaTime)
 {
+	SoundRepeatTime -= _DeltaTime;
+	if (0 >= SoundRepeatTime)
+	{
+		SoundRepeatTime = 2.0f;
+		
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_Eyeball_Attack_Loop.wav");
+		Tmp.Volume(0.6f);
+	}
+	
 	if (1.0f <= EyeLerpRatio)
 	{
 		EyeLerpRatio = 0.0f;
@@ -198,6 +208,9 @@ void MortimerFreezeEye::Update(float _DeltaTime)
 	LineTime -= _DeltaTime;
 	if (0 >= LineTime)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_Eyeball_Zap_01.wav");
+		Tmp.Volume(0.6f);
+		
 		EffectRenderer00->ChangeFrameAnimation("Eyeball_VFX_Line");
 		LineCollision->On();
 		

@@ -46,6 +46,9 @@ void MortimerFreezeBoss::Phase3Update(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::P3IntroStart(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_Snow_Cultists_Wave_Hands_Transition.wav");
+	Tmp.Volume(0.6f);
+	
 	int DirRandom = GameEngineRandom::MainRandom.RandomInt(0, 1);
 	IsPh3DownMove = true;
 
@@ -249,6 +252,9 @@ void MortimerFreezeBoss::P3IdleUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MortimerFreezeBoss::P3SwapStart(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_SideSwap.wav");
+	Tmp.Volume(0.5f);
+	
 	Collision->Off();
 	PrevState = "Swap";
 	int RandomIntNum = GameEngineRandom::MainRandom.RandomInt(1, 3);
@@ -402,6 +408,9 @@ void MortimerFreezeBoss::AttackEyeStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("EyeBall_BodyBacker0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_Eyeball_Attack.wav");
+			Tmp.Volume(0.6f);
+
 			Renderer->ChangeFrameAnimation("EyeBall_BodyBacker1");
 		});
 
@@ -493,6 +502,9 @@ void MortimerFreezeBoss::AttackEyeStart(const StateInfo& _Info)
 		{
 			if (0 == EyeRepeatCount)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_Eyeball_Return.wav");
+				Tmp.Volume(0.6f);
+				
 				Renderer->ChangeFrameAnimation("EyeBall_BodyBacker7");
 			}
 
@@ -524,6 +536,9 @@ void MortimerFreezeBoss::AttackIceCreamStart(const StateInfo& _Info)
 
 	Renderer->AnimationBindEnd("SnowFlake_IceCreamBacker0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_IceCreamAttack.wav");
+			Tmp.Volume(0.3f);
+			
 			if (MFBossDIR::LEFT == CurMFDir && false == IsReverse)
 			{
 				SubRenderer00->ChangeFrameAnimation("IceCream_Ghost", true);
@@ -805,6 +820,9 @@ void MortimerFreezeBoss::AttackSplitStart(const StateInfo& _Info)
 		{
 			if (true == IsBucketMove)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_SplitShot_HandWaving_Attack_Start.wav");
+				Tmp.Volume(0.5f);
+				
 				IsBucketMove = false;
 				Renderer->ChangeFrameAnimation("SplitShot_SnowFlakeBacker2"); // 양동이 떠나면 SplitShot_SnowFlakeBacker3
 				SubRenderer00->ChangeFrameAnimation("SplitShot_Arms2");
@@ -857,6 +875,9 @@ void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _I
 
 		if (MFBossDIR::LEFT == CurMFDir && false == IsReverse && 0 <= BucketCount)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_SplitShot_Attack_Bucket_Impact_01.wav");
+			Tmp.Volume(0.5f);
+			
 			MortimerFreezeBucket* Ptr = GetLevel()->CreateActor<MortimerFreezeBucket>(OBJECTORDER::Boss);
 			if (2 == BucketCount)
 			{
@@ -1034,6 +1055,9 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 		{
 			if (9 == _Info.CurFrame)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_Death.wav");
+				Tmp.Volume(0.6f);
+				
 				if (MFBossDIR::LEFT == CurMFDir)
 				{
 					SubRenderer01->ChangeFrameAnimation("SnowFlake_DeathBacker");

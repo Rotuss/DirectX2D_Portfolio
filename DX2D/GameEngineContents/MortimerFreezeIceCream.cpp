@@ -143,6 +143,9 @@ void MortimerFreezeIceCream::Start()
 		{
 			if (0 > IceCreamMoveTime)
 			{
+				GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_IceCreamCone_Appear.wav");
+				Tmp.Volume(0.3f);
+				
 				EffectRenderer->Off();
 				
 				Renderer->ChangeFrameAnimation("IceCream");

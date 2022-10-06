@@ -53,6 +53,7 @@ private:
 	float4 StartPosition;
 	float4 EndPosition;
 
+	float SoundRepeatTime;
 	float BucketLerpRatio;
 	bool IsBucketMove;
 	bool IsDeath;

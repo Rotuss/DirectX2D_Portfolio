@@ -50,6 +50,7 @@ private:
 	float4 LerpPos;
 	float4 StartPosition;
 	float4 EndPosition;
+	float SoundRepeatTime;
 	float EyeLerpRatio;
 	float XValue;
 	float XAdd;

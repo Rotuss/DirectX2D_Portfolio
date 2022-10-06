@@ -14,6 +14,7 @@ MortimerFreezeBucket::MortimerFreezeBucket()
 	, LerpPos()
 	, StartPosition()
 	, EndPosition({ 0.0f,0.0f,-560.0f })
+	, SoundRepeatTime(0.0f)
 	, BucketLerpRatio(0.0f)
 	, IsBucketMove(false)
 	, IsDeath(false)
@@ -137,6 +138,9 @@ void MortimerFreezeBucket::Update(float _DeltaTime)
 	// ¿À->¿Þ
 	if (200.0f >= GetTransform().GetLocalPosition().x && false == IsDeath)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_SplitShot_Attack_Bucket_Launch_01.wav");
+		Tmp.Volume(0.3f);
+		
 		RendererEffect->ChangeFrameAnimation("Bucket_Explode_VFX", true);
 		RendererEffect->GetTransform().PixLocalPositiveX();
 		RendererEffect->On();
@@ -166,6 +170,9 @@ void MortimerFreezeBucket::Update(float _DeltaTime)
 	// ¿Þ->¿À
 	if (1450.0f <= GetTransform().GetLocalPosition().x && false == IsDeath)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_SplitShot_Attack_Bucket_Launch_01.wav");
+		Tmp.Volume(0.3f);
+		
 		RendererEffect->ChangeFrameAnimation("Bucket_Explode_VFX", true);
 		RendererEffect->GetTransform().PixLocalNegativeX();
 		RendererEffect->On();
@@ -195,6 +202,15 @@ void MortimerFreezeBucket::Update(float _DeltaTime)
 
 	if (true == IsBucketMove)
 	{
+		SoundRepeatTime -= _DeltaTime;
+		if (0 >= SoundRepeatTime)
+		{
+			SoundRepeatTime = 3.0f;
+			
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P3_Snowflake_SplitShot_HandWaving_Attack_Loop.wav");
+			Tmp.Volume(0.2f);
+		}
+		
 		BucketLerpRatio += _DeltaTime;
 		if (1.0f <= BucketLerpRatio)
 		{

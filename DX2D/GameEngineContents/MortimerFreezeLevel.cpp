@@ -352,7 +352,7 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 	if (0 >= NextSoundTime && 2 == SoundNum)
 	{
 		SoundNum = 3;
-		GlobalContents::Actors::BGM.Volume(1.0f);
+		GlobalContents::Actors::BGM.Volume(0.8f);
 	}
 
 	Ph3MoveCheckUpdate(_DeltaTime);
