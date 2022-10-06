@@ -15,6 +15,9 @@ public:
 	MortimerFreezeLevel& operator=(const MortimerFreezeLevel& _Other) = delete;
 	MortimerFreezeLevel& operator=(MortimerFreezeLevel&& _Other) noexcept = delete;
 
+	void LevelStartEvent() override;
+	void LevelEndEvent() override;
+
 	inline void SetPh3MovePos(GameEngineTransform* _Transform, float4 _StartValue, float4 _GoalValue)
 	{
 		MoveVec.push_back(_Transform);
@@ -50,11 +53,13 @@ protected:
 private:
 	GameEngineTextureRenderer* Renderer;
 	GameEngineTextureRenderer* PPtr;
+	GameEngineSound StartSound;
 	std::vector<GameEngineTransform*> MoveVec;
 	std::vector<float4> StartPosVec;
 	std::vector<float4> GoalPosVec;
 
 	float MoveTimer;
+	int SoundNum;
 	bool IsMove;
 };
 

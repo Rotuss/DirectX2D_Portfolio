@@ -1,6 +1,12 @@
 #pragma once
 #include <GameEngineCore/CoreMinimal.h>
 
+enum class AnimType
+{
+	Front,
+	Back,
+};
+
 // Ό³Έν :
 class GameEngineTextureRenderer;
 class Iris : public GameEngineActor
@@ -21,6 +27,27 @@ public:
 		return Renderer;
 	}
 
+	inline void SetAnimType(AnimType _Type)
+	{
+		CurAnimationType = _Type;
+
+		switch (CurAnimationType)
+		{
+		case AnimType::Front:
+			Renderer->ChangeFrameAnimation("IrisFX");
+			break;
+		case AnimType::Back:
+			Renderer->ChangeFrameAnimation("IrisFXRev");
+			break;
+		default:
+			break;
+		}
+		Renderer->GetTransform().SetLocalScale({ 1280, 720, -300 });
+		Renderer->SetPivot(PIVOTMODE::CENTER);
+		Renderer->ChangeCamera(CAMERAORDER::IRISCAMERA);
+
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -28,5 +55,6 @@ protected:
 
 private:
 	GameEngineTextureRenderer* Renderer;
+	AnimType CurAnimationType;
 };
 

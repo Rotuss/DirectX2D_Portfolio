@@ -12,13 +12,17 @@ Iris::~Iris()
 
 void Iris::Start()
 {
+	std::vector<unsigned int> Rev;
+	for (int i = 0; i < 17; i++)
+	{
+		Rev.push_back(16 - i);
+	}
+
 	{
 		Renderer = CreateComponent<GameEngineTextureRenderer>();
 
 		Renderer->CreateFrameAnimationFolder("IrisFX", FrameAnimation_DESC("IrisFX", 0.08f, false));
-		Renderer->ChangeFrameAnimation("IrisFX");
-		Renderer->GetTransform().SetLocalScale({ 1280, 720 });
-		Renderer->SetPivot(PIVOTMODE::CENTER);
+		Renderer->CreateFrameAnimationFolder("IrisFXRev", FrameAnimation_DESC("IrisFX", Rev, 0.08f, false));
 	}
 }
 

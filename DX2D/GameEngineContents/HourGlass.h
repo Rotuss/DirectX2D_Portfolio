@@ -16,6 +16,11 @@ public:
 	HourGlass& operator=(const HourGlass& _Other) = delete;
 	HourGlass& operator=(HourGlass&& _Other) noexcept = delete;
 
+	inline GameEngineTextureRenderer* GetRenderer()
+	{
+		return Renderer;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);

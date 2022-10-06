@@ -24,6 +24,8 @@ protected:
 private:
 	GameEngineTextureRenderer* Renderer;
 
+	float LogoTime;
+
 	void EndFunction(const FrameAnimation_DESC& _Info);
 };
 

@@ -16,6 +16,7 @@ public:
 	WorldMapLevel& operator=(WorldMapLevel&& _Other) noexcept = delete;
 
 	void LevelStartEvent() override;
+	void LevelEndEvent() override;
 
 protected:
 	void Start() override;

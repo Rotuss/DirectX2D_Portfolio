@@ -12,7 +12,9 @@
 MortimerFreezeLevel::MortimerFreezeLevel()
 	: Renderer(nullptr)
 	, PPtr(nullptr)
+	, StartSound()
 	, MoveTimer(-10.0f)
+	, SoundNum(1)
 	, IsMove(false)
 {
 }
@@ -21,11 +23,28 @@ MortimerFreezeLevel::~MortimerFreezeLevel()
 {
 }
 
+float NextSoundTime;
+void MortimerFreezeLevel::LevelStartEvent()
+{
+	GlobalContents::Actors::BGM.Stop();
+	GlobalContents::Actors::BGM = GameEngineSound::SoundPlayControl("mus_dlc_snowcult_a.wav");
+	GlobalContents::Actors::BGM.Volume(0.5f);
+
+	StartSound.SoundPlayOneShot("sfx_level_announcer_0001_e.wav");
+	NextSoundTime = 2.8f;
+}
+
+void MortimerFreezeLevel::LevelEndEvent()
+{
+	GlobalContents::Actors::BGM.Stop();
+}
+
 std::vector<GameEngineTextureRenderer*> TmpVector;
 void MortimerFreezeLevel::Start()
 {
 	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+	GetIrisCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
@@ -322,6 +341,19 @@ void MortimerFreezeLevel::Update(float _DeltaTime)
 	GameEngineStatusWindow::AddDebugRenderTarget("BackBuffer", GameEngineDevice::GetBackBuffer());
 	GameEngineStatusWindow::AddDebugRenderTarget("MainCamera", GetMainCamera()->GetCameraRenderTarget());
 	GameEngineStatusWindow::AddDebugRenderTarget("UICamera", GetUICamera()->GetCameraRenderTarget());
+
+	NextSoundTime -= _DeltaTime;
+	if (0 >= NextSoundTime && 1 == SoundNum)
+	{
+		NextSoundTime = 2.0f;
+		SoundNum = 2;
+		StartSound.SoundPlayOneShot("sfx_level_announcer_0002_e.wav");
+	}
+	if (0 >= NextSoundTime && 2 == SoundNum)
+	{
+		SoundNum = 3;
+		GlobalContents::Actors::BGM.Volume(1.0f);
+	}
 
 	Ph3MoveCheckUpdate(_DeltaTime);
 

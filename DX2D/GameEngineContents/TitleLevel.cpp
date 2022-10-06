@@ -22,11 +22,21 @@ TitleLevel::~TitleLevel()
 {
 }
 
+void TitleLevel::LevelStartEvent()
+{
+	GlobalContents::Actors::BGM = GameEngineSound::SoundPlayControl("mus_dlc_title.wav");
+}
+
+void TitleLevel::LevelEndEvent()
+{
+}
+
 void TitleLevel::Start()
 {
 	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
-	
+	GetIrisCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');
@@ -60,7 +70,9 @@ void TitleLevel::Update(float _DeltaTime)
 
 	if (GameEngineInput::GetInst()->IsDown("ChangeNextTitle"))
 	{
+		GameEngineSound::SoundPlayOneShot("sfx_WorldMap_LevelSelect_DiffucultySettings_Appear.wav");
 		Iris* FX = CreateActor<Iris>(OBJECTORDER::Title);
+		FX->SetAnimType(AnimType::Front);
 		FX->GetRenderer()->AnimationBindEnd("IrisFX", std::bind(&TitleLevel::EndFunction, this, std::placeholders::_1));
 	}
 }

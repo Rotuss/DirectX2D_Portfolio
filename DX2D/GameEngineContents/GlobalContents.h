@@ -28,7 +28,10 @@ public:
 	class Actors
 	{
 	public:
+		static GameEngineSoundPlayer BGM;
 		static Monster* TestMonster;
+		static float TimeOverCheck;
+		static bool IsTimeOver;
 		static bool IsClear;
 
 	private:

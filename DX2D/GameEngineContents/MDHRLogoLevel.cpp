@@ -13,6 +13,14 @@ MDHRLogoLevel::~MDHRLogoLevel()
 {
 }
 
+void MDHRLogoLevel::LevelStartEvent()
+{
+}
+
+void MDHRLogoLevel::LevelEndEvent()
+{
+}
+
 void MDHRLogoLevel::Start()
 {
 	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();

@@ -1,18 +1,27 @@
 #include "PreCompile.h"
 #include "OverWorldCuphead.h"
+#include "Iris.h"
+#include "HourGlass.h"
 
 OverWorldCuphead* OverWorldCuphead::OWCuphead = nullptr;
 
 OverWorldCuphead::OverWorldCuphead() 
 	: Renderer(nullptr)
+	, RendererInteraction(nullptr)
 	, ColRenderer(nullptr)
 	, ColorCheck(nullptr)
 	, Collision(nullptr)
+	, SnowTextureBG0(nullptr)
+	, SnowTextureBG1(nullptr)
+	, SnowTexture(nullptr)
+	, SnowTextureCorp(nullptr)
 	, StateManager()
 	, CurStateName("")
 	, CurUpDownName("")
 	, CurDir(OWCupheadDir::Down)
+	, SoundRepeatTime(0.5f)
 	, Speed(300.0f)
+	, IsHourGlassOn(false)
 	, IsUIOn(false)
 {
 	OWCuphead = this;
@@ -27,12 +36,23 @@ CollisionReturn OverWorldCuphead::SnowUpdateCollisionCheck(GameEngineCollision* 
 	if (true == GameEngineInput::GetInst()->IsDown("OWCHSelect")
 		&& true == IsUIOn)
 	{
-		GEngine::ChangeLevel("MortimerFreeze");
+		GameEngineSound::SoundPlayOneShot("sfx_WorldMap_LevelSelect_StartLevel.wav");
+		GlobalContents::Actors::BGM.Stop();
+		Iris* FX = GetLevel()->CreateActor<Iris>(OBJECTORDER::Title);
+		FX->SetAnimType(AnimType::Front);
+		FX->GetRenderer()->AnimationBindEnd("IrisFX", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				IsHourGlassOn = true;
+				FX->Death();
+			});
 	}
 	
 	if (true == GameEngineInput::GetInst()->IsDown("OWCHSelect")
 		&& false == IsUIOn)
 	{
+		GameEngineSound::SoundPlayOneShot("sfx_worldmap_level_menu_up.wav");
+		GameEngineSound::SoundPlayOneShot("sfx_WorldMap_LevelSelect_DiffucultySettings_Appear.wav");
+		
 		IsUIOn = true;
 		SnowTextureBG0->On();
 		SnowTextureBG1->On();
@@ -54,12 +74,18 @@ CollisionReturn OverWorldCuphead::SnowUpdateCollisionCheck(GameEngineCollision* 
 CollisionReturn OverWorldCuphead::SnowEnterCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	// Z 상호작용 키기
+	GameEngineSound::SoundPlayOneShot("sfx_WorldMap_LevelSelect_BubbleAppear.wav");
+	RendererInteraction->On();
+
 	return CollisionReturn::ContinueCheck;
 }
 
 CollisionReturn OverWorldCuphead::SnowExitCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
 	// Z 상호작용 끄기
+	GameEngineSound::SoundPlayOneShot("sfx_WorldMap_LevelSelect_BubbleDisappear.wav");
+	RendererInteraction->Off();
+
 	return CollisionReturn::ContinueCheck;
 }
 void OverWorldCuphead::BossClear()
@@ -111,7 +137,7 @@ void OverWorldCuphead::Start()
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
-		GetTransform().SetLocalPosition({ 300, -1430, -3 });
+		GetTransform().SetLocalPosition({ 1100, -720, -3 });
 		//GetTransform().SetLocalPosition({ 520, -1430, -3 });
 
 		Collision = CreateComponent<GameEngineCollision>();
@@ -128,6 +154,15 @@ void OverWorldCuphead::Start()
 			CurDir = OWCupheadDir::Down;
 			StateManager.ChangeState("Idle");
 		});
+
+	{
+		RendererInteraction = CreateComponent<GameEngineTextureRenderer>();
+		RendererInteraction->SetTexture("world_map_PC_glyph_box.png");
+		RendererInteraction->ScaleToTexture();
+		RendererInteraction->SetPivot(PIVOTMODE::CENTER);
+		RendererInteraction->GetTransform().SetLocalPosition(float4(0.0f, 70.0f));
+		RendererInteraction->Off();
+	}
 
 	{
 		SnowTextureBG0 = CreateComponent<GameEngineTextureRenderer>();
@@ -171,6 +206,31 @@ void OverWorldCuphead::Update(float _DeltaTime)
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{
 		return;
+	}
+
+	if (true == IsHourGlassOn)
+	{
+		IsHourGlassOn = false;
+
+		HourGlass* Hourglass = GetLevel()->CreateActor<HourGlass>(OBJECTORDER::Title);
+		Hourglass->GetRenderer()->AnimationBindEnd("Hourglass", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				GlobalContents::Actors::IsTimeOver = true;
+				Hourglass->Death(1.0f);
+			});
+
+	}
+	if (true == GlobalContents::Actors::IsTimeOver)
+	{
+		GlobalContents::Actors::TimeOverCheck += _DeltaTime;
+
+		if (1.0f <= GlobalContents::Actors::TimeOverCheck)
+		{
+			GlobalContents::Actors::TimeOverCheck = 0.0f;
+			GlobalContents::Actors::IsTimeOver = false;
+
+			GEngine::ChangeLevel("MortimerFreeze");
+		}
 	}
 
 	Collision->IsCollision(CollisionType::CT_OBB2D, static_cast<int>(OBJECTORDER::WorldSnow), CollisionType::CT_OBB2D,
@@ -244,6 +304,13 @@ void OverWorldCuphead::WalkStart(const StateInfo& _Info)
 
 void OverWorldCuphead::WalkUpdate(float _DeltaTime, const StateInfo& _Info)
 {
+	SoundRepeatTime -= _DeltaTime;
+	if (0 >= SoundRepeatTime)
+	{
+		SoundRepeatTime = 0.5f;
+		GameEngineSound::SoundPlayOneShot("sfx_WorldMap_Footstep_007.wav");
+	}
+	
 	if (true == GameEngineInput::GetInst()->IsUp("OWCHUp") || true == GameEngineInput::GetInst()->IsUp("OWCHDown"))
 	{
 		CurUpDownName = "";
@@ -358,6 +425,8 @@ void OverWorldCuphead::WalkUpdate(float _DeltaTime, const StateInfo& _Info)
 void OverWorldCuphead::WinStart(const StateInfo& _Info)
 {
 	CurStateName = "OverWolrd_Win";
+
+	GetTransform().SetWorldPosition(float4{ 3100.0f,-850.0f, -3.0f });
 }
 
 void OverWorldCuphead::WinUpdate(float _DeltaTime, const StateInfo& _Info)

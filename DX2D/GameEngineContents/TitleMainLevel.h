@@ -15,6 +15,9 @@ public:
 	TitleMainLevel& operator=(const TitleMainLevel& _Other) = delete;
 	TitleMainLevel& operator=(TitleMainLevel&& _Other) noexcept = delete;
 
+	void LevelStartEvent() override;
+	void LevelEndEvent() override;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -27,7 +30,6 @@ private:
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineTextureRenderer*	SelectRenderer;
 	std::vector<float4>			SelectPosition;
-	bool						IsTimeOver;
 	int							CurrentIndex;
 };
 

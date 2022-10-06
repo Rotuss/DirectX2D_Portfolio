@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 #include "WorldMapLevel.h"
 #include "WorldMapBackGround.h"
+#include "Iris.h"
 #include "Player.h"
 #include "OverWorldCuphead.h"
 #include "GlobalContents.h"
@@ -19,20 +20,41 @@ WorldMapLevel::~WorldMapLevel()
 
 void WorldMapLevel::LevelStartEvent()
 {
+	GlobalContents::Actors::BGM.Stop();
 	if (true == GlobalContents::Actors::IsClear)
 	{
 		GlobalContents::Actors::IsClear = false;
 		
 		// OverWorldCuphead 상태 변경
 		OverWorldCuphead::OWCuphead->BossClear();
+
+		// win 사운드 따로
+
 	}
+	else
+	{
+		GlobalContents::Actors::BGM = GameEngineSound::SoundPlayControl("mus_dlc_map_a.wav");
+
+		Iris* FX = CreateActor<Iris>(OBJECTORDER::Title);
+		FX->SetAnimType(AnimType::Back);
+		FX->GetRenderer()->AnimationBindEnd("IrisFXRev", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				FX->Death();
+			});
+	}
+}
+
+void WorldMapLevel::LevelEndEvent()
+{
+	GlobalContents::Actors::BGM.Stop();
 }
 
 void WorldMapLevel::Start()
 {
 	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
-	
+	GetIrisCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');

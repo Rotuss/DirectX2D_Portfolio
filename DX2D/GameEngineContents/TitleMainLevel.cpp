@@ -14,7 +14,6 @@ TitleMainLevel::TitleMainLevel()
 	: Renderer(nullptr)
 	, SelectRenderer(nullptr)
 	, SelectPosition()
-	, IsTimeOver(false)
 	, CurrentIndex(0)
 {
 }
@@ -23,11 +22,20 @@ TitleMainLevel::~TitleMainLevel()
 {
 }
 
+void TitleMainLevel::LevelStartEvent()
+{
+}
+
+void TitleMainLevel::LevelEndEvent()
+{
+}
+
 void TitleMainLevel::Start()
 {
 	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
-	
+	GetIrisCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');
@@ -90,23 +98,28 @@ void TitleMainLevel::Update(float _DeltaTime)
 
 	if (GameEngineInput::GetInst()->IsDown("ChangeNextWorld"))
 	{
-		GEngine::ChangeLevel("World");
+		//GEngine::ChangeLevel("World");
+		GameEngineSound::SoundPlayOneShot("Menu_Ready.wav");
+		GlobalContents::Actors::BGM.Stop();
+		HourGlass* Hourglass = CreateActor<HourGlass>(OBJECTORDER::Title);
+		Hourglass->GetRenderer()->AnimationBindEnd("Hourglass", std::bind(&TitleMainLevel::EndFunction, this, std::placeholders::_1));
 	}
 
 	if (GameEngineInput::GetInst()->IsDown("Select"))
 	{
 		//Iris* FX = CreateActor<Iris>(OBJECTORDER::Title);
 		//FX->GetRenderer()->AnimationBindEnd("IrisFX", &TitleMainLevel::EndFunction, this);
-
 		SelectIndex();
 	}
 
 	if (true == GameEngineInput::GetInst()->IsDown("Up"))
 	{
+		GameEngineSound::SoundPlayOneShot("Menu_Move.wav");
 		CurrentIndex -= 1;
 	}
 	if (true == GameEngineInput::GetInst()->IsDown("Down"))
 	{
+		GameEngineSound::SoundPlayOneShot("Menu_Move.wav");
 		CurrentIndex += 1;
 	}
 
@@ -147,20 +160,19 @@ void TitleMainLevel::Update(float _DeltaTime)
 	SelectRenderer->GetTransform().SetLocalPosition(SelectPosition[CurrentIndex]);
 	
 	// HourGlass Test
-	/*
-	if (true == IsTimeOver)
+	
+	if (true == GlobalContents::Actors::IsTimeOver)
 	{
 		AddAccTime(GameEngineTime::GetDeltaTime());
 
-		if (15.0f <= GetAccTime())
+		if (4.0f <= GetAccTime())
 		{
 			ReSetAccTime();
-			IsTimeOver = false;
+			GlobalContents::Actors::IsTimeOver = false;
 
-			GEngine::ChangeLevel("MDHRLogo");
+			GEngine::ChangeLevel("World");
 		}
 	}
-	*/
 }
 
 void TitleMainLevel::End()
@@ -169,8 +181,8 @@ void TitleMainLevel::End()
 
 void TitleMainLevel::EndFunction(const FrameAnimation_DESC& _Info)
 {
-	HourGlass* Hourglass = CreateActor<HourGlass>(OBJECTORDER::Title);
-	IsTimeOver = true;
+	//HourGlass* Hourglass = CreateActor<HourGlass>(OBJECTORDER::Title);
+	GlobalContents::Actors::IsTimeOver = true;
 }
 
 void TitleMainLevel::SelectIndex()

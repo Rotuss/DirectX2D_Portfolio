@@ -51,6 +51,7 @@ protected:
 	void End() {}
 	
 	GameEngineTextureRenderer*	Renderer;
+	GameEngineTextureRenderer*	RendererInteraction;
 	GameEngineTextureRenderer*	ColRenderer;
 	GameEngineTexture*			ColorCheck;
 	GameEngineCollision*		Collision;
@@ -75,7 +76,9 @@ private:
 	std::string				CurUpDownName;
 	OWCupheadDir			CurDir;
 	
+	float					SoundRepeatTime;
 	float					Speed;
+	bool					IsHourGlassOn;
 	bool					IsUIOn;
 };
 

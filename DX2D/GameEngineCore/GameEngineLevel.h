@@ -16,6 +16,7 @@ enum class CAMERAORDER
 	USER6,
 	USER7,
 	UICAMERA,
+	IRISCAMERA,
 	OLDFILMCAMERA,
 };
 
@@ -56,6 +57,11 @@ public:
 	GameEngineCamera* GetUICamera()
 	{
 		return Cameras[static_cast<int>(CAMERAORDER::UICAMERA)];
+	}
+
+	GameEngineCamera* GetIrisCamera()
+	{
+		return Cameras[static_cast<int>(CAMERAORDER::IRISCAMERA)];
 	}
 
 	GameEngineCameraActor* GetMainCameraActor();

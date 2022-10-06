@@ -21,7 +21,8 @@ void TutorialLevel::Start()
 {
 	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
-	
+	GetIrisCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
+
 	if (false == GameEngineInput::GetInst()->IsKey("FreeCameaOnOff"))
 	{
 		GameEngineInput::GetInst()->CreateKey("FreeCameaOnOff", 'O');

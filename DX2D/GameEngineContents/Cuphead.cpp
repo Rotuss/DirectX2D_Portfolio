@@ -154,6 +154,21 @@ void Cuphead::Start()
 		}
 	}
 
+	{
+		GameEngineDirectory Dir;
+
+		Dir.MoveParentToExitsChildDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Sound");
+
+		std::vector<GameEngineFile> Common_ = Dir.GetAllFile();
+
+		for (size_t i = 0; i < Common_.size(); i++)
+		{
+			GameEngineSound::LoadRessource(Common_[i].GetFullPath());
+		}
+	}
+
 	//GameEngineFont::Load("±Ã¼­");
 
 	CreateLevel<MDHRLogoLevel>("MDHRLogo");
