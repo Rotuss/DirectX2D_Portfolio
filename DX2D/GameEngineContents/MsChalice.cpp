@@ -348,7 +348,9 @@ void MsChalice::Update(float _DeltaTime)
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("ChaliceShoot")
+		&& "ChaliceIntro" != StateManager.GetCurStateStateName()
 		&& "ChaliceJump" != StateManager.GetCurStateStateName()
+		&& "ChaliceDash" != StateManager.GetCurStateStateName()
 		&& "ChaliceHit" != StateManager.GetCurStateStateName())
 	{
 		CurShootName = "_Shoot";

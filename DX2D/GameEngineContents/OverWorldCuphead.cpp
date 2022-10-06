@@ -62,6 +62,16 @@ CollisionReturn OverWorldCuphead::SnowExitCollisionCheck(GameEngineCollision* _T
 	// Z 상호작용 끄기
 	return CollisionReturn::ContinueCheck;
 }
+void OverWorldCuphead::BossClear()
+{
+	IsUIOn = false;
+	SnowTextureBG0->Off();
+	SnowTextureBG1->Off();
+	SnowTexture->Off();
+	SnowTextureCorp->Off();
+
+	StateManager.ChangeState("Win");
+}
 void OverWorldCuphead::Start()
 {
 	if (false == GameEngineInput::GetInst()->IsKey("PlayerLeft"))
@@ -102,7 +112,8 @@ void OverWorldCuphead::Start()
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::CENTER);
 		GetTransform().SetLocalPosition({ 300, -1430, -3 });
-		
+		//GetTransform().SetLocalPosition({ 520, -1430, -3 });
+
 		Collision = CreateComponent<GameEngineCollision>();
 		// Collision3D
 		//Collision->GetTransform().SetLocalScale({ 100.0f, 100.0f, 10000.0f });
@@ -111,6 +122,12 @@ void OverWorldCuphead::Start()
 		Collision->GetTransform().SetLocalScale({ 50.0f, 80.0f, 1.0f });
 		Collision->ChangeOrder(OBJECTORDER::Player);
 	}
+
+	Renderer->AnimationBindEnd("OverWolrd_Win", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			CurDir = OWCupheadDir::Down;
+			StateManager.ChangeState("Idle");
+		});
 
 	{
 		SnowTextureBG0 = CreateComponent<GameEngineTextureRenderer>();
@@ -144,7 +161,8 @@ void OverWorldCuphead::Start()
 
 	StateManager.CreateStateMember("Idle", std::bind(&OverWorldCuphead::IdleUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&OverWorldCuphead::IdleStart, this, std::placeholders::_1));
 	StateManager.CreateStateMember("Walk", std::bind(&OverWorldCuphead::WalkUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&OverWorldCuphead::WalkStart, this, std::placeholders::_1));
-	
+	StateManager.CreateStateMember("Win", std::bind(&OverWorldCuphead::WinUpdate, this, std::placeholders::_1, std::placeholders::_2), std::bind(&OverWorldCuphead::WinStart, this, std::placeholders::_1));
+
 	StateManager.ChangeState("Idle");
 }
 
@@ -335,4 +353,13 @@ void OverWorldCuphead::WalkUpdate(float _DeltaTime, const StateInfo& _Info)
 			GetTransform().SetLocalPosition(float4(GetTransform().GetLocalPosition().x, NextPos.y));
 		}
 	}
+}
+
+void OverWorldCuphead::WinStart(const StateInfo& _Info)
+{
+	CurStateName = "OverWolrd_Win";
+}
+
+void OverWorldCuphead::WinUpdate(float _DeltaTime, const StateInfo& _Info)
+{
 }

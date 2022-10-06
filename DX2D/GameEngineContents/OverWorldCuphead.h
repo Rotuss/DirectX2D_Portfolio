@@ -33,6 +33,8 @@ public:
 	CollisionReturn SnowEnterCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
 	CollisionReturn SnowExitCollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other);
 
+	void BossClear();
+
 	void SetColMap(GameEngineTextureRenderer* _Collision)
 	{
 		ColRenderer = _Collision;
@@ -63,6 +65,9 @@ protected:
 
 	void WalkStart(const StateInfo& _Info);
 	void WalkUpdate(float _DeltaTime, const StateInfo& _Info);
+
+	void WinStart(const StateInfo& _Info);
+	void WinUpdate(float _DeltaTime, const StateInfo& _Info);
 
 private:
 	GameEngineStateManager	StateManager;

@@ -377,7 +377,7 @@ void MortimerFreezeBoss::Start()
 
 	{
 		Collision = CreateComponent<GameEngineCollision>();
-		Collision->GetTransform().SetLocalScale({ 200,300,1 });
+		Collision->GetTransform().SetLocalScale({ 180,220,1 });
 		Collision->ChangeOrder(OBJECTORDER::Boss);
 	}
 

@@ -24,6 +24,7 @@ void WorldMapLevel::LevelStartEvent()
 		GlobalContents::Actors::IsClear = false;
 		
 		// OverWorldCuphead 상태 변경
+		OverWorldCuphead::OWCuphead->BossClear();
 	}
 }
 
@@ -72,6 +73,7 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("dlc_water_multiply.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
+		Renderer->GetTransform().SetWorldPosition({-400, 300});
 	}
 
 	{
@@ -94,7 +96,7 @@ void WorldMapLevel::Start()
 		Renderer->CreateFrameAnimationFolder("WorldRumrunners", FrameAnimation_DESC("World_Rumrunners", 0.1f, true));
 		Renderer->ChangeFrameAnimation("WorldRumrunners");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 1150, -1350 });
+		Renderer->GetTransform().SetLocalPosition({ 1145, -1365 });
 	}
 
 	{
@@ -102,7 +104,7 @@ void WorldMapLevel::Start()
 		Renderer->CreateFrameAnimationFolder("WorldCart", FrameAnimation_DESC("World_Cart", 0.1f, true));
 		Renderer->ChangeFrameAnimation("WorldCart");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 1400, -600 });
+		Renderer->GetTransform().SetLocalPosition({ 1420, -610 });
 	}
 
 	{
@@ -118,27 +120,27 @@ void WorldMapLevel::Start()
 		Renderer->CreateFrameAnimationFolder("WorldShop", FrameAnimation_DESC("World_Shop", 0.1f, true));
 		Renderer->ChangeFrameAnimation("WorldShop");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 1800, -500 });
+		Renderer->GetTransform().SetLocalPosition({ 1750, -516 });
 	}
 
-	{
+	{// 수정 필요(모르겠다)
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("WorldOmm", FrameAnimation_DESC("World_Omm", 0.1f, true));
 		Renderer->ChangeFrameAnimation("WorldOmm");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 2490, -450 });
+		Renderer->GetTransform().SetLocalPosition({ 2505, -380 });
 	}
 
-	{
+	{// ㅠㅅㅠ
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->CreateFrameAnimationFolder("WorldSnow", FrameAnimation_DESC("World_Snow", 0.1f, true));
 		Renderer->ChangeFrameAnimation("WorldSnow");
 		Renderer->ScaleToTexture();
-		Renderer->GetTransform().SetLocalPosition({ 3280, -650 });
+		Renderer->GetTransform().SetLocalPosition({ 3250, -645 });
 
 		GameEngineCollision* SnowCollision = WorldBackGround->CreateComponent<GameEngineCollision>();
-		SnowCollision->GetTransform().SetLocalScale({ 350.0f, 350.0f, 1.0f });
-		SnowCollision->GetTransform().SetLocalPosition({ 3280, -650 });
+		SnowCollision->GetTransform().SetLocalScale({ 280.0f, 280.0f, 1.0f });
+		SnowCollision->GetTransform().SetLocalPosition({ 3250, -645 });
 		SnowCollision->ChangeOrder(OBJECTORDER::WorldSnow);
 	}
 
@@ -148,10 +150,10 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("bakery_neighbor.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
-		Renderer->GetTransform().SetLocalPosition({ 880, -645 });
+		Renderer->GetTransform().SetLocalPosition({ 828, -547 });
 	}
 	
-	{
+	{// 수정 필요
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("dlc_canyon_stairs_back_shadow.png");
 		Renderer->ScaleToTexture();
@@ -159,7 +161,7 @@ void WorldMapLevel::Start()
 		Renderer->GetTransform().SetLocalPosition({ 1650, -1550 });
 	}
 	
-	{
+	{// 수정 필요
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("dlc_canyon_stairs.png");
 		Renderer->ScaleToTexture();
@@ -167,7 +169,7 @@ void WorldMapLevel::Start()
 		Renderer->GetTransform().SetLocalPosition({ 1680, -1550 });
 	}
 
-	{
+	{// 수정 필요
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("dlc_wood_bridge.png");
 		Renderer->ScaleToTexture();
@@ -180,10 +182,10 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("picnic_table.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
-		Renderer->GetTransform().SetLocalPosition({ 2393, -735, -10 });
+		Renderer->GetTransform().SetLocalPosition({ 2243, -628, -10 });
 	}
 
-	{
+	/*{
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("graves_back.png");
 		Renderer->ScaleToTexture();
@@ -197,14 +199,14 @@ void WorldMapLevel::Start()
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
 		Renderer->GetTransform().SetLocalPosition({ 2410, -1265, -5 });
-	}
+	}*/
 
-	{
+	{// 약간의 수정 필요
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("dlc_ice_stairs_top.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
-		Renderer->GetTransform().SetLocalPosition({ 2659, -785, -10 });
+		Renderer->GetTransform().SetLocalPosition({ 2624, -709, -10 });
 	}
 
 	{
@@ -212,7 +214,7 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("dlc_ice_stairs_front.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
-		Renderer->GetTransform().SetLocalPosition({ 2770, -835, -10 });
+		Renderer->GetTransform().SetLocalPosition({ 2652, -708, -10 });
 	}
 
 	{
@@ -220,7 +222,7 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("dlc_ice_stairs.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
-		Renderer->GetTransform().SetLocalPosition({ 2800, -800 });
+		Renderer->GetTransform().SetLocalPosition({ 2620, -635 });
 	}
 
 	{
@@ -228,7 +230,7 @@ void WorldMapLevel::Start()
 		Renderer->SetTexture("dlc_stepping_stone_bridge_bottom.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
-		Renderer->GetTransform().SetLocalPosition({ 2950, -1120 });
+		Renderer->GetTransform().SetLocalPosition({ 2775, -1035 });
 	}
 
 	{
@@ -239,13 +241,13 @@ void WorldMapLevel::Start()
 		Renderer->GetTransform().SetLocalPosition({ 3012, -1436, -10 });
 	}
 
-	{
+	/*{
 		Renderer = WorldBackGround->CreateComponent<GameEngineTextureRenderer>();
 		Renderer->SetTexture("lighthouse.png");
 		Renderer->ScaleToTexture();
 		Renderer->SetPivot(PIVOTMODE::LEFTTOP);
 		Renderer->GetTransform().SetLocalPosition({ 3118, -1300, -10 });
-	}
+	}*/
 
 	// NPC
 	{
@@ -261,7 +263,7 @@ void WorldMapLevel::Start()
 		NPCRenderer->CreateFrameAnimationFolder("NewsieCat", FrameAnimation_DESC("NewsieCat", 0.1f, true));
 		NPCRenderer->ChangeFrameAnimation("NewsieCat");
 		NPCRenderer->ScaleToTexture();
-		NPCRenderer->GetTransform().SetLocalPosition({ 1600, -780 });
+		NPCRenderer->GetTransform().SetLocalPosition({ 1630, -800 });
 	}
 	
 	{
