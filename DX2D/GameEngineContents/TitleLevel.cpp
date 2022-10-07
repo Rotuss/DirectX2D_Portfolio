@@ -15,6 +15,7 @@
 #include <GameEngineCore/GameEngineBlur.h>
 
 TitleLevel::TitleLevel() 
+	: Renderer(nullptr)
 {
 }
 
@@ -53,6 +54,17 @@ void TitleLevel::Start()
 		TitleScreenChalice* TitleChalice = CreateActor<TitleScreenChalice>(OBJECTORDER::Title);
 		TitleScreenMugman* TitleMugman = CreateActor<TitleScreenMugman>(OBJECTORDER::Title);
 		TitleScreenChips* TitleChips = CreateActor<TitleScreenChips>(OBJECTORDER::Title);
+	}
+
+	{
+		{
+			GameEngineActor* Ptr = CreateActor<GameEngineActor>(OBJECTORDER::Title);
+			Renderer = Ptr->CreateComponent<GameEngineTextureRenderer>();
+			Renderer->CreateFrameAnimationFolder("AnyKeyPush", FrameAnimation_DESC("AnyKeyPush", 0.5f, true));
+			Renderer->ChangeFrameAnimation("AnyKeyPush");
+			Renderer->GetTransform().SetLocalScale({ 400.0f, 50.0f });
+			Renderer->GetTransform().SetLocalPosition({ 0.0f, -290.0f });
+		}
 	}
 
 	{

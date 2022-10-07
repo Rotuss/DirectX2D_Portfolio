@@ -23,6 +23,7 @@ OverWorldCuphead::OverWorldCuphead()
 	, Speed(300.0f)
 	, IsHourGlassOn(false)
 	, IsUIOn(false)
+	, RepeatMove(3)
 {
 	OWCuphead = this;
 }
@@ -131,8 +132,9 @@ void OverWorldCuphead::Start()
 		Renderer->CreateFrameAnimationFolder("OW_Walk_Down_Up", FrameAnimation_DESC("OW_Walk_Diag_Up", 0.06f, true));
 		Renderer->CreateFrameAnimationFolder("OW_Walk_Down_Down", FrameAnimation_DESC("OW_Walk_Diag_Down", 0.06f, true));
 
-		Renderer->CreateFrameAnimationFolder("OverWolrd_Win", FrameAnimation_DESC("OverWolrd_Win", 0.1f, false));
-		
+		Renderer->CreateFrameAnimationFolder("OverWolrd_Win_Repeat", FrameAnimation_DESC("OverWolrd_Win", 0, 8, 0.1f, true));
+		Renderer->CreateFrameAnimationFolder("OverWolrd_Win_End", FrameAnimation_DESC("OverWolrd_Win", 9, 10, 0.1f, false));
+
 		Renderer->ChangeFrameAnimation("OW_Idle_Side");
 		Renderer->SetScaleModeImage();
 		Renderer->ScaleToTexture();
@@ -149,7 +151,18 @@ void OverWorldCuphead::Start()
 		Collision->ChangeOrder(OBJECTORDER::Player);
 	}
 
-	Renderer->AnimationBindEnd("OverWolrd_Win", [/*&*/=](const FrameAnimation_DESC& _Info)
+	Renderer->AnimationBindEnd("OverWolrd_Win_Repeat", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			--RepeatMove;
+
+			if (0 >= RepeatMove)
+			{
+				Renderer->ChangeFrameAnimation("OverWolrd_Win_End");
+				RepeatMove = 3;
+			}
+		});
+
+	Renderer->AnimationBindEnd("OverWolrd_Win_End", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
 			CurDir = OWCupheadDir::Down;
 			StateManager.ChangeState("Idle");
@@ -218,7 +231,6 @@ void OverWorldCuphead::Update(float _DeltaTime)
 				GlobalContents::Actors::IsTimeOver = true;
 				Hourglass->Death(1.0f);
 			});
-
 	}
 	if (true == GlobalContents::Actors::IsTimeOver)
 	{
@@ -424,7 +436,7 @@ void OverWorldCuphead::WalkUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void OverWorldCuphead::WinStart(const StateInfo& _Info)
 {
-	CurStateName = "OverWolrd_Win";
+	CurStateName = "OverWolrd_Win_Repeat";
 
 	GetTransform().SetWorldPosition(float4{ 3100.0f,-850.0f, -3.0f });
 }

@@ -24,6 +24,8 @@ protected:
 	void End() override;
 
 private:
+	GameEngineTextureRenderer* Renderer;
+	
 	void EndFunction(const FrameAnimation_DESC& _Info);
 };
 

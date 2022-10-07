@@ -29,7 +29,7 @@ void WorldMapLevel::LevelStartEvent()
 		OverWorldCuphead::OWCuphead->BossClear();
 
 		// win 사운드 따로
-
+		GlobalContents::Actors::BGM = GameEngineSound::SoundPlayControl("mus_dlc_map_b.wav");
 	}
 	else
 	{

@@ -3,6 +3,7 @@
 #include "MortimerFreezeSnowPlatform.h"
 #include "MortimerFreezeBackGround.h"
 #include "MortimerFreezeBoss.h"
+#include "Iris.h"
 // Test
 #include "Player.h"
 #include "MsChalice.h"
@@ -42,6 +43,13 @@ void MortimerFreezeLevel::LevelEndEvent()
 std::vector<GameEngineTextureRenderer*> TmpVector;
 void MortimerFreezeLevel::Start()
 {
+	Iris* FX = CreateActor<Iris>(OBJECTORDER::Title);
+	FX->SetAnimType(AnimType::Back);
+	FX->GetRenderer()->AnimationBindEnd("IrisFXRev", [/*&*/=](const FrameAnimation_DESC& _Info)
+		{
+			FX->Death();
+		});
+	
 	GetMainCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	GetUICamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();
 	GetIrisCamera()->GetCameraRenderTarget()->AddEffect<GameEngineBlur>();

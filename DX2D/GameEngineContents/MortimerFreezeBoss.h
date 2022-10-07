@@ -196,6 +196,7 @@ private:
 	bool	IsSnowBeastIntroStartEnd;
 	bool	IsSnowBeastIntroMoveDown;
 	bool	IsSnowBeastIntroLand;
+	bool	IsHourGlassOn;
 
 	// Phase2
 	float	DashTime;

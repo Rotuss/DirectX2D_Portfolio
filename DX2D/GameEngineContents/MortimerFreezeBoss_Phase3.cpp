@@ -4,6 +4,7 @@
 #include "MortimerFreezeIceCream.h"
 #include "MortimerFreezeBucket.h"
 #include "KnockOut.h"
+#include "Iris.h"
 #include "GlobalContents.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
@@ -971,6 +972,7 @@ void MortimerFreezeBoss::AttackSplitUpdate(float _DeltaTime, const StateInfo& _I
 void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 {
 	Renderer->ChangeFrameAnimation("Ph3Wizard_Death");
+	Renderer->Off();
 	if (true == IsReverse)
 	{
 		Renderer->GetTransform().PixLocalPositiveY();
@@ -1015,6 +1017,11 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 		{
 			if (1 == _Info.CurFrame)
 			{
+				GameEngineSoundPlayer Tmp0 = GameEngineSound::SoundPlayControl("sfx_level_announcer_knockout_0004.wav");
+				Tmp0.Volume(0.7f);
+				GameEngineSoundPlayer Tmp1 = GameEngineSound::SoundPlayControl("sfx_level_knockout_bell.wav");
+				Tmp1.Volume(0.4f);
+
 				SubRenderer00->CurAnimationPauseOn();
 				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();
 				KO->GetTransform().SetWorldPosition({ 830.0f,-320.0f,-1000.0f });
@@ -1028,6 +1035,7 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 
 	SubRenderer00->AnimationBindEnd("SnowFlake_Death0", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			Renderer->On();
 			SubRenderer00->ChangeFrameAnimation("SnowFlake_Death1");
 		});
 
@@ -1035,6 +1043,11 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 		{
 			if (1 == _Info.CurFrame)
 			{
+				GameEngineSoundPlayer Tmp0 = GameEngineSound::SoundPlayControl("sfx_level_announcer_knockout_0004.wav");
+				Tmp0.Volume(0.7f);
+				GameEngineSoundPlayer Tmp1 = GameEngineSound::SoundPlayControl("sfx_level_knockout_bell.wav");
+				Tmp1.Volume(0.4f);
+				
 				SubRenderer00->CurAnimationPauseOn();
 				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();
 				KO->GetTransform().SetWorldPosition({ 830.0f,-320.0f,-1000.0f });
@@ -1048,6 +1061,7 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 
 	SubRenderer00->AnimationBindEnd("SnowFlake_Death_Alt", [/*&*/=](const FrameAnimation_DESC& _Info)
 		{
+			Renderer->On();
 			SubRenderer00->ChangeFrameAnimation("SnowFlake_Death1");
 		});
 
@@ -1089,7 +1103,18 @@ void MortimerFreezeBoss::Phase3KnockOutUpdate(float _DeltaTime, const StateInfo&
 
 	if (0 >= KnockOutTime)
 	{
-		GlobalContents::Actors::IsClear = true;
-		GEngine::ChangeLevel("World");
+		KnockOutTime = 10.0f;
+		
+		GlobalContents::Actors::BGM.Stop();
+		Iris* FX = GetLevel()->CreateActor<Iris>(OBJECTORDER::Title);
+		FX->SetAnimType(AnimType::Front);
+		FX->GetRenderer()->AnimationBindEnd("IrisFX", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				IsHourGlassOn = true;
+				FX->Death();
+			});
+		
+		//GlobalContents::Actors::IsClear = true;
+		//GEngine::ChangeLevel("World");
 	}
 }

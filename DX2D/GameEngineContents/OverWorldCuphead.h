@@ -80,5 +80,6 @@ private:
 	float					Speed;
 	bool					IsHourGlassOn;
 	bool					IsUIOn;
+	int						RepeatMove;
 };
 

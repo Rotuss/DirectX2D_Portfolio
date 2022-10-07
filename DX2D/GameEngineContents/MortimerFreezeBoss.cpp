@@ -6,6 +6,7 @@
 #include "MortimerFreezeCard.h"
 #include "MortimerFreezeMinion.h"
 #include "MortimerFreezeWhale.h"
+#include "HourGlass.h"
 
 #include <iostream>
 #include <GameEngineBase/GameEngineRandom.h>
@@ -55,6 +56,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, IsSnowBeastIntroStartEnd(false)
 	, IsSnowBeastIntroMoveDown(false)
 	, IsSnowBeastIntroLand(false)
+	, IsHourGlassOn(false)
 	, DashTime(GameEngineRandom::MainRandom.RandomFloat(0.2f, 1.0f))
 	, FridgeTime(GameEngineRandom::MainRandom.RandomFloat(0.5f, 1.0f))
 	, SmashTime(GameEngineRandom::MainRandom.RandomFloat(0.8f, 1.0f))
@@ -401,6 +403,30 @@ void MortimerFreezeBoss::Start()
 
 void MortimerFreezeBoss::Update(float _DeltaTime)
 {
+	if (true == IsHourGlassOn)
+	{
+		IsHourGlassOn = false;
+
+		HourGlass* Hourglass = GetLevel()->CreateActor<HourGlass>(OBJECTORDER::Title);
+		Hourglass->GetRenderer()->AnimationBindEnd("Hourglass", [/*&*/=](const FrameAnimation_DESC& _Info)
+			{
+				GlobalContents::Actors::IsTimeOver = true;
+				Hourglass->Death(1.0f);
+			});
+	}
+	if (true == GlobalContents::Actors::IsTimeOver)
+	{
+		GlobalContents::Actors::TimeOverCheck += _DeltaTime;
+
+		if (1.0f <= GlobalContents::Actors::TimeOverCheck)
+		{
+			GlobalContents::Actors::TimeOverCheck = 0.0f;
+			GlobalContents::Actors::IsTimeOver = false;
+
+			GlobalContents::Actors::IsClear = true;
+			GEngine::ChangeLevel("World");
+		}
+	}
 	PhaseManager.Update(_DeltaTime);
 
 	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Weapon, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeBoss::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
