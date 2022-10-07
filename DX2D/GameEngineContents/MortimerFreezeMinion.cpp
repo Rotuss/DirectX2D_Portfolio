@@ -25,6 +25,9 @@ MortimerFreezeMinion::~MortimerFreezeMinion()
 
 CollisionReturn MortimerFreezeMinion::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_weapon_peashot_death_001.wav");
+	Tmp.Volume(1.0f);
+	
 	MinionSound = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P1_Minion_Death_Explode_01.wav");
 	MinionSound.Volume(0.1f);
 	if (true == IsRanding)

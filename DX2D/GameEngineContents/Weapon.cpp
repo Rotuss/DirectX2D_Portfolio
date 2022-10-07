@@ -17,6 +17,9 @@ Weapon::~Weapon()
 
 CollisionReturn Weapon::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_weapon_peashot_death_001.wav");
+	Tmp.Volume(1.0f);
+	
 	Attacked();
 	return CollisionReturn::ContinueCheck;
 }

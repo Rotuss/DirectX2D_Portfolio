@@ -34,6 +34,9 @@ MsChalice::~MsChalice()
 
 CollisionReturn MsChalice::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_hit_01.wav");
+	Tmp.Volume(0.6f);
+	
 	if (true == IsNoDamageState)
 	{
 		return CollisionReturn::Break;
@@ -58,6 +61,9 @@ CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameE
 {
 	if ("ChaliceDash" != StateManager.GetCurStateStateName())
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_hit_01.wav");
+		Tmp.Volume(0.6f);
+		
 		if (true == IsNoDamageState)
 		{
 			return CollisionReturn::Break;
@@ -79,6 +85,9 @@ CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameE
 	else
 	{
 		// Dash Pasrry
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_parry_slap_01.wav");
+		Tmp.Volume(0.6f);
+		
 		IsParry = true;
 		StateManager.ChangeState("ChaliceJump");
 
@@ -88,6 +97,9 @@ CollisionReturn MsChalice::CollisionCheckParry(GameEngineCollision* _This, GameE
 
 CollisionReturn MsChalice::CollisionCheckMinion(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_hit_01.wav");
+	Tmp.Volume(0.6f);
+	
 	if (true == IsNoDamageState)
 	{
 		return CollisionReturn::Break;
@@ -109,6 +121,9 @@ CollisionReturn MsChalice::CollisionCheckMinion(GameEngineCollision* _This, Game
 
 CollisionReturn MsChalice::CollisionCheckWhale(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_hit_01.wav");
+	Tmp.Volume(0.6f);
+	
 	if (true == IsNoDamageState)
 	{
 		return CollisionReturn::Break;
@@ -359,6 +374,9 @@ void MsChalice::Update(float _DeltaTime)
 
 		if (0.0f > WeaponTime)
 		{
+			GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_weapon_peashot_001.wav");
+			Tmp.Volume(1.0f);
+			
 			WeaponPtr = GetLevel()->CreateActor<Weapon>(OBJECTORDER::Weapon);
 			WeaponPtr->SetWeaponDir(ChaliceDir);
 			if ("Right" == ChaliceDir)
@@ -708,6 +726,9 @@ void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
 {
 	if (true == GameEngineInput::GetInst()->IsDown("ChaliceJump") && false == IsDoubleJump)
 	{
+		GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_Chalice_DoubleJump_01.wav");
+		Tmp.Volume(0.6f);
+		
 		CurStateName = "Chalice_Jump_Double";
 		IsDoubleJump = true;
 
@@ -742,6 +763,9 @@ void MsChalice::JumpUpdate(float _DeltaTime, const StateInfo& _Info)
 
 void MsChalice::DashStart(const StateInfo& _Info)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_dash_01.wav");
+	Tmp.Volume(0.6f);
+	
 	CurStateName = "Chalice_Dash";
 
 	Renderer->AnimationBindEnd("Chalice_Dash", [/*&*/=](const FrameAnimation_DESC& _Info)

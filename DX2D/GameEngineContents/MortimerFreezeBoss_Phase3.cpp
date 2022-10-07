@@ -17,7 +17,7 @@ void MortimerFreezeBoss::Phase3Start(const StateInfo& _Info)
 		GameEngineInput::GetInst()->CreateKey("Num3_Split", VK_NUMPAD3);
 	}
 
-	HP = 1;
+	HP = 100;
 	PrevState = "";
 	// 수치 조정 필요
 	Renderer->SetPivot(PIVOTMODE::CENTER);
@@ -1018,9 +1018,9 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 			if (1 == _Info.CurFrame)
 			{
 				GameEngineSoundPlayer Tmp0 = GameEngineSound::SoundPlayControl("sfx_level_announcer_knockout_0004.wav");
-				Tmp0.Volume(0.7f);
+				Tmp0.Volume(1.0f);
 				GameEngineSoundPlayer Tmp1 = GameEngineSound::SoundPlayControl("sfx_level_knockout_bell.wav");
-				Tmp1.Volume(0.4f);
+				Tmp1.Volume(0.8f);
 
 				SubRenderer00->CurAnimationPauseOn();
 				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();
@@ -1044,9 +1044,9 @@ void MortimerFreezeBoss::Phase3KnockOutStart(const StateInfo& _Info)
 			if (1 == _Info.CurFrame)
 			{
 				GameEngineSoundPlayer Tmp0 = GameEngineSound::SoundPlayControl("sfx_level_announcer_knockout_0004.wav");
-				Tmp0.Volume(0.7f);
+				Tmp0.Volume(1.0f);
 				GameEngineSoundPlayer Tmp1 = GameEngineSound::SoundPlayControl("sfx_level_knockout_bell.wav");
-				Tmp1.Volume(0.4f);
+				Tmp1.Volume(0.8f);
 				
 				SubRenderer00->CurAnimationPauseOn();
 				KnockOut* KO = GetLevel()->CreateActor<KnockOut>();

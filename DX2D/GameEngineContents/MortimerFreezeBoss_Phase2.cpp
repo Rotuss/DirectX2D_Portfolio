@@ -16,7 +16,7 @@ void MortimerFreezeBoss::Phase2Start(const StateInfo& _Info)
 		GameEngineInput::GetInst()->CreateKey("Num3_Smash", VK_NUMPAD3);
 	}
 
-	HP = 1;
+	HP = 200;
 	Renderer->SetPivot(PIVOTMODE::BOT);
 	Collision->GetTransform().SetLocalScale(float4{ 300.0f,400.0f,0.0f });
 	Collision->GetTransform().SetLocalPosition(float4{ 0.0f,200.0f,0.0f });

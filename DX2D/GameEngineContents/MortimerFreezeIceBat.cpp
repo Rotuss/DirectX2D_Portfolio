@@ -26,8 +26,11 @@ MortimerFreezeIceBat::~MortimerFreezeIceBat()
 	
 CollisionReturn MortimerFreezeIceBat::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
-	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_Popsicle_Bat_Death_01.wav");
-	Tmp.Volume(0.3f);
+	GameEngineSoundPlayer Tmp0 = GameEngineSound::SoundPlayControl("sfx_player_weapon_peashot_death_001.wav");
+	Tmp0.Volume(1.0f);
+	
+	GameEngineSoundPlayer Tmp1 = GameEngineSound::SoundPlayControl("sfx_DLC_SnowCult_P2_Popsicle_Bat_Death_01.wav");
+	Tmp1.Volume(0.3f);
 
 	_This->Death();
 

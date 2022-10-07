@@ -36,7 +36,7 @@ MortimerFreezeBoss::MortimerFreezeBoss()
 	, YAdd(0.0f)
 	, IdleLerpRatio(0.0f)
 	, PeashotAttackMoveTime(0.0f)
-	, HP(1)
+	, HP(100)
 	, Phase2TransitionMotionCount(2)
 	, PeashotStateCount(GameEngineRandom::MainRandom.RandomInt(3, 5))
 	, PeashotAttackCount(GameEngineRandom::MainRandom.RandomInt(1, 2))
@@ -110,6 +110,9 @@ MortimerFreezeBoss::~MortimerFreezeBoss()
 
 CollisionReturn MortimerFreezeBoss::CollisionCheck(GameEngineCollision* _This, GameEngineCollision* _Other)
 {
+	GameEngineSoundPlayer Tmp = GameEngineSound::SoundPlayControl("sfx_player_weapon_peashot_death_001.wav");
+	Tmp.Volume(1.0f);
+	
 	_Other->GetActor<Weapon>()->Attacked();
 	
 	HP -= 1;
@@ -128,6 +131,7 @@ void MortimerFreezeBoss::Start()
 	{
 		GameEngineInput::GetInst()->CreateKey("Change_Phase3", 'Q');
 		GameEngineInput::GetInst()->CreateKey("Appear_SnowPlatform", 'A');
+		GameEngineInput::GetInst()->CreateKey("Next_Phase", VK_RETURN);
 	}
 
 	{
@@ -430,6 +434,11 @@ void MortimerFreezeBoss::Update(float _DeltaTime)
 	PhaseManager.Update(_DeltaTime);
 
 	Collision->IsCollision(CollisionType::CT_OBB2D, OBJECTORDER::Weapon, CollisionType::CT_OBB2D, std::bind(&MortimerFreezeBoss::CollisionCheck, this, std::placeholders::_1, std::placeholders::_2));
+	
+	if (true == GameEngineInput::GetInst()->IsDown("Next_Phase"))
+	{
+		HP = 0;
+	}
 
 	if (true == GameEngineInput::GetInst()->IsDown("Change_Phase3"))
 	{
