@@ -324,7 +324,7 @@ void WorldMapLevel::Update(float _DeltaTime)
 
 	if (GameEngineInput::GetInst()->IsDown("ChangeTutorial"))
 	{
-		GEngine::ChangeLevel("Tutorial");
+		GEngine::ChangeLevel("World");
 	}
 }
 

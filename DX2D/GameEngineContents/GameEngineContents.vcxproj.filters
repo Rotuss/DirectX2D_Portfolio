@@ -133,6 +133,9 @@
     <ClInclude Include="OverWorldCuphead.h">
       <Filter>Actor</Filter>
     </ClInclude>
+    <ClInclude Include="StoryLevel.h">
+      <Filter>Level\Story</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuphead.cpp" />
@@ -272,6 +275,9 @@
     <ClCompile Include="OverWorldCuphead.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="StoryLevel.cpp">
+      <Filter>Level\Story</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Actor">
@@ -315,6 +321,9 @@
     </Filter>
     <Filter Include="Actor\UI">
       <UniqueIdentifier>{b8e70623-a7c2-43c6-b3ea-64e3a832e387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\Story">
+      <UniqueIdentifier>{2aee6e29-6054-47a8-8187-8697d3202d00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

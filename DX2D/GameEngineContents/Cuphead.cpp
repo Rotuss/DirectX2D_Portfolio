@@ -3,6 +3,7 @@
 #include "MDHRLogoLevel.h"
 #include "TitleLevel.h"
 #include "TitleMainLevel.h"
+#include "StoryLevel.h"
 #include "WorldMapLevel.h"
 #include "TutorialLevel.h"
 #include "MortimerFreezeLevel.h"
@@ -174,6 +175,7 @@ void Cuphead::Start()
 	CreateLevel<MDHRLogoLevel>("MDHRLogo");
 	CreateLevel<TitleLevel>("Title");
 	CreateLevel<TitleMainLevel>("TitleMain");
+	CreateLevel<StoryLevel>("Story");
 	CreateLevel<WorldMapLevel>("World");
 	CreateLevel<TutorialLevel>("Tutorial");
 	CreateLevel<MortimerFreezeLevel>("MortimerFreeze");

@@ -170,7 +170,7 @@ void TitleMainLevel::Update(float _DeltaTime)
 			ReSetAccTime();
 			GlobalContents::Actors::IsTimeOver = false;
 
-			GEngine::ChangeLevel("World");
+			GEngine::ChangeLevel("Story");
 		}
 	}
 }
