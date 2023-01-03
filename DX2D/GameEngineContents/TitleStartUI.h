@@ -29,9 +29,13 @@ private:
 	GameEngineUIRenderer*	Renderer0;
 	GameEngineUIRenderer*	Renderer1;
 	GameEngineUIRenderer*	Renderer2;
+	GameEngineUIRenderer*	NewGameRenderer0;
+	GameEngineUIRenderer*	NewGameRenderer1;
+	GameEngineUIRenderer*	NewGameRenderer2;
 
 	GameEngineUIRenderer*	SelectOnBackground;
 	GameEngineUIRenderer*	SelectSlotColor;
+	GameEngineUIRenderer*	SelectSlotText;
 
 	std::vector<float4>		SelectPosition;
 	int						CurrentIndex;
