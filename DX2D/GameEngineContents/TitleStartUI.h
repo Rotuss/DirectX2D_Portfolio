@@ -1,9 +1,8 @@
 #pragma once
 #include "UIMaster.h"
-#include "TitleMainLevel.h"
 
 // Ό³Έν :
-class TitleStartUI : public UIMaster
+class TitleStartUI : public GameEngineActor
 {
 public:
 	// constrcuter destructer
@@ -23,21 +22,29 @@ protected:
 
 private:
 	void SelectIndex();
-	
-	TitleMainLevel*			TMLevel;
-	
-	GameEngineUIRenderer*	Renderer0;
-	GameEngineUIRenderer*	Renderer1;
-	GameEngineUIRenderer*	Renderer2;
-	GameEngineUIRenderer*	NewGameRenderer0;
-	GameEngineUIRenderer*	NewGameRenderer1;
-	GameEngineUIRenderer*	NewGameRenderer2;
+	void AnimPlayerIndex();
 
-	GameEngineUIRenderer*	SelectOnBackground;
-	GameEngineUIRenderer*	SelectSlotColor;
-	GameEngineUIRenderer*	SelectSlotText;
+	GameEngineTextureRenderer* MainRenderer;
+	
+	GameEngineTextureRenderer* Renderer0;
+	GameEngineTextureRenderer* Renderer1;
+	GameEngineTextureRenderer* Renderer2;
+	GameEngineTextureRenderer* NewGameRenderer0;
+	GameEngineTextureRenderer* NewGameRenderer1;
+	GameEngineTextureRenderer* NewGameRenderer2;
+	GameEngineTextureRenderer* NewGameText;
+
+	GameEngineTextureRenderer* SelectOnBackground;
+	GameEngineTextureRenderer* SelectSlotColor;
+	GameEngineTextureRenderer* SelectSlotText;
+	GameEngineTextureRenderer* SelectCuphead;
+	GameEngineTextureRenderer* SelectMugman;
 
 	std::vector<float4>		SelectPosition;
 	int						CurrentIndex;
+	int						PlayerIndex;
+	bool					FirstCheck;
+	bool					SelectCheck;
+	bool					AnimCheck;
 };
 

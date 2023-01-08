@@ -18,18 +18,23 @@ public:
 	void LevelStartEvent() override;
 	void LevelEndEvent() override;
 
+	inline void SetSelectUICheck(bool _Value)
+	{
+		SelectUICheck = _Value;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void End() override;
 
 private:
-	void EndFunction(const FrameAnimation_DESC& _Info);
 	void SelectIndex();
 
 	GameEngineTextureRenderer*	Renderer;
 	GameEngineTextureRenderer*	SelectRenderer;
 	std::vector<float4>			SelectPosition;
 	int							CurrentIndex;
+	bool						SelectUICheck;
 };
 
